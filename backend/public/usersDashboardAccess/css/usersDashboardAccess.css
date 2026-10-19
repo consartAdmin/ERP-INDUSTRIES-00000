@@ -1,0 +1,39 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ usersDashboardAccess.css — Dashboard permission management         ║
+   ║ PRODNEX ERP                                                        ║
+   ║ Layout, fields and table come from fields.css / table.css.         ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.uda-status {
+  min-height: 16px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.uda-status[data-type="success"] {
+  color: #15803d;
+}
+
+.uda-status[data-type="error"] {
+  color: #b91c1c;
+}
+
+.uda-status[data-type="info"] {
+  color: #475569;
+}
+
+.uda-key {
+  color: #64748b;
+  font-family: Consolas, Monaco, monospace;
+  font-size: 12px;
+}
+
+.uda-col-access {
+  width: 110px;
+}
+
+.uda-switch {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}

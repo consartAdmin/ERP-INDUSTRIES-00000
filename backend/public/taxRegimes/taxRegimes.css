@@ -1,0 +1,47 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ FILE: taxRegimes.css — Regime Tributário                            ║
+   ║ PRODNEX ERP                                                        ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.page-tax-regimes [hidden] {
+  display: none !important;
+}
+
+.page-tax-regimes .tr-hint {
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+.page-tax-regimes .tr-brackets {
+  max-width: 760px;
+}
+
+.page-tax-regimes .tr-brackets td,
+.page-tax-regimes .tr-brackets th {
+  text-align: right;
+}
+
+.page-tax-regimes .tr-brackets td:first-child,
+.page-tax-regimes .tr-brackets th:first-child {
+  text-align: center;
+}
+
+.page-tax-regimes .tr-brackets tr.is-current td {
+  font-weight: 700;
+}
+
+.page-tax-regimes .tr-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(16, 185, 129, 0.15);
+  color: #047857;
+}
+
+.page-tax-regimes .tr-badge--off {
+  background: rgba(148, 163, 184, 0.2);
+  color: #475569;
+}

@@ -1,0 +1,503 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+ * ║ crmConclusionSummaryModal.css                                       ║
+ * ║ CRM Deals — Modal de operações concluídas                           ║
+ * ║ Path: /public/crmDeals/crmConclusionSummaryModal/                   ║
+ * ║                                                                      ║
+ * ║ ✅ Visual profissional                                               ║
+ * ║ ✅ Responsivo                                                        ║
+ * ║ ✅ Tabela com header sticky                                          ║
+ * ║ ✅ Badges, pills e estados de vazio/erro                             ║
+ * ╚══════════════════════════════════════════════════════════════════════╝ */
+
+/* --------------------------------------------------------------------- */
+/* Root                                                                  */
+/* --------------------------------------------------------------------- */
+
+.crm-conclusion-summary-modal[hidden] {
+  display: none !important;
+}
+
+.crm-conclusion-summary-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  font-family: Inter, "Segoe UI", Tahoma, Arial, sans-serif;
+}
+
+body.crm-conclusion-summary-modal-open {
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------------- */
+/* Backdrop                                                              */
+/* --------------------------------------------------------------------- */
+
+.crm-conclusion-summary-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(15, 23, 42, 0.55) 0%,
+      rgba(15, 23, 42, 0.62) 100%
+    );
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: crmConclusionFadeIn 0.18s ease;
+}
+
+/* --------------------------------------------------------------------- */
+/* Dialog                                                                */
+/* --------------------------------------------------------------------- */
+
+.crm-conclusion-summary-modal__dialog {
+  position: relative;
+  z-index: 2;
+  width: min(1380px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  margin: 16px auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 22px;
+
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(248,250,252,0.98) 100%);
+  box-shadow:
+    0 30px 80px rgba(2, 6, 23, 0.28),
+    0 12px 28px rgba(15, 23, 42, 0.14);
+
+  animation: crmConclusionPopIn 0.22s ease;
+}
+
+/* --------------------------------------------------------------------- */
+/* Header                                                                */
+/* --------------------------------------------------------------------- */
+
+.crm-conclusion-summary-modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px 22px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+  background:
+    linear-gradient(135deg, #eff6ff 0%, #f8fafc 52%, #ffffff 100%);
+}
+
+.crm-conclusion-summary-modal__heading {
+  min-width: 0;
+  flex: 1;
+}
+
+.crm-conclusion-summary-modal__title {
+  margin: 0;
+  color: #0f172a;
+  font-size: 22px;
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.crm-conclusion-summary-modal__subtitle {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.45;
+  font-weight: 500;
+}
+
+.crm-conclusion-summary-modal__close {
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 14px;
+  background: #ffffff;
+  color: #334155;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.16s ease,
+    background 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease;
+}
+
+.crm-conclusion-summary-modal__close:hover {
+  background: #f8fafc;
+  color: #0f172a;
+  border-color: rgba(100, 116, 139, 0.26);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.10);
+  transform: translateY(-1px);
+}
+
+.crm-conclusion-summary-modal__close:active {
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------- */
+/* Body                                                                  */
+/* --------------------------------------------------------------------- */
+
+.crm-conclusion-summary-modal__body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 22px 22px;
+  min-height: 240px;
+  overflow: auto;
+  background:
+    radial-gradient(circle at top right, rgba(59,130,246,0.04), transparent 28%),
+    linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.96));
+}
+
+/* --------------------------------------------------------------------- */
+/* Meta / badges                                                         */
+/* --------------------------------------------------------------------- */
+
+.crm-conclusion-summary-modal__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.crm-conclusion-summary-modal__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.crm-conclusion-summary-modal__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 8px 14px;
+  border: 1px solid rgba(148, 163, 184, 0.20);
+  border-radius: 999px;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+}
+
+/* --------------------------------------------------------------------- */
+/* Table                                                                 */
+/* --------------------------------------------------------------------- */
+
+.crm-conclusion-summary-modal__table-wrap {
+  overflow: auto;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.9),
+    0 10px 24px rgba(15, 23, 42, 0.06);
+}
+
+.crm-conclusion-summary-modal__table {
+  width: 100%;
+  min-width: 1180px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.crm-conclusion-summary-modal__table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  padding: 13px 14px;
+  background:
+    linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+  color: #0f172a;
+  font-size: 12px;
+  line-height: 1.2;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.crm-conclusion-summary-modal__table thead th:first-child {
+  border-top-left-radius: 18px;
+}
+
+.crm-conclusion-summary-modal__table thead th:last-child {
+  border-top-right-radius: 18px;
+}
+
+.crm-conclusion-summary-modal__table tbody td {
+  padding: 12px 14px;
+  vertical-align: top;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.95);
+  color: #334155;
+  font-size: 13px;
+  line-height: 1.45;
+  background: #ffffff;
+}
+
+.crm-conclusion-summary-modal__table tbody tr:nth-child(even) td {
+  background: #fbfdff;
+}
+
+.crm-conclusion-summary-modal__row {
+  transition: background 0.14s ease, transform 0.14s ease, box-shadow 0.14s ease;
+}
+
+.crm-conclusion-summary-modal__row:hover td {
+  background: #eff6ff;
+}
+
+.crm-conclusion-summary-modal__row:last-child td {
+  border-bottom: none;
+}
+
+/* --------------------------------------------------------------------- */
+/* Cell helpers                                                          */
+/* --------------------------------------------------------------------- */
+
+.crm-conclusion-summary-modal__customer {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 180px;
+}
+
+.crm-conclusion-summary-modal__customer strong {
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.crm-conclusion-summary-modal__customer span {
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.crm-conclusion-summary-modal__money {
+  white-space: nowrap;
+  color: #0f172a !important;
+  font-weight: 800;
+}
+
+.crm-conclusion-summary-modal__details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 200px;
+}
+
+.crm-conclusion-summary-modal__pill {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  min-height: 28px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #dbeafe, #eff6ff);
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 800;
+  border: 1px solid rgba(59, 130, 246, 0.14);
+}
+
+.crm-conclusion-summary-modal__mini {
+  display: block;
+  color: #475569;
+  font-size: 12px;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+/* --------------------------------------------------------------------- */
+/* Empty / error                                                         */
+/* --------------------------------------------------------------------- */
+
+.crm-conclusion-summary-modal__empty {
+  padding: 28px 18px !important;
+  text-align: center;
+  color: #64748b !important;
+  font-size: 14px !important;
+  font-weight: 600;
+  background:
+    linear-gradient(180deg, #ffffff 0%, #f8fafc 100%) !important;
+}
+
+.crm-conclusion-summary-modal__empty--error {
+  color: #b91c1c !important;
+  background:
+    linear-gradient(180deg, #fff5f5 0%, #fef2f2 100%) !important;
+}
+
+/* --------------------------------------------------------------------- */
+/* Summary cards clickable enhancement                                   */
+/* --------------------------------------------------------------------- */
+
+.crm-conclusion-summary-card,
+[data-conclusion-code] {
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.16s ease,
+    filter 0.16s ease;
+}
+
+.crm-conclusion-summary-card:hover,
+[data-conclusion-code]:hover {
+  transform: translateY(-2px);
+  filter: saturate(1.02);
+}
+
+.crm-conclusion-summary-card:focus-visible,
+[data-conclusion-code]:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 3px;
+  border-radius: 14px;
+}
+
+/* --------------------------------------------------------------------- */
+/* Scrollbar                                                             */
+/* --------------------------------------------------------------------- */
+
+.crm-conclusion-summary-modal__body::-webkit-scrollbar,
+.crm-conclusion-summary-modal__table-wrap::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.crm-conclusion-summary-modal__body::-webkit-scrollbar-thumb,
+.crm-conclusion-summary-modal__table-wrap::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.7);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.crm-conclusion-summary-modal__body::-webkit-scrollbar-track,
+.crm-conclusion-summary-modal__table-wrap::-webkit-scrollbar-track {
+  background: rgba(241, 245, 249, 0.65);
+  border-radius: 999px;
+}
+
+/* --------------------------------------------------------------------- */
+/* Responsive                                                            */
+/* --------------------------------------------------------------------- */
+
+@media (max-width: 1100px) {
+  .crm-conclusion-summary-modal__dialog {
+    width: min(100vw - 20px, 100%);
+    max-height: calc(100vh - 20px);
+    margin: 10px auto;
+    border-radius: 18px;
+  }
+
+  .crm-conclusion-summary-modal__header {
+    padding: 16px 16px;
+  }
+
+  .crm-conclusion-summary-modal__body {
+    padding: 16px 16px 18px;
+  }
+
+  .crm-conclusion-summary-modal__title {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .crm-conclusion-summary-modal__dialog {
+    width: calc(100vw - 12px);
+    max-height: calc(100vh - 12px);
+    margin: 6px auto;
+    border-radius: 16px;
+  }
+
+  .crm-conclusion-summary-modal__header {
+    gap: 12px;
+    padding: 14px 14px;
+  }
+
+  .crm-conclusion-summary-modal__body {
+    gap: 12px;
+    padding: 14px 14px 16px;
+  }
+
+  .crm-conclusion-summary-modal__title {
+    font-size: 18px;
+  }
+
+  .crm-conclusion-summary-modal__subtitle {
+    font-size: 12px;
+  }
+
+  .crm-conclusion-summary-modal__badge {
+    min-height: 34px;
+    padding: 7px 12px;
+    font-size: 12px;
+  }
+
+  .crm-conclusion-summary-modal__table {
+    min-width: 980px;
+  }
+
+  .crm-conclusion-summary-modal__close {
+    width: 38px;
+    height: 38px;
+    font-size: 24px;
+    border-radius: 12px;
+  }
+}
+
+@media (max-width: 520px) {
+  .crm-conclusion-summary-modal__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .crm-conclusion-summary-modal__close {
+    align-self: flex-end;
+  }
+
+  .crm-conclusion-summary-modal__customer {
+    min-width: 150px;
+  }
+
+  .crm-conclusion-summary-modal__details {
+    min-width: 170px;
+  }
+}
+
+/* --------------------------------------------------------------------- */
+/* Animations                                                            */
+/* --------------------------------------------------------------------- */
+
+@keyframes crmConclusionFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes crmConclusionPopIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

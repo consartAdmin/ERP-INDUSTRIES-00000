@@ -1,0 +1,48 @@
+/* Título e subtítulos */
+.titulo {
+  text-align: center;
+  margin: 0 0 var(--c-space-4, 16px);
+  color: #334155;
+}
+.subtitulo {
+  margin: var(--c-space-6, 24px) 0 var(--c-space-3, 12px);
+  color: #334155;
+}
+
+/* Formulário */
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--c-space-4, 16px);
+}
+
+/* Cada linha usa o grid utilitário do tema (c-grid/c-grid-2) */
+.form-linha { /* só pequenos ajustes */
+  align-items: end; /* alinha inputs pela base */
+}
+
+/* Grupo com label acima do campo */
+.form-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.form-grupo label {
+  font-weight: 700;
+  color: #334155;
+}
+
+/* Botão: aproveita o estilo global do tema e só expande largura */
+.btn-salvar { width: 100%; }
+
+/* Mensagem de erro com cores do tema */
+.erro-msg {
+  margin-top: var(--c-space-3, 12px);
+  color: #b91c1c;
+}
+
+/* Ajustes responsivos (o grid 2 colunas vira 1 em <768px pelo tema) */
+@media (max-width: 768px) {
+  .btn-salvar { width: 100%; }
+}

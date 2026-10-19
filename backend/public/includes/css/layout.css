@@ -1,0 +1,155 @@
+/* ==========================================================================
+   layout.css — Containers, grids, layout global
+   ========================================================================== */
+.c-main {
+  flex: 1 1 auto;
+  padding: var(--gap-lg) 0;
+}
+
+:root {
+  /* Width */
+  --container-sm: 640px;
+  --container-md: 900px;
+  --container-lg: 1200px;
+  --container-2xl: 1600px;
+  --container-3xl: 1800px;
+
+  /* Height */
+  --container-h-xs: 240px;
+  --container-h-sm: 400px;
+  --container-h-md: 600px;
+  --container-h-lg: 800px;
+  --container-h-xl: 850px;
+  --container-h-2xl: 950px;
+  --container-h-3xl: 1100px;
+}
+
+/*——————————————————————————————
+    Containers — Width
+——————————————————————————————*/
+.cw-container {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: var(--gap-lg);
+  min-width: 0;
+}
+
+.cw-container--sm {
+  max-width: var(--container-sm);
+}
+
+.cw-container--md {
+  max-width: var(--container-md);
+}
+
+.cw-container--lg {
+  max-width: var(--container-lg);
+}
+
+.cw-container--2xl {
+  max-width: var(--container-2xl);
+}
+
+.cw-container--3xl {
+  max-width: var(--container-3xl);
+}
+
+.cw-container--full {
+  max-width: none;
+}
+
+/*——————————————————————————————
+    Containers — Height
+——————————————————————————————*/
+.ch-container {
+  min-height: 0;
+}
+
+.ch-container--auto {
+  height: auto;
+}
+
+.ch-container--xs {
+  height: var(--container-h-xs);
+}
+
+.ch-container--sm {
+  height: var(--container-h-sm);
+}
+
+.ch-container--md {
+  height: 600px !important;
+  min-height: 600px !important;
+  background: rgba(246, 244, 244, 0.15) !important;
+}
+
+.ch-container--lg {
+  height: var(--container-h-lg);
+}
+
+.ch-container--xl {
+  height: var(--container-h-xl);
+}
+
+.ch-container--2xl {
+  height: var(--container-h-2xl);
+}
+
+.ch-container--3xl {
+  height: var(--container-h-3xl);
+}
+
+.ch-container--full {
+  height: 100%;
+}
+
+.ch-container--screen {
+  height: 100vh;
+}
+
+.ch-container--page {
+  min-height: calc(100vh - var(--consart-top-offset, 0px));
+}
+
+.ch-container--scroll {
+  overflow: auto;
+}
+
+/* Layout utilitários */
+.stack {
+  display: grid;
+  gap: var(--gap);
+}
+
+.row {
+  display: flex;
+  gap: var(--gap);
+  flex-wrap: wrap;
+}
+
+.row.center {
+  align-items: center;
+}
+
+.row.between {
+  justify-content: space-between;
+}
+
+/* Cards de seção */
+.section-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--gap-lg);
+}
+
+/* Header de app/menu (se você usa .menu-principal) */
+.menu-principal {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  backdrop-filter: saturate(1.1) blur(6px);
+  background: color-mix(in oklab, var(--card) 82%, transparent);
+  border-bottom: 1px solid var(--line);
+}

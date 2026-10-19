@@ -1,0 +1,248 @@
+.table-scroll {
+  overflow: auto;
+}
+
+.table {
+  min-width: 1680px;
+}
+
+.table th,
+.table td {
+  white-space: nowrap;
+}
+
+.table td.actions {
+  display: flex;
+  gap: .25rem;
+}
+
+.cpm-main-fields {
+  align-items: end;
+}
+
+.cpm-active-field {
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.cpm-active-field input {
+  width: auto;
+}
+
+.cpm-gaps {
+  margin: .75rem 10px 0;
+  padding: .5rem .75rem .75rem;
+}
+
+.cpm-gaps .fields-inline {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(110px, 1fr));
+  gap: .65rem 1rem;
+}
+
+.cpm-gaps .fields {
+  width: auto;
+}
+
+.cpm-audit-fields {
+  gap: 2rem;
+  padding: .6rem 10px 0;
+  font-size: .9rem;
+}
+
+.payment-methods-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: .6rem;
+  margin-top: .4rem;
+}
+
+.payment-methods-filter {
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+  min-width: 110px;
+}
+
+.payment-methods-filter--search {
+  min-width: 260px;
+}
+
+.payment-methods-filter label {
+  font-size: .78rem;
+  font-weight: 600;
+}
+
+.payment-methods-filter input,
+.payment-methods-filter select {
+  min-height: 36px;
+}
+
+.payment-methods-filter-clear {
+  min-height: 36px;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .cpm-gaps .fields-inline {
+    grid-template-columns: repeat(2, minmax(110px, 1fr));
+  }
+
+  .payment-methods-filter,
+  .payment-methods-filter--search {
+    flex: 1 1 180px;
+    min-width: 0;
+  }
+}
+
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ TPAG HELP                                                           ║
+   ║ Tooltip com códigos de pagamento da NF-e                            ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.table-layout-integrated__filter {
+  position: relative;
+}
+
+
+/* Container */
+.tpag-help {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  z-index: 30;
+}
+
+
+/* Botão / símbolo */
+.tpag-help__button {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: 1px solid #94a3b8;
+  border-radius: 50%;
+
+  background: #ffffff;
+  color: #334155;
+
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+
+  cursor: help;
+
+  transition:
+    background-color .15s ease,
+    border-color .15s ease,
+    transform .15s ease;
+}
+
+
+.tpag-help__button:hover,
+.tpag-help__button:focus-visible {
+  background: #f1f5f9;
+  border-color: #475569;
+  transform: scale(1.05);
+}
+
+
+/* Tooltip */
+.tpag-help__tooltip {
+  position: absolute;
+
+  top: calc(100% + 10px);
+  right: 0;
+
+  width: 275px;
+
+  padding: 12px 14px;
+
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+
+  background: #ffffff;
+  color: #1e293b;
+
+  box-shadow: 0 10px 30px rgba(15, 23, 42, .18);
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-5px);
+
+  pointer-events: none;
+
+  transition:
+    opacity .15s ease,
+    visibility .15s ease,
+    transform .15s ease;
+}
+
+
+/* Seta */
+.tpag-help__tooltip::before {
+  content: "";
+
+  position: absolute;
+  top: -6px;
+  right: 9px;
+
+  width: 10px;
+  height: 10px;
+
+  background: #ffffff;
+
+  border-top: 1px solid #cbd5e1;
+  border-left: 1px solid #cbd5e1;
+
+  transform: rotate(45deg);
+}
+
+
+/* Abre no hover e teclado */
+.tpag-help:hover .tpag-help__tooltip,
+.tpag-help:focus-within .tpag-help__tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+
+  pointer-events: auto;
+}
+
+
+/* Título */
+.tpag-help__title {
+  margin-bottom: 8px;
+  padding-bottom: 7px;
+
+  border-bottom: 1px solid #e2e8f0;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+
+/* Linhas */
+.tpag-help__row {
+  display: grid;
+  grid-template-columns: 35px 1fr;
+  gap: 8px;
+
+  padding: 3px 0;
+
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+
+.tpag-help__row strong {
+  font-weight: 700;
+  color: #0f172a;
+}

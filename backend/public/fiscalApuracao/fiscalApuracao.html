@@ -1,0 +1,496 @@
+<!-- ╔════════════════════════════════════════════════════════════════════╗
+     ║ FILE: fiscalApuracao.html                                         ║
+     ║ MODULE: FISCAL APURACAO                                           ║
+     ║ PRODNEX ERP                                                       ║
+     ║ FRONTEND PAGE                                                     ║
+     ║ UPDATE: botões PDF e EXCEL em Documentos Importados               ║
+     ╚════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FISCAL APURAÇÃO | PRODNEX ERP</title>
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <link rel="stylesheet" href="/public/includes/css/style.css">
+  <link rel="stylesheet" href="./fiscalApuracao.css">
+
+  <style>
+    .fa-field--xml-mode .fa-xml-mode-wrap{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      min-height:38px;
+    }
+
+    .fa-xml-mode-badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:30px;
+      padding:0 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:.02em;
+      color:#31456a;
+      background:#eef3ff;
+      border:1px solid #d7e2ff;
+      white-space:nowrap;
+    }
+
+    .fa-field--xml-mode select{
+      min-width:190px;
+    }
+
+    .fa-field__hint{
+      display:block;
+      margin-top:6px;
+      font-size:12px;
+      line-height:1.35;
+      color:#6b7280;
+    }
+
+    .fa-panel__header--docs{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .fa-docs-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    #btnExportDocsPdf,
+    #btnExportDocsExcel{
+      min-width:100px;
+    }
+
+    @media (max-width: 1100px){
+      .fa-field--xml-mode{
+        grid-column:1 / -1;
+      }
+    }
+  </style>
+</head>
+
+<body class="consart-theme c-page page" style="--consart-input-h: 30px;">
+
+  <main class="fa-page">
+    <section class="fa-panel fa-panel--filters">
+      <div class="fa-grid fa-grid--filters">
+        <div class="fa-field">
+          <label for="dateFromInput">Data Inicial</label>
+          <input id="dateFromInput" type="date">
+        </div>
+
+        <div class="fa-field">
+          <label for="dateToInput">Data Final</label>
+          <input id="dateToInput" type="date">
+        </div>
+
+        <div class="fa-field">
+          <label for="regimeTypeSelect">Regime</label>
+          <select id="regimeTypeSelect">
+            <option value="LUCRO_REAL">LUCRO REAL</option>
+            <option value="LUCRO_PRESUMIDO">LUCRO PRESUMIDO</option>
+            <option value="SIMPLES_NACIONAL">SIMPLES NACIONAL</option>
+          </select>
+        </div>
+
+        <div class="fa-field fa-field--xml-mode">
+          <label for="xmlImportModeSelect">Importação XML</label>
+
+          <div class="fa-xml-mode-wrap">
+            <select id="xmlImportModeSelect" title="Escolha como o sistema deve classificar os XMLs importados">
+              <option value="AUTO" selected>Auto Detectar</option>
+              <option value="ENTRADA">Forçar ENTRADA</option>
+              <option value="SAIDA">Forçar SAÍDA</option>
+            </select>
+
+            <span id="xmlImportModeBadge" class="fa-xml-mode-badge">Modo: AUTO</span>
+          </div>
+        </div>
+
+        <div class="fa-field fa-field--actions">
+          <label>&nbsp;</label>
+          <div class="fa-actions-row">
+            <button id="btnCreateApuracao" class="btn btn-toolbar btn-sm" type="button">Criar Apuração</button>
+            <button id="btnRefreshList" class="btn btn-toolbar btn-sm" type="button">Atualizar</button>
+            <button id="btnImportXml" class="btn btn-toolbar btn-sm" type="button">Importar XML</button>
+            <button id="btnRebuildSummary" class="btn btn-toolbar btn-sm" type="button">Recalcular</button>
+            <button id="btnCloseApuracao" class="btn btn-toolbar btn-sm" type="button">Fechar</button>
+            <button id="btnReopenApuracao" class="btn btn-toolbar btn-sm" type="button">Reabrir</button>
+            <button id="btnDeleteApuracao" class="btn btn-toolbar btn-sm btn-danger-soft" type="button">Excluir</button>
+          </div>
+
+          <input id="xmlFilesInput" type="file" accept=".xml,text/xml,application/xml" multiple hidden>
+        </div>
+      </div>
+
+      <div id="feedbackBox" class="fa-feedback" hidden></div>
+    </section>
+
+    <section class="fa-cards">
+      <article class="fa-card">
+        <span class="fa-card__label">ICMS Débito</span>
+        <strong id="cardIcmsDebit">R$ 0,00</strong>
+        <small id="cardIcmsDebitBase" class="fa-card__base">Base: R$ 0,00</small>
+      </article>
+
+      <article class="fa-card">
+        <span class="fa-card__label">ICMS Crédito</span>
+        <strong id="cardIcmsCredit">R$ 0,00</strong>
+        <small id="cardIcmsCreditBase" class="fa-card__base">Base: R$ 0,00</small>
+      </article>
+
+      <article class="fa-card">
+        <span class="fa-card__label">ICMS ST</span>
+        <strong id="cardIcmsSt">R$ 0,00</strong>
+        <small id="cardIcmsStBase" class="fa-card__base">Base: R$ 0,00</small>
+      </article>
+
+      <article class="fa-card">
+        <span class="fa-card__label">PIS a Pagar</span>
+        <strong id="cardPisPayable">R$ 0,00</strong>
+        <small id="cardPisBase" class="fa-card__base">Base: R$ 0,00</small>
+      </article>
+
+      <article class="fa-card">
+        <span class="fa-card__label">COFINS a Pagar</span>
+        <strong id="cardCofinsPayable">R$ 0,00</strong>
+        <small id="cardCofinsBase" class="fa-card__base">Base: R$ 0,00</small>
+      </article>
+
+      <article class="fa-card">
+        <span class="fa-card__label">IPI a Pagar</span>
+        <strong id="cardIpiPayable">R$ 0,00</strong>
+        <small id="cardIpiBase" class="fa-card__base">Base: R$ 0,00</small>
+      </article>
+
+      <article class="fa-card">
+        <span class="fa-card__label">FCP</span>
+        <strong id="cardFcp">R$ 0,00</strong>
+        <small id="cardFcpBase" class="fa-card__base">Base: R$ 0,00</small>
+      </article>
+    </section>
+
+    <section class="fa-panel">
+      <div class="fa-panel__header">
+        <h2>Apurações Criadas</h2>
+      </div>
+
+      <div class="fa-table-wrap">
+        <table class="fa-table" id="tableApuracoes">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Mês</th>
+              <th>Ano</th>
+              <th>Data Inicial</th>
+              <th>Data Final</th>
+              <th>Regime</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyApuracoes">
+            <tr>
+              <td colspan="8" class="fa-empty">Nenhuma apuração carregada.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="fa-panel">
+      <div class="fa-panel__header">
+        <h2>Resumo da Apuração</h2>
+      </div>
+
+      <div class="fa-summary-grid fa-summary-grid--top">
+        <div class="fa-summary-item">
+          <span>ID Apuração</span>
+          <strong id="detailApuracaoId">-</strong>
+        </div>
+
+        <div class="fa-summary-item">
+          <span>Status</span>
+          <strong id="detailStatus">-</strong>
+        </div>
+
+        <div class="fa-summary-item">
+          <span>Período</span>
+          <strong id="detailPeriod">-</strong>
+        </div>
+
+        <div class="fa-summary-item">
+          <span>Regime</span>
+          <strong id="detailRegime">-</strong>
+        </div>
+
+        <div class="fa-summary-item">
+          <span>Total Documentos</span>
+          <strong id="detailGrossDocuments">R$ 0,00</strong>
+        </div>
+      </div>
+
+      <div class="fa-summary-grid fa-summary-grid--taxes">
+        <div class="fa-summary-item">
+          <span>ICMS Débito</span>
+          <strong id="detailIcmsDebit">R$ 0,00</strong>
+        </div>
+
+        <div class="fa-summary-item">
+          <span>ICMS Crédito</span>
+          <strong id="detailIcmsCredit">R$ 0,00</strong>
+        </div>
+
+        <div class="fa-summary-item">
+          <span>ICMS ST</span>
+          <strong id="detailIcmsSt">R$ 0,00</strong>
+        </div>
+
+        <div class="fa-summary-item">
+          <span>ICMS a Pagar</span>
+          <strong id="detailIcmsPayable">R$ 0,00</strong>
+        </div>
+
+        <div class="fa-summary-item">
+          <span>PIS Débito</span>
+          <strong id="detailPisDebit">R$ 0,00</strong>
+        </div>
+
+        <div class="fa-summary-item">
+          <span>PIS Crédito</span>
+          <strong id="detailPisCredit">R$ 0,00</strong>
+        </div>
+
+        <div class="fa-summary-item">
+          <span>COFINS Débito</span>
+          <strong id="detailCofinsDebit">R$ 0,00</strong>
+        </div>
+
+        <div class="fa-summary-item">
+          <span>COFINS Crédito</span>
+          <strong id="detailCofinsCredit">R$ 0,00</strong>
+        </div>
+
+        <div class="fa-summary-item">
+          <span>IPI Débito</span>
+          <strong id="detailIpiDebit">R$ 0,00</strong>
+        </div>
+
+        <div class="fa-summary-item">
+          <span>IPI Crédito</span>
+          <strong id="detailIpiCredit">R$ 0,00</strong>
+        </div>
+
+        <div class="fa-summary-item">
+          <span>FCP</span>
+          <strong id="detailFcpTotal">R$ 0,00</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="fa-panel">
+      <div class="fa-panel__header fa-panel__header--docs">
+        <h2>Documentos Importados</h2>
+
+        <div class="fa-docs-actions">
+          <button id="btnExportDocsPdf" class="btn btn-toolbar btn-sm" type="button">PDF</button>
+          <button id="btnExportDocsExcel" class="btn btn-toolbar btn-sm" type="button">EXCEL</button>
+        </div>
+      </div>
+
+      <div class="fa-docs-split">
+
+        <section class="fa-subpanel">
+          <div class="fa-subpanel__header">
+            <h3>Documentos Entrada</h3>
+          </div>
+
+          <div class="fa-table-wrap fa-table-wrap--scroll">
+            <table class="fa-table" id="tableDocumentsEntrada">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Tipo</th>
+                  <th>Modelo</th>
+                  <th>Número</th>
+                  <th>Data</th>
+                  <th>Parceiro</th>
+                  <th>Total NF</th>
+                  <th>ICMS</th>
+                  <th>ICMS ST</th>
+                  <th>PIS</th>
+                  <th>COFINS</th>
+                  <th>IPI</th>
+                </tr>
+              </thead>
+
+              <tbody id="tbodyDocumentsEntrada">
+                <tr>
+                  <td colspan="12" class="fa-empty">
+                    Nenhum documento de entrada carregado.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="fa-subpanel">
+          <div class="fa-subpanel__header">
+            <h3>Documentos Saída</h3>
+          </div>
+
+          <div class="fa-table-wrap fa-table-wrap--scroll">
+            <table class="fa-table" id="tableDocumentsSaida">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Tipo</th>
+                  <th>Modelo</th>
+                  <th>Número</th>
+                  <th>Data</th>
+                  <th>Parceiro</th>
+                  <th>Total NF</th>
+                  <th>ICMS</th>
+                  <th>ICMS ST</th>
+                  <th>PIS</th>
+                  <th>COFINS</th>
+                  <th>IPI</th>
+                </tr>
+              </thead>
+
+              <tbody id="tbodyDocumentsSaida">
+                <tr>
+                  <td colspan="12" class="fa-empty">
+                    Nenhum documento de saída carregado.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+    </section>
+
+    <section class="fa-panel">
+      <div class="fa-panel__header">
+        <h2>Itens Fiscais</h2>
+      </div>
+
+      <div class="fa-table-wrap">
+        <table class="fa-table fa-table--dense" id="tableItems">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>SKU</th>
+              <th>Descrição</th>
+              <th>NCM</th>
+              <th>CFOP</th>
+              <th>Qtd</th>
+              <th>Líquido</th>
+              <th>ICMS</th>
+              <th>ICMS ST</th>
+              <th>FCP</th>
+              <th>PIS</th>
+              <th>COFINS</th>
+              <th>IPI</th>
+              <th>Origem</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyItems">
+            <tr>
+              <td colspan="14" class="fa-empty">Nenhum item carregado.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="fa-panel">
+      <div class="fa-panel__header">
+        <h2>Reconciliação Fiscal</h2>
+      </div>
+
+      <div class="fa-table-wrap">
+        <table class="fa-table fa-table--dense" id="tableReconciliation">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Tipo Divergência</th>
+              <th>Severidade</th>
+              <th>Documento</th>
+              <th>Produto</th>
+              <th>Esperado</th>
+              <th>Atual</th>
+              <th>Diferença</th>
+              <th>Status</th>
+              <th>Detalhes</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyReconciliation">
+            <tr>
+              <td colspan="10" class="fa-empty">Nenhuma divergência carregada.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="./fiscalApuracao.js"></script>
+
+  <script>
+    (function () {
+      const select = document.getElementById('xmlImportModeSelect');
+      const badge = document.getElementById('xmlImportModeBadge');
+
+      if (!select || !badge) return;
+
+      function updateBadge() {
+        const value = String(select.value || 'AUTO').toUpperCase();
+
+        if (value === 'ENTRADA') {
+          badge.textContent = 'Modo: ENTRADA';
+          badge.style.background = '#e8f7ee';
+          badge.style.borderColor = '#b8e3c7';
+          badge.style.color = '#1f6b3b';
+          return;
+        }
+
+        if (value === 'SAIDA') {
+          badge.textContent = 'Modo: SAÍDA';
+          badge.style.background = '#fff1f1';
+          badge.style.borderColor = '#f3c4c4';
+          badge.style.color = '#a33a3a';
+          return;
+        }
+
+        badge.textContent = 'Modo: AUTO';
+        badge.style.background = '#eef3ff';
+        badge.style.borderColor = '#d7e2ff';
+        badge.style.color = '#31456a';
+      }
+
+      select.addEventListener('change', updateBadge);
+      updateBadge();
+    })();
+  </script>
+</body>
+</html>

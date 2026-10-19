@@ -1,0 +1,309 @@
+/* ╔════════════════════════════════════════════════════════════════════╗
+ * ║ ordersLogisticsSignature.css — UI Assinatura de Entrega           ║
+ * ║ PRODNEX ERP · Mobile-Friendly                                     ║
+ * ╚════════════════════════════════════════════════════════════════════╝ */
+
+body.signature-page {
+  background: #f8fafc;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #0f172a;
+}
+
+.sig-wrapper {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* Cabeçalho */
+.sig-header h1 {
+  font-size: 1.6rem;
+  margin: 0 0 4px;
+}
+
+.sig-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+/* Card com infos NF-e / Pedido */
+.sig-info-card {
+  margin-top: 16px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+}
+
+.sig-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.sig-info-row:last-child {
+  margin-bottom: 0;
+}
+
+.sig-label {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.sig-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.sig-nfe {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.8rem;
+  word-break: break-all;
+}
+
+/* Bloco de entrada da chave NF-e */
+.sig-nfe-input-block {
+  margin-top: 10px;
+}
+
+.sig-nfe-input-block label {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.sig-nfe-input-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.sig-nfe-input-row input {
+  flex: 1;
+  border-radius: 999px;
+  border: 1px solid #cbd5e1;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.sig-nfe-input-row input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.3);
+}
+
+.btn-mini-primary {
+  flex: 0 0 auto;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #ffffff;
+  padding: 8px 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+}
+
+.btn-mini-primary:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+}
+
+.sig-nfe-help {
+  margin-top: 4px;
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+/* Seção principal */
+.sig-section {
+  margin-top: 18px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 14px 14px 18px;
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.06);
+  position: relative;
+}
+
+/* Banner de bloqueio enquanto não liberar assinatura */
+.sig-lock-banner {
+  display: none;
+  border-radius: 10px;
+  background: #eff6ff;
+  border: 1px dashed #93c5fd;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+}
+
+.sig-lock-banner span {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1d4ed8;
+}
+
+.sig-lock-banner small {
+  display: block;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.sig-section--locked .sig-lock-banner {
+  display: block;
+}
+
+.sig-section--locked .sig-canvas-container,
+.sig-section--locked .sig-name-field,
+.sig-section--locked .sig-buttons-row {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.sig-section h2 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+}
+
+.sig-hint {
+  margin: 0 0 10px;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+/* Canvas */
+.sig-canvas-container {
+  border-radius: 10px;
+  border: 1px dashed #cbd5f5;
+  background: linear-gradient(135deg, #f8fafc, #eff6ff);
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+.sig-canvas-container canvas {
+  width: 100%;
+  height: 180px;
+  display: block;
+  background: #ffffff;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.3);
+}
+
+/* Campo nome */
+.sig-name-field {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sig-name-field label {
+  font-size: 0.8rem;
+  color: #475569;
+}
+
+.sig-name-field input {
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.sig-name-field input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.3);
+}
+
+/* Botões */
+.sig-buttons-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.sig-buttons-row button {
+  flex: 1;
+}
+
+/* Botões principais */
+.btn-primary {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+}
+
+.btn-primary:active {
+  transform: translateY(1px);
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: default;
+  box-shadow: none;
+}
+
+.btn-secondary {
+  background: #e5e7eb;
+  color: #111827;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.12s ease, transform 0.12s ease;
+}
+
+.btn-secondary:hover {
+  background: #d1d5db;
+}
+
+.btn-secondary:active {
+  transform: translateY(1px);
+}
+
+.btn-ghost {
+  margin-top: 8px;
+  width: 100%;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: transparent;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+/* Disclaimer */
+.sig-disclaimer {
+  margin-top: 10px;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  line-height: 1.4;
+}
+
+/* Mobile tweaks */
+@media (max-width: 400px) {
+  .sig-section {
+    padding: 12px 10px 16px;
+  }
+
+  .sig-canvas-container canvas {
+    height: 160px;
+  }
+}

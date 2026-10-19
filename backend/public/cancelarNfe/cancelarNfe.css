@@ -1,0 +1,103 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ FILE: cancelarNfe.css                                               ║
+   ║ MODULE: Cancelamento de NF-e                                       ║
+   ║ DESCRIPTION: Layout compacto + modais                               ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.cancelar-nfe-actions {
+  min-height: auto;
+}
+
+.cancelar-nfe-actions .fields-inline {
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.cancelar-nfe-summary {
+  min-height: auto;
+}
+
+.cancelar-nfe-summary-grid {
+  align-items: flex-start;
+}
+
+.cancelar-nfe-form-row,
+.cancelar-nfe-status-grid {
+  align-items: flex-end;
+}
+
+.cancelar-nfe-justificativa {
+  margin-top: 16px;
+}
+
+.cancelar-nfe-justificativa textarea {
+  width: 100%;
+  min-height: 120px;
+  resize: vertical;
+}
+
+#modalBuscarNfeEmitida {
+  z-index: 1100;
+}
+
+#modalBuscarNfeEmitida .modal__body>.fields-inline {
+  align-items: flex-end;
+}
+
+#modalBuscarNfeEmitida td:nth-child(4) {
+  max-width: 360px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#idNota[readonly],
+#nfeNumberSelecionada[readonly],
+#orderIdSelecionado[readonly],
+#statusNfeSelecionada[readonly] {
+  cursor: default;
+}
+
+#modalConsultaStatus .json-box {
+  max-height: 260px;
+  overflow: auto;
+}
+
+#modalCancelarNfe .modal__body,
+#modalConsultaStatus .modal__body {
+  overflow-y: auto;
+}
+
+@media (max-width: 1100px) {
+
+  .cancelar-nfe-form-row,
+  .cancelar-nfe-status-grid,
+  .cancelar-nfe-summary-grid {
+    flex-wrap: wrap;
+  }
+}
+
+.field-info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-left: 6px;
+
+  font-size: 14px;
+  line-height: 1;
+
+  cursor: help;
+  user-select: none;
+}
+
+.modal-header-content {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.modal-cancel-warning {
+  margin: 0;
+  line-height: 1.35;
+}

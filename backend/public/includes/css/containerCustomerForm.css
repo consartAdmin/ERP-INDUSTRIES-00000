@@ -1,0 +1,282 @@
+/* ╔════════════════════════════════════════════════════════════════════════════╗
+   ║ 🎨 containerCustomerForm.css — Formulários de Clientes (PRODNEX ERP)       ║
+   ╚════════════════════════════════════════════════════════════════════════════╝ */
+
+/* ========================= ROOT / VARIÁVEIS ========================= */
+:root{
+  --c-primary:#a6c8ee;
+  --c-primary-600:#8cb9ff;
+
+  --c-input-bg:#f7fbff;
+  --c-input-bd:#cfe2ff;
+  --c-input-bd-hover:#9ec1ff;
+  --c-ring:rgba(0,87,184,.22);
+
+  --radius:10px;
+
+  --bg1:#f6f9ff;
+  --bg2:#ecf3ff;
+
+  --font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --font-size: 16px;
+
+  --shadow-1: 0 6px 24px rgba(0,0,0,.06);
+  --shadow-2: 0 2px 8px rgba(0,0,0,.04);
+}
+
+/* ========================= BASE DA PÁGINA ========================= */
+*{ box-sizing: border-box; }
+html{ font-size: var(--font-size); }
+body.page-customer-form{
+  margin:0;
+  padding:24px;
+  font-family: var(--font-body);
+  color:#111;
+  background:
+    radial-gradient(1200px 600px at -10% -10%, rgba(168,201,255,.55), transparent 60%),
+    radial-gradient(900px 500px at 110% -10%, rgba(189,214,255,.42), transparent 60%),
+    radial-gradient(900px 500px at 50% 120%, rgba(160,205,255,.38), transparent 60%),
+    linear-gradient(180deg, var(--bg1), var(--bg2));
+}
+
+/* ========================= CONTAINER CENTRALIZADO ========================= */
+.c-main{
+  display: grid;
+  place-items: start center;
+  min-height: calc(100vh - var(--topbar-h) - var(--bottombar-h) - (var(--page-pad) * 2));
+  padding-inline: var(--page-pad);
+}
+
+.c-container,
+.c-container.c-container--md{
+  width: min(1100px, 96vw);
+  margin: 0 auto;
+}
+
+.customer-form-container{
+  width: 100%;
+  max-width: none;
+  background:#fff;
+  padding:28px;
+  border:1px solid var(--c-input-bd);
+  border-radius: calc(var(--radius) + 2px);
+  box-shadow: var(--shadow-1);
+  max-height: calc(100vh - var(--topbar-h) - var(--bottombar-h) - (var(--page-pad) * 2));
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+@media (min-width:1280px){
+  .c-container,
+  .c-container.c-container--md{
+    width:clamp(880px,72vw,1100px);
+  }
+}
+
+/* ========================= CABEÇALHO ========================= */
+.customer-form-container h1{
+  margin:0 0 22px;
+  text-align:center;
+  color:#0f2647;
+  font-weight:600;
+  letter-spacing:.10px;
+}
+
+/* ========================= SEÇÕES (CARDS) ========================= */
+.card.section{
+  margin-bottom:18px;
+  padding:18px;
+  border-radius: var(--radius);
+  background:#fff;
+  border:1px solid var(--c-input-bd);
+  box-shadow: var(--shadow-2);
+}
+
+.section-title{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  font-size:1.1rem;
+  font-weight:800;
+  color:#0f2647;
+  margin:0 0 12px;
+}
+.section-title::before{
+  content:'';
+  width:6px; height:22px;
+  border-radius:999px;
+  background: linear-gradient(180deg, var(--c-primary), var(--c-primary-600));
+  display:inline-block;
+}
+
+/* ========================= FORM FIELDS ========================= */
+label{
+  display:flex; flex-direction:column;
+  gap:6px;
+  font-weight:700;
+  color:#1f2a44;
+  font-size:.95rem;
+}
+
+input, select, textarea{
+  appearance:none;
+  background:var(--c-input-bg);
+  border:1px solid var(--c-input-bd);
+  border-radius:var(--radius);
+  padding:10px 12px;
+  font-size:.80rem;
+  color:#0a0a0a;
+  transition:border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
+  outline:none;
+}
+input::placeholder, textarea::placeholder{ color:#7a869a; }
+input:hover, select:hover, textarea:hover{ border-color:var(--c-input-bd-hover); }
+input:focus, select:focus, textarea:focus{
+  border-color:var(--c-input-bd-hover);
+  box-shadow:0 0 0 3px var(--c-ring);
+  background:#fff;
+}
+textarea{ min-height:70px; resize:vertical; }
+input[readonly], select[readonly]{ background:#f0f4ff; color:#4b5563; cursor:not-allowed; }
+
+/* ========================= BOTÕES ========================= */
+button{
+  font-size:.80rem;
+  font-weight:500;
+  padding:10px 18px;
+  border-radius: calc(var(--radius) - 2px);
+  border:1px solid transparent;
+  cursor:pointer;
+  background:#fff;
+  color:#0f172a;
+  transition: transform .04s ease, box-shadow .2s ease, background-color .2s ease, border-color .2s ease;
+  box-shadow:0 1px 0 rgba(0,0,0,.04);
+  user-select:none;
+  display:inline-flex; align-items:center; gap:8px;
+  border-color:#b0b9cc; background-color:#f5f6fa;
+}
+button:hover{ transform:translateY(-1px); background-color:#e8ebf3; border-color:#9aa4b8; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
+button:active{ transform:translateY(0); background-color:#dce1ec; }
+button:focus-visible{ outline:none; box-shadow:0 0 0 3px rgba(64,140,255,.3); }
+
+button.primary{
+  background:linear-gradient(180deg,var(--c-primary),var(--c-primary-600));
+  color:#0a1a2f;
+  border-color:#b9d6ff;
+}
+button.primary:hover{
+  background:linear-gradient(180deg,#b8c6ff,#95acff);
+  box-shadow:0 2px 5px rgba(0,0,0,0.15);
+}
+
+button.cancelar{ background:#fff5f5; color:#7f1d1d; border-color:#fecaca; }
+button.cancelar:hover{ background:#ffe4e6; border-color:#fca5a5; }
+
+button.btn-warning{ background:#fff8e1; color:#7a4b00; border-color:#ffe082; }
+button.btn-warning:hover{ background:#ffefc1; border-color:#ffd54f; }
+
+.botoes{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-top:22px;
+  flex-wrap:wrap;
+}
+
+/* ========================= GRID (12 colunas) ========================= */
+.grid, .grid-12, .grid-form{
+  display:grid;
+  gap:14px;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+.col-span-1{ grid-column: span 1; }
+.col-span-2{ grid-column: span 2; }
+.col-span-3{ grid-column: span 3; }
+.col-span-4{ grid-column: span 4; }
+.col-span-5{ grid-column: span 5; }
+.col-span-6{ grid-column: span 6; }
+.col-span-7{ grid-column: span 7; }
+.col-span-8{ grid-column: span 8; }
+.col-span-9{ grid-column: span 9; }
+.col-span-10{ grid-column: span 10; }
+.col-span-11{ grid-column: span 11; }
+.col-span-12{ grid-column: span 12; }
+
+/* Compat. com códigos anteriores */
+.grid-form label{ grid-column: span 4; }
+.grid-form label.span-6{ grid-column: span 6; }
+.grid-form label.span-8{ grid-column: span 8; }
+.grid-form label.span-12{ grid-column: span 12; }
+
+.grid-5col{ display:grid; gap:14px; grid-template-columns: repeat(5, minmax(0,1fr)); }
+.grid-4col{ display:grid; gap:14px; grid-template-columns: repeat(4, minmax(0,1fr)); }
+.grid-3col{ display:grid; gap:14px; grid-template-columns: repeat(3, minmax(0,1fr)); }
+.grid-2col{ display:grid; gap:14px; grid-template-columns: repeat(2, minmax(0,1fr)); }
+.grid-1col{ display:grid; grid-template-columns: 1fr; }
+
+.input-slim input, .input-slim select{ height:36px; padding:8px 10px; }
+
+/* ========================= RESPONSIVIDADE ========================= */
+@media (max-width: 1200px){
+  .grid, .grid-12, .grid-form{ grid-template-columns: repeat(8, 1fr); }
+  .grid-4col{ grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px){
+  .grid, .grid-12, .grid-form{ grid-template-columns: repeat(4, 1fr); }
+  .grid-4col, .grid-3col{ grid-template-columns: 1fr; }
+  .customer-form-container{ padding:20px; }
+}
+
+/* ========================= CAMPOS INLINE ========================= */
+.inline-field{ display:flex; gap:8px; align-items:center; }
+.inline-field input{ flex:1; }
+.hint{ color:#6b7280; font-size:.85rem; }
+
+/* ========================= ESTADO DE ERRO ========================= */
+.is-invalid{
+  border-color:#ef4444 !important;
+  box-shadow:0 0 0 3px rgba(239,68,68,.18) !important;
+}
+
+/* ======================= SAFE-AREAS / VIEWPORT FIT ======================== */
+:root{
+  --topbar-h:64px;
+  --bottombar-h:0px;
+  --page-pad:16px;
+}
+
+body.page-customer-form{
+  padding-top:calc(var(--topbar-h) + var(--page-pad));
+  padding-bottom:calc(var(--bottombar-h) + var(--page-pad));
+  padding-left:var(--page-pad);
+  padding-right:var(--page-pad);
+}
+
+@media (max-height:780px){ html{ font-size:15px; } }
+@media (max-height:720px){ html{ font-size:14px; } }
+
+/* ========================= AJUSTE — SEÇÃO CONTATO EM UMA LINHA ========================= */
+.grupo-contato .grid-form {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.grupo-contato .grid-form label {
+  grid-column: span 1;
+}
+
+/* Responsivo: quebra para 2 colunas em telas médias */
+@media (max-width: 992px) {
+  .grupo-contato .grid-form {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Responsivo: quebra para 1 coluna em telas pequenas */
+@media (max-width: 600px) {
+  .grupo-contato .grid-form {
+    grid-template-columns: 1fr;
+  }
+}

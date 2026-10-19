@@ -1,0 +1,741 @@
+/* ╔════════════════════════════════════════════════════════════════════╗
+   ║ textArea.css — Textareas | PRODNEX ERP                            ║
+   ║ Campos multilinha, tamanhos, estados e descrição de produtos      ║
+   ╚════════════════════════════════════════════════════════════════════╝ */
+
+/* ====================================================================
+   TOKENS
+==================================================================== */
+
+:root {
+  /* Typography */
+  --textarea-font-family: inherit;
+  --textarea-font-size: 14px;
+  --textarea-font-weight: 400;
+  --textarea-line-height: 1.45;
+
+  /* Colors */
+  --textarea-color: #172033;
+  --textarea-placeholder-color: #7b8494;
+  --textarea-background: #ffffff;
+  --textarea-background-hover: #ffffff;
+  --textarea-background-disabled: #eef1f5;
+  --textarea-color-disabled: #7b8494;
+
+  /* Background color palette */
+  --textarea-background-color-1: #ffffff;
+  /* Branco */
+  --textarea-background-color-2: #f1f5f9;
+  /* Cinza claro */
+  --textarea-background-color-3: #dbeafe;
+  /* Azul claro */
+  --textarea-background-color-4: #cffafe;
+  /* Ciano claro */
+  --textarea-background-color-5: #ccfbf1;
+  /* Verde-petróleo claro */
+  --textarea-background-color-6: #dcfce7;
+  /* Verde claro */
+  --textarea-background-color-7: #fef9c3;
+  /* Amarelo claro */
+  --textarea-background-color-8: #ffedd5;
+  /* Laranja claro */
+  --textarea-background-color-9: #fee2e2;
+  /* Vermelho claro */
+  --textarea-background-color-10: #000000;
+  /* Roxo claro */
+
+  /* Text color palette */
+  --textarea-text-color-1: #fcfcfe;
+  /* Preto azulado */
+  --textarea-text-color-2: #475569;
+  /* Cinza azulado */
+  --textarea-text-color-3: #1d4ed8;
+  /* Azul */
+  --textarea-text-color-4: #0e7490;
+  /* Ciano */
+  --textarea-text-color-5: #0f766e;
+  /* Verde-petróleo */
+  --textarea-text-color-6: #15803d;
+  /* Verde */
+  --textarea-text-color-7: #a16207;
+  /* Amarelo escuro */
+  --textarea-text-color-8: #c2410c;
+  /* Laranja */
+  --textarea-text-color-9: #b91c1c;
+  /* Vermelho */
+  --textarea-text-color-10: #7e22ce;
+  /* Roxo */
+
+  /* Border */
+  --textarea-border-width: 1px;
+  --textarea-border-style: solid;
+
+  /* Border radius options */
+  --textarea-border-radius-1: 0;
+  --textarea-border-radius-2: 4px;
+  --textarea-border-radius-3: 7px;
+  --textarea-border-radius-4: 10px;
+  --textarea-border-radius-5: 14px;
+  --textarea-border-radius-6: 18px;
+  --textarea-border-radius-7: 22px;
+  --textarea-border-radius-8: 26px;
+  --textarea-border-radius-9: 30px;
+  --textarea-border-radius-10: 999px;
+
+  /* Default border radius */
+  --textarea-border-radius: var(--textarea-border-radius-3);
+
+  /* Textarea border color palette */
+  --textarea-border-color-1: #303132;
+  /* Preto suave */
+  --textarea-border-color-2: #64748b;
+  /* Cinza azulado */
+  --textarea-border-color-3: #2563eb;
+  /* Azul */
+  --textarea-border-color-4: #0891b2;
+  /* Ciano */
+  --textarea-border-color-5: #0d9488;
+  /* Verde-petróleo */
+  --textarea-border-color-6: #16a34a;
+  /* Verde */
+  --textarea-border-color-7: #ca8a04;
+  /* Amarelo escuro */
+  --textarea-border-color-8: #ea580c;
+  /* Laranja */
+  --textarea-border-color-9: #dc2626;
+  /* Vermelho */
+  --textarea-border-color-10: #9333ea;
+  /* Roxo */
+
+  /* Default border behavior */
+  --textarea-border-color: var(--textarea-border-color-1);
+  --textarea-border-color-hover: var(--textarea-border-color-2);
+  --textarea-border-color-focus: var(--textarea-border-color-3);
+
+  /* Focus */
+  --textarea-focus-ring-color: rgb(37 99 235 / 16%);
+  --textarea-focus-ring-size: 3px;
+
+  /* Internal spacing scale */
+  --textarea-padding-y-1: 2px;
+  --textarea-padding-y-2: 4px;
+  --textarea-padding-y-3: 6px;
+  --textarea-padding-y-4: 8px;
+  --textarea-padding-y-5: 10px;
+  --textarea-padding-y-6: 12px;
+  --textarea-padding-y-7: 14px;
+  --textarea-padding-y-8: 16px;
+  --textarea-padding-y-9: 18px;
+  --textarea-padding-y-10: 20px;
+
+  --textarea-padding-x-1: 4px;
+  --textarea-padding-x-2: 6px;
+  --textarea-padding-x-3: 8px;
+  --textarea-padding-x-4: 10px;
+  --textarea-padding-x-5: 12px;
+  --textarea-padding-x-6: 14px;
+  --textarea-padding-x-7: 16px;
+  --textarea-padding-x-8: 18px;
+  --textarea-padding-x-9: 20px;
+  --textarea-padding-x-10: 24px;
+
+  /* Default internal spacing */
+  --textarea-padding-y: var(--textarea-padding-y-5);
+  --textarea-padding-x: var(--textarea-padding-x-5);
+
+  /* Standard sizes */
+  --textarea-height-1: 60px;
+  --textarea-height-2: 80px;
+  --textarea-height-3: 100px;
+  --textarea-height-4: 120px;
+  --textarea-height-5: 160px;
+  --textarea-height-6: 200px;
+  --textarea-height-7: 250px;
+  --textarea-height-8: 300px;
+  --textarea-height-9: 350px;
+  --textarea-height-10: 400px;
+
+  /* Widths */
+  --textarea-width-1: 120px;
+  --textarea-width-2: 180px;
+  --textarea-width-3: 240px;
+  --textarea-width-4: 320px;
+  --textarea-width-5: 420px;
+  --textarea-width-6: 520px;
+  --textarea-width-7: 640px;
+  --textarea-width-8: 760px;
+  --textarea-width-9: 900px;
+  --textarea-width-10: 100%;
+
+  /* Resize behavior */
+  --textarea-resize: vertical;
+
+  /* Transitions */
+  --textarea-transition-duration: 160ms;
+  --textarea-transition-timing: ease;
+
+  /* Semantic states */
+  --textarea-success-color: #16803c;
+  --textarea-success-ring: rgb(22 128 60 / 14%);
+  --textarea-warning-color: #c47a00;
+  --textarea-warning-ring: rgb(196 122 0 / 14%);
+  --textarea-error-color: #dc2626;
+  --textarea-error-ring: rgb(220 38 38 / 14%);
+
+  /* Product description */
+  --product-description-height: 280px;
+  --product-description-max-height: 600px;
+}
+
+/* ====================================================================
+   BASE
+==================================================================== */
+
+.textarea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: var(--textarea-height-3);
+
+  /* Default internal spacing */
+  padding:
+    var(--textarea-padding-y) var(--textarea-padding-x);
+
+  font-family: var(--textarea-font-family);
+  font-size: var(--textarea-font-size);
+  font-weight: var(--textarea-font-weight);
+  line-height: var(--textarea-line-height);
+  color: var(--textarea-color);
+  background-color: var(--textarea-background);
+  border:
+    var(--textarea-border-width) var(--textarea-border-style) var(--textarea-border-color);
+  border-radius: var(--textarea-border-radius);
+  box-sizing: border-box;
+  resize: var(--textarea-resize);
+  outline: none;
+  transition:
+    border-color var(--textarea-transition-duration) var(--textarea-transition-timing),
+    box-shadow var(--textarea-transition-duration) var(--textarea-transition-timing),
+    background-color var(--textarea-transition-duration) var(--textarea-transition-timing);
+}
+
+/* ====================================================================
+   INTERNAL SPACING UTILITIES
+==================================================================== */
+
+.textarea.textarea-padding-1 {
+  padding: var(--textarea-padding-y-1) var(--textarea-padding-x-1);
+}
+
+.textarea.textarea-padding-2 {
+  padding: var(--textarea-padding-y-2) var(--textarea-padding-x-2);
+}
+
+.textarea.textarea-padding-3 {
+  padding: var(--textarea-padding-y-3) var(--textarea-padding-x-3);
+}
+
+.textarea.textarea-padding-4 {
+  padding: var(--textarea-padding-y-4) var(--textarea-padding-x-4);
+}
+
+.textarea.textarea-padding-5 {
+  padding: var(--textarea-padding-y-5) var(--textarea-padding-x-5);
+}
+
+.textarea.textarea-padding-6 {
+  padding: var(--textarea-padding-y-6) var(--textarea-padding-x-6);
+}
+
+.textarea.textarea-padding-7 {
+  padding: var(--textarea-padding-y-7) var(--textarea-padding-x-7);
+}
+
+.textarea.textarea-padding-8 {
+  padding: var(--textarea-padding-y-8) var(--textarea-padding-x-8);
+}
+
+.textarea.textarea-padding-9 {
+  padding: var(--textarea-padding-y-9) var(--textarea-padding-x-9);
+}
+
+.textarea.textarea-padding-10 {
+  padding: var(--textarea-padding-y-10) var(--textarea-padding-x-10);
+}
+
+/* ====================================================================
+   BACKGROUND COLOR UTILITIES
+==================================================================== */
+
+.textarea.textarea-bg-1 {
+  background-color: var(--textarea-background-color-1);
+}
+
+.textarea.textarea-bg-2 {
+  background-color: var(--textarea-background-color-2);
+}
+
+.textarea.textarea-bg-3 {
+  background-color: var(--textarea-background-color-3);
+}
+
+.textarea.textarea-bg-4 {
+  background-color: var(--textarea-background-color-4);
+}
+
+.textarea.textarea-bg-5 {
+  background-color: var(--textarea-background-color-5);
+}
+
+.textarea.textarea-bg-6 {
+  background-color: var(--textarea-background-color-6);
+}
+
+.textarea.textarea-bg-7 {
+  background-color: var(--textarea-background-color-7);
+}
+
+.textarea.textarea-bg-8 {
+  background-color: var(--textarea-background-color-8);
+}
+
+.textarea.textarea-bg-9 {
+  background-color: var(--textarea-background-color-9);
+}
+
+.textarea.textarea-bg-10 {
+  background-color: var(--textarea-background-color-10);
+}
+
+/* ====================================================================
+   TEXT COLOR UTILITIES
+==================================================================== */
+
+.textarea.textarea-color-1 {
+  color: var(--textarea-text-color-1);
+}
+
+.textarea.textarea-color-2 {
+  color: var(--textarea-text-color-2);
+}
+
+.textarea.textarea-color-3 {
+  color: var(--textarea-text-color-3);
+}
+
+.textarea.textarea-color-4 {
+  color: var(--textarea-text-color-4);
+}
+
+.textarea.textarea-color-5 {
+  color: var(--textarea-text-color-5);
+}
+
+.textarea.textarea-color-6 {
+  color: var(--textarea-text-color-6);
+}
+
+.textarea.textarea-color-7 {
+  color: var(--textarea-text-color-7);
+}
+
+.textarea.textarea-color-8 {
+  color: var(--textarea-text-color-8);
+}
+
+.textarea.textarea-color-9 {
+  color: var(--textarea-text-color-9);
+}
+
+.textarea.textarea-color-10 {
+  color: var(--textarea-text-color-10);
+}
+
+/* ====================================================================
+   STATES
+==================================================================== */
+
+.textarea:disabled,
+.textarea[readonly] {
+  color: var(--textarea-color-disabled);
+  background-color: var(--textarea-background-disabled);
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.textarea[readonly] {
+  cursor: default;
+}
+
+.textarea.is-success {
+  border-color: var(--textarea-success-color);
+}
+
+.textarea.is-success:focus {
+  box-shadow: 0 0 0 var(--textarea-focus-ring-size) var(--textarea-success-ring);
+}
+
+.textarea.is-warning {
+  border-color: var(--textarea-warning-color);
+}
+
+.textarea.is-warning:focus {
+  box-shadow: 0 0 0 var(--textarea-focus-ring-size) var(--textarea-warning-ring);
+}
+
+.textarea.is-error,
+.textarea[aria-invalid="true"] {
+  border-color: var(--textarea-error-color);
+}
+
+.textarea.is-error:focus,
+.textarea[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 var(--textarea-focus-ring-size) var(--textarea-error-ring);
+}
+
+/* ====================================================================
+   HEIGHT UTILITIES
+==================================================================== */
+
+.textarea-h-1 {
+  min-height: var(--textarea-height-1);
+}
+
+.textarea-h-2 {
+  min-height: var(--textarea-height-2);
+}
+
+.textarea-h-3 {
+  min-height: var(--textarea-height-3);
+}
+
+.textarea-h-4 {
+  min-height: var(--textarea-height-4);
+}
+
+.textarea-h-5 {
+  min-height: var(--textarea-height-5);
+}
+
+.textarea-h-6 {
+  min-height: var(--textarea-height-6);
+}
+
+.textarea-h-7 {
+  min-height: var(--textarea-height-7);
+}
+
+.textarea-h-8 {
+  min-height: var(--textarea-height-8);
+}
+
+.textarea-h-9 {
+  min-height: var(--textarea-height-9);
+}
+
+.textarea-h-10 {
+  min-height: var(--textarea-height-10);
+}
+
+/* ====================================================================
+   WIDTH UTILITIES
+==================================================================== */
+
+.textarea-w-1 {
+  width: min(100%, var(--textarea-width-1));
+}
+
+.textarea-w-2 {
+  width: min(100%, var(--textarea-width-2));
+}
+
+.textarea-w-3 {
+  width: min(100%, var(--textarea-width-3));
+}
+
+.textarea-w-4 {
+  width: min(100%, var(--textarea-width-4));
+}
+
+.textarea-w-5 {
+  width: min(100%, var(--textarea-width-5));
+}
+
+.textarea-w-6 {
+  width: min(100%, var(--textarea-width-6));
+}
+
+.textarea-w-7 {
+  width: min(100%, var(--textarea-width-7));
+}
+
+.textarea-w-8 {
+  width: min(100%, var(--textarea-width-8));
+}
+
+.textarea-w-9 {
+  width: min(100%, var(--textarea-width-9));
+}
+
+.textarea-w-10 {
+  width: var(--textarea-width-10);
+}
+
+/* ====================================================================
+   RESIZE UTILITIES
+==================================================================== */
+
+.textarea-resize-none {
+  resize: none;
+}
+
+.textarea-resize-vertical {
+  resize: vertical;
+}
+
+.textarea-resize-horizontal {
+  resize: horizontal;
+}
+
+.textarea-resize-both {
+  resize: both;
+}
+
+/* ====================================================================
+   PRODUCT DESCRIPTION
+==================================================================== */
+
+.product-description-textarea {
+  min-height: var(--product-description-height);
+  max-height: var(--product-description-max-height);
+  resize: vertical;
+}
+
+/* ====================================================================
+   BORDER COLOR UTILITIES
+==================================================================== */
+
+.textarea.textarea-border-1 {
+  border: var(--textarea-border-width) var(--textarea-border-style) var(--textarea-border-color-1) !important;
+}
+
+.textarea.textarea-border-2 {
+  border: var(--textarea-border-width) var(--textarea-border-style) var(--textarea-border-color-2) !important;
+}
+
+.textarea.textarea-border-3 {
+  border: var(--textarea-border-width) var(--textarea-border-style) var(--textarea-border-color-3) !important;
+}
+
+.textarea.textarea-border-4 {
+  border: var(--textarea-border-width) var(--textarea-border-style) var(--textarea-border-color-4) !important;
+}
+
+.textarea.textarea-border-5 {
+  border: var(--textarea-border-width) var(--textarea-border-style) var(--textarea-border-color-5) !important;
+}
+
+.textarea.textarea-border-6 {
+  border: var(--textarea-border-width) var(--textarea-border-style) var(--textarea-border-color-6) !important;
+}
+
+.textarea.textarea-border-7 {
+  border: var(--textarea-border-width) var(--textarea-border-style) var(--textarea-border-color-7) !important;
+}
+
+.textarea.textarea-border-8 {
+  border: var(--textarea-border-width) var(--textarea-border-style) var(--textarea-border-color-8) !important;
+}
+
+.textarea.textarea-border-9 {
+  border: var(--textarea-border-width) var(--textarea-border-style) var(--textarea-border-color-9) !important;
+}
+
+.textarea.textarea-border-10 {
+  border: var(--textarea-border-width) var(--textarea-border-style) var(--textarea-border-color-10) !important;
+}
+
+.textarea.textarea-border-1:hover,
+.textarea.textarea-border-1:focus {
+  border-color: var(--textarea-border-color-1) !important;
+}
+
+.textarea.textarea-border-2:hover,
+.textarea.textarea-border-2:focus {
+  border-color: var(--textarea-border-color-2) !important;
+}
+
+.textarea.textarea-border-3:hover,
+.textarea.textarea-border-3:focus {
+  border-color: var(--textarea-border-color-3) !important;
+}
+
+.textarea.textarea-border-4:hover,
+.textarea.textarea-border-4:focus {
+  border-color: var(--textarea-border-color-4) !important;
+}
+
+.textarea.textarea-border-5:hover,
+.textarea.textarea-border-5:focus {
+  border-color: var(--textarea-border-color-5) !important;
+}
+
+.textarea.textarea-border-6:hover,
+.textarea.textarea-border-6:focus {
+  border-color: var(--textarea-border-color-6) !important;
+}
+
+.textarea.textarea-border-7:hover,
+.textarea.textarea-border-7:focus {
+  border-color: var(--textarea-border-color-7) !important;
+}
+
+.textarea.textarea-border-8:hover,
+.textarea.textarea-border-8:focus {
+  border-color: var(--textarea-border-color-8) !important;
+}
+
+.textarea.textarea-border-9:hover,
+.textarea.textarea-border-9:focus {
+  border-color: var(--textarea-border-color-9) !important;
+}
+
+.textarea.textarea-border-10:hover,
+.textarea.textarea-border-10:focus {
+  border-color: var(--textarea-border-color-10) !important;
+}
+
+/* ====================================================================
+   BORDER RADIUS UTILITIES
+==================================================================== */
+
+.textarea.textarea-radius-1 {
+  border-radius: var(--textarea-border-radius-1) !important;
+}
+
+.textarea.textarea-radius-2 {
+  border-radius: var(--textarea-border-radius-2) !important;
+}
+
+.textarea.textarea-radius-3 {
+  border-radius: var(--textarea-border-radius-3) !important;
+}
+
+.textarea.textarea-radius-4 {
+  border-radius: var(--textarea-border-radius-4) !important;
+}
+
+.textarea.textarea-radius-5 {
+  border-radius: var(--textarea-border-radius-5) !important;
+}
+
+.textarea.textarea-radius-6 {
+  border-radius: var(--textarea-border-radius-6) !important;
+}
+
+.textarea.textarea-radius-7 {
+  border-radius: var(--textarea-border-radius-7) !important;
+}
+
+.textarea.textarea-radius-8 {
+  border-radius: var(--textarea-border-radius-8) !important;
+}
+
+.textarea.textarea-radius-9 {
+  border-radius: var(--textarea-border-radius-9) !important;
+}
+
+.textarea.textarea-radius-10 {
+  border-radius: var(--textarea-border-radius-10) !important;
+}
+
+/* ====================================================================
+   RESPONSIVE
+==================================================================== */
+
+@media (max-width: 768px) {
+  :root {
+    --textarea-font-size: 16px;
+    --textarea-padding-y: 9px;
+    --textarea-padding-x: 10px;
+    --product-description-height: 220px;
+  }
+
+  .textarea-w-1,
+  .textarea-w-2,
+  .textarea-w-3,
+  .textarea-w-4,
+  .textarea-w-5,
+  .textarea-w-6,
+  .textarea-w-7,
+  .textarea-w-8,
+  .textarea-w-9,
+  .textarea-w-10 {
+    width: 100%;
+  }
+}
+
+/* ====================================================================
+   REDUCED MOTION
+==================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .textarea {
+    transition: none;
+  }
+}
+
+/* ====================================================================
+   RICH TEXTAREA DISPLAY
+   Allows formatted readonly content inside a textarea-styled container.
+==================================================================== */
+
+.textarea.textarea-rich {
+  overflow-x: hidden;
+  overflow-y: auto;
+  resize: none !important;
+  white-space: normal;
+  cursor: default;
+}
+
+.textarea.textarea-rich>div {
+  display: block;
+}
+
+.textarea.textarea-rich>div+div {
+  margin-top: 2px;
+}
+
+.textarea.textarea-rich .textarea-rich__status {
+  margin-top: 0.65em;
+}
+
+.textarea.textarea-rich strong {
+  color: inherit !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+  font-weight: 700 !important;
+}
+
+/* Readonly support for non-textarea elements */
+.textarea[aria-readonly="true"] {
+  cursor: default;
+}
+
+/* Increase specificity of resize utilities */
+.textarea.textarea-resize-none {
+  resize: none !important;
+}
+
+.textarea.textarea-resize-vertical {
+  resize: vertical !important;
+}
+
+.textarea.textarea-resize-horizontal {
+  resize: horizontal !important;
+}
+
+.textarea.textarea-resize-both {
+  resize: both !important;
+}

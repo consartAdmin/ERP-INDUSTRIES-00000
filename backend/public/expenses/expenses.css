@@ -1,0 +1,336 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ expenses.css — Despesas (Expenses)                                  ║
+   ║ Path: public/expenses/expenses.css                                  ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+:root{
+  --bg:#f6f7fb;
+  --card:#fff;
+  --text:#0f172a;
+  --muted:#64748b;
+  --line:#e5e7eb;
+  --primary:#2563eb;
+  --danger:#dc2626;
+  --radius:14px;
+  --shadow: 0 10px 30px rgba(2,6,23,.08);
+  --ui-h: 34px;
+
+  /* ✅ NEW: fixed table card height */
+  --table-card-h: calc(100vh - 320px);
+
+  /* ✅ NEW: filter row behavior */
+  --filters-gap: 12px;
+  --filters-min: 160px;        /* minimum width per field */
+  --filters-q-min: 360px;      /* search input bigger */
+  --filters-hint-min: 220px;   /* hint size when inline */
+
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+  --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+}
+
+*{ box-sizing:border-box; }
+
+body{
+  margin:0;
+  font-family:var(--font);
+  color:var(--text);
+  background:var(--bg);
+  padding:0px;
+}
+
+.muted{ color:var(--muted); }
+.center{ text-align:center; }
+
+.page-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:14px 16px;
+  background:linear-gradient(135deg, rgba(37,99,235,.10), rgba(255,255,255,0));
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  margin-bottom:14px;
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom:14px;
+  overflow:hidden;
+}
+
+.card-h{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:12px 14px;
+  border-bottom:1px solid var(--line);
+  background:#fbfbfd;
+}
+.card-h__title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:700;
+}
+.card-h__actions{ display:flex; gap:8px; }
+
+.dot{
+  width:10px; height:10px;
+  border-radius:50%;
+  background:var(--primary);
+  box-shadow: 0 0 0 3px rgba(37,99,235,.15);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   ✅ FILTERS: ALL IN ONE LINE (desktop)
+   - One row + horizontal scroll if needed
+   - Tablet/Mobile: wraps automatically
+────────────────────────────────────────────────────────────── */
+.filters{
+  padding:12px 14px 14px;
+
+  display:flex;
+  align-items:flex-end;
+  gap: var(--filters-gap);
+
+  flex-wrap: nowrap;      /* ✅ one line */
+  overflow-x: auto;       /* ✅ scroll if doesn't fit */
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+
+  /* subtle padding so last item doesn't stick to edge */
+  padding-bottom: 10px;
+}
+
+/* each field has fixed min width so it doesn't shrink too much */
+.filters .field{
+  flex: 0 0 auto;
+  min-width: var(--filters-min);
+}
+
+/* Make "Busca" wider */
+.filters .field:first-child{
+  min-width: var(--filters-q-min);
+}
+
+/* Keep hint compact when in one line */
+.filters .field:first-child .hint{
+  display:block;
+  max-width: var(--filters-hint-min);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Optional: nicer scrollbar (light) */
+.filters::-webkit-scrollbar{ height:10px; }
+.filters::-webkit-scrollbar-thumb{
+  background: rgba(15,23,42,.12);
+  border-radius: 999px;
+}
+.filters::-webkit-scrollbar-track{ background: transparent; }
+
+.field label{
+  display:block;
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:6px;
+}
+
+.input,.select,.textarea{
+  width:100%;
+  height:var(--ui-h);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:0 10px;
+  outline:none;
+  background:#fff;
+  font-size:14px;
+}
+.textarea{
+  height:auto;
+  padding:10px;
+  font-family:var(--mono);
+  font-size:12px;
+  line-height:1.35;
+}
+
+.input:focus,.select:focus,.textarea:focus{
+  border-color: rgba(37,99,235,.55);
+  box-shadow: 0 0 0 3px rgba(37,99,235,.14);
+}
+
+/* Readonly field */
+.input[readonly]{
+  background:#f8fafc;
+  border-style:dashed;
+  color:#334155;
+  cursor:not-allowed;
+}
+
+.hint{
+  display:block;
+  margin-top:6px;
+  font-size:12px;
+  color:var(--muted);
+}
+
+kbd{
+  font-family:var(--mono);
+  font-size:11px;
+  padding:2px 6px;
+  border:1px solid var(--line);
+  border-radius:7px;
+  background:#fff;
+}
+
+/* Buttons */
+.btn{
+  height:var(--ui-h);
+  padding:0 12px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:#fff;
+  cursor:pointer;
+  font-weight:700;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+.btn:hover{ filter:brightness(.98); }
+.btn:active{ transform: translateY(1px); }
+
+.btn-ghost{ background:#fff; color:#111827; }
+
+.btn-ico{
+  display:inline-grid;
+  place-items:center;
+  width:22px; height:22px;
+  border-radius:8px;
+  background:rgba(255,255,255,.18);
+}
+
+/* Badges */
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:4px 10px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  font-size:12px;
+  font-weight:700;
+}
+.badge.pending{ background:rgba(245,158,11,.12); border-color:rgba(245,158,11,.35); color:#92400e; }
+.badge.paid{ background:rgba(16,185,129,.12); border-color:rgba(16,185,129,.35); color:#065f46; }
+.badge.cancelled{ background:rgba(239,68,68,.10); border-color:rgba(239,68,68,.35); color:#991b1b; }
+
+/* ──────────────────────────────────────────────────────────────
+   ✅ TABLE CARD: fixed container + internal scroll + zebra
+────────────────────────────────────────────────────────────── */
+.card-table{
+  height: var(--table-card-h);
+  display:flex;
+  flex-direction:column;
+}
+
+/* Scroll only here */
+.table-scroll{
+  flex:1 1 auto;
+  overflow:auto;
+  min-height: 200px;
+}
+
+/* Table */
+.table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  font-size:13px;
+}
+
+/* Sticky header inside scroll */
+.table thead th{
+  position:sticky;
+  top:0;
+  background:#f3f4f6;
+  border-bottom:1px solid var(--line);
+  padding:10px;
+  text-align:left;
+  white-space:nowrap;
+  z-index:2;
+}
+
+/* Body cells */
+.table tbody td{
+  border-bottom:1px solid var(--line);
+  padding:10px;
+  vertical-align:middle;
+  white-space:nowrap;
+}
+
+/* ✅ Zebra */
+.table tbody tr:nth-child(odd){ background:#ffffff; }
+.table tbody tr:nth-child(even){ background:#fafafa; }
+
+/* Hover */
+.table tbody tr:hover{ background:#f1f5f9; }
+
+/* Columns */
+.col-id{ width:120px; font-family:var(--mono); font-size:12px; color:#334155; }
+.col-money{ text-align:right; width:120px; font-variant-numeric:tabular-nums; }
+.col-date{ width:140px; }
+.col-status{ width:80px; }
+.col-actions{ width:80px; text-align:right; }
+
+/* Footer */
+.footer-bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 14px;
+  border-top:1px solid var(--line);
+  background:#fbfbfd;
+}
+
+/* ✅ Footer always visible */
+.footer-sticky{
+  flex:0 0 auto;
+}
+
+.right{ display:flex; gap:8px; align-items:center; }
+.hidden{ display:none !important; }
+
+/* ──────────────────────────────────────────────────────────────
+   ✅ RESPONSIVE: allow wrapping on smaller screens
+────────────────────────────────────────────────────────────── */
+@media (max-width: 1100px){
+  :root{ --table-card-h: calc(100vh - 360px); }
+  .filters{
+    flex-wrap: wrap;     /* ✅ wraps on tablets */
+    overflow-x: visible; /* no horizontal scroll when wrapping */
+  }
+  .filters .field{
+    min-width: min(280px, 100%);
+  }
+  .filters .field:first-child{
+    min-width: min(520px, 100%);
+  }
+}
+
+@media (max-width: 720px){
+  :root{ --table-card-h: calc(100vh - 420px); }
+  .filters{
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .filters .field,
+  .filters .field:first-child{
+    min-width: 100%;
+  }
+}

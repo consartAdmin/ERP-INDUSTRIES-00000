@@ -1,0 +1,197 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ FILE: productsImagens.html                                         ║
+     ║ MODULE: Gestão de Imagens de Produtos                              ║
+     ║ PRODNEX ERP                                                        ║
+     ║ Frontend com modal para cadastro de nova imagem                    ║
+     ║ ✅ Integrado com productsModalSearch.js                            ║
+     ║ ✅ Busca produto por SKU / descrição / código de barras            ║
+     ║ ✅ Mantém compatibilidade com product_id interno                   ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Imagens de Produtos | PRODNEX ERP</title>
+
+  <link rel="icon" type="image/png" href="/public/imagens/brasaoConsartInfinity.png" />
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/productsImagens/productsImagens.css" />
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter">
+
+        <div>
+          <h1 class="module-title">Gestão de Imagens de Produtos</h1>
+          <p class="module-subtitle">
+            Cadastre, visualize, edite, reordene e defina a imagem principal de cada produto.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+             FILTRO / TOPO
+             ========================================================= -->
+    <div class="fields-inline fields-gap-3">
+      <div class="fields fields-h-6 fields-w-20 fields-font-3">
+        <label for="productIdSearch">Produto</label>
+
+        <div class="fields-inline fields-gap-3">
+          <div class="fields fields-h-6 fields-w-40 fields-font-3">
+            <input id="productIdSearch" type="text" inputmode="text"
+              placeholder="Digite o product_id, SKU, descrição ou use o botão Buscar Produto" autocomplete="off" />
+          </div>
+
+          <div class="btn-inline">
+            <button id="btnSearchProduct" class="btn btn-new btn-sm" type="button"
+              title="Buscar produto por SKU, descrição ou código de barras">
+              Buscar Produto
+            </button>
+          </div>
+
+          <div class="btn-inline btn-gap-3">
+            <button id="btnLoadImages" class="btn btn-new btn-sm" type="button">
+              Carregar Imagens
+            </button>
+
+            <button id="btnOpenNewImageModal" class="btn btn-new btn-sm" type="button">
+              Nova Imagem
+            </button>
+
+            <button id="btnResetScreen" class="btn btn-new btn-sm" type="button">
+              Limpar Tela
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================================
+             GALERIA
+             ========================================================= -->
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter">
+        <h2>Galeria do Produto</h2>
+
+        <div class="section-header-actions">
+          <button id="btnSaveOrder" class="btn btn-warning" type="button" disabled>
+            Salvar Ordem
+          </button>
+        </div>
+      </div>
+
+      <div id="galleryEmpty" class="empty-state">
+        Nenhuma imagem carregada. Selecione um produto e clique em <strong>Carregar Imagens</strong>.
+      </div>
+
+      <div id="galleryList" class="gallery-list" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <!-- =========================================================
+       MODAL NOVA IMAGEM
+       ========================================================= -->
+  <div id="newImageModal" class="pi-modal" aria-hidden="true">
+    <div id="newImageModalBackdrop" class="pi-modal__backdrop"></div>
+
+    <div class="pi-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="newImageModalTitle">
+      <div class="pi-modal__header">
+        <div>
+          <h2 id="newImageModalTitle">Nova Imagem do Produto</h2>
+          <p class="pi-modal__subtitle">Preencha os dados da nova imagem.</p>
+        </div>
+
+        <button id="btnCloseNewImageModal" class="pi-modal__close" type="button" aria-label="Fechar modal">
+          ×
+        </button>
+      </div>
+
+      <form id="formNewImageModal" class="form-grid" autocomplete="off">
+        <!-- =====================================================
+             PRODUTO
+             ===================================================== -->
+        <div class="field-group field-group--full">
+          <label for="modalProductSearch">Produto</label>
+
+          <div class="product-search-inline">
+            <input id="modalProductSearch" type="text" placeholder="Selecione um produto pelo botão Buscar Produto"
+              autocomplete="off" readonly />
+
+            <button id="btnSearchProductModal" class="btn btn-light" type="button"
+              title="Buscar produto por SKU, descrição ou código de barras">
+              Buscar Produto
+            </button>
+          </div>
+
+          <small class="field-help">
+            O sistema salva usando o <strong>product_id interno</strong> do produto selecionado.
+          </small>
+
+          <input id="modalProductId" name="product_id" type="hidden" required />
+        </div>
+
+        <!-- =====================================================
+             DADOS DA IMAGEM
+             ===================================================== -->
+        <div class="field-group">
+          <label for="modalImageUrl">Image URL *</label>
+          <input id="modalImageUrl" name="image_url" type="text" placeholder="https://..." required />
+        </div>
+
+        <div class="field-group">
+          <label for="modalImagePath">Image Path</label>
+          <input id="modalImagePath" name="image_path" type="text" placeholder="/public/imagens/produtos/..." />
+        </div>
+
+        <div class="field-group">
+          <label for="modalPosition">Posição</label>
+          <input id="modalPosition" name="position" type="number" min="1" value="1" />
+        </div>
+
+        <div class="field-group field-group--checkbox">
+          <label class="checkbox">
+            <input id="modalIsPrimary" name="is_primary" type="checkbox" />
+            <span>Definir como imagem principal</span>
+          </label>
+        </div>
+
+        <!-- =====================================================
+             PRÉ-VISUALIZAÇÃO
+             ===================================================== -->
+        <div class="fields-inline fields-gap-3">
+          <div class="fields fields-h-6 fields-w-12 fields-font-3">
+            <div class="preview-box">
+              <img id="modalNewImagePreview" alt="Pré-visualização da imagem" />
+              <span id="modalNewImagePreviewEmpty">Pré-visualização</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- =====================================================
+             AÇÕES
+             ===================================================== -->
+        <div class="btn-inline btn-gap-3">
+          <button id="btnCancelNewImageModal" type="button" class="btn btn-new btn-sm">
+            Cancelar
+          </button>
+
+          <button type="submit" class="btn btn-new btn-sm">
+            Salvar Imagem
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="/public/productsImagens/productsImagens.js"></script>
+</body>
+
+</html>

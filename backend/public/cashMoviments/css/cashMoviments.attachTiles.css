@@ -1,0 +1,218 @@
+/* ╔═════════════════════════════════════════════════════════════════════╗
+   ║ cashMoviments.attachTiles.css — Anexos em quadrados + Observação    ║
+   ║ Modal Editar Movimentação (cashMoviments.attachTiles.js)            ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.cx-tiles {
+  --cx-tile-size: 150px;
+  --cx-tile-border: #cbd5e1;
+  --cx-tile-accent: #2563eb;
+
+  display: grid;
+  grid-template-columns: 3fr 1.4fr;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.cx-tiles__slots {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: var(--cx-tile-size);
+  gap: 12px;
+}
+
+.cx-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: var(--cx-tile-size);
+  border: 1px solid var(--cx-tile-border);
+  border-radius: 10px;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+/* Quadrado vazio: clique ou arraste */
+.cx-tile--empty {
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-style: dashed;
+  background: #f8fafc;
+  color: #64748b;
+  cursor: pointer;
+  transition: border-color .15s ease, background-color .15s ease, color .15s ease;
+}
+
+.cx-tile--empty:hover,
+.cx-tile--empty:focus-visible,
+.cx-tile--empty.is-dragover {
+  border-color: var(--cx-tile-accent);
+  background: #eff6ff;
+  color: var(--cx-tile-accent);
+  outline: none;
+}
+
+.cx-tile__plus {
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.cx-tile__hint {
+  font-size: 12px;
+}
+
+/* Quadrado com arquivo */
+.cx-tile--file {
+  padding: 10px;
+}
+
+.cx-tile__open {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
+  min-height: 0;
+  color: #0f172a;
+  text-decoration: none;
+}
+
+.cx-tile__open:hover .cx-tile__name {
+  color: var(--cx-tile-accent);
+  text-decoration: underline;
+}
+
+.cx-tile__kind {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 56px;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  background: #eff6ff;
+  color: var(--cx-tile-accent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+
+/* Prévia real do arquivo (imagem ou 1ª página do PDF) */
+.cx-tile__thumb,
+.cx-tile__frame {
+  align-self: stretch;
+  flex: 1 1 0;
+  height: 0;
+  min-height: 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: #f8fafc;
+}
+
+.cx-tile__thumb {
+  width: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.cx-tile__frame {
+  position: relative;
+  overflow: hidden;
+  pointer-events: none; /* clique abre o arquivo pelo link do quadrado */
+}
+
+.cx-tile__frame iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 400%;
+  height: 400%;
+  border: 0;
+  transform: scale(.25);
+  transform-origin: 0 0;
+}
+
+.cx-tile__name {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 12px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cx-tile__del {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: 1;
+  background: rgba(255, 255, 255, .92);
+}
+
+/* Último quadrado: observação */
+.cx-tile--obs {
+  min-height: var(--cx-tile-size);
+  padding: 8px 10px 10px;
+}
+
+.cx-tile__label {
+  margin-bottom: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.cx-tile--obs textarea {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  padding: 6px 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font: inherit;
+  font-size: 13px;
+  resize: none;
+  box-sizing: border-box;
+}
+
+.cx-tile--obs textarea:focus {
+  border-color: var(--cx-tile-accent);
+  outline: none;
+  box-shadow: 0 0 0 2px #dbeafe;
+}
+
+#edit_anexoProgress {
+  width: 100%;
+  margin-top: 8px;
+}
+
+@media (max-width: 720px) {
+  .cx-tiles {
+    grid-template-columns: 1fr;
+  }
+
+  .cx-tiles__slots {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Lupa de busca ao lado dos campos: mesma altura do input (fields-h-5) */
+.cx-field-search {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  align-self: flex-end;
+  height: var(--fields-height-5, 25px);
+}
+
+.cx-field-search > .action-icon,
+.fields .action-icon--search {
+  height: var(--fields-height-5, 25px);
+  width: var(--fields-height-5, 25px);
+  padding: 0;
+}

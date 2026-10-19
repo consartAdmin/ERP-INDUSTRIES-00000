@@ -1,0 +1,869 @@
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║ FILE: budgets.editor.mobile.css                             ║
+   ║ MODULE: Budgets Editor Mobile                               ║
+   ║ PRODNEX ERP                                                 ║
+   ║ Ajustes mobile para tela de criação/edição de orçamento      ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+@media (max-width: 768px) {
+
+  html,
+  body {
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+
+  /* ==========================================================
+   PAGE HEIGHT — MOBILE
+   Não deixar o MAIN criar um viewport vazio antes do editor
+   ========================================================== */
+
+  .consart-container,
+  .consart-container--fixed,
+  .consart-container--full,
+  .consart-container--h-800,
+  .consart-layout-col {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /*
+ * IMPORTANTE:
+ * O editor está depois do <main> no budgets.html.
+ * Portanto o main NÃO pode ter min-height: 100vh,
+ * senão cria um grande espaço vazio antes do editor.
+ */
+  main.consart-container {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  #editor {
+    width: 100% !important;
+    padding: 10px !important;
+    overflow: visible !important;
+  }
+
+  .editor-container {
+    width: 100% !important;
+    overflow: visible !important;
+  }
+
+  .editor-header {
+    margin-bottom: 10px !important;
+  }
+
+  .editor-title {
+    font-size: 18px !important;
+    line-height: 1.2 !important;
+  }
+
+  /* Ações do editor */
+  .editor-actions {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 6px !important;
+    width: 100% !important;
+  }
+
+  .editor-actions .btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 8px 4px !important;
+    font-size: 11px !important;
+    white-space: nowrap !important;
+  }
+
+  .editor-actions .btn span {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* ==========================================================
+   CABEÇALHO DO ORÇAMENTO
+   Todos os campos na mesma linha
+   ========================================================== */
+
+  .form-grid--cliente {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+
+    align-items: flex-end !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+
+    gap: 8px !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+
+    padding-bottom: 4px !important;
+
+    -webkit-overflow-scrolling: touch;
+  }
+
+
+  /* Cada campo mantém sua largura */
+  .form-grid--cliente .field-group {
+    flex: 0 0 auto !important;
+
+    width: auto !important;
+    min-width: 0 !important;
+
+    margin: 0 !important;
+  }
+
+
+  /* ==========================================================
+   Larguras individuais
+   ========================================================== */
+
+  /* Cliente */
+  .form-grid--cliente .field-group:nth-child(1) {
+    width: 220px !important;
+    min-width: 220px !important;
+  }
+
+
+  /* Botão buscar cliente */
+  .form-grid--cliente .field-group:nth-child(2) {
+    width: 46px !important;
+    min-width: 46px !important;
+  }
+
+
+  /* Data */
+  .form-grid--cliente .field-group:nth-child(3) {
+    width: 120px !important;
+    min-width: 120px !important;
+  }
+
+
+  /* Documento */
+  .form-grid--cliente .field-group:nth-child(4) {
+    width: 130px !important;
+    min-width: 130px !important;
+  }
+
+
+  /* Nome Fantasia */
+  .form-grid--cliente .field-group:nth-child(5) {
+    width: 230px !important;
+    min-width: 230px !important;
+  }
+
+
+  /* CNPJ / CPF */
+  .form-grid--cliente .field-group:nth-child(6) {
+    width: 130px !important;
+    min-width: 130px !important;
+  }
+
+
+  /* Status */
+  .form-grid--cliente .field-group:nth-child(7) {
+    width: 100px !important;
+    min-width: 100px !important;
+  }
+
+
+  /* Tipo de Operação */
+  .form-grid--cliente .field-group:nth-child(8) {
+    width: 180px !important;
+    min-width: 180px !important;
+  }
+
+
+  /* Limite de Crédito */
+  .form-grid--cliente .field-group:nth-child(9) {
+    width: 130px !important;
+    min-width: 130px !important;
+  }
+
+
+  /* Limite Gasto */
+  .form-grid--cliente .field-group:nth-child(10) {
+    width: 130px !important;
+    min-width: 130px !important;
+  }
+
+
+  /* Limite Disponível */
+  .form-grid--cliente .field-group:nth-child(11) {
+    width: 140px !important;
+    min-width: 140px !important;
+  }
+
+
+  /* Inputs */
+  .form-grid--cliente .field-input,
+  .form-grid--cliente .field-select {
+    width: 100% !important;
+
+    min-width: 0 !important;
+
+    height: 36px !important;
+
+    box-sizing: border-box !important;
+
+    font-size: 12px !important;
+  }
+
+
+  /* Labels */
+  .form-grid--cliente label {
+    display: block !important;
+
+    margin-bottom: 3px !important;
+
+    font-size: 11px !important;
+
+    white-space: nowrap !important;
+  }
+
+  .field-input,
+  .field-select {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 36px !important;
+    font-size: 13px !important;
+  }
+
+  /* Itens */
+  .form-grid--items {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  .field--produto {
+    grid-column: 1 / -1 !important;
+  }
+
+  .field--end {
+    grid-column: 1 / -1 !important;
+  }
+
+  #btnAddItem {
+    width: 100% !important;
+    height: 38px !important;
+  }
+
+  .input-with-button,
+  .inline-field {
+    display: grid !important;
+    grid-template-columns: 1fr 42px !important;
+    gap: 6px !important;
+  }
+
+  .input-with-button .btn,
+  .inline-field .btn {
+    width: 42px !important;
+    min-width: 42px !important;
+    padding: 0 !important;
+  }
+
+  /* Tabela de itens */
+  #tblItens {
+    min-width: 980px !important;
+    table-layout: fixed !important;
+  }
+
+  #tblItens th,
+  #tblItens td {
+    font-size: 11px !important;
+    padding: 6px 8px !important;
+    white-space: nowrap !important;
+  }
+
+  #tblItens_wrapper,
+  .table-wrapper:has(#tblItens) {
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+
+    height: 300px !important;
+    min-height: 300px !important;
+    max-height: 300px !important;
+
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Pagamentos e totais */
+  .pagamento-total-wrapper,
+  .pagamento-total-card,
+  .payments-top-row {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .pagamento-col,
+  .totais-col {
+    width: 100% !important;
+  }
+
+  .payments-summary-grid,
+  .totais-grid-inline {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .payments-summary-item,
+  .totais-box {
+    padding: 8px !important;
+    min-width: 0 !important;
+  }
+
+  .payments-summary-item span,
+  .totais-box span {
+    font-size: 10px !important;
+  }
+
+  .payments-summary-item strong,
+  .totais-box strong {
+    font-size: 13px !important;
+  }
+
+  .obs-actions-row,
+  .budgets-obs-actions,
+  .budgets-obs-actions--inline {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 6px !important;
+    width: 100% !important;
+    margin-top: 10px !important;
+  }
+
+  .obs-actions-row .btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    font-size: 11px !important;
+    padding: 8px 4px !important;
+    white-space: nowrap !important;
+  }
+
+  /* Modais */
+  .c-modal,
+  .budget-payments-modal {
+    padding: 10px !important;
+  }
+
+  .c-modal__card,
+  .budget-payments-modal__card {
+    width: calc(100vw - 20px) !important;
+    max-width: calc(100vw - 20px) !important;
+    max-height: calc(100vh - 20px) !important;
+    overflow-y: auto !important;
+  }
+
+  .c-modal__body,
+  .budget-payments-modal__body {
+    overflow-x: auto !important;
+  }
+
+  #tblBudgetPayments,
+  #tblBudgetPaymentInstallments {
+    min-width: 760px !important;
+  }
+}
+
+/* Landscape */
+@media (max-width: 900px) and (orientation: landscape) {
+
+  #editor {
+    padding-bottom: 90px !important;
+  }
+
+  .editor-actions {
+    grid-template-columns: repeat(6, 1fr) !important;
+  }
+
+  .form-grid--cliente {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+
+  .form-grid--cliente .field-group:nth-child(1) {
+    grid-column: span 2 !important;
+  }
+
+  .form-grid--cliente .field-group:nth-child(2) {
+    grid-column: span 1 !important;
+  }
+
+  .form-grid--items {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+
+  .field--produto {
+    grid-column: span 2 !important;
+  }
+
+  .field--end {
+    grid-column: span 1 !important;
+  }
+
+  .payments-summary-grid,
+  .totais-grid-inline {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+
+  /* ==========================================================
+   BOTÕES PAGAMENTO / DESCONTO / OBS / FRETE / VENDEDOR
+   POSICIONADOS NA ÁREA CENTRAL DO EDITOR
+   ========================================================== */
+
+  .budgets-obs-actions,
+  .budgets-obs-actions--inline {
+    width: 100% !important;
+    max-width: 560px !important;
+    margin: 18px auto 0 auto !important;
+    display: block !important;
+  }
+
+  .obs-actions-row {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 12px !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+  }
+
+  .obs-actions-row .btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 70px !important;
+    padding: 10px 8px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 5px !important;
+    text-align: center !important;
+
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    line-height: 1.1 !important;
+
+    white-space: normal !important;
+    border-radius: 14px !important;
+  }
+}
+
+/* ==========================================================
+   CABEÇALHO DO EDITOR — UMA ÚNICA LINHA
+   Cliente / Data / Documento / Crédito etc.
+   ========================================================== */
+
+@media (max-width: 1400px) {
+
+  /*
+   * Primeira linha do filtro do editor.
+   *
+   * IMPORTANTE:
+   * nowrap impede:
+   *
+   * Limite Crédito
+   * Limite Gasto
+   * Limite Disponível
+   *
+   * de descerem para a segunda linha.
+   */
+  #editor .table-layout-integrated__filter>.fields-inline:first-child {
+
+    display: flex !important;
+
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+
+    align-items: flex-end !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+
+    gap: 10px !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+
+    padding-bottom: 5px !important;
+
+    -webkit-overflow-scrolling: touch;
+  }
+
+
+  /* Todos os campos dessa linha */
+  #editor .table-layout-integrated__filter>.fields-inline:first-child>.fields {
+
+    flex: 0 0 auto !important;
+
+    min-width: 0 !important;
+
+    margin: 0 !important;
+  }
+
+
+  /* ========================================================
+     1 — Cliente
+     ======================================================== */
+
+  #editor .table-layout-integrated__filter>.fields-inline:first-child>.fields:nth-child(1) {
+
+    width: 275px !important;
+    min-width: 275px !important;
+  }
+
+
+  /* ========================================================
+     2 — Botão buscar
+     ======================================================== */
+
+  #editor .table-layout-integrated__filter>.fields-inline:first-child>.fields:nth-child(2) {
+
+    width: 56px !important;
+    min-width: 56px !important;
+  }
+
+
+  /* ========================================================
+     3 — Data
+     ======================================================== */
+
+  #editor .table-layout-integrated__filter>.fields-inline:first-child>.fields:nth-child(3) {
+
+    width: 120px !important;
+    min-width: 120px !important;
+  }
+
+
+  /* ========================================================
+     4 — Documento
+     ======================================================== */
+
+  #editor .table-layout-integrated__filter>.fields-inline:first-child>.fields:nth-child(4) {
+
+    width: 135px !important;
+    min-width: 135px !important;
+  }
+
+
+  /* ========================================================
+     5 — Nome Fantasia
+     ======================================================== */
+
+  #editor .table-layout-integrated__filter>.fields-inline:first-child>.fields:nth-child(5) {
+
+    width: 275px !important;
+    min-width: 275px !important;
+  }
+
+
+  /* ========================================================
+     6 — CNPJ / CPF
+     ======================================================== */
+
+  #editor .table-layout-integrated__filter>.fields-inline:first-child>.fields:nth-child(6) {
+
+    width: 132px !important;
+    min-width: 132px !important;
+  }
+
+
+  /* ========================================================
+     7 e 8 — Telefone / Email
+     Permanecem escondidos
+     ======================================================== */
+
+  #editor .table-layout-integrated__filter>.fields-inline:first-child>.fields:nth-child(7)[hidden],
+
+  #editor .table-layout-integrated__filter>.fields-inline:first-child>.fields:nth-child(8)[hidden] {
+
+    display: none !important;
+  }
+
+
+  /* ========================================================
+     9 — Status
+     ======================================================== */
+
+  #editor .table-layout-integrated__filter>.fields-inline:first-child>.fields:nth-child(9) {
+
+    width: 100px !important;
+    min-width: 100px !important;
+  }
+
+
+  /* ========================================================
+     10 — Tipo de Operação
+     ======================================================== */
+
+  #editor .table-layout-integrated__filter>.fields-inline:first-child>.fields:nth-child(10) {
+
+    width: 165px !important;
+    min-width: 165px !important;
+  }
+
+
+  /* ========================================================
+     11 — Limite de Crédito
+     ======================================================== */
+
+  #editor .table-layout-integrated__filter>.fields-inline:first-child>.fields:nth-child(11) {
+
+    width: 132px !important;
+    min-width: 132px !important;
+  }
+
+
+  /* ========================================================
+     12 — Limite Gasto
+     ======================================================== */
+
+  #editor .table-layout-integrated__filter>.fields-inline:first-child>.fields:nth-child(12) {
+
+    width: 132px !important;
+    min-width: 132px !important;
+  }
+
+
+  /* ========================================================
+     13 — Limite Disponível
+     ======================================================== */
+
+  #editor .table-layout-integrated__filter>.fields-inline:first-child>.fields:nth-child(13) {
+
+    width: 145px !important;
+    min-width: 145px !important;
+  }
+
+
+  /* ========================================================
+     INPUTS / SELECTS
+     ======================================================== */
+
+  #editor .table-layout-integrated__filter>.fields-inline:first-child .field-input,
+
+  #editor .table-layout-integrated__filter>.fields-inline:first-child .field-select {
+
+    width: 100% !important;
+    min-width: 0 !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  /* Labels sempre em uma linha */
+  #editor .table-layout-integrated__filter>.fields-inline:first-child label {
+
+    white-space: nowrap !important;
+  }
+}
+
+/* ==========================================================
+   ITENS DO ORÇAMENTO — TODOS OS CAMPOS NA MESMA LINHA
+   Ref.Fab / Produto / Grade / UM / Lote / Qtd / Preço...
+   ========================================================== */
+
+@media (max-width: 1400px) {
+
+  /*
+   * Segunda linha do filtro do editor
+   */
+  #editor .table-layout-integrated__filter>.fields-inline:nth-child(2) {
+
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+
+    align-items: flex-end !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+
+    gap: 10px !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+
+    padding-bottom: 5px !important;
+
+    -webkit-overflow-scrolling: touch;
+  }
+
+
+  /*
+   * Cada campo mantém sua largura
+   */
+  #editor .table-layout-integrated__filter>.fields-inline:nth-child(2)>.fields {
+
+    flex: 0 0 auto !important;
+
+    min-width: 0 !important;
+
+    margin: 0 !important;
+  }
+
+
+  /* ========================================================
+     1 — Ref.Fab.
+     ======================================================== */
+
+  #editor .table-layout-integrated__filter>.fields-inline:nth-child(2)>.fields:nth-child(1) {
+
+    width: 135px !important;
+    min-width: 135px !important;
+  }
+
+
+  /* ========================================================
+     2 — Produto
+     ======================================================== */
+
+  #editor .table-layout-integrated__filter>.fields-inline:nth-child(2)>.fields:nth-child(2) {
+
+    width: 275px !important;
+    min-width: 275px !important;
+  }
+
+
+  /* ========================================================
+     3 — Botão buscar produto
+     ======================================================== */
+
+  #editor .table-layout-integrated__filter>.fields-inline:nth-child(2)>.fields:nth-child(3) {
+
+    width: 56px !important;
+    min-width: 56px !important;
+  }
+
+
+  /* ========================================================
+     4 — Grade
+     ======================================================== */
+
+  #editor .table-layout-integrated__filter>.fields-inline:nth-child(2)>.fields:nth-child(4) {
+
+    width: 165px !important;
+    min-width: 165px !important;
+  }
+
+
+  /* ========================================================
+     5 — U.M
+     ======================================================== */
+
+  #editor .table-layout-integrated__filter>.fields-inline:nth-child(2)>.fields:nth-child(5) {
+
+    width: 130px !important;
+    min-width: 130px !important;
+  }
+
+
+  /* ========================================================
+     6 — Lote
+     ======================================================== */
+
+  #editor .table-layout-integrated__filter>.fields-inline:nth-child(2)>.fields:nth-child(6) {
+
+    width: 275px !important;
+    min-width: 275px !important;
+  }
+
+
+  /* ========================================================
+     7 — Qtd
+     ======================================================== */
+
+  #editor .table-layout-integrated__filter>.fields-inline:nth-child(2)>.fields:nth-child(7) {
+
+    width: 100px !important;
+    min-width: 100px !important;
+  }
+
+
+  /* ========================================================
+     8 — Tabela de preço
+     ======================================================== */
+
+  #editor .table-layout-integrated__filter>.fields-inline:nth-child(2)>.fields:nth-child(8) {
+
+    width: 165px !important;
+    min-width: 165px !important;
+  }
+
+
+  /* ========================================================
+     9 — Unitário
+     ======================================================== */
+
+  #editor .table-layout-integrated__filter>.fields-inline:nth-child(2)>.fields:nth-child(9) {
+
+    width: 135px !important;
+    min-width: 135px !important;
+  }
+
+
+  /* ========================================================
+     10 — Desconto
+     ======================================================== */
+
+  #editor .table-layout-integrated__filter>.fields-inline:nth-child(2)>.fields:nth-child(10) {
+
+    width: 135px !important;
+    min-width: 135px !important;
+  }
+
+
+  /* ========================================================
+     11 — Botão Adicionar
+     ======================================================== */
+
+  #editor .table-layout-integrated__filter>.fields-inline:nth-child(2)>.fields:nth-child(11) {
+
+    width: 135px !important;
+    min-width: 135px !important;
+  }
+
+
+  /* ========================================================
+     Inputs e selects
+     ======================================================== */
+
+  #editor .table-layout-integrated__filter>.fields-inline:nth-child(2) .field-input,
+
+  #editor .table-layout-integrated__filter>.fields-inline:nth-child(2) .field-select {
+
+    width: 100% !important;
+    min-width: 0 !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  /* Labels em uma linha */
+  #editor .table-layout-integrated__filter>.fields-inline:nth-child(2) label {
+
+    white-space: nowrap !important;
+  }
+
+
+  /* Botão adicionar */
+  #editor #btnAddItem {
+
+    width: 100% !important;
+
+    min-width: 0 !important;
+
+    white-space: nowrap !important;
+  }
+}

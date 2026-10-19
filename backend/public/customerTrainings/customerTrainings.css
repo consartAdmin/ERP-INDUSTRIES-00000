@@ -1,0 +1,326 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ FILE: backend/public/customerTrainings/customerTrainings.css        ║
+   ║ MODULE: Treinamentos de Clientes                                    ║
+   ║ Tabela, campos e modal vêm de table.css / fields.css / modals.css   ║
+   ║ (importados por style.css). Aqui ficam o layout e o calendário.     ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+:root {
+  /* Menu superior + barra de título + barra de status (ajuste fino aqui) */
+  --ct-page-offset: 176px;
+}
+
+/* =========================================================
+   PAGE LAYOUT
+========================================================= */
+.ct-page {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  height: calc(100vh - var(--ct-page-offset));
+  padding: 24px;
+  overflow: hidden;
+}
+
+.ct-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.ct-header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.ct-header p {
+  margin: 6px 0 0;
+  color: #64748b;
+}
+
+.ct-tabs {
+  justify-content: flex-start;
+  margin-bottom: -18px;
+}
+
+#listPanel {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.ct-table td {
+  white-space: nowrap;
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ct-table tbody tr[data-id] {
+  cursor: pointer;
+}
+
+.ct-empty {
+  color: #64748b;
+  padding: 28px !important;
+  text-align: center;
+}
+
+.ct-spacer {
+  flex: 1;
+}
+
+/* =========================================================
+   STATUS BADGES
+========================================================= */
+.ct-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.ct-status--scheduled { background: #dbeafe; color: #1e40af; }
+.ct-status--rescheduled { background: #fef3c7; color: #92400e; }
+.ct-status--done { background: #dcfce7; color: #166534; }
+.ct-status--cancelled { background: #fee2e2; color: #991b1b; }
+
+.modal__header .ct-status {
+  margin-left: 12px;
+}
+
+/* =========================================================
+   CALENDÁRIO
+========================================================= */
+.ct-calendar {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.ct-calendar__toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.ct-calendar__nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ct-calendar__title {
+  margin: 0 0 0 10px;
+  font-size: 18px;
+  text-transform: capitalize;
+}
+
+.ct-calendar__modes {
+  display: flex;
+  gap: 4px;
+}
+
+.ct-calendar__modes .is-active {
+  background: #1e3a8a;
+  border-color: #1e3a8a;
+  color: #fff;
+}
+
+.ct-calendar__grid {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-rows: auto;
+  grid-auto-rows: minmax(92px, 1fr);
+  border-top: 1px solid #e5e7eb;
+  border-left: 1px solid #e5e7eb;
+  overflow: auto;
+}
+
+.ct-calendar__grid--week {
+  grid-auto-rows: minmax(320px, 1fr);
+}
+
+.ct-cal-weekday {
+  padding: 6px 8px;
+  border-right: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f8fafc;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.ct-cal-day {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 4px 6px 6px;
+  border-right: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.ct-cal-day:hover {
+  background: #f8fafc;
+}
+
+.ct-cal-day--muted {
+  background: #fafafa;
+}
+
+.ct-cal-day--muted .ct-cal-day__num {
+  color: #cbd5e1;
+}
+
+.ct-cal-day--today .ct-cal-day__num {
+  background: #2563eb;
+  color: #fff;
+}
+
+.ct-cal-day__num {
+  align-self: flex-end;
+  min-width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ct-calendar__grid--week .ct-cal-day {
+  overflow: auto;
+}
+
+.ct-cal-event {
+  display: block;
+  width: 100%;
+  padding: 3px 6px;
+  border: 0;
+  border-left: 3px solid currentColor;
+  border-radius: 6px;
+  font-size: 11.5px;
+  line-height: 1.3;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.ct-cal-event strong {
+  margin-right: 4px;
+}
+
+.ct-calendar__grid--week .ct-cal-event {
+  white-space: normal;
+  padding: 6px 8px;
+}
+
+.ct-cal-event small {
+  display: block;
+  opacity: .8;
+}
+
+.ct-cal-more {
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.ct-legend {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* =========================================================
+   MODAL — TREINAMENTO
+========================================================= */
+.ct-picker {
+  display: flex;
+  gap: 6px;
+}
+
+.ct-picker input {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.ct-attendees__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.ct-attendees__header h4,
+.ct-subtitle {
+  margin: 0;
+  font-size: 15px;
+}
+
+.ct-attendees .table-scroll {
+  max-height: 240px;
+}
+
+.ct-attendees__table input {
+  width: 100%;
+  min-width: 0;
+  height: 28px;
+  padding: 0 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.ct-attendees__table td:last-child,
+.ct-attendees__table th:last-child {
+  width: 44px;
+  text-align: center;
+}
+
+/* =========================================================
+   MODAL — CONCLUSÃO / E-MAIL
+========================================================= */
+.ct-attendance {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 6px 14px;
+  margin: 10px 0 6px;
+}
+
+.ct-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.ct-check small {
+  color: #94a3b8;
+}
+
+.hidden {
+  display: none !important;
+}

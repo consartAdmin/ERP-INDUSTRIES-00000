@@ -1,0 +1,248 @@
+/* ╔══════════════════════════════════════════════════════╗
+ * ║ topGradientBar.css — Barra superior em degradê       ║
+ * ║ PRODNEX ERP — Fixa abaixo do menu, full width        ║
+ * ╚══════════════════════════════════════════════════════╝ */
+
+
+/* =========================================================
+   ✅ CAMADAS (Z-INDEX) — MENU ACIMA, BARRA ABAIXO
+   ========================================================= */
+
+/* Menu CONSART precisa ficar acima de tudo */
+.menu-principal {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Se existir algum header/topbar, mantém acima também */
+.app-header,
+.topbar,
+.menu-superior,
+.menu-principal {
+  position: relative;
+  z-index: 1000;
+}
+
+/* =========================================================
+   ⬤ BARRA EXTERNA — FULL WIDTH (SEM SOBREPOR MENU)
+   ========================================================= */
+.c-page-bar {
+  width: 100%;
+  background: linear-gradient(90deg,
+      var(--c-primary-soft-start, #e0f2ff),
+      var(--c-primary-soft-mid, #dde9ff),
+      var(--c-primary-soft-end, #f5f7ff));
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+
+  /* IMPORTANTE: não usar margin negativa aqui */
+  margin-top: 0 !important;
+
+  position: relative;
+  z-index: 900;
+  /* abaixo do menu (1000), acima do conteúdo */
+
+  text-align: left !important;
+}
+
+/* Quando o header estiver dentro de container estreito */
+.c-page-bar.c-page-bar--full-bleed {
+  width: 100vw;
+  left: 50%;
+  margin-left: -50vw;
+}
+
+
+/* =========================================================
+   ⬤ CONTEÚDO INTERNO (SEM CENTRALIZAR)
+   ========================================================= */
+.c-page-bar__inner {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+
+  padding: 10px 32px 12px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start !important;
+  gap: 16px;
+
+  box-sizing: border-box;
+  text-align: left !important;
+}
+
+
+/* =========================================================
+   ⬤ PILL (modelo CONSART)
+   ========================================================= */
+.c-page-bar__pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  padding: 8px 26px;
+  border-radius: 999px;
+
+  background: linear-gradient(135deg, #e4efff, #f2f6fc);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.10);
+
+  text-align: left;
+  margin-left: 0 !important;
+}
+
+.c-page-bar__pill-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #4b5563;
+}
+
+
+/* Subtítulo logo abaixo do pill */
+.c-page-bar__subtitle {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #64748b;
+}
+
+
+/* =========================================================
+   ⬤ ÁREA DIREITA (tag/badge opcional)
+   ========================================================= */
+.c-page-bar__right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.c-page-bar__tag {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+
+/* =========================================================
+   ⬤ RESPONSIVO
+   ========================================================= */
+@media (max-width: 768px) {
+  .c-page-bar__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .c-page-bar__right {
+    align-self: flex-start;
+  }
+}
+
+
+/* =========================================================
+   ✅ COLAGEM UNIVERSAL (SEM MARGIN NEGATIVA)
+   - mantém o menu/headers sem gap extra
+   ========================================================= */
+.app-header,
+.topbar,
+.menu-superior,
+.menu-principal {
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* Caso a barra venha logo após menu/header, garante zero gap */
+.app-header+.c-page-bar,
+header+.c-page-bar,
+.topbar+.c-page-bar,
+.menu-superior+.c-page-bar,
+.menu-principal+.c-page-bar {
+  margin-top: 0 !important;
+}
+
+
+/* =========================================================
+   ✅ PROTEÇÃO CONTRA "STACKING CONTEXT" DO CONTEÚDO
+   (evita conteúdo ficar acima por z-index estranho)
+   ========================================================= */
+.c-main,
+.c-container,
+.consart-theme {
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================================================
+   ✅ Breadcrumb na MESMA LINHA do título (à direita)
+   ========================================================= */
+
+.c-page-bar__left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  /* se faltar espaço, quebra com elegância */
+}
+
+/* não “força” ficar embaixo */
+.c-page-bar__subtitle {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  line-height: 1.2;
+  white-space: nowrap;
+  /* mantém em uma linha */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* corta com ... se ficar grande */
+  max-width: 60vw;
+  /* evita estourar */
+}
+
+/* Mobile: volta para duas linhas (fica melhor) */
+@media (max-width: 768px) {
+  .c-page-bar__left {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .c-page-bar__subtitle {
+    white-space: normal;
+    max-width: 100%;
+  }
+}
+
+/* =========================================================
+   ✅ REMOVE FUNDO DEGRADÊ DO TOPO (fica só informação)
+   ========================================================= */
+.c-page-bar {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+/* (Opcional) deixa o conteúdo com leve espaçamento sem bloco */
+.c-page-bar__inner {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+
+/* (Opcional) pill mais discreto, sem fundo */
+.c-page-bar__pill {
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+/* texto do título sem “caps” forçado (se quiser mais clean) */
+.c-page-bar__pill-text {
+  letter-spacing: 0.06em !important;
+}

@@ -1,0 +1,228 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ transporters.css                                                    ║
+   ║ Descrição: Estilos principais do módulo de transportadoras          ║
+   ║ Projeto: PRODNEX ERP                                                ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.transporters-page{
+  gap: 12px;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+.tp-hero{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.tp-hero__left{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tp-title{
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #10243f;
+  letter-spacing: -0.02em;
+}
+
+.tp-subtitle{
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.tp-hero__actions{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* =========================================================
+   SECTION HEADERS
+========================================================= */
+.tp-section-head{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.tp-section-title{
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: #183153;
+}
+
+.tp-section-subtitle{
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.tp-status-chip{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.08);
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   FIELDS
+========================================================= */
+.tp-field{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.tp-field label{
+  font-size: 12px;
+  font-weight: 800;
+  color: #475569;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.tp-field--grow{
+  min-width: 220px;
+}
+
+.tp-field--button{
+  align-self: end;
+}
+
+/* =========================================================
+   FILTERS GRID
+========================================================= */
+.tp-filters-grid{
+  display: grid;
+  grid-template-columns: 2fr 1fr 120px 160px 140px;
+  gap: 12px;
+  align-items: end;
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
+.tp-table-panel{
+  flex: 1;
+  min-height: 0;
+}
+
+.tp-table{
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.tp-table tbody td{
+  vertical-align: middle;
+}
+
+.tp-empty-row{
+  text-align: center;
+  padding: 18px !important;
+  color: #64748b;
+  font-weight: 700;
+}
+
+.tp-row-actions{
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tp-badge{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 78px;
+  min-height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.tp-badge.is-active{
+  background: rgba(34, 197, 94, 0.14);
+  color: #15803d;
+}
+
+.tp-badge.is-inactive{
+  background: rgba(239, 68, 68, 0.14);
+  color: #b91c1c;
+}
+
+/* =========================================================
+   FOOTER / PAGINATION
+========================================================= */
+.table-footer{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-top: 12px;
+  flex-wrap: wrap;
+}
+
+.pagination{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #64748b;
+  font-weight: 700;
+}
+
+button[disabled]{
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media (max-width: 1280px){
+  .tp-filters-grid{
+    grid-template-columns: 1fr 1fr 120px 160px 140px;
+  }
+}
+
+@media (max-width: 980px){
+  .tp-hero{
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tp-section-head{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tp-filters-grid{
+    grid-template-columns: 1fr;
+  }
+
+  .table-footer{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

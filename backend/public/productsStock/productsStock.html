@@ -1,0 +1,208 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ productsStock.html — Gestão de Estoque Min./Máx.                    ║
+     ║ PRODNEX ERP | Frontend                                              ║
+     ║ ✅ Busca digitada de produto, sem modal                             ║
+     ║ ✅ Filtros Grupo/Subgrupo/Fabricante                                ║
+     ║ ✅ Botão Sugestão de Compra PDF                                     ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>ESTOQUE MIN./MAX.</title>
+
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="./productsStock.css" />
+</head>
+
+<body class="consart-theme c-page page" style="--consart-input-h: 30px;">
+  <main class="consart-container consart-container--fixed consart-container--full consart-container--vh-92">
+    <div class="ps-wrap consart-layout-col">
+
+      <header class="ps-header">
+        <div class="ps-title">
+          <div class="ps-badge">ESTOQUE</div>
+          <h1>Gestão de Estoque</h1>
+          <p>Controle de <b>Estoque Mínimo</b>, <b>Máximo</b> e <b>Sugestão de Compra</b>.</p>
+        </div>
+
+        <div class="ps-actions">
+          <button class="btn btn-ghost" id="btnEnsure">Ensure</button>
+          <button class="btn btn-soft" id="btnPurchaseSuggestionPdf">Sugestão de Compra PDF</button>
+          <button class="btn btn-primary" id="btnNew">+ Novo registro</button>
+        </div>
+      </header>
+
+      <section class="ps-filters">
+
+        <div class="field">
+          <label for="fProductSearch">Buscar produto</label>
+          <input
+            id="fProductSearch"
+            type="text"
+            placeholder="Digite SKU, descrição ou código..."
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="field">
+          <label for="fGroup">Grupo</label>
+          <select id="fGroup">
+            <option value="">Todos</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="fSubgroup">Subgrupo</label>
+          <select id="fSubgroup">
+            <option value="">Todos</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="fManufacturer">Fabricante</label>
+          <select id="fManufacturer">
+            <option value="">Todos</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="fSearch">ID Estoque</label>
+          <input id="fSearch" type="number" inputmode="numeric" placeholder="product_stock_id" />
+        </div>
+
+        <div class="field">
+          <label for="fStatus">Filtro</label>
+          <select id="fStatus">
+            <option value="">Todos</option>
+            <option value="positive">Somente com estoque &gt; 0</option>
+            <option value="below_min">Abaixo do mínimo</option>
+            <option value="above_max">Acima do máximo</option>
+            <option value="ok">Dentro do intervalo</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="fOrder">Ordenação</label>
+          <select id="fOrder">
+            <option value="id_desc">ID desc</option>
+            <option value="id_asc">ID asc</option>
+            <option value="description_asc">Produto A-Z</option>
+            <option value="description_desc">Produto Z-A</option>
+            <option value="qty_desc">Qtd desc</option>
+            <option value="qty_asc">Qtd asc</option>
+            <option value="suggestion_desc">Maior sugestão</option>
+            <option value="updated_desc">Atualizado desc</option>
+            <option value="updated_asc">Atualizado asc</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="fPageSize">Por página</label>
+          <select id="fPageSize">
+            <option>10</option>
+            <option selected>20</option>
+            <option>50</option>
+            <option>100</option>
+          </select>
+        </div>
+
+        <div class="field ps-filter-actions">
+          <label>&nbsp;</label>
+          <div class="row">
+            <button class="btn btn-soft" id="btnApply" type="button">Filtrar</button>
+            <button class="btn btn-ghost" id="btnClear" type="button">Limpar</button>
+          </div>
+        </div>
+
+      </section>
+
+      <section class="ps-table-card">
+        <div class="ps-table-top">
+          <div class="ps-meta">
+            <span id="lblInfo">—</span>
+          </div>
+
+          <div class="ps-bulk">
+            <button class="btn btn-soft" id="btnSaveSelected" disabled>Salvar selecionados</button>
+          </div>
+        </div>
+
+        <div class="ps-table-wrap consart-scroll-area">
+          <table class="ps-table consart-table-sticky">
+            <thead>
+              <tr>
+                <th class="col-check"><input type="checkbox" id="chkAll" /></th>
+                <th class="col-id">ID</th>
+                <th class="col-prod">Produto / Descrição</th>
+                <th class="col-group">Grupo</th>
+                <th class="col-manufacturer">Fabricante</th>
+                <th class="col-qty">Qtd Atual</th>
+                <th class="col-min">Estoque Mínimo</th>
+                <th class="col-max">Estoque Máximo</th>
+                <th class="col-suggestion">Sugestão</th>
+                <th class="col-status">Status</th>
+                <th class="col-updated">Atualizado</th>
+                <th class="col-actions">Ações</th>
+              </tr>
+            </thead>
+
+            <tbody id="tbBody"></tbody>
+          </table>
+        </div>
+
+        <div class="ps-pager">
+          <button class="btn btn-ghost" id="btnPrev">←</button>
+          <span id="lblPage">Página —</span>
+          <button class="btn btn-ghost" id="btnNext">→</button>
+        </div>
+      </section>
+    </div>
+
+    <div class="ps-modal-backdrop" id="modalNew" aria-hidden="true">
+      <div class="ps-modal">
+        <div class="ps-modal-header">
+          <h2>Novo registro de estoque</h2>
+          <button class="btn btn-ghost btn-icon" id="btnCloseNew">✕</button>
+        </div>
+
+        <div class="ps-modal-body">
+          <div class="grid">
+            <div class="field">
+              <label for="nQty">Qtd inicial</label>
+              <input id="nQty" type="number" step="0.001" placeholder="0" />
+            </div>
+
+            <div class="field">
+              <label for="nMin">Estoque mínimo</label>
+              <input id="nMin" type="number" step="0.001" placeholder="0" />
+            </div>
+
+            <div class="field">
+              <label for="nMax">Estoque máximo</label>
+              <input id="nMax" type="number" step="0.001" placeholder="0" />
+            </div>
+          </div>
+
+          <div class="ps-hint">
+            Regra: <code>stock_max ≥ stock_min</code> e ambos ≥ 0.
+          </div>
+        </div>
+
+        <div class="ps-modal-footer">
+          <button class="btn btn-ghost" id="btnCancelNew">Cancelar</button>
+          <button class="btn btn-primary" id="btnCreateNew">Criar</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/public/includes/js/core.js"></script>
+    <script type="module" src="./productsStock.js"></script>
+  </main>
+</body>
+</html>

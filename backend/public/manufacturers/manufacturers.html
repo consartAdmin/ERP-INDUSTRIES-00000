@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>FABRICANTES | PRODNEX ERP</title>
+
+  <!-- Design System -->
+  <link rel="stylesheet" href="/public/includes/css/style.css">
+
+  <!-- Modal CSS -->
+  <link rel="stylesheet" href="/public/manufacturers/modalManufacturers.css?v=3">
+
+  <!-- Module CSS -->
+  <link rel="stylesheet" href="/public/manufacturers/manufacturers.css?v=2">
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter">
+
+        <!-- Filters -->
+        <div class="fields-inline fields-gap-3">
+          <div class="fields fields-h-5 fields-w-20 fields-font-3">
+            <label for="searchInput">Search</label>
+            <div class="input-with-icon">
+              <span>🔎</span>
+              <input id="searchInput" type="text" placeholder="Nome, CNPJ/CPF ou Email..." />
+            </div>
+          </div>
+
+          <div class="fields fields-h-5 fields-w-20 fields-font-3">
+            <label for="pageSizeSelect">Per page</label>
+            <select id="pageSizeSelect">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50" selected>50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+
+          <div class="filters-actions">
+            <button class="btn btn-toolbar btn-sm" id="btnReload">⟳ Atualizar</button>
+            <button class="btn btn-toolbar btn-sm" id="btnNew">➕ Novo Fabricante</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-scroll table-height-550 table-row-h-20" data-table-settings="manufacturers.tablebody">
+        <table class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nome Comercial</th>
+              <th>CNPJ / CPF</th>
+              <th>Cidade</th>
+              <th>UF</th>
+              <th>Telefone</th>
+              <th>Email</th>
+              <th class="col-actions">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr>
+              <td colspan="8" class="text-center text-muted">
+                Nenhum fabricante carregado.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <footer class="table-footer">
+
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+            <span id="apTableInfo">0 Registros </span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button type="button" id="btnPreviousPage" class="btn btn-clean btn-sm">
+            Anterior
+          </button>
+
+          <span id="apPageInfo">Página 1 de 1</span>
+
+          <button type="button" id="btnNextPage" class="btn btn-new btn-sm">
+            Próxima
+          </button>
+        </div>
+
+        <div class="table-footer__page-size">
+          <label for="apRowsPerPage">Mostrar</label>
+
+          <select id="apRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+            <option value="10">10 linhas</option>
+            <option value="20">20 linhas</option>
+            <option value="30">30 linhas</option>
+            <option value="50" selected>50 linhas</option>
+            <option value="100">100 linhas</option>
+          </select>
+        </div>
+
+      </footer>
+    </section>
+  </main>
+
+  <!-- ======================= MODAL ======================= -->
+  <div id="modalForm" class="consart-modal hidden" hidden aria-hidden="true">
+    <div class="modal-dialog" role="dialog" aria-modal="true">
+
+      <header class="modal-header">
+        <h2 id="modalTitle">Novo Fabricante</h2>
+        <button type="button" class="btn btn-toolbar btn-sm" id="btnCloseModal">✕</button>
+      </header>
+
+      <form id="formManufacturer">
+        <input type="hidden" id="manufacturer_id" name="manufacturer_id" />
+
+        <section class="modal-body">
+          <div class="form-grid">
+
+            <!-- Row 1 (5 fields) -->
+            <div class="form-group"><label>Nome Comercial *</label><input id="trade_name" required></div>
+            <div class="form-group"><label>Razão Social</label><input id="legal_name"></div>
+            <div class="form-group"><label>CNPJ / CPF</label><input id="tax_id"></div>
+            <div class="form-group"><label>IE / RG</label><input id="state_registration"></div>
+            <div class="form-group"><label>Telefone</label><input id="phone"></div>
+
+            <!-- Row 2 (5 fields) -->
+            <div class="form-group"><label>Email</label><input id="email"></div>
+            <div class="form-group"><label>Website</label><input id="website"></div>
+            <div class="form-group"><label>Cidade</label><input id="city"></div>
+            <div class="form-group"><label>UF</label><input id="state" maxlength="2"></div>
+            <div class="form-group"><label>Bairro</label><input id="neighborhood"></div>
+
+            <!-- Full row -->
+            <div class="form-group full"><label>Endereço</label><input id="address"></div>
+            <div class="form-group full"><label>CEP</label><input id="postal_code"></div>
+            <div class="form-group full"><label>Observações</label><input id="notes"></div>
+
+          </div>
+        </section>
+
+        <footer class="modal-footer">
+          <button type="button" class="btn btn-toolbar btn-sm" id="btnCancel">Cancelar</button>
+          <button type="submit" class="btn btn-toolbar btn-sm">💾 Salvar</button>
+        </footer>
+      </form>
+
+    </div>
+  </div>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <script type="module" src="/public/manufacturers/js/manufacturers.init.js"></script>
+</body>
+
+</html>

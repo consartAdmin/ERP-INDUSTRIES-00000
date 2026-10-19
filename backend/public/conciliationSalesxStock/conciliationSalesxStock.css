@@ -1,0 +1,201 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ conciliationSalesxStock.css — Conciliação Vendas x Estoque         ║
+   ║ PRODNEX ERP | Frontend                                              ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+/* ──────────────────────────────────────────────────────────────────────
+   Página
+────────────────────────────────────────────────────────────────────── */
+
+.conciliation-page {
+  padding: 20px;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   Filtros
+────────────────────────────────────────────────────────────────────── */
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: 160px 160px minmax(240px, 1fr) 150px auto auto;
+  gap: 12px;
+  align-items: end;
+  padding: 16px;
+}
+
+.filters-grid label {
+  display: grid;
+  gap: 6px;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.conciliation-filters {
+  width: 100%;
+  align-items: end;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   Resumos — todos na mesma linha
+────────────────────────────────────────────────────────────────────── */
+
+.conciliation-summary {
+  flex-wrap: nowrap;
+  margin: 16px 0;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.conciliation-summary__item {
+  flex: 1 1 0;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 150px;
+  height: 78px;
+  min-height: 78px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.conciliation-summary__item span {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  color: #606b7b;
+  font-size: 0.82rem;
+  line-height: 1.25;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.conciliation-summary__item strong {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  overflow: hidden;
+  font-size: clamp(1rem, 1.25vw, 1.35rem);
+  line-height: 1.2;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   Tabela
+────────────────────────────────────────────────────────────────────── */
+
+.buy-cell {
+  color: #a65d00;
+  font-weight: 700;
+}
+
+.divergence-cell {
+  font-weight: 700;
+}
+
+.divergence-cell--ok {
+  color: #166534;
+  background: #f0fdf4;
+}
+
+.divergence-cell--positive {
+  color: #92400e;
+  background: #fffbeb;
+}
+
+.divergence-cell--negative {
+  color: #991b1b;
+  background: #fef2f2;
+}
+
+.invoice-numbers-cell {
+  min-width: 130px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.movement-badge {
+  display: inline-flex;
+  min-width: 66px;
+  justify-content: center;
+  padding: 3px 8px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.movement-badge--entrada {
+  border-color: #86efac;
+  background: #f0fdf4;
+  color: #166534;
+}
+
+.movement-badge--saida {
+  border-color: #93c5fd;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.movement-badge--total {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+  color: #334155;
+}
+
+.empty-row {
+  padding: 28px !important;
+  color: #667085;
+  text-align: center;
+}
+
+
+/* ──────────────────────────────────────────────────────────────────────
+   Mensagens
+────────────────────────────────────────────────────────────────────── */
+
+.status-message {
+  min-height: 0;
+  margin-top: 8px;
+}
+
+.status-message:empty {
+  display: none;
+  margin: 0;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   Responsividade
+────────────────────────────────────────────────────────────────────── */
+
+@media (max-width: 1000px) {
+  .filters-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .conciliation-summary__item {
+    flex: 0 0 150px;
+  }
+}
+
+@media (max-width: 620px) {
+  .conciliation-page {
+    padding: 12px;
+  }
+
+  .filters-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-actions {
+    width: 100%;
+  }
+
+  .filter-actions .btn {
+    flex: 1;
+  }
+}

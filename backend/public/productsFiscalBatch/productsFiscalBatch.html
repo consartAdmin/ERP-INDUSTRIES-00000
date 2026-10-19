@@ -1,0 +1,265 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ FILE: productsFiscalBatch.html                                     ║
+     ║ MODULE: Products Fiscal Batch                                      ║
+     ║ PRODNEX ERP                                                        ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png" />
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png" />
+
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png" />
+
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png" />
+
+  <title>PRODUTO FISCAL LOTE | PRODNEX ERP</title>
+
+  <!-- 🎨 Design System CONSART -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <!-- ===================================================== -->
+    <!-- BATCH CONFIGURATION                                   -->
+    <!-- ===================================================== -->
+
+    <header class="header header-h-9">
+
+      <div class="fields-lines fields-gap-3">
+
+        <!-- Título -->
+        <div class="fields-inline">
+
+          <div>
+            <h1>Configuração de Vínculo Fiscal</h1>
+          </div>
+
+        </div>
+
+        <!-- Configuração fiscal -->
+        <div class="fields-inline fields-gap-3">
+
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+
+            <label for="pfb-classification-display">
+              Classificação Fiscal (NCM/CEST)
+            </label>
+
+            <input id="pfb-classification-display" type="text" class="pfb-readonly"
+              placeholder="Nenhuma classificação selecionada" readonly />
+
+          </div>
+
+          <div class="btn-inline">
+
+            <button id="pfb-pick-classification" type="button" class="btn btn-toolbar btn-sm">
+              Selecionar...
+            </button>
+
+          </div>
+
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+
+            <label for="pfb-fiscal-profile">
+              Perfil Fiscal Herdado
+            </label>
+
+            <select id="pfb-fiscal-profile" disabled title="O perfil fiscal é herdado da classificação selecionada.">
+              <option value="">
+                Selecione um perfil fiscal...
+              </option>
+            </select>
+
+          </div>
+
+          <div class="btn-inline">
+
+            <button id="pfb-apply-batch" type="button" class="btn btn-toolbar btn-sm">
+              Aplicar vínculo para selecionados
+            </button>
+
+          </div>
+        </div>
+
+        <!-- Resumo -->
+        <div class="fields-inline fields-gap-3">
+
+          <div>
+            <h2>Resumo rápido</h2>
+          </div>
+
+          <div class="summary-pill summary-pill-success">
+            <strong>Produtos selecionados:</strong>
+            <span id="pfb-summary-selected">0</span>
+          </div>
+
+          <div class="summary-pill">
+            <strong>Classificação:</strong>
+            <span id="pfb-summary-classification">-</span>
+          </div>
+
+          <div class="summary-pill">
+            <strong>Perfil Fiscal:</strong>
+            <span id="pfb-summary-profile">-</span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </header>
+    <!-- ===================================================== -->
+    <!-- INTEGRATED TABLE                                      -->
+    <!-- ===================================================== -->
+
+    <section class="table-layout-integrated table-max-height-600">
+      <div class="table-layout-integrated__filter">
+
+        <!-- =================================================== -->
+        <!-- FILTERS                                             -->
+        <!-- =================================================== -->
+
+        <div class="fields-inline fields-gap-3">
+
+          <div>
+            <h2 class="table-layout-integrated__filter-title">
+              Produtos
+            </h2>
+          </div>
+        </div>
+
+        <div class="fields-inline fields-gap-3">
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+
+            <label for="pfb-search-input">
+              Buscar produtos
+            </label>
+
+            <input id="pfb-search-input" type="text" placeholder="Digite código, descrição ou código de barras..."
+              autocomplete="off" />
+
+          </div>
+
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+
+            <label for="pfb-linked-filter">
+              Filtro de vínculo fiscal
+            </label>
+
+            <select id="pfb-linked-filter">
+              <option value="">
+                Todos os produtos
+              </option>
+
+              <option value="linked">
+                Somente com Produto Fiscal vinculado
+              </option>
+
+              <option value="unlinked">
+                Somente sem Produto Fiscal vinculado
+              </option>
+            </select>
+
+          </div>
+
+          <div class="btn-inline">
+
+            <button id="pfb-search-btn" type="button" class="btn btn-toolbar btn-sm">
+              Buscar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- =================================================== -->
+      <!-- TABLE                                               -->
+      <!-- =================================================== -->
+      <div class="table-scroll table-scroll--flex table-row-h-28" data-table-settings="productsfiscalbatch.pfb-products-body">
+        <table class="table table-zebra table-zebra-hover table-sticky-head">
+
+          <thead>
+            <tr>
+              <th>
+                <input id="pfb-select-all" type="checkbox" aria-label="Selecionar todos os produtos" />
+              </th>
+              <th>Produto ID</th>
+              <th>SKU</th>
+              <th>Descrição</th>
+              <th>Classificação Fiscal</th>
+              <th>Perfil Fiscal</th>
+              <th>Vinculado?</th>
+              <th>Desvincular</th>
+            </tr>
+          </thead>
+
+          <tbody id="pfb-products-body"></tbody>
+
+        </table>
+
+      </div>
+
+      <!-- =================================================== -->
+      <!-- TABLE FOOTER                                        -->
+      <!-- =================================================== -->
+
+      <footer class="table-footer">
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill-success summary-width-5 summary-left-space-3">
+            <span id="apTableInfo">
+              0 Registros
+            </span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button id="btnPrevious" type="button" class="btn btn-toolbar btn-sm">
+            Anterior
+          </button>
+
+          <span id="pageInfo">
+            Página 1 de 1
+          </span>
+
+          <button id="btnNext" type="button" class="btn btn-toolbar btn-sm">
+            Próxima
+          </button>
+        </div>
+        <div class="table-footer__page-size">
+          <label for="pageSize">
+            Mostrar
+          </label>
+          <div class="fields fields-h-6 fields-w-3 fields-font-3">
+            <select id="pageSize" class="table-footer__page-size-select">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50" selected>50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <!-- ======================================================= -->
+  <!-- SCRIPTS                                                 -->
+  <!-- ======================================================= -->
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <script type="module" src="./js/productsFiscalBatch.init.js?v=20260812-7"></script>
+</body>
+
+</html>

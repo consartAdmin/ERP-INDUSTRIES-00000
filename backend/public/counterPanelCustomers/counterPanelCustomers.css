@@ -1,0 +1,724 @@
+/* ================================
+   TIPOGRAFIA — PADRÃO ERP
+================================ */
+:root{
+  --fs-11: 11px;
+  --fs-12: 12px;
+  --fs-13: 13px;
+  --fs-14: 14px;  /* ✅ base ERP */
+  --fs-16: 16px;
+  --fs-20: 20px;
+}
+
+html { font-size: 16px; }              /* base rem */
+body.consart { font-size: var(--fs-14); color: var(--primary); }
+
+.muted { font-size: var(--fs-12); color: var(--muted); }
+
+.filters select{
+  font-size: var(--fs-13);
+  line-height: 1.2;
+}
+
+.cp-btn,
+.file-actions button{
+  font-size: var(--fs-13);
+}
+
+.files-columns{
+  font-size: var(--fs-12);
+}
+
+.file-type{
+  font-size: var(--fs-14);
+}
+
+.badge,
+.check-pill{
+  font-size: var(--fs-12);
+}
+
+
+/* ================================
+   CONSART — Central Contábil
+================================ */
+
+:root {
+  --primary: #1f2a37;
+  --secondary: #2563eb;
+  --bg: #f4f6f8;
+  --card: #ffffff;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+
+  --ok: #16a34a;
+  --warn: #f59e0b;
+  --danger: #dc2626;
+
+  --badge-new-bg: #eff6ff;
+  --badge-new-fg: #1d4ed8;
+
+  --badge-viewed-bg: #f3f4f6;
+  --badge-viewed-fg: #374151;
+
+  --badge-down-bg: #ecfdf5;
+  --badge-down-fg: #065f46;
+}
+
+* { box-sizing: border-box; }
+
+.muted { color: var(--muted); }
+
+/* Header */
+.cp-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filters select {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #fff;
+}
+
+/* Buttons */
+.cp-btn{
+  padding: 8px 14px;
+  background: var(--secondary);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.cp-btn:hover{ opacity: .92; }
+.cp-btn.ghost{
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--border);
+}
+.cp-btn.ghost:hover{ background: #f9fafb; }
+
+/* =========================================================
+   ✅ Resumo + Checklist lado a lado (Desktop)
+   ========================================================= */
+.cp-topgrid{
+  display: grid;
+  grid-template-columns: 1.1fr 1.9fr;
+  gap: 14px;
+  margin-bottom: 14px;
+  align-items: stretch;
+}
+
+/* Summary */
+.cp-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 0;
+}
+
+.summary-card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 16px;
+  border: 1px solid var(--border);
+}
+
+.summary-card .label {
+  font-size: var(--fs-12);
+  color: var(--muted);
+}
+
+.summary-card strong {
+  font-size: var(--fs-20);   /* ✅ era 26px */
+  margin-top: 4px;
+}
+
+.summary-card.highlight {
+  border-left: 4px solid var(--secondary);
+}
+
+/* ✅ Checklist */
+.cp-checklist{
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin-bottom: 0;
+  border-radius: 0;
+}
+
+.checklist-header{
+  display:flex;
+  justify-content: space-between;
+  align-items:center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.checklist-title{
+  display:flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.checklist-hint{
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+/* Files */
+.cp-files {
+  background: var(--card);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.files-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 700;
+  display:flex;
+  justify-content: space-between;
+  align-items:center;
+  gap: 12px;
+}
+
+.files-subtitle{
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.files-columns{
+  display:grid;
+  grid-template-columns: 1.3fr .6fr .5fr .8fr;
+  padding: 10px 18px;
+  font-size: 12px;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  background: #fbfbfc;
+}
+
+.files-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* item */
+.file-item {
+  display: grid;
+  grid-template-columns: 1.3fr .6fr .5fr .8fr;
+  gap: 10px;
+  align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.file-item:last-child { border-bottom: none; }
+
+.file-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.file-title {
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-meta {
+  font-size: 13px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-type{
+  font-weight: 700;
+  color: #111827;
+}
+
+.file-actions{
+  display:flex;
+  gap: 8px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.file-actions button {
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: #fff;
+  font-weight: 700;
+}
+
+.file-actions button.primary{
+  background: var(--secondary);
+  color: #fff;
+  border-color: transparent;
+}
+
+.file-actions button:hover { background: #f9fafb; }
+.file-actions button.primary:hover { opacity: 0.92; } /* só no botão azul */
+
+/* Status badge */
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap: 6px;
+  width: fit-content;
+  font-weight: 900;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+}
+.badge.new{
+  background: var(--badge-new-bg);
+  color: var(--badge-new-fg);
+  border-color: #bfdbfe;
+}
+.badge.viewed{
+  background: var(--badge-viewed-bg);
+  color: var(--badge-viewed-fg);
+  border-color: #e5e7eb;
+}
+.badge.downloaded{
+  background: var(--badge-down-bg);
+  color: var(--badge-down-fg);
+  border-color: #bbf7d0;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 860px){
+  .files-columns{ display:none; }
+
+  .file-item{
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .file-actions{
+    justify-content: flex-start;
+  }
+}
+
+/* ✅ Modal */
+.cp-modal{
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+}
+
+.cp-modal[aria-hidden="false"]{
+  display: block;
+}
+
+.cp-modal-backdrop{
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+}
+
+.cp-modal-card{
+  position: absolute;
+  inset: 18px;
+  max-width: 1100px;
+  margin: auto;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  display:flex;
+  flex-direction: column;
+}
+
+.cp-modal-head{
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  display:flex;
+  justify-content: space-between;
+  align-items:center;
+  gap: 12px;
+}
+
+.cp-modal-title{
+  display:flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.cp-modal-title strong{
+  overflow:hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cp-modal-actions{
+  display:flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.cp-modal-body{
+  flex:1;
+  background: #0b1220;
+}
+
+#previewFrame{
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #0b1220;
+}
+
+/* Responsivo topo */
+@media (max-width: 1100px){
+  .cp-topgrid{
+    grid-template-columns: 1fr;
+  }
+  .cp-summary{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px){
+  .cp-summary{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   ✅ CHECKLIST — FINAL: all cards same height (works 100%)
+   ========================================================= */
+
+.checklist-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 10px;
+}
+
+/* force equal height ALWAYS */
+.check-item{
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  background: #fff;
+
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 10px;
+
+  height: 96px;     /* ✅ same height for all */
+}
+
+/* left side */
+.check-left{
+  display:flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.check-name{
+  font-weight: 800;
+}
+
+.check-desc{
+  font-size: 12px;
+  color: var(--muted);
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+
+  overflow: hidden;
+}
+
+/* pill */
+.check-pill{
+  font-weight: 900;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.check-pill.ok{
+  background: #ecfdf5;
+  color: #065f46;
+  border-color: #bbf7d0;
+}
+
+.check-pill.miss{
+  background: #fff7ed;
+  color: #9a3412;
+  border-color: #fed7aa;
+}
+
+/* =========================================================
+   TOP AREA — Make the 8 cards align (summary + checklist)
+   ========================================================= */
+
+:root{
+  --topCardH: 96px; /* change to 104 or 112 if you want taller */
+}
+
+/* 1) Force summary cards to the same fixed height */
+.cp-summary .summary-card{
+  height: var(--topCardH);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* 2) Force checklist cards to the same fixed height */
+.checklist-grid .check-item{
+  height: var(--topCardH);
+}
+
+/* 3) Make checklist header not "consume" height (so the block height matches) */
+.cp-checklist{
+  position: relative;
+  padding-top: 0 !important;
+}
+
+/* header floats on top */
+.cp-checklist .checklist-header{
+  position: absolute;
+  top: -34px;      /* adjust if needed: -30 / -36 */
+  left: 0;
+  right: 0;
+  margin: 0;
+}
+
+/* bring the cards up to align with the summary cards */
+.cp-checklist .checklist-grid{
+  margin-top: 0;
+}
+
+/* hint stays below */
+.cp-checklist .checklist-hint{
+  margin-top: 10px;
+}
+
+#checklistCompetenceLabel{
+  display: none !important;
+}
+
+/* =========================================
+   File row: title left + meta right (same line)
+========================================= */
+
+.file-info{
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+
+.file-title{
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1;
+}
+
+.file-meta{
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+  flex: 0 0 auto;
+  text-align: right;
+}
+
+/* Responsive: on small widths, meta goes under automatically */
+@media (max-width: 860px){
+  .file-info{
+    flex-wrap: wrap;
+  }
+  .file-meta{
+    width: 100%;
+    text-align: left;
+    white-space: normal;
+  }
+}
+
+.file-meta{
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #fbfbfc;
+}
+
+/* =========================================================
+   ✅ FIX REAL: Title left + Meta right (always on desktop)
+   ========================================================= */
+
+/* force the "Documento" cell to be 2 columns: title | meta */
+.file-item .file-info{
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  column-gap: 12px !important;
+  row-gap: 6px !important;
+  min-width: 0 !important;
+}
+
+/* title: can shrink with ellipsis */
+.file-item .file-info .file-title{
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* meta: stays right */
+.file-item .file-info .file-meta{
+  justify-self: end !important;
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: center !important;
+
+  font-size: 12px !important;
+  color: var(--muted) !important;
+  padding: 4px 10px !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 999px !important;
+  background: #fbfbfc !important;
+}
+
+/* Only on very small screens, meta goes under (optional) */
+@media (max-width: 520px){
+  .file-item .file-info{
+    grid-template-columns: 1fr !important;
+  }
+  .file-item .file-info .file-meta{
+    justify-self: start !important;
+    white-space: normal !important;
+  }
+}
+
+/* =========================================
+   ZEBRA STRIPING — Files List (ERP padrão)
+========================================= */
+
+.files-list .file-item:nth-child(even){
+  background: #fbfbfd;
+}
+
+.files-list .file-item:nth-child(odd){
+  background: #ffffff;
+}
+
+/* Hover sempre por cima do zebra */
+.files-list .file-item:hover{
+  background: #eef4ff;
+}
+
+/* =========================================
+   BTN BAIXAR — ícone pdfButton.png
+========================================= */
+
+.file-actions .btnPdfIcon{
+  width: 46px;
+  height: 38px;
+  padding: 0;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background-color: #fff;
+
+  background-image: url('/public/includes/imagens/pdfButton.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 24px auto;
+
+  cursor: pointer;
+}
+
+.file-actions .btnPdfIcon:hover{
+  background-color: #f9fafb;
+}
+
+.file-actions{
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* Cabeçalho da tabela centralizado */
+.files-columns{
+  text-align: center;
+}
+
+.files-columns > span{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Centraliza Tipo / Status / Ações nas linhas */
+.file-item > :nth-child(2),
+.file-item > :nth-child(3),
+.file-item > :nth-child(4){
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Centraliza também Documento (opcional) */
+.file-item > :nth-child(1){
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Documento em coluna, centralizado (título em cima, meta embaixo) */
+.file-item .file-info{
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  gap: 6px !important;
+}
+
+.file-item .file-info .file-title,
+.file-item .file-info .file-meta{
+  justify-self: auto !important;
+}
+
+.file-actions{
+  justify-content: center;
+}

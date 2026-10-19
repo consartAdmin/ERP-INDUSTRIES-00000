@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Globais (mesmos do Caixa) -->
+  <link rel="stylesheet" href="/public/includes/theme-consart.css" />
+  <link rel="stylesheet" href="/public/includes/home.css" />
+  <link rel="stylesheet" href="/public/includes/menu.css" />
+  <link rel="stylesheet" href="/public/statusUsuario/statusUsuario.css" />
+
+  <!-- Estilo específico -->
+  <link rel="stylesheet" href="gestaoVendas.css?v=1" />
+  <title>Gestão de Vendas</title>
+</head>
+<body class="consart-theme c-page">
+  <main class="c-main">
+    <div class="c-container c-container--2xl">
+      <h1 class="titulo-modulo">🧾 Gestão de Vendas</h1>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="aba1">➕ Lançar Venda</button>
+        <button class="tab-btn" data-tab="aba2">📊 Relatório</button>
+      </div>
+
+      <!-- ABA 1: Lançamento Manual + Lista -->
+      <section id="aba1" class="tab-content active">
+        <form id="formVenda" class="card form-venda">
+          <div class="grid grid--3">
+            <div class="form-group">
+              <label for="data">Data</label>
+              <input type="date" id="data" required />
+            </div>
+            <div class="form-group">
+              <label for="cliente_nome">Cliente</label>
+              <input type="text" id="cliente_nome" placeholder="Ex.: José da Silva" required />
+            </div>
+            <div class="form-group">
+              <label for="documento">Documento (CPF/CNPJ)</label>
+              <input type="text" id="documento" placeholder="___.___.___-__ / __.___.___/____-__" />
+            </div>
+          </div>
+
+          <div class="grid grid--4">
+            <div class="form-group">
+              <label for="itens_total">Itens (R$)</label>
+              <input type="text" id="itens_total" inputmode="decimal" placeholder="0,00" required />
+            </div>
+            <div class="form-group">
+              <label for="desconto">Desconto (R$)</label>
+              <input type="text" id="desconto" inputmode="decimal" placeholder="0,00" value="0,00" />
+            </div>
+            <div class="form-group">
+              <label for="total">Total (R$)</label>
+              <input type="text" id="total" inputmode="decimal" placeholder="0,00" required />
+            </div>
+            <div class="form-group">
+              <label for="forma_pagamento">Forma de Pagamento</label>
+              <select id="forma_pagamento" required>
+                <option value="">Selecione...</option>
+                <option>Dinheiro</option>
+                <option>Cartão Crédito</option>
+                <option>Cartão Débito</option>
+                <option>Pix</option>
+                <option>Boleto</option>
+                <option>Outros</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid--3">
+            <div class="form-group">
+              <label for="status">Status</label>
+              <select id="status" required>
+                <option value="CONCLUIDA">Concluída</option>
+                <option value="PENDENTE">Pendente</option>
+                <option value="CANCELADA">Cancelada</option>
+              </select>
+            </div>
+            <div class="form-group form-group--full">
+              <label for="observacao">Observação</label>
+              <textarea id="observacao" rows="2" placeholder="Notas adicionais..."></textarea>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="submit" class="btn btn--primary">Salvar</button>
+            <button type="button" id="btnLimpar" class="btn">Limpar</button>
+          </div>
+        </form>
+
+        <div class="lista card">
+          <div class="lista__toolbar">
+            <div class="filtros">
+              <input type="date" id="f_de" />
+              <input type="date" id="f_ate" />
+              <input type="text" id="f_busca" placeholder="Buscar por cliente/documento..." />
+              <select id="f_status">
+                <option value="">Status</option>
+                <option>CONCLUIDA</option>
+                <option>PENDENTE</option>
+                <option>CANCELADA</option>
+              </select>
+              <select id="f_fp">
+                <option value="">Forma</option>
+                <option>Dinheiro</option>
+                <option>Cartão Crédito</option>
+                <option>Cartão Débito</option>
+                <option>Pix</option>
+                <option>Boleto</option>
+                <option>Outros</option>
+              </select>
+              <button id="btnFiltrar" class="btn btn--secondary">Filtrar</button>
+            </div>
+            <div class="toolbar-actions">
+              <button id="btnExportarCSV" class="btn">Exportar CSV</button>
+            </div>
+          </div>
+
+          <div class="tabela-wrapper">
+            <table class="tabela">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Data</th>
+                  <th>Cliente</th>
+                  <th>Documento</th>
+                  <th>Itens (R$)</th>
+                  <th>Desc. (R$)</th>
+                  <th>Total (R$)</th>
+                  <th>Forma</th>
+                  <th>Status</th>
+                  <th class="col-acoes">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyVendas"></tbody>
+            </table>
+          </div>
+
+          <div class="paginacao">
+            <button id="prevPage" class="btn">&larr;</button>
+            <span id="pageInfo">Página 1/1</span>
+            <button id="nextPage" class="btn">&rarr;</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABA 2: Relatório -->
+      <section id="aba2" class="tab-content">
+        <div class="card relatorio">
+          <div class="relatorio__filtros">
+            <input type="date" id="r_de" />
+            <input type="date" id="r_ate" />
+            <select id="r_status">
+              <option value="">Status</option>
+              <option>CONCLUIDA</option>
+              <option>PENDENTE</option>
+              <option>CANCELADA</option>
+            </select>
+            <button id="btnRelatorio" class="btn btn--secondary">Gerar</button>
+          </div>
+
+          <div class="relatorio__totais">
+            <div class="kpi">
+              <div class="kpi__label">Itens (R$)</div>
+              <div id="kpiItens" class="kpi__value">R$ 0,00</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi__label">Descontos (R$)</div>
+              <div id="kpiDesc" class="kpi__value">R$ 0,00</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi__label">Total (R$)</div>
+              <div id="kpiTotal" class="kpi__value">R$ 0,00</div>
+            </div>
+          </div>
+
+          <div class="tabela-wrapper">
+            <table class="tabela">
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Status</th>
+                  <th>Qtde</th>
+                  <th>Soma Itens</th>
+                  <th>Soma Descontos</th>
+                  <th>Soma Total</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyRelatorio"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="gestaoVendas.js?v=1"></script>
+</body>
+</html>

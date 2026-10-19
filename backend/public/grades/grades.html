@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+  <title>CADASTRO DE GRADES | PRODNEX ERP</title>
+  <link rel="stylesheet" href="/public/includes/css/style.css">
+  <link rel="stylesheet" href="grades.css">
+</head>
+
+<body class="page consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <div class="header">
+      <div class="fields-inline fields-gap-3">
+
+        <div>
+          <h2 id="gradesTitulo">Grades cadastradas</h2>
+          <p>Gerencie as grades, descrições e status</p>
+        </div>
+
+        <button id="btnNovaGrade" class="btn btn-new btn-sm" type="button">
+          ＋ Nova grade
+        </button>
+
+      </div>
+    </div>
+
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter">
+
+        <div class="fields-inline fields-gap-3">
+          <div class="fields fields-h-6 fields-w-20 fields-font-4">
+            <label for="inputBusca"><b>🔎 Buscar</b></label>
+            <input id="inputBusca" type="search" placeholder="Buscar por grade ou descrição..." autocomplete="off">
+          </div>
+
+          <div class="fields fields-h-6 fields-w-10 fields-font-4">
+            <label for="selectStatus"><b>Status</b></label>
+            <select id="selectStatus" name="status">
+              <option value="">Todos</option>
+              <option value="ativo">Ativo</option>
+              <option value="inativo">Inativo</option>
+            </select>
+          </div>
+
+          <div class="filter-actions">
+            <button id="btnFiltrar" class="btn btn-new btn-sm" type="button">
+              🔎 Filtrar
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="table-scroll table-height-flex" data-table-settings="grades.listagrades">
+        <table class="
+      table
+      table-fixed
+      grades-table
+      table-zebra
+      table-zebra-hover
+      table-sticky-head
+      table-freeze-left-3
+      table-freeze-right-1
+      table-row-h-28
+    ">
+          <colgroup>
+            <col class="grades-col-id">
+            <col class="grades-col-name">
+            <col class="grades-col-description">
+            <col class="grades-col-status">
+            <col class="grades-col-actions">
+          </colgroup>
+
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Grade</th>
+              <th>Descrição</th>
+              <th>Status</th>
+              <th><span class="sr-only">Ações</span></th>
+            </tr>
+          </thead>
+
+          <tbody id="listaGrades"></tbody>
+        </table>
+
+        <div id="gradesEstado" class="grades-state" hidden></div>
+      </div>
+
+      <!-- ✅ FOOTER INTERNO -->
+      <footer class="table-footer">
+
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+            <span id="apTableInfo">0 registros encontrados</span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+
+          <button type="button" id="pagAnterior" class="btn btn-clean btn-sm">
+            Anterior
+          </button>
+
+          <span id="infoPagina">Página 1 de 1</span>
+
+          <button type="button" id="pagProxima" class="btn btn-new btn-sm">
+            Próxima
+          </button>
+
+        </div>
+
+        <div class="table-footer__page-size">
+          <label for="apRowsPerPage">Mostrar</label>
+
+          <select id="apRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+            <option value="10">10 linhas</option>
+            <option value="20">20 linhas</option>
+            <option value="30">30 linhas</option>
+            <option value="50" selected>50 linhas</option>
+            <option value="100">100 linhas</option>
+          </select>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <div id="gradeModal" class="modal" hidden aria-hidden="true">
+    <div class="modal__backdrop" data-modal-close></div>
+
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
+      <form id="formGrade" class="modal__panel" novalidate>
+        <header class="modal__header">
+          <div>
+            <span id="modalEyebrow" class="modal-eyebrow">Cadastro</span>
+            <h2 id="modalTitulo" class="modal__title">Nova grade</h2>
+          </div>
+
+          <button id="btnFecharModal" class="modal__close btn btn-close btn-icon-sm" type="button" aria-label="Fechar"
+            data-modal-close>×</button>
+        </header>
+
+        <div class="modal__body">
+          <input id="inputGradeId" type="hidden">
+
+          <div class="modal-form-grid">
+            <div class="fields fields-h-6 fields-font-4">
+              <label for="inputGrade">Nome da grade *</label>
+              <input id="inputGrade" type="text" maxlength="100" placeholder="Ex.: COR, TAMANHO" autocomplete="off"
+                required>
+              <small id="gradeHelp" class="help-text">
+                O nome será usado para identificar a grade.
+              </small>
+            </div>
+
+            <div class="fields fields-font-4">
+              <label for="inputDescricao">Descrição</label>
+              <textarea id="inputDescricao" rows="4" maxlength="255"
+                placeholder="Descreva a finalidade desta grade"></textarea>
+            </div>
+          </div>
+
+          <label id="ativoField" class="switch-field" hidden>
+            <input id="inputAtivo" type="checkbox" checked>
+            <span>
+              <strong>Grade ativa</strong>
+              <small>
+                Grades inativas permanecem cadastradas, mas não ficam disponíveis para uso.
+              </small>
+            </span>
+          </label>
+        </div>
+
+        <footer class="modal__footer">
+          <button id="btnCancelar" class="btn btn-cancel btn-sm" type="button">
+            Cancelar
+          </button>
+          <button id="btnSalvar" class="btn btn-save btn-sm" type="submit">
+            Salvar grade
+          </button>
+        </footer>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <script type="module" src="js/grades.init.js"></script>
+
+</body>
+
+</html>

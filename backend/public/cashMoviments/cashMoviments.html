@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <!-- 🎨 CSS — Design System CONSART -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <link rel="stylesheet" href="/public/modalsSearch/suppliersModalSearch.css">
+  <link rel="stylesheet" href="/public/modalsSearch/chartAccountsModalSearch.css">
+  <link rel="stylesheet" href="/public/includes/css/date-range-field.css">
+  <link rel="stylesheet" href="/public/cashMoviments/css/cashMoviments.attachTiles.css?v=3">
+
+
+  <style>
+    /* Feedback do cadastro de movimentações */
+    .cash-feedback {
+      width: min(430px, calc(100vw - 32px));
+      padding: 0;
+      border: 0;
+      border-radius: 16px;
+      color: #172033;
+      background: #fff;
+      box-shadow: 0 24px 70px rgba(15, 23, 42, .28);
+    }
+
+    .cash-feedback::backdrop {
+      background: rgba(15, 23, 42, .58);
+      backdrop-filter: blur(2px);
+    }
+
+    .cash-feedback__content {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 16px;
+      padding: 24px 24px 18px;
+    }
+
+    .cash-feedback__icon {
+      display: grid;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      border-radius: 50%;
+      color: #087f5b;
+      background: #dff7ec;
+    }
+
+    .cash-feedback__icon svg {
+      width: 25px;
+      height: 25px;
+    }
+
+    .cash-feedback__title {
+      margin: 2px 0 6px;
+      font-size: 18px;
+      line-height: 1.25;
+    }
+
+    .cash-feedback__message {
+      margin: 0;
+      color: #5b6475;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .cash-feedback__actions {
+      display: flex;
+      justify-content: flex-end;
+      padding: 0 24px 22px;
+    }
+
+    .cash-feedback__confirm {
+      min-width: 96px;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .cash-feedback[open] {
+        animation: cash-feedback-in .18s ease-out;
+      }
+
+      @keyframes cash-feedback-in {
+        from {
+          opacity: 0;
+          transform: translateY(8px) scale(.98);
+        }
+      }
+    }
+
+    /* Filtro de período (date-range-field) — alinhado aos demais campos do filtro */
+    .cash-period-filter {
+      min-width: 0;
+    }
+
+    .cash-period-filter .date-range-field-label {
+      margin: 0 0 2px;
+      color: inherit;
+      font-size: inherit;
+      font-weight: inherit;
+      letter-spacing: normal;
+    }
+
+    .cash-period-filter .date-range-field-trigger {
+      height: 26px;
+      padding: 0 4px 0 8px;
+      border-radius: 6px;
+    }
+
+    .cash-period-filter .date-range-field-icon {
+      width: 20px;
+      height: 20px;
+      flex-basis: 20px;
+      border-radius: 5px;
+    }
+
+    .cash-period-filter .date-range-field-display {
+      color: #111827;
+    }
+
+    /* Divisores das seções do modal de edição */
+    #modalEditar .modal-form-section-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      margin: 10px 0 4px;
+      color: #2c609f;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .02em;
+    }
+
+    #modalEditar .modal-form-section-title::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: #d8e2ef;
+    }
+
+    #modalEditar .modal-form-section-title:first-child {
+      margin-top: 0;
+    }
+  </style>
+
+  <title>CAIXA | PRODNEX ERP</title>
+</head>
+
+<!-- Conteúdo da página -->
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+
+    <!-- ========= ABAS ========= -->
+    <section class="tabs">
+
+      <div class="tab-list" role="tablist" aria-label="Caixa">
+
+        <button type="button" class="tab is-active" role="tab" aria-selected="true" aria-controls="tab-movs"
+          tabindex="0">
+          📄 Movimentações
+        </button>
+
+        <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="tab-cadastro" tabindex="-1">
+          ➕ Registrar
+        </button>
+
+      </div>
+
+    </section>
+
+    <!-- TAB: Registrar -->
+    <div id="tab-cadastro" class="tab-panel" role="tabpanel" tabindex="0" hidden>
+      <section class="card mt-2">
+
+        <div class="card-body">
+          <form id="formMovimentacao" autocomplete="off">
+            <!-- Linha 1 -->
+            <header class="header header-h-10">
+
+              <!-- Container for all vertical lines -->
+              <div class="fields-lines fields-gap-3">
+
+                <!-- Line 1: fields side by side -->
+                <div class="fields-inline">
+
+                  <div class="fields fields-h-5 fields-w-20 fields-font-3">
+                    <label for="dataHora">Data/Hora</label>
+                    <input type="datetime-local" id="dataHora" name="dataHora" required />
+                  </div>
+
+                  <div class="fields fields-h-5 fields-w-20 fields-font-3">
+                    <label for="tipoMovimentacao">Tipo Moviment.</label>
+                    <select id="tipoMovimentacao" name="tipoMovimentacao" required>
+                      <option value="" disabled selected>Selecione...</option>
+                      <option value="ENTRADA">ENTRADA</option>
+                      <option value="SAIDA">SAIDA</option>
+                    </select>
+                  </div>
+
+                  <div class="fields fields-h-5 fields-w-20 fields-font-3">
+                    <label for="contaCaixa">Conta Caixa</label>
+                    <select id="contaCaixa" name="contaCaixa" required>
+                      <option value="" disabled selected>Carregando...</option>
+                    </select>
+                  </div>
+
+                  <div class="fields fields-h-5 fields-w-15 fields-font-3">
+                    <label for="tipoDocumentoFiscal">Tipo de Documento</label>
+
+                    <select id="tipoDocumentoFiscal" name="document_type_id">
+                      <option value="">Carregando...</option>
+                    </select>
+                  </div>
+
+                  <div class="fields fields-h-5 fields-w-20 fields-font-3">
+                    <label for="numeroDocumento">Nº do Documento</label>
+                    <input type="text" id="numeroDocumento" name="numeroDocumento" placeholder="Número do documento" />
+                  </div>
+                  <div class="fields fields-h-5 fields-w-20 fields-font-3">
+                    <label for="fornecedor">Fornecedor/Cliente</label>
+
+                    <div style="display:flex; gap:8px; align-items:center;">
+                      <input type="text" id="fornecedor" name="fornecedor" placeholder="Selecione um fornecedor/cliente"
+                        autocomplete="off" readonly style="flex:1 1 auto;" />
+                      <button type="button" id="btnBuscarFornecedor" class="action-icon action-icon--search"
+                        title="Buscar fornecedor" aria-label="Buscar fornecedor"><svg viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                          aria-hidden="true">
+                          <circle cx="11" cy="11" r="7" />
+                          <path d="m21 21-4.3-4.3" />
+                        </svg></button>
+                    </div>
+
+                    <!-- ocultos para uso futuro -->
+                    <input type="hidden" id="fornecedorId" name="fornecedorId" />
+                    <input type="hidden" id="fornecedorTaxId" name="fornecedorTaxId" />
+                  </div>
+                </div>
+
+                <!-- Linha 2 -->
+
+                <!-- Container for all vertical lines -->
+                <div class="fields-lines fields-gap-3">
+
+                  <!-- Line 1: fields side by side -->
+                  <div class="fields-inline">
+
+                    <div class="fields fields-h-5 fields-w-10 fields-font-3">
+                      <label for="valorMovimentacao">Valor (R$)</label>
+                      <input type="number" id="valorMovimentacao" name="valorMovimentacao" step="0.01" min="0.01"
+                        required />
+                    </div>
+
+                    <div class="fields fields-h-5 fields-w-10 fields-font-3">
+                      <label for="multa">Multa (R$)</label>
+                      <input type="number" id="multa" name="multa" step="0.01" min="0" value="0" />
+                    </div>
+
+                    <div class="fields fields-h-5 fields-w-10 fields-font-3">
+                      <label for="juros">Juros (R$)</label>
+                      <input type="number" id="juros" name="juros" step="0.01" min="0" value="0" />
+                    </div>
+
+                    <div class="fields fields-h-5 fields-w-10 fields-font-3">
+                      <label for="encargos">Encargos (R$)</label>
+                      <input type="number" id="encargos" name="encargos" step="0.01" min="0" value="0" />
+                    </div>
+
+                    <div class="fields fields-h-5 fields-w-20 fields-font-3">
+                      <label for="chartAccountLabel">Conta Contábil</label>
+                      <input type="text" id="chartAccountLabel" placeholder="Selecione a conta contábil" readonly
+                        style="flex:1 1 auto;" />
+                    </div>
+
+                    <div class="cx-field-search">
+                      <button type="button" id="btnBuscarChartAccount" class="action-icon action-icon--search"
+                        title="Buscar conta contábil" aria-label="Buscar conta contábil"><svg viewBox="0 0 24 24"
+                          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                          stroke-linejoin="round" aria-hidden="true">
+                          <circle cx="11" cy="11" r="7" />
+                          <path d="m21 21-4.3-4.3" />
+                        </svg></button>
+                    </div>
+
+                    <input type="hidden" id="chartAccountId" name="chart_account_id" />
+
+
+                    <div class="fields fields-h-5 fields-w-20 fields-font-3">
+                      <label for="categoriaDespesa">Categoria</label>
+                      <select id="categoriaDespesa" name="categoriaDespesa" required>
+                        <option value="" disabled selected>Selecione...</option>
+                      </select>
+                    </div>
+
+                    <div class="fields fields-h-5 fields-w-20 fields-font-3">
+                      <label for="subcategoriaDespesa">Subcategoria</label>
+                      <select id="subcategoriaDespesa" name="subcategoriaDespesa" required>
+                        <option value="" disabled selected>Selecione...</option>
+                      </select>
+                    </div>
+
+                    <div class="fields fields-h-5 fields-w-12 fields-font-3">
+                      <label for="isDeductible">Dedutível no IRPJ/CSLL</label>
+                      <select id="isDeductible"
+                        title="Só juros, multas e encargos: o valor principal já foi lançado em outro lugar (ex.: imposto da apuração)">
+                        <option value="true">Sim</option>
+                        <option value="encargos">Só juros, multas e encargos</option>
+                        <option value="false">Não</option>
+                      </select>
+                    </div>
+
+                    <div class="fields fields-h-5 fields-w-15 fields-font-3">
+                      <label for="isPisCofinsCreditable">Dedutível no PIS/COFINS</label>
+                      <select id="isPisCofinsCreditable">
+                        <option value="true">Sim</option>
+                        <option value="false" selected>Não</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- Linha 3-->
+
+                  <!-- ==== NOVO BLOCO: Upload de anexos (Bucket) ==== -->
+                  <div class="fields-inline">
+                    <div class="fields fields-h-5 fields-w-20 fields-font-3">
+                      <label for="anexoFile">Anexos</label>
+                      <input type="file" id="anexoFile" name="anexos" accept=".pdf,.xml,.png,.jpg,.jpeg,.webp"
+                        multiple />
+                      <button type="button" id="btnUploadAnexo" class="btn btn-flat btn-sm"
+                        title="Disponível após salvar a movimentação" disabled>⬆️ Enviar</button>
+                    </div>
+
+                    <!-- =============================================== -->
+                    <div class="fields-inline">
+                      <div class="fields fields-h-5 fields-w-20 fields-font-3">
+                        <input type="hidden" id="observacaoHidden" name="observacao" />
+                      </div>
+                    </div>
+
+                    <div class="btn btn-inline">
+                      <button type="button" id="btnAbrirObservacao" class="btn btn-flat btn-sm">📝 Observação</button>
+
+                      <button type="submit" class="btn btn-flat btn-sm">Registrar Movimentação</button>
+                    </div>
+                  </div>
+            </header>
+          </form>
+        </div>
+      </section>
+    </div>
+
+
+    <!-- TAB: Movimentações -->
+    <div id="tab-movs" class="tab-panel is-active" role="tabpanel" tabindex="0">
+      <!-- Filtros / Ações -->
+      <section class="mt-2">
+
+        <header class="header header-h-2">
+
+          <!-- Container for all vertical lines -->
+          <div class="fields-lines fields-gap-3">
+
+            <!-- Line 1: fields side by side -->
+            <div class="fields-inline">
+
+              <div class="fields fields-h-6 fields-w-18 fields-font-3">
+                <label for="filtroQ">Fornecedor/Cliente</label>
+                <input type="text" id="filtroQ" placeholder="Buscar por fornecedor, nº doc ou observação" />
+              </div>
+
+              <div class="fields fields-h-6 fields-w-3 fields-font-3">
+                <label for="filtroAno">Ano</label>
+                <select id="filtroAno"></select>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-10 fields-font-3">
+                <label for="filtroMesSel">Mês</label>
+                <select id="filtroMesSel"></select>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-15 fields-font-3">
+                <date-range-field id="filterDateRange" class="drf-width-3 drf-height-3" label="Período"
+                  locale="pt-BR"></date-range-field>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                <label for="filtroConta">Conta</label>
+                <select id="filtroConta">
+                  <option value="">Todas</option>
+                </select>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-8 fields-font-3">
+                <label for="filtroTipo">Tipo</label>
+                <select id="filtroTipo">
+                  <option value="">Todos</option>
+                  <option value="ENTRADA">ENTRADA</option>
+                  <option value="SAIDA">SAIDA</option>
+                </select>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                <label for="filtroCategoria">Categoria</label>
+                <select id="filtroCategoria">
+                  <option value="">Todas</option>
+                </select>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                <label for="filtroSubcategoria">Subcategoria</label>
+                <select id="filtroSubcategoria">
+                  <option value="">Todas</option>
+                </select>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-1 fields-font-3">
+                <input type="checkbox" id="filtroSemAnexo" />
+                <label for="filtroSemAnexo" style="cursor:pointer;">Sem anexo</label>
+              </div>
+
+              <div class="btn btn-inline btn-gap-4">
+                <button type="button" id="btnAplicarFiltros" class="btn btn-flat btn-sm">
+                  Filtrar
+                </button>
+
+                <button type="button" id="btnRelatorioPdf" class="btn btn-secondary btn-sm" title="Relatório em PDF">
+                  🖨️ Relatório PDF
+                </button>
+
+                <button type="button" id="btnBaixarZipPeriodo" class="btn btn-secondary btn-sm"
+                  title="Baixar documentos do período">
+                  📦 Baixar período
+                </button>
+
+                <button type="button" id="btnEditarSelecionados" class="btn btn-secondary btn-sm"
+                  title="Alterar em lote as movimentações selecionadas" disabled>
+                  ✏️ Editar selecionados (0)
+                </button>
+
+                <button type="button" id="btnExcluirSelecionados" class="btn btn-danger btn-sm"
+                  title="Excluir as movimentações selecionadas" disabled>
+                  🗑️ selecionados (0)
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </header>
+
+        <section class="table-layout">
+          <div class="table-scroll table-height-570 table-row-h-20"
+            data-table-settings="cashmoviments.corpotabelamovimentacoes">
+            <table class="table table-zebra table-zebra-hover table-sticky-head">
+              <thead>
+                <tr>
+
+                  <th class="table-col-select">
+                    <input type="checkbox" id="selecionarTodasMovimentacoes"
+                      aria-label="Selecionar todas as movimentações desta página"
+                      title="Selecionar todas desta página" />
+                  </th>
+
+                  <th class="table-col-w-2">Nº Doc</th>
+                  <th class="table-col-w-2">Tipo</th>
+                  <th class="table-col-w-6">Nome</th>
+                  <th class="table-col-w-3">Data/Hora</th>
+                  <th class="table-col-w-2">Total</th>
+                  <th class="table-col-w-2">Multa</th>
+                  <th class="table-col-w-2">Juros</th>
+                  <th class="table-col-w-2">Encargos</th>
+                  <th class="table-col-w-2">Valor</th>
+                  <th class="table-col-w-2">Conta</th>
+                  <th class="table-col-w-6">Plano de Contas</th>
+                  <th class="table-col-w-5">Categoria</th>
+                  <th class="table-col-w-5">Subcategoria</th>
+                  <th class="table-col-w-5">Observação</th>
+                  <th class="table-col-w-3">Anexos</th>
+                  <th class="table-col-w-4">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="corpoTabelaMovimentacoes"></tbody>
+            </table>
+          </div>
+
+          <footer class="table-footer">
+
+            <div class="table-footer__info">
+              <div class="summary summary--inline summary-gap-8 summary-left-space-3">
+
+                <div class="summary-pill summary-pill--success">
+                  <span id="apTableInfo">0 registros encontrados</span>
+                </div>
+
+                <div class="summary-pill summary-pill--primary">
+                  <span>Total filtrado:</span>
+                  <strong id="totalMovimentacoesFiltradas">R$ 0,00</strong>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="table-footer__pagination">
+              <button type="button" id="pagAnterior" class="btn btn-clean btn-sm">Anterior</button>
+              <span id="infoPagina">Página 1 de 1</span>
+              <button type="button" id="pagProxima" class="btn btn-new btn-sm">Próxima</button>
+            </div>
+
+            <div class="table-footer__page-size">
+              <label for="apRowsPerPage">Mostrar</label>
+              <select id="apRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+                <option value="10">10 linhas</option>
+                <option value="20">20 linhas</option>
+                <option value="30">30 linhas</option>
+                <option value="50" selected>50 linhas</option>
+                <option value="100">100 linhas</option>
+              </select>
+            </div>
+
+          </footer>
+        </section>
+        <!-- ========= FIM ABAS ========= -->
+
+    </div>
+    <!-- Modal de Observação -->
+    <div class="modal" id="modalObservacao" hidden>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>📝 Observação</h3>
+          <button type="button" class="btn btn-flat btn-sm btn-icon" id="fecharModalObservacao"
+            aria-label="Fechar">✖</button>
+        </div>
+        <div class="modal__body modal-section">
+          <div class="linha">
+            <div class="campo" style="flex:1">
+              <label for="observacaoModal">Observação</label>
+              <textarea id="observacaoModal" rows="6" placeholder="Escreva a observação..."></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer" style="display:flex; gap:8px; justify-content:flex-end;">
+          <button type="button" class="btn btn-flat" id="cancelarObservacao">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="salvarObservacao">Salvar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Edição -->
+
+    <div id="modalEditar" class="modal modal-width-10 modal-height-10" aria-hidden="true">
+      <div class="modal__backdrop"></div>
+
+      <div class="modal__dialog">
+        <section class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modalEditarTitle"
+          tabindex="-1">
+
+          <header class="modal__header modal-header-color-3">
+            <h2 id="modalEditarTitle" class="modal__title">✏️ Editar Movimentação</h2>
+
+            <button type="button" class="modal__close" id="fecharModalEditar" title="Fechar"
+              aria-label="Fechar">&times;</button>
+          </header>
+          <div class="modal__body">
+
+            <form id="formEditarMovimentacao">
+
+
+
+              <!-- Container for all vertical lines -->
+              <div class="fields-lines fields-gap-3">
+
+                <section class="modal-section" aria-labelledby="editGeneralTitle">
+                  <div id="editGeneralTitle" class="modal-form-section-title">Informações Gerais</div>
+
+                  <div class="fields-inline">
+
+                    <div class="fields fields-h-5 fields-w-15 fields-font-3">
+                      <input type="hidden" id="edit_id" name="id" />
+
+                      <!-- Linha 1: básicos -->
+                      <label for="edit_dataHora">Data/Hora</label>
+                      <input type="datetime-local" id="edit_dataHora" name="dataHora" required />
+                    </div>
+
+                    <div class="fields fields-h-5 fields-w-6 fields-font-3">
+                      <label for="edit_tipoMovimentacao">Tipo</label>
+                      <select id="edit_tipoMovimentacao" name="tipoMovimentacao" required>
+                        <option value="ENTRADA">ENTRADA</option>
+                        <option value="SAIDA">SAÍDA</option>
+                      </select>
+                    </div>
+
+                    <div class="fields fields-h-5 fields-w-15 fields-font-3">
+                      <label for="edit_tipoDocumento">Tipo de Documento</label>
+
+                      <select id="edit_tipoDocumento" name="document_type_id">
+                        <option value="">Carregando...</option>
+                      </select>
+                    </div>
+
+                    <div class="fields fields-h-5 fields-w-5 fields-font-3"> <label for="edit_numeroDocumento">
+                        Nº Doc.</label>
+                      <input type="text" id="edit_numeroDocumento" name="numeroDocumento" />
+                    </div>
+                  </div>
+                </section>
+
+                <section class="modal-section" aria-labelledby="editFinancialTitle">
+                  <div id="editFinancialTitle" class="modal-form-section-title">Financeiro</div>
+
+                  <div class="fields-inline">
+                    <div class="fields fields-h-5 fields-w-15 fields-font-3">
+                      <label for="edit_contaCaixa">Conta</label>
+                      <select id="edit_contaCaixa" name="contaCaixa" required>
+                        <option value="">Selecione...</option>
+                      </select>
+                    </div>
+
+                    <div class="fields fields-h-5 fields-w-7 fields-font-3">
+                      <label for="edit_valor">Valor (R$)</label>
+                      <input type="number" id="edit_valor" name="valor" step="0.01" min="0.01" required />
+                    </div>
+
+                    <div class="fields fields-h-5 fields-w-7 fields-font-3">
+                      <label for="edit_multa">Multa (R$)</label>
+                      <input type="number" id="edit_multa" name="multa" step="0.01" min="0" />
+                    </div>
+
+                    <div class="fields fields-h-5 fields-w-7 fields-font-3">
+                      <label for="edit_juros">Juros (R$)</label>
+                      <input type="number" id="edit_juros" name="juros" step="0.01" min="0" />
+                    </div>
+
+                    <div class="fields fields-h-5 fields-w-7 fields-font-3">
+                      <label for="edit_encargos">Encargos (R$)</label>
+                      <input type="number" id="edit_encargos" name="encargos" step="0.01" min="0" />
+                    </div>
+                  </div>
+                </section>
+
+                <!-- Container for all vertical lines -->
+                <div class="fields-lines fields-gap-3">
+
+                  <div class="modal-form-section-title">Fornecedor e Classificação</div>
+
+                  <div class="fields-inline">
+
+                    <div class="fields fields-h-5 fields-w-20 fields-font-3">
+                      <label for="edit_fornecedor">Fornecedor/Cliente</label>
+                      <input type="text" id="edit_fornecedor" name="fornecedor" readonly autocomplete="off"
+                        style="flex:1 1 auto;" />
+                    </div>
+
+                    <div class="cx-field-search">
+                      <button type="button" id="edit_btnBuscarFornecedor" class="action-icon action-icon--search"
+                        title="Buscar fornecedor" aria-label="Buscar fornecedor"><svg viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                          aria-hidden="true">
+                          <circle cx="11" cy="11" r="7" />
+                          <path d="m21 21-4.3-4.3" />
+                        </svg></button>
+                      <input type="hidden" id="edit_fornecedorId" name="fornecedorId" />
+                      <input type="hidden" id="edit_fornecedorTaxId" name="fornecedorTaxId" />
+                    </div>
+
+                    <!-- Linha 4: conta contábil / categoria -->
+                    <div class="fields fields-h-5 fields-w-20 fields-font-3">
+                      <label for="edit_chartAccountLabel">Conta Contábil</label>
+
+                      <input type="text" id="edit_chartAccountLabel" readonly placeholder="Selecione a conta contábil"
+                        style="flex:1 1 auto;" />
+                    </div>
+
+                    <div class="cx-field-search">
+                      <button type="button" id="edit_btnBuscarChartAccount" class="action-icon action-icon--search"
+                        title="Buscar conta contábil" aria-label="Buscar conta contábil"><svg viewBox="0 0 24 24"
+                          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                          stroke-linejoin="round" aria-hidden="true">
+                          <circle cx="11" cy="11" r="7" />
+                          <path d="m21 21-4.3-4.3" />
+                        </svg></button>
+                      <input type="hidden" id="edit_chartAccountId" name="chart_account_id" />
+                    </div>
+
+                    <div class="fields fields-h-5 fields-w-20 fields-font-3">
+                      <label for="edit_categoria">Categoria</label>
+                      <select id="edit_categoria" name="categoria" required></select>
+                    </div>
+
+                    <div class="fields fields-h-5 fields-w-20 fields-font-3">
+                      <label for="edit_subcategoria">Subcategoria</label>
+                      <select id="edit_subcategoria" name="subcategoria"></select>
+                    </div>
+                  </div>
+
+                  <div class="fields-inline fields-gap-3">
+                    <div class="fields fields-h-5 fields-w-20 fields-font-3">
+                      <label for="edit_isDeductible">Dedutível no IRPJ/CSLL</label>
+                      <select id="edit_isDeductible"
+                        title="Só juros, multas e encargos: o valor principal já foi lançado em outro lugar (ex.: imposto da apuração)">
+                        <option value="true">Sim</option>
+                        <option value="encargos">Só juros, multas e encargos</option>
+                        <option value="false">Não</option>
+                      </select>
+                    </div>
+
+                    <div class="fields fields-h-5 fields-w-20 fields-font-3">
+                      <label for="edit_isPisCofinsCreditable">Dedutível no PIS/COFINS</label>
+                      <select id="edit_isPisCofinsCreditable">
+                        <option value="true">Sim</option>
+                        <option value="false" selected>Não</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <!-- ╔══════════════════════════════════════════════════════════════╗
+     ║ Anexos e observação                                         ║
+     ╚══════════════════════════════════════════════════════════════╝ -->
+
+              <div class="modal-divider"></div>
+
+              <div class="modal-form-section-title">Anexos e Observações</div>
+
+              <div class="cx-tiles">
+
+                <!-- Quadrados 1–3: anexos (montados por cashMoviments.attachTiles.js a partir da lista abaixo) -->
+                <div id="edit_attachSlots" class="cx-tiles__slots" aria-label="Anexos da movimentação"></div>
+
+                <!-- Último quadrado: observação -->
+                <div class="cx-tile cx-tile--obs">
+                  <label for="edit_observacao" class="cx-tile__label">Observação</label>
+                  <textarea id="edit_observacao" name="observacao" maxlength="1000"
+                    aria-label="Observação da movimentação" placeholder="Digite uma observação..."></textarea>
+                </div>
+
+              </div>
+
+              <progress id="edit_anexoProgress" class="cx-attach-progress" max="100" value="0"
+                aria-label="Progresso do envio" hidden></progress>
+
+              <!-- Motor de upload/listagem existente: fica escondido, os quadrados usam ele -->
+              <div class="cx-tiles__engine" hidden>
+                <div id="edit_dropzone" class="modal-dropzone ap-dropzone">
+                  <input type="file" id="edit_anexoFile" name="anexos" accept=".pdf,.xml,.png,.jpg,.jpeg,.webp" multiple
+                    hidden>
+                </div>
+                <div id="edit_anexoSelecionado" class="cx-attach-selected" hidden></div>
+                <button type="button" id="edit_btnUploadAnexo" class="btn btn-flat btn-sm" disabled>
+                  ⬆️ Enviar anexo
+                </button>
+                <ul id="listaAnexosEdicao" class="lista-anexos cx-attach-list" role="list">
+                  <li class="cx-attach-empty">Nenhum anexo vinculado.</li>
+                </ul>
+                <input type="hidden" id="edit_anexosJson" name="anexosJson" value="[]">
+              </div>
+
+          </form>
+        </div>
+
+        <footer class="modal__footer modal-footer-color-3">
+          <button type="button" class="btn btn-cancel btn-sm" id="cancelarEdicao">
+            Cancelar
+          </button>
+
+          <button type="submit" class="btn btn-save btn-sm" id="salvarEdicao" form="formEditarMovimentacao">
+            Salvar alterações
+          </button>
+        </footer>
+
+        </section>
+      </div>
+    </div>
+
+    <!-- Scripts globais -->
+    <script type="module" src="/public/includes/js/core.js"></script>
+
+
+    <!-- JS de Upload (sign → PUT → confirm, com LOG detalhado e fallback) -->
+    <script>
+      (function uploadAnexos() {
+        const API_BASE = (window.API_BASE || '');
+        const API_SIGN = `${API_BASE}/api/upload/anexo/sign`;
+        const API_CONFIRM = `${API_BASE}/api/upload/anexo/confirm`;
+        const API_CAIXA = `${API_BASE}/api/caixa`;
+
+        /* ============== DEBUG LOGGING ============== */
+        const DEBUG = true; // ← coloque false para silenciar logs
+        const t0 = () => performance.now();
+
+        const css = {
+          ok: 'background:#10b981;color:#fff;padding:2px 6px;border-radius:4px',
+          warn: 'background:#f59e0b;color:#111;padding:2px 6px;border-radius:4px',
+          err: 'background:#ef4444;color:#fff;padding:2px 6px;border-radius:4px',
+          tag: 'background:#3b82f6;color:#fff;padding:2px 6px;border-radius:4px',
+          dim: 'color:#6b7280'
+        };
+        const logTag = (label) => DEBUG && console.log('%cANEXO', css.tag, label);
+        const logOk = (...a) => DEBUG && console.log('%cOK', css.ok, ...a);
+        const logWrn = (...a) => DEBUG && console.warn('%cWARN', css.warn, ...a);
+        const logErr = (...a) => DEBUG && console.error('%cERR', css.err, ...a);
+        const logDim = (...a) => DEBUG && console.log('%c', css.dim, ...a);
+        const group = (label) => DEBUG && console.group(label);
+        const groupEnd = () => DEBUG && console.groupEnd();
+
+        /* ============== CADASTRO ============== */
+        const formCad = document.getElementById('formMovimentacao');
+        const fileCad = document.getElementById('anexoFile');
+        const btnCad = document.getElementById('btnUploadAnexo');
+        const progCad = document.getElementById('anexoProgress');
+        const ulCad = document.getElementById('listaAnexos');
+        const hidCad = document.getElementById('anexosJson');
+
+        function atualizarBotaoCadastro() {
+          if (!btnCad) return;
+
+          const possuiArquivo = Boolean(fileCad?.files?.length);
+
+          btnCad.disabled = !possuiArquivo;
+          btnCad.title = possuiArquivo
+            ? 'Registrar a movimentação e enviar o anexo'
+            : 'Selecione um arquivo';
+        }
+
+        if (fileCad) {
+          fileCad.addEventListener('change', () => {
+            atualizarBotaoCadastro();
+
+            const arquivos = Array.from(fileCad.files || []);
+
+            if (arquivos.length) {
+              logTag(`${arquivos.length} arquivo(s) selecionado(s) no cadastro.`);
+              logDim('Arquivos:', arquivos.map((arquivo) => ({
+                name: arquivo.name,
+                type: arquivo.type,
+                size: arquivo.size,
+              })));
+            }
+          });
+        }
+
+        if (btnCad) {
+          btnCad.addEventListener('click', () => {
+            const arquivos = Array.from(fileCad?.files || []);
+
+            if (!arquivos.length) {
+              alert('Selecione pelo menos um arquivo.');
+              return;
+            }
+
+            /*
+             * O anexo precisa do ID da movimentação.
+             * Portanto, o formulário é enviado primeiro e, depois,
+             * onCreateSubmit chama uploadCadastro(movId).
+             */
+            if (formCad?.requestSubmit) {
+              formCad.requestSubmit();
+            } else {
+              formCad?.dispatchEvent(
+                new Event('submit', {
+                  bubbles: true,
+                  cancelable: true,
+                })
+              );
+            }
+          });
+        }
+
+        atualizarBotaoCadastro();
+
+        /* ============== EDIÇÃO (com movId) ============== */
+        const fileEd = document.getElementById('edit_anexoFile');
+        const btnEd = document.getElementById('edit_btnUploadAnexo');
+        const progEd = document.getElementById('edit_anexoProgress');
+        const ulEd = document.getElementById('listaAnexosEdicao');
+        const hidEd = document.getElementById('edit_anexosJson');
+
+        const state = { movId: null, anexos: [] };
+
+        function setProgress(el, v, visible) {
+          if (!el) return;
+          el.style.display = visible ? 'block' : 'none';
+          if (typeof v === 'number') el.value = v;
+        }
+
+        async function fetchJson(url, opts) {
+          const r = await fetch(url, opts);
+          if (!r.ok) {
+            const body = await r.text().catch(() => '');
+            throw new Error(`${r.status} ${r.statusText} ${body}`);
+          }
+          return await r.json().catch(() => ({}));
+        }
+
+        async function signUpload(movId, file) {
+          const started = t0();
+          const payload = { movId, filename: file.name, mimeType: file.type || 'application/octet-stream' };
+          group('🔐 SIGN upload');
+          logDim('→ POST', API_SIGN, payload);
+          const data = await fetchJson(API_SIGN, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+          logOk('Assinatura OK em', (performance.now() - started).toFixed(0), 'ms');
+          logDim('Retorno SIGN:', data);
+          groupEnd();
+          return data; // { url, headers: { 'Content-Type': ... }, bucket, object }
+        }
+
+        function putWithProgress(url, file, contentType, onProgress) {
+          return new Promise((resolve, reject) => {
+            const started = t0();
+            group('☁️ PUT → GCS');
+            logDim('→ URL', url);
+            logDim('→ Content-Type', contentType);
+            const xhr = new XMLHttpRequest();
+            xhr.open('PUT', url, true);
+            xhr.setRequestHeader('Content-Type', contentType);
+            xhr.upload.onprogress = (e) => {
+              if (e.lengthComputable && typeof onProgress === 'function') {
+                const pct = Math.round((e.loaded / e.total) * 100);
+                onProgress(pct);
+              }
+            };
+            xhr.onerror = () => {
+              logErr('Erro de rede (PUT).');
+              groupEnd();
+              reject(new Error('Falha de rede no PUT (possível CORS).'));
+            };
+            xhr.onload = () => {
+              const ms = (performance.now() - started).toFixed(0);
+              if (xhr.status >= 200 && xhr.status < 300) {
+                logOk(`PUT concluído em ${ms} ms`, 'status:', xhr.status);
+                groupEnd();
+                resolve();
+              } else {
+                logErr('PUT falhou:', xhr.status, xhr.responseText || '(sem corpo)');
+                groupEnd();
+                reject(new Error(`PUT GCS falhou: ${xhr.status}`));
+              }
+            };
+            xhr.send(file);
+          });
+        }
+
+        async function confirmUpload(movId, file, bucket, object) {
+          const started = t0();
+          const payload = {
+            movId,
+            filename: file.name,
+            mimeType: file.type || 'application/octet-stream',
+            sizeBytes: file.size,
+            bucket,
+            object
+          };
+          group('✅ CONFIRM upload');
+          logDim('→ POST', API_CONFIRM, payload);
+          const data = await fetchJson(API_CONFIRM, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+          logOk('Confirmado no BD em', (performance.now() - started).toFixed(0), 'ms');
+          logDim('Retorno CONFIRM:', data);
+          groupEnd();
+          return data.anexo; // esperado { id, ... url }
+        }
+
+        async function refreshListaEdicao() {
+          if (!state.movId) return;
+          const started = t0();
+          group('📄 LIST anexos');
+          try {
+            const lista = await fetchJson(`${API_CAIXA}/movimentacoes/${state.movId}/anexos`);
+            state.anexos = lista.map(r => ({ id: r.id, name: r.filename, url: r.url, bucketPath: r.gcs_path }));
+            if (hidEd) hidEd.value = JSON.stringify(state.anexos);
+            renderLista(ulEd, state.anexos);
+            logOk('Lista carregada em', (performance.now() - started).toFixed(0), 'ms');
+            logDim('Itens:', state.anexos);
+          } catch (e) {
+            logErr('Falha ao listar anexos:', e.message);
+            state.anexos = [];
+            if (hidEd) hidEd.value = '[]';
+            renderLista(ulEd, []);
+          } finally { groupEnd(); }
+        }
+
+        function renderLista(ul, itens) {
+          if (!ul) return;
+          ul.innerHTML = itens.length ? '' : '<li>Nenhum anexo</li>';
+          itens.forEach(a => {
+            const li = document.createElement('li');
+            li.style.display = 'flex';
+            li.style.alignItems = 'center';
+            li.style.gap = '8px';
+            li.style.justifyContent = 'space-between';
+            li.innerHTML = `
+          <span style="max-width:70%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${a.bucketPath || ''}">
+            <a href="${a.url}" target="_blank" rel="noopener">${a.name}</a>
+          </span>
+          <button class="btn btn-flat btn-xs" data-id="${a.id}">Remover</button>`;
+            li.querySelector('button').onclick = async () => {
+              if (!confirm('Remover este anexo?')) return;
+              const url = `${API_CAIXA}/movimentacoes/${state.movId}/anexos/${a.id}`;
+              group('🗑️ DELETE anexo'); logDim('→', url);
+              try {
+                const r = await fetch(url, { method: 'DELETE' });
+                if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+                logOk('Removido com sucesso.');
+                await refreshListaEdicao();
+              } catch (e) { logErr('Falha ao remover:', e.message); }
+              finally { groupEnd(); }
+            };
+            ul.appendChild(li);
+          });
+        }
+
+        async function uploadCadastro(movId) {
+          const id = Number(movId);
+          const arquivos = Array.from(fileCad?.files || []);
+
+          if (!arquivos.length) {
+            logDim('Cadastro sem arquivos selecionados.');
+            return [];
+          }
+
+          if (!id) {
+            throw new Error(
+              'Não foi recebido um ID válido para vincular os anexos.'
+            );
+          }
+
+          const anexosEnviados = [];
+          btnCad && (btnCad.disabled = true);
+
+          try {
+            for (let indice = 0; indice < arquivos.length; indice += 1) {
+              const arquivo = arquivos[indice];
+              logTag(
+                `Enviando arquivo ${indice + 1}/${arquivos.length} ` +
+                `para a movimentação ${id}`
+              );
+
+              try {
+                setProgress(progCad, 0, true);
+                const signed = await signUpload(id, arquivo);
+                const uploadUrl =
+                  signed?.uploadUrl ||
+                  signed?.signedUrl ||
+                  signed?.url;
+                const bucket = signed?.bucket || signed?.bucketName;
+                const object =
+                  signed?.object ||
+                  signed?.objectName ||
+                  signed?.path ||
+                  signed?.gcsPath;
+
+                if (!uploadUrl) {
+                  throw new Error(
+                    'O endpoint de assinatura não retornou a URL de upload.'
+                  );
+                }
+
+                await putWithProgress(
+                  uploadUrl,
+                  arquivo,
+                  signed?.contentType ||
+                  signed?.headers?.['Content-Type'] ||
+                  arquivo.type ||
+                  'application/octet-stream',
+                  (percentual) => setProgress(progCad, percentual, true)
+                );
+
+                const anexo = await confirmUpload(
+                  id,
+                  arquivo,
+                  bucket,
+                  object
+                );
+
+                if (anexo) anexosEnviados.push(anexo);
+              } catch (erroAssinado) {
+                logWrn(
+                  `Upload assinado de "${arquivo.name}" falhou; ` +
+                  'tentando multipart.',
+                  erroAssinado
+                );
+
+                const formData = new FormData();
+                formData.append('movId', String(id));
+                formData.append('arquivo', arquivo, arquivo.name);
+
+                const resposta = await fetch(
+                  `${API_BASE}/api/upload/anexo`,
+                  { method: 'POST', body: formData }
+                );
+
+                if (!resposta.ok) {
+                  const texto = await resposta.text().catch(() => '');
+                  throw new Error(
+                    `Falha ao enviar "${arquivo.name}": ` +
+                    `${resposta.status} ${resposta.statusText}` +
+                    `${texto ? ` — ${texto}` : ''}`
+                  );
+                }
+
+                const resultado = await resposta.json().catch(() => null);
+                if (resultado) anexosEnviados.push(resultado);
+              }
+            }
+
+            if (hidCad) {
+              hidCad.value = JSON.stringify(anexosEnviados);
+            }
+
+            fileCad.value = '';
+            logOk(
+              `${arquivos.length} arquivo(s) vinculado(s) ` +
+              `à movimentação ${id}.`
+            );
+
+            return anexosEnviados;
+          } finally {
+            setProgress(progCad, 0, false);
+            atualizarBotaoCadastro();
+          }
+        }
+
+        // 🚀 ENVIO COM LOG + FALLBACK
+        async function enviarEdicao() {
+          if (!state.movId) return alert('Movimentação inexistente.');
+          const arquivos = Array.from(fileEd?.files || []);
+          if (!arquivos.length) {
+            return alert('Selecione pelo menos um arquivo.');
+          }
+
+          btnEd.disabled = true;
+
+          try {
+            for (let indice = 0; indice < arquivos.length; indice += 1) {
+              const f = arquivos[indice];
+              logTag(`Enviando ${indice + 1}/${arquivos.length}: ${f.name}`);
+
+              try {
+                setProgress(progEd, 0, true);
+                const signed = await signUpload(state.movId, f);
+                const url =
+                  signed?.uploadUrl ||
+                  signed?.signedUrl ||
+                  signed?.url;
+                const bucket = signed?.bucket || signed?.bucketName;
+                const object =
+                  signed?.object ||
+                  signed?.objectName ||
+                  signed?.path ||
+                  signed?.gcsPath;
+
+                if (!url) {
+                  throw new Error('A assinatura não retornou a URL de upload.');
+                }
+
+                await putWithProgress(
+                  url,
+                  f,
+                  signed?.contentType ||
+                  signed?.headers?.['Content-Type'] ||
+                  f.type ||
+                  'application/octet-stream',
+                  (p) => setProgress(progEd, p, true)
+                );
+
+                await confirmUpload(state.movId, f, bucket, object);
+              } catch (err) {
+                logWrn(
+                  `Falha no envio direto de "${f.name}"; ` +
+                  'tentando pelo backend.',
+                  err
+                );
+
+                const fd = new FormData();
+                fd.append('movId', String(state.movId));
+                fd.append('arquivo', f, f.name);
+                const r = await fetch(
+                  `${API_BASE}/api/upload/anexo`,
+                  { method: 'POST', body: fd }
+                );
+
+                if (!r.ok) {
+                  throw new Error(
+                    `Falha ao enviar "${f.name}": ` +
+                    `${r.status} ${r.statusText}`
+                  );
+                }
+              }
+            }
+
+            fileEd.value = '';
+            logOk(`${arquivos.length} arquivo(s) enviado(s).`);
+            await refreshListaEdicao();
+          } catch (err) {
+            logErr('Falha ao enviar anexos:', err.message || err);
+            alert('Falha ao enviar anexos: ' + (err.message || err));
+          } finally {
+            setProgress(progEd, 0, false);
+            btnEd.disabled = !(fileEd?.files?.length);
+          }
+        }
+
+        if (btnEd) btnEd.addEventListener('click', enviarEdicao);
+
+        // Hooks p/ o caixa.js
+        window.__caixaUpload = {
+          /*
+           * Used by cashMoviments.create.js after the movement is created.
+           */
+          uploadCadastro,
+
+          async setMovId(movId) {
+            logTag(`setMovId(${movId})`);
+            state.movId = Number(movId) || null;
+            await refreshListaEdicao();
+          },
+
+          async refresh() {
+            logTag('refresh() anexos');
+            await refreshListaEdicao();
+          },
+
+          async onDeleted(bucketPath) {
+            logTag(`Anexo removido: ${bucketPath || '(sem path)'}`);
+          },
+        };
+
+        console.log(
+          '[CAIXA][UPLOAD] Funções disponíveis:',
+          Object.keys(window.__caixaUpload)
+        );
+      }
+      )();
+    </script>
+
+  </main>
+
+  <!-- Feedback do cadastro -->
+  <dialog id="cashFeedbackDialog" class="cash-feedback" aria-labelledby="cashFeedbackTitle"
+    aria-describedby="cashFeedbackMessage">
+    <div class="cash-feedback__content">
+      <span class="cash-feedback__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M20 6 9 17l-5-5"></path>
+        </svg>
+      </span>
+
+      <div>
+        <h2 id="cashFeedbackTitle" class="cash-feedback__title">Movimentação registrada</h2>
+        <p id="cashFeedbackMessage" class="cash-feedback__message" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <div class="cash-feedback__actions">
+      <button type="button" id="cashFeedbackConfirm" class="btn btn-primary cash-feedback__confirm">
+        Entendi
+      </button>
+    </div>
+  </dialog>
+
+  <!-- Script da página -->
+  <script type="module" src="/public/cashMoviments/js/cashMoviments.index.js?v=12"></script>
+  <script type="module" src="/public/cashMoviments/js/cashMoviments.attachTiles.js?v=2"></script>
+</body>
+
+</html>

@@ -1,0 +1,313 @@
+// ╔══════════════════════════════════════════════════════════════════════╗
+// ║ crmConsartReativacaoController.js — Controller CRM Reativação       ║
+// ║ CONSART ERP — ESM + Express                                         ║
+// ║                                                                      ║
+// ║ Rotas esperadas (via Routes):                                       ║
+// ║   GET    /api/crm/reativacao/stages                                 ║
+// ║   GET    /api/crm/reativacao/deals                                  ║
+// ║   GET    /api/crm/reativacao/deals/:id                              ║
+// ║   POST   /api/crm/reativacao/deals                                  ║
+// ║   PATCH  /api/crm/reativacao/deals/:id                              ║
+// ║   PATCH  /api/crm/reativacao/deals/:id/move                         ║
+// ║   DELETE /api/crm/reativacao/deals/:id                              ║
+// ║   POST   /api/crm/reativacao/deals/:id/outcome                      ║
+// ║   GET    /api/crm/reativacao/outcomes/summary                       ║
+// ╚══════════════════════════════════════════════════════════════════════╝
+
+import crmConsartReativacaoApi from '../repositories/crmConsart/crmConsart.index.js';
+
+function sendError(res, statusCode = 500, error = 'UNKNOWN_ERROR') {
+  return res.status(statusCode).json({ ok: false, error });
+}
+
+/* =========================================================================
+ * STAGES
+ * ========================================================================= */
+
+async function listStages(req, res) {
+  try {
+    const includeInactive =
+      String(req.query.includeInactive || 'false').toLowerCase() === 'true';
+
+    const { ok, data, error } = await crmConsartReativacaoApi.listStages({
+      includeInactive,
+    });
+
+    if (!ok) {
+      return sendError(res, 500, error || 'STAGES_LIST_ERROR');
+    }
+
+    return res.json({ ok: true, data });
+  } catch (err) {
+    console.error('[crmConsartReativacaoController.listStages]', err);
+    return sendError(res, 500, 'STAGES_LIST_EXCEPTION');
+  }
+}
+
+/* =========================================================================
+ * DEALS
+ * ========================================================================= */
+
+async function listDeals(req, res) {
+  try {
+    const {
+      stageCode,
+      stageId,
+      sellerId,
+      search,
+      limit,
+      offset,
+    } = req.query;
+
+    const parsedLimit = limit ? Number(limit) : 50;
+    const parsedOffset = offset ? Number(offset) : 0;
+
+    const { ok, data, error } = await crmConsartReativacaoApi.listDeals({
+      stageCode: stageCode || undefined,
+      stageId: stageId ? Number(stageId) : undefined,
+      sellerId: sellerId ? Number(sellerId) : undefined,
+      search: search || undefined,
+      limit: Number.isNaN(parsedLimit) ? 50 : parsedLimit,
+      offset: Number.isNaN(parsedOffset) ? 0 : parsedOffset,
+    });
+
+    if (!ok) {
+      return sendError(res, 500, error || 'DEALS_LIST_ERROR');
+    }
+
+    return res.json({ ok: true, data });
+  } catch (err) {
+    console.error('[crmConsartReativacaoController.listDeals]', err);
+    return sendError(res, 500, 'DEALS_LIST_EXCEPTION');
+  }
+}
+
+async function getDeal(req, res) {
+  try {
+    const id = Number(req.params.id);
+    if (!id) {
+      return sendError(res, 400, 'INVALID_ID');
+    }
+
+    const { ok, data, error } = await crmConsartReativacaoApi.getDealById(id);
+    if (!ok) {
+      if (error === 'DEAL_NOT_FOUND') {
+        return sendError(res, 404, error);
+      }
+      return sendError(res, 500, error || 'DEAL_GET_ERROR');
+    }
+
+    return res.json({ ok: true, data });
+  } catch (err) {
+    console.error('[crmConsartReativacaoController.getDeal]', err);
+    return sendError(res, 500, 'DEAL_GET_EXCEPTION');
+  }
+}
+
+async function createDeal(req, res) {
+  try {
+    const payload = req.body || {};
+    const { ok, data, error } =
+      await crmConsartReativacaoApi.createDeal(payload);
+
+    if (!ok) {
+      if (error === 'STAGE_REQUIRED') {
+        return sendError(res, 400, error);
+      }
+      return sendError(res, 500, error || 'DEAL_CREATE_ERROR');
+    }
+
+    return res.status(201).json({ ok: true, data });
+  } catch (err) {
+    console.error('[crmConsartReativacaoController.createDeal]', err);
+    return sendError(res, 500, 'DEAL_CREATE_EXCEPTION');
+  }
+}
+
+async function updateDeal(req, res) {
+  try {
+    const id = Number(req.params.id);
+    if (!id) {
+      return sendError(res, 400, 'INVALID_ID');
+    }
+
+    const payload = req.body || {};
+    const { ok, data, error } =
+      await crmConsartReativacaoApi.updateDeal(id, payload);
+
+    if (!ok) {
+      if (error === 'DEAL_NOT_FOUND') {
+        return sendError(res, 404, error);
+      }
+      return sendError(res, 500, error || 'DEAL_UPDATE_ERROR');
+    }
+
+    return res.json({ ok: true, data });
+  } catch (err) {
+    console.error('[crmConsartReativacaoController.updateDeal]', err);
+    return sendError(res, 500, 'DEAL_UPDATE_EXCEPTION');
+  }
+}
+
+async function moveDeal(req, res) {
+  try {
+    const id = Number(req.params.id);
+    if (!id) {
+      return sendError(res, 400, 'INVALID_ID');
+    }
+
+    const { stageCode, stageId } = req.body || {};
+
+    const { ok, data, error } = await crmConsartReativacaoApi.moveDealToStage({
+      id,
+      stageCode: stageCode || undefined,
+      stageId: stageId ? Number(stageId) : undefined,
+    });
+
+    if (!ok) {
+      if (error === 'DEAL_NOT_FOUND') {
+        return sendError(res, 404, error);
+      }
+      if (error === 'STAGE_NOT_FOUND' || error === 'STAGE_REQUIRED') {
+        return sendError(res, 400, error);
+      }
+      return sendError(res, 500, error || 'DEAL_MOVE_ERROR');
+    }
+
+    return res.json({ ok: true, data });
+  } catch (err) {
+    console.error('[crmConsartReativacaoController.moveDeal]', err);
+    return sendError(res, 500, 'DEAL_MOVE_EXCEPTION');
+  }
+}
+
+async function deleteDeal(req, res) {
+  try {
+    const id = Number(req.params.id);
+    if (!id) {
+      return sendError(res, 400, 'INVALID_ID');
+    }
+
+    const { ok, data, error } =
+      await crmConsartReativacaoApi.deleteDeal(id);
+
+    if (!ok) {
+      if (error === 'DEAL_NOT_FOUND') {
+        return sendError(res, 404, error);
+      }
+      return sendError(res, 500, error || 'DEAL_DELETE_ERROR');
+    }
+
+    return res.json({ ok: true, data });
+  } catch (err) {
+    console.error('[crmConsartReativacaoController.deleteDeal]', err);
+    return sendError(res, 500, 'DEAL_DELETE_EXCEPTION');
+  }
+}
+
+/* =========================================================================
+ * OUTCOME (Conversão / Queda)
+ * ========================================================================= */
+
+/**
+ * POST /api/crm/reativacao/deals/:id/outcome
+ * Body:
+ *  {
+ *    outcome_type | outcomeType | outcome: "CONVERSION" | "LOSS",
+ *    note?,
+ *    reason?
+ *  }
+ */
+async function registerOutcome(req, res) {
+  try {
+    const id = Number(req.params.id);
+    if (!id) {
+      return sendError(res, 400, 'INVALID_ID');
+    }
+
+    const body = req.body || {};
+    const typeRaw =
+      body.outcome_type ||
+      body.outcomeType ||
+      body.outcome ||
+      '';
+
+    const note = body.note || body.notes || null;
+    const reason = body.reason || body.outcome_reason || null;
+
+    const userId =
+      req.user?.id ||
+      req.session?.userId ||
+      req.userId ||
+      null;
+
+    const { ok, data, error } = await crmConsartReativacaoApi.registerOutcome({
+      dealId: id,
+      outcomeType: typeRaw,
+      note,
+      reason,
+      userId,
+    });
+
+    if (!ok) {
+      if (error === 'DEAL_NOT_FOUND') {
+        return sendError(res, 404, error);
+      }
+      if (error === 'INVALID_OUTCOME_TYPE') {
+        return sendError(res, 400, error);
+      }
+      return sendError(res, 500, error || 'DEAL_OUTCOME_ERROR');
+    }
+
+    return res.json({ ok: true, data });
+  } catch (err) {
+    console.error('[crmConsartReativacaoController.registerOutcome]', err);
+    return sendError(res, 500, 'DEAL_OUTCOME_EXCEPTION');
+  }
+}
+
+/**
+ * GET /api/crm/reativacao/outcomes/summary?sellerId=...
+ * Retorna totais de conversões / perdas e valores, opcionalmente
+ * filtrados por vendedor.
+ */
+async function summaryOutcomes(req, res) {
+  try {
+    const sellerId = req.query.sellerId
+      ? Number(req.query.sellerId)
+      : undefined;
+
+    const { ok, data, error } =
+      await crmConsartReativacaoApi.getOutcomesSummary({ sellerId });
+
+    if (!ok) {
+      return sendError(res, 500, error || 'OUTCOMES_SUMMARY_ERROR');
+    }
+
+    return res.json({ ok: true, data });
+  } catch (err) {
+    console.error('[crmConsartReativacaoController.summaryOutcomes]', err);
+    return sendError(res, 500, 'OUTCOMES_SUMMARY_EXCEPTION');
+  }
+}
+
+/* =========================================================================
+ * Export default
+ * ========================================================================= */
+
+const crmConsartReativacaoController = {
+  // stages
+  listStages,
+  // deals
+  listDeals,
+  getDeal,
+  createDeal,
+  updateDeal,
+  moveDeal,
+  deleteDeal,
+  // outcomes
+  registerOutcome,
+  summaryOutcomes,
+};
+
+export default crmConsartReativacaoController;

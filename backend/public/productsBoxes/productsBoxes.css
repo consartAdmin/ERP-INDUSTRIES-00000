@@ -1,0 +1,927 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ productsBoxes.css — Produtos › Caixas (Boxes) | PRODNEX ERP          ║
+   ║ Path: backend/public/productsBoxes/productsBoxes.css                ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+:root{
+  --pbx-bg: rgba(255,255,255,0.02);
+  --pbx-card: rgba(255,255,255,0.06);
+  --pbx-border: rgba(255,255,255,0.10);
+  --pbx-border2: rgba(255,255,255,0.14);
+  --pbx-text: rgba(255,255,255,0.92);
+  --pbx-muted: rgba(255,255,255,0.65);
+  --pbx-danger: #e24b4b;
+  --pbx-ok: #35c58f;
+  --pbx-warn: #f0b43a;
+  --pbx-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.pbx{
+  padding: 18px;
+  color: var(--pbx-text);
+}
+
+.pbx__top{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:16px;
+  padding: 14px 16px;
+  border: 1px solid var(--pbx-border);
+  border-radius: 16px;
+  background: var(--pbx-card);
+  box-shadow: var(--pbx-shadow);
+}
+
+.pbx__title h1{
+  margin:0;
+  font-size: 20px;
+  letter-spacing: 0.2px;
+}
+.pbx__title p{
+  margin:6px 0 0;
+  color: var(--pbx-muted);
+  font-size: 13px;
+}
+
+.pbx__topActions{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+.btn{
+  border: 1px solid var(--pbx-border2);
+  background: rgba(255,255,255,0.08);
+  color: var(--pbx-text);
+  padding: 10px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.15s ease;
+  user-select:none;
+}
+.btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.10); }
+.btn:disabled{ opacity: 0.45; cursor:not-allowed; transform:none; }
+
+.pbx__btn{ font-weight: 600; }
+.pbx__btnSecondary{ background: rgba(255,255,255,0.04); }
+.pbx__btnDanger{ background: rgba(226,75,75,0.12); border-color: rgba(226,75,75,0.35); }
+.pbx__btnDanger:hover{ background: rgba(226,75,75,0.18); }
+
+.pbx__btnSmall{
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-weight:600;
+}
+
+.pbx__grid{
+  margin-top: 14px;
+  display:grid;
+  grid-template-columns: 420px 1fr;
+  gap: 14px;
+  align-items: stretch;
+}
+
+.pbx__panel{
+  border: 1px solid var(--pbx-border);
+  border-radius: 16px;
+  background: var(--pbx-card);
+  box-shadow: var(--pbx-shadow);
+  overflow:hidden;
+  min-height: calc(100vh - 140px);
+}
+
+.pbx__panelHeader{
+  padding: 14px 14px 10px;
+  border-bottom: 1px solid var(--pbx-border);
+  background: rgba(255,255,255,0.03);
+}
+
+.pbx__searchRow{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+.pbx__search{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex: 1;
+  min-width: 240px;
+  border: 1px solid var(--pbx-border);
+  background: rgba(0,0,0,0.18);
+  border-radius: 12px;
+  padding: 8px 10px;
+}
+
+.pbx__icon{ opacity:0.85; }
+.pbx__search input{
+  flex:1;
+  border:none;
+  outline:none;
+  background: transparent;
+  color: var(--pbx-text);
+  font-size: 13px;
+}
+
+.pbx__filters{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+select{
+  border: 1px solid var(--pbx-border);
+  background: rgba(0,0,0,0.18);
+  color: var(--pbx-text);
+  padding: 9px 10px;
+  border-radius: 12px;
+  outline:none;
+  font-size: 13px;
+}
+
+.pbx__metaRow{
+  margin-top: 10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.pbx__meta{ color: var(--pbx-muted); font-size: 13px; }
+
+.pbx__pager{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.pbx__pageInfo{ color: var(--pbx-muted); font-size: 13px; min-width: 68px; text-align:center; }
+
+.pbx__list{
+  padding: 10px;
+  max-height: calc(100vh - 265px);
+  overflow:auto;
+}
+
+.pbx__hint{
+  padding: 10px 12px 14px;
+  border-top: 1px solid var(--pbx-border);
+  color: var(--pbx-muted);
+  font-size: 12px;
+}
+
+.pbx__card{
+  border: 1px solid var(--pbx-border);
+  background: rgba(0,0,0,0.18);
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 10px;
+  cursor:pointer;
+  transition: 0.15s ease;
+}
+.pbx__card:hover{ transform: translateY(-1px); background: rgba(0,0,0,0.22); }
+.pbx__card.is-active{
+  border-color: rgba(53,197,143,0.45);
+  box-shadow: 0 0 0 2px rgba(53,197,143,0.10) inset;
+}
+
+.pbx__cardTop{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+}
+.pbx__cardTitle{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.pbx__cardTitle strong{ font-size: 14px; }
+.pbx__cardTitle span{ font-size: 12px; color: var(--pbx-muted); }
+
+.pbx__badge{
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--pbx-border);
+  color: var(--pbx-muted);
+  background: rgba(255,255,255,0.04);
+  white-space:nowrap;
+}
+.pbx__badge--ok{
+  border-color: rgba(53,197,143,0.35);
+  color: rgba(53,197,143,0.95);
+  background: rgba(53,197,143,0.10);
+}
+.pbx__badge--off{
+  border-color: rgba(226,75,75,0.35);
+  color: rgba(226,75,75,0.95);
+  background: rgba(226,75,75,0.10);
+}
+
+.pbx__panelHeader--detail{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+}
+
+.pbx__detailTitle h2{
+  margin:0;
+  font-size: 18px;
+}
+.pbx__detailTitle p{
+  margin:6px 0 0;
+  color: var(--pbx-muted);
+  font-size: 13px;
+}
+
+.pbx__detailActions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.pbx__body{
+  padding: 14px;
+  display:flex;
+  flex-direction:column;
+  gap: 14px;
+}
+
+.pbx__form{
+  border: 1px solid var(--pbx-border);
+  background: rgba(0,0,0,0.16);
+  border-radius: 16px;
+  padding: 14px;
+}
+
+/* ========================================================================== */
+/* FORM GRID — base do módulo (você usa colunas .pbx__col-*)                  */
+/* ✅ Classe especial: .pbx__formGrid--singleRow mantém 1 LINHA sempre        */
+/* ========================================================================== */
+.pbx__formGrid{
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 14px;
+  align-items: end;
+}
+
+/* default (caso algum campo não tenha classe col-*) */
+.pbx__formGrid .pbx__field{
+  grid-column: span 3;
+}
+
+.pbx__field label{
+  display:block;
+  font-size: 12px;
+  color: var(--pbx-muted);
+  margin-bottom: 6px;
+}
+
+.pbx__field input,
+.pbx__field textarea{
+  width:100%;
+  border: 1px solid var(--pbx-border);
+  background: rgba(0,0,0,0.22);
+  color: var(--pbx-text);
+  padding: 10px 10px;
+  border-radius: 12px;
+  outline:none;
+  font-size: 13px;
+}
+
+.pbx__field textarea{ resize: vertical; min-height: 56px; }
+
+/* spans (12-col system) */
+.pbx__col-1  { grid-column: span 1; }
+.pbx__col-2  { grid-column: span 2; }
+.pbx__col-3  { grid-column: span 3; }
+.pbx__col-4  { grid-column: span 4; }
+.pbx__col-5  { grid-column: span 5; }
+.pbx__col-6  { grid-column: span 6; }
+.pbx__col-7  { grid-column: span 7; }
+.pbx__col-8  { grid-column: span 8; }
+.pbx__col-9  { grid-column: span 9; }
+.pbx__col-10 { grid-column: span 10; }
+.pbx__col-11 { grid-column: span 11; }
+.pbx__col-12 { grid-column: span 12; }
+
+/* compatibilidade com classes antigas */
+.pbx__field--span2{ grid-column: span 2; }
+.pbx__field--span3{ grid-column: span 3; }
+
+/* ✅ FORCE: 1 linha SEMPRE (ignora os @media que quebram o grid) */
+.pbx__formGrid--singleRow{
+  grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+}
+
+/* Botão alinhado com inputs (ex: Desfazer no grid) */
+.pbx__field--actions{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.pbx__btnBlock{
+  width: 100%;
+  height: 42px; /* mesma altura visual dos inputs */
+}
+
+.pbx__formFooter{
+  margin-top: 12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.pbx__pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--pbx-border);
+  background: rgba(255,255,255,0.04);
+  color: var(--pbx-muted);
+}
+
+.pbx__muted{ color: var(--pbx-muted); }
+
+.pbx__items{
+  border: 1px solid var(--pbx-border);
+  background: rgba(0,0,0,0.16);
+  border-radius: 16px;
+  overflow:hidden;
+}
+
+.pbx__itemsHeader{
+  padding: 12px 14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+  flex-wrap:wrap;
+  border-bottom: 1px solid var(--pbx-border);
+  background: rgba(255,255,255,0.03);
+}
+
+.pbx__itemsHeader h3{ margin:0; font-size: 15px; }
+.pbx__itemsHeader p{ margin:6px 0 0; font-size: 12px; color: var(--pbx-muted); }
+
+.pbx__itemsActions{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+.pbx__itemsTableWrap{
+  max-height: calc(100vh - 520px);
+  overflow:auto;
+}
+
+.pbx__table{
+  width:100%;
+  border-collapse: collapse;
+}
+.pbx__table thead th{
+  position: sticky;
+  top: 0;
+  background: rgba(0,0,0,0.28);
+  border-bottom: 1px solid var(--pbx-border);
+  padding: 10px;
+  text-align:left;
+  font-size: 12px;
+  color: var(--pbx-muted);
+}
+.pbx__table tbody td{
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 10px;
+  font-size: 13px;
+  vertical-align: top;
+}
+.pbx__table tbody tr:hover td{
+  background: rgba(255,255,255,0.03);
+}
+
+.pbx__empty{
+  text-align:center;
+  color: var(--pbx-muted);
+  padding: 18px !important;
+}
+
+.pbx__rowActions{
+  display:flex;
+  gap:8px;
+  justify-content:flex-end;
+}
+
+.pbx__iconBtn{
+  border: 1px solid var(--pbx-border);
+  background: rgba(255,255,255,0.06);
+  color: var(--pbx-text);
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  cursor:pointer;
+}
+.pbx__iconBtn:hover{ background: rgba(255,255,255,0.10); }
+
+.pbx__toast{
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  min-width: 260px;
+  max-width: 420px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--pbx-border);
+  background: rgba(0,0,0,0.75);
+  color: var(--pbx-text);
+  box-shadow: var(--pbx-shadow);
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events:none;
+  transition: 0.18s ease;
+  z-index: 9999;
+}
+.pbx__toast.is-show{
+  opacity: 1;
+  transform: translateY(0);
+}
+.pbx__toast small{ color: var(--pbx-muted); display:block; margin-top: 4px; }
+
+.pbx__modalOverlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index: 9998;
+}
+
+.pbx__modal{
+  width: min(720px, calc(100vw - 26px));
+  border-radius: 18px;
+  border: 1px solid var(--pbx-border);
+  background: rgba(20,20,24,0.95);
+  box-shadow: var(--pbx-shadow);
+  overflow:hidden;
+}
+
+.pbx__modalHeader{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--pbx-border);
+  background: rgba(255,255,255,0.03);
+}
+.pbx__modalHeader h3{
+  margin:0;
+  font-size: 15px;
+}
+
+.pbx__modalBody{ padding: 14px; }
+.pbx__modalFooter{
+  padding: 12px 14px;
+  border-top: 1px solid var(--pbx-border);
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  background: rgba(255,255,255,0.03);
+}
+
+.pbx__formGrid--modal{
+  grid-template-columns: 1.2fr 0.8fr 0.6fr;
+}
+
+/* Responsivo geral do módulo */
+@media (max-width: 1100px){
+  .pbx__grid{ grid-template-columns: 1fr; }
+  .pbx__panel{ min-height: unset; }
+  .pbx__list{ max-height: 320px; }
+  .pbx__itemsTableWrap{ max-height: 340px; }
+}
+
+/* Responsivo do form (quando NÃO estiver usando --singleRow) */
+@media (max-width: 980px){
+  .pbx__formGrid{ grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .pbx__col-12{ grid-column: span 6; }
+  .pbx__col-4{ grid-column: span 6; } /* Nome quebra melhor */
+  .pbx__col-2{ grid-column: span 3; }
+  .pbx__col-3{ grid-column: span 3; }
+
+  /* ✅ mantém o singleRow intacto (não quebra em 6 colunas) */
+  .pbx__formGrid--singleRow{ grid-template-columns: repeat(12, minmax(0, 1fr)) !important; }
+  .pbx__formGrid--singleRow .pbx__col-12{ grid-column: span 12 !important; }
+  .pbx__formGrid--singleRow .pbx__col-4{ grid-column: span 4 !important; }
+  .pbx__formGrid--singleRow .pbx__col-3{ grid-column: span 3 !important; }
+  .pbx__formGrid--singleRow .pbx__col-2{ grid-column: span 2 !important; }
+  .pbx__formGrid--singleRow .pbx__col-5{ grid-column: span 5 !important; }
+}
+
+/* Mobile */
+@media (max-width: 620px){
+  .pbx__top{ flex-direction:column; align-items:flex-start; }
+  .pbx__formGrid{ grid-template-columns: 1fr; }
+  .pbx__formGrid .pbx__field{ grid-column: span 1 !important; }
+  .pbx__formGrid--modal{ grid-template-columns: 1fr; }
+
+  /* ✅ se você quiser singleRow mesmo no mobile, remova este bloco abaixo.
+     Por padrão, mobile deve empilhar para não esmagar os campos. */
+  .pbx__formGrid--singleRow{ grid-template-columns: 1fr !important; }
+  .pbx__formGrid--singleRow .pbx__field{ grid-column: span 1 !important; }
+}
+
+/* ✅ HARD FIX: force native hidden behavior (some global CSS may break it) */
+.pbx__modalOverlay[hidden]{
+  display: none !important;
+}
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ LIGHT THEME OVERRIDE — Products Boxes                                ║
+   ║ Scope: ONLY productsBoxes module                                     ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+/* Base page */
+.pbx {
+  background: #ffffff;
+  color: #111111;
+}
+
+/* Panels / cards */
+.pbx__panel,
+.pbx__top,
+.pbx__form,
+.pbx__items,
+.pbx__modal {
+  background: #ffffff !important;
+  color: #111111 !important;
+  border-color: #e5e7eb;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+
+/* Headers */
+.pbx__panelHeader,
+.pbx__itemsHeader,
+.pbx__modalHeader {
+  background: #f8fafc;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Text */
+.pbx h1,
+.pbx h2,
+.pbx h3,
+.pbx label,
+.pbx strong {
+  color: #111111;
+}
+
+.pbx__muted,
+.pbx__meta,
+.pbx__hint,
+.pbx__cardTitle span {
+  color: #6b7280;
+}
+
+/* Inputs / textarea / select */
+.pbx input,
+.pbx textarea,
+.pbx select {
+  background: #ffffff;
+  color: #111111;
+  border: 1px solid #d1d5db;
+}
+
+.pbx input::placeholder,
+.pbx textarea::placeholder {
+  color: #9ca3af;
+}
+
+/* Search bar */
+.pbx__search {
+  background: #ffffff;
+  border-color: #d1d5db;
+}
+
+/* Cards (list) */
+.pbx__card {
+  background: #ffffff;
+  border-color: #e5e7eb;
+}
+
+.pbx__card:hover {
+  background: #f9fafb;
+}
+
+/* Active card */
+.pbx__card.is-active {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37,99,235,0.12) inset;
+}
+
+/* Badges */
+.pbx__badge {
+  background: #f3f4f6;
+  color: #374151;
+  border-color: #d1d5db;
+}
+
+.pbx__badge--ok {
+  background: #ecfdf5;
+  color: #065f46;
+  border-color: #a7f3d0;
+}
+
+.pbx__badge--off {
+  background: #fef2f2;
+  color: #7f1d1d;
+  border-color: #fecaca;
+}
+
+/* Tables */
+.pbx__table thead th {
+  background: #f3f4f6;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.pbx__table tbody td {
+  color: #111111;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.pbx__table tbody tr:hover td {
+  background: #f9fafb;
+}
+
+/* Buttons */
+.pbx .btn {
+  background: #f3f4f6;
+  color: #111111;
+  border-color: #d1d5db;
+}
+
+.pbx .btn:hover {
+  background: #e5e7eb;
+}
+
+.pbx__btnSecondary {
+  background: #ffffff;
+}
+
+.pbx__btnDanger {
+  background: #fee2e2;
+  color: #7f1d1d;
+  border-color: #fecaca;
+}
+
+.pbx__btnDanger:hover {
+  background: #fecaca;
+}
+
+/* Modal overlay */
+.pbx__modalOverlay {
+  background: rgba(0,0,0,0.35);
+}
+
+/* Toast */
+.pbx__toast {
+  background: #ffffff;
+  color: #111111;
+  border-color: #e5e7eb;
+}
+
+.pbx__toast small {
+  color: #6b7280;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Modal SKU autocomplete
+────────────────────────────────────────────────────────────── */
+.pbx__field--sku{ position: relative; }
+
+.pbx__suggest{
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 14px 30px rgba(0,0,0,0.12);
+  overflow: hidden;
+  max-height: 260px;
+}
+
+.pbx__suggest[hidden]{ display:none !important; }
+
+.pbx__suggestItem{
+  padding: 10px 12px;
+  cursor: pointer;
+  display:flex;
+  flex-direction: column;
+  gap: 3px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.pbx__suggestItem:last-child{ border-bottom: none; }
+
+.pbx__suggestItem:hover,
+.pbx__suggestItem.is-active{
+  background: #f9fafb;
+}
+
+.pbx__suggestTop{
+  display:flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.pbx__suggestSku{
+  font-weight: 700;
+  color: #111111;
+}
+
+.pbx__suggestName{
+  color: #374151;
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.pbx__suggestMeta{
+  color: #6b7280;
+  font-size: 12px;
+}
+
+/* =======================================================================
+   ✅ HARD OVERRIDE — Header do Form em 1 linha (Inputs + Desfazer)
+   Cole NO FINAL do productsBoxes.css
+   ======================================================================= */
+
+.pbx__form .pbx__formGrid.pbx__formGrid--singleRow{
+  display: grid !important;
+  grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+  align-items: end !important;
+}
+
+/* garante que os campos não "estourem" a coluna */
+.pbx__form .pbx__formGrid.pbx__formGrid--singleRow > .pbx__field{
+  min-width: 0 !important;
+}
+
+/* força os spans (se algum CSS global estiver anulando) */
+.pbx__form .pbx__formGrid.pbx__formGrid--singleRow .pbx__col-1  { grid-column: span 1 !important; }
+.pbx__form .pbx__formGrid.pbx__formGrid--singleRow .pbx__col-2  { grid-column: span 2 !important; }
+.pbx__form .pbx__formGrid.pbx__formGrid--singleRow .pbx__col-3  { grid-column: span 3 !important; }
+.pbx__form .pbx__formGrid.pbx__formGrid--singleRow .pbx__col-4  { grid-column: span 4 !important; }
+.pbx__form .pbx__formGrid.pbx__formGrid--singleRow .pbx__col-5  { grid-column: span 5 !important; }
+.pbx__form .pbx__formGrid.pbx__formGrid--singleRow .pbx__col-6  { grid-column: span 6 !important; }
+.pbx__form .pbx__formGrid.pbx__formGrid--singleRow .pbx__col-7  { grid-column: span 7 !important; }
+.pbx__form .pbx__formGrid.pbx__formGrid--singleRow .pbx__col-8  { grid-column: span 8 !important; }
+.pbx__form .pbx__formGrid.pbx__formGrid--singleRow .pbx__col-9  { grid-column: span 9 !important; }
+.pbx__form .pbx__formGrid.pbx__formGrid--singleRow .pbx__col-10 { grid-column: span 10 !important; }
+.pbx__form .pbx__formGrid.pbx__formGrid--singleRow .pbx__col-11 { grid-column: span 11 !important; }
+.pbx__form .pbx__formGrid.pbx__formGrid--singleRow .pbx__col-12 { grid-column: span 12 !important; }
+
+/* botão alinhado na base igual input */
+.pbx__form .pbx__formGrid.pbx__formGrid--singleRow .pbx__field--actions{
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-end !important;
+}
+
+/* mesma “altura visual” dos inputs */
+.pbx__form .pbx__formGrid.pbx__formGrid--singleRow .pbx__btnBlock{
+  width: 100% !important;
+  height: 44px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 10px 12px !important;
+}
+
+/* ✅ se você NÃO quer empilhar no mobile quando singleRow estiver ativo,
+      comente este bloco. Mantive empilhado porque é melhor UX. */
+@media (max-width: 620px){
+  .pbx__form .pbx__formGrid.pbx__formGrid--singleRow{
+    grid-template-columns: 1fr !important;
+  }
+  .pbx__form .pbx__formGrid.pbx__formGrid--singleRow .pbx__field{
+    grid-column: span 1 !important;
+  }
+}
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║ FIX — Labels invisíveis no Light Theme (muted branco no branco) ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+.pbx{
+  /* redefine tokens do módulo para light */
+  --pbx-text: #111111 !important;
+  --pbx-muted: #6b7280 !important;
+  --pbx-border: rgba(17,17,17,0.10) !important;
+  --pbx-border2: rgba(17,17,17,0.14) !important;
+}
+
+/* garante labels visíveis (se algum CSS estiver ganhando na cascata) */
+.pbx .pbx__field label{
+  color: #111827 !important; /* ou #374151 se quiser mais “suave” */
+  font-weight: 600;
+}
+
+/* textos auxiliares */
+.pbx .pbx__hint,
+.pbx .pbx__meta,
+.pbx .pbx__muted,
+.pbx .pbx__cardTitle span,
+.pbx .pbx__pageInfo{
+  color: var(--pbx-muted) !important;
+}
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║ LISTA EM TABELA — Products Boxes                            ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+.pbx__listTableWrap{
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* tabela base */
+.pbx__listTable{
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+/* header */
+.pbx__listTable thead th{
+  background: #f3f4f6;
+  color: #374151;
+  font-weight: 600;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+/* células */
+.pbx__listTable tbody td{
+  padding: 10px 12px;
+  vertical-align: middle;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+/* linha clicável */
+.pbx__listTable tbody tr{
+  cursor: pointer;
+  transition: 0.12s ease;
+}
+
+.pbx__listTable tbody tr:hover{
+  background: #f9fafb;
+}
+
+/* linha ativa */
+.pbx__listTable tbody tr.is-active{
+  background: #e8f0ff !important;
+  box-shadow: inset 0 0 0 2px rgba(37,99,235,0.35);
+}
+
+/* badge status */
+.pbx__statusBadge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+.pbx__statusBadge--ok{
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.pbx__statusBadge--off{
+  background: #fef2f2;
+  color: #7f1d1d;
+  border: 1px solid #fecaca;
+}

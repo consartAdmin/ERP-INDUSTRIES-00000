@@ -1,0 +1,293 @@
+<!-- ╔════════════════════════════════════════════════════════════════════╗ -->
+<!-- ║ FILE: nfeInutilizarEvents.html                                    ║ -->
+<!-- ║ MODULE: NF-e Inutilização de Numeração                            ║ -->
+<!-- ║ PRODNEX ERP                                                       ║ -->
+<!-- ║ Tela para criar, consultar e listar inutilizações de NF-e         ║ -->
+<!-- ╚════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NF-e • Inutilização de Numeração</title>
+
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+    <header class="header header-h-7">
+      <div class="fields-inline fields-gap-3">
+        <div class="fields fields-h-6 fields-w-full fields-font-3">
+          <div>
+            <h1 class="font-bold">Inutilização de Numeração NF-e</h1>
+            <p class="font-normal">Crie, consulte e acompanhe eventos de inutilização de sequência fiscal.</p>
+          </div>
+
+          <div class="btn-inline btn-position-right">
+            <button id="btnRefresh" class="btn btn-secondary btn-sm" type="button">Atualizar lista</button>
+            <button id="btnNovaInutilizacao" class="btn btn-secondary btn-sm" type="button">
+              Nova inutilização
+            </button>
+          </div>
+        </div>
+    </header>
+
+    <!-- MODAL: NOVA INUTILIZAÇÃO -->
+    <div id="modalNovaInutilizacao" class="modal modal-width-10" aria-hidden="true">
+      <div class="modal__backdrop" data-modal-inutilizacao-close></div>
+
+      <div class="modal__dialog">
+        <section class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modalNovaInutilizacaoTitle">
+          <header class="modal__header modal-header-color-3">
+            <h2 id="modalNovaInutilizacaoTitle" class="modal__title">
+              Nova inutilização
+            </h2>
+
+            <button class="modal__close" type="button" aria-label="Fechar modal" title="Fechar"
+              data-modal-inutilizacao-close>
+              &times;
+            </button>
+          </header>
+
+          <form id="formInutilizacao" autocomplete="off">
+            <div class="modal__body">
+              <div class="fields-inline fields-gap-3">
+                <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                  <label for="companyCnpj">CNPJ da empresa</label>
+                  <input id="companyCnpj" name="companyCnpj" type="text" inputmode="numeric" maxlength="18"
+                    placeholder="00.000.000/0000-00" />
+                </div>
+
+                <div class="fields fields-h-6 fields-w-10 fields-font-3">
+                  <label for="model">Modelo</label>
+                  <select id="model" name="model">
+                    <option value="55" selected>55 - NF-e</option>
+                    <option value="65">65 - NFC-e</option>
+                  </select>
+                </div>
+
+                <div class="fields fields-h-6 fields-w-5 fields-font-3">
+                  <label for="serie">Série</label>
+                  <input id="serie" name="serie" type="number" min="0" step="1" placeholder="1" required />
+                </div>
+
+                <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                  <label for="numberStart">Número inicial</label>
+                  <input id="numberStart" name="numberStart" type="number" min="1" step="1" placeholder="100"
+                    required />
+                </div>
+
+                <div class="fields fields-h-6 fields-w-10 fields-font-3">
+                  <label for="numberEnd">Número final</label>
+                  <input id="numberEnd" name="numberEnd" type="number" min="1" step="1" placeholder="120" required />
+                </div>
+
+                <div class="fields fields-h-6 fields-w-5 fields-font-3">
+                  <label for="year">Ano</label>
+                  <input id="year" name="year" type="number" min="2000" max="2999" step="1" placeholder="2026"
+                    required />
+                </div>
+              </div>
+
+
+              <div class="modal-field--span-full">
+                <div class="fields fields-font-3">
+                  <label for="justification">Justificativa</label>
+                  <textarea id="justification" name="justification"
+                    class="textarea textarea-border-1 textarea-radius-4 textarea-h-3 textarea-w-20 textarea-resize-vertical"
+                    minlength="15" required
+                    placeholder="Informe o motivo da inutilização da numeração fiscal..."></textarea>
+
+                  <div class="fields-inline fields-gap-3">
+                    <span id="justificationCounter">0 caracteres</span>
+                    <span>Mínimo exigido: 15</span>
+                  </div>
+                </div>
+
+                <div class="modal-field--span-full">
+                  <div class="fields-inline fields-gap-3">
+                    <div class="summary-pill summary-pill-success">
+                      <div><strong>Faixa:</strong> <span id="summaryRange">—</span></div>
+                    </div>
+
+                    <div class="summary-pill summary-pill-success">
+                      <div><strong>Total de números:</strong> <span id="summaryTotal">0</span></div>
+                    </div>
+
+                    <div class="summary-pill summary-pill-success">
+                      <div><strong>Status previsto:</strong> <span>PENDING → Provider → SEFAZ</span></div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+      </div>
+
+      <footer class="modal__footer">
+        <button id="btnLimparForm" class="btn btn-secondary btn-sm" type="button">
+          Limpar formulário
+        </button>
+
+        <button class="btn btn-secondary btn-sm" type="button" data-modal-inutilizacao-close>
+          Cancelar
+        </button>
+
+        <button id="btnSubmit" class="btn btn-new btn-sm" type="submit">
+          Enviar inutilização
+        </button>
+      </footer>
+      </form>
+      </section>
+    </div>
+    </div>
+
+    <!-- FILTERS -->
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter table-max-height-500">
+        <div class="fields-lines fields-gap-3">
+          <div class="fields fields-h-6 fields-w-full fields-font-3">
+
+            <!-- Título -->
+            <h2>Filtros e consulta</h2>
+          </div>
+
+          <div class="fields-inline fields-gap-3">
+            <div class="fields fields-h-6 fields-w-12 fields-font-3">
+              <label for="filterStatus">Status</label>
+              <select id="filterStatus" name="status">
+                <option value="">Todos</option>
+                <option value="PENDING">PENDING</option>
+                <option value="SENT">SENT</option>
+                <option value="AUTHORIZED">AUTHORIZED</option>
+                <option value="REJECTED">REJECTED</option>
+                <option value="ERROR">ERROR</option>
+              </select>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-12 fields-font-3">
+              <label for="filterModel">Modelo</label>
+              <select id="filterModel" name="model">
+                <option value="">Todos</option>
+                <option value="55">55 - NF-e</option>
+                <option value="65">65 - NFC-e</option>
+              </select>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-12 fields-font-3">
+              <label for="filterSerie">Série</label>
+              <input id="filterSerie" name="serie" type="number" min="0" step="1" placeholder="Ex.: 1" />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-12 fields-font-3">
+              <label for="filterYear">Ano</label>
+              <input id="filterYear" name="year" type="number" min="2000" max="2999" step="1" placeholder="2026" />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-12 fields-font-3">
+              <label for="filterNumber">Número dentro da faixa</label>
+              <input id="filterNumber" name="number" type="number" min="1" step="1" placeholder="Ex.: 101" />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-12 fields-font-3">
+              <label for="filterProtocol">Protocolo</label>
+              <input id="filterProtocol" name="protocol" type="text" placeholder="Ex.: abc123" />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-12 fields-font-3">
+              <label for="filterCompanyCnpj">CNPJ</label>
+              <input id="filterCompanyCnpj" name="companyCnpj" type="text" inputmode="numeric" maxlength="18"
+                placeholder="00.000.000/0000-00" />
+            </div>
+
+            <div class="btn-inline">
+              <button class="btn btn-new btn-sm" type="submit">Aplicar filtros</button>
+              <button id="btnLimparFiltros" class="btn btn-new btn-sm" type="button">Limpar filtros</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABLE -->
+      <div class="table-scroll table-height-flex table-row-h-28" data-table-settings="nfeinutilizarevents.tbodyinutilizacoes">
+        <table class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Status</th>
+              <th>CNPJ</th>
+              <th>Modelo</th>
+              <th>Série</th>
+              <th>Faixa</th>
+              <th>Ano</th>
+              <th>Protocolo</th>
+              <th>Mensagem</th>
+              <th>Criado em</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyInutilizacoes">
+            <tr>
+              <td colspan="11" class="nfei-empty">Carregando dados...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- =================================================== -->
+      <!-- TABLE FOOTER                                        -->
+      <!-- =================================================== -->
+
+      <!-- TABLE FOOTER -->
+      <footer class="table-footer">
+
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-5 summary-left-space-3">
+            <span id="apTableInfo">0 registros</span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button id="btnPrevious" class="btn btn-toolbar btn-sm" type="button">
+            Anterior
+          </button>
+
+          <span id="pageInfo">
+            Página 1 de 1
+          </span>
+
+          <button id="btnNext" class="btn btn-toolbar btn-sm" type="button">
+            Próxima
+          </button>
+        </div>
+
+        <div class="table-footer__page-size">
+          <label for="pageSize">Mostrar</label>
+
+          <div class="fields fields-h-6 fields-w-3 fields-font-3">
+            <select id="pageSize" class="table-footer__page-size-select">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50" selected>50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
+
+      </footer>
+    </section>
+  </main>
+
+  <script type="module" src="/public/nfeInutilizarEvents/js/nfeInutilizarEvents.init.js"></script>
+
+</body>
+
+</html>

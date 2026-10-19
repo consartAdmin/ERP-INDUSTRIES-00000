@@ -1,0 +1,91 @@
+/*——————————————————————————————
+    Wrapper — Height
+
+How to use:
+
+"
+
+
+——————————————————————————————*/
+
+:root {
+  --wrapper-h-xs: 240px;
+  --wrapper-h-sm: 400px;
+  --wrapper-h-md: 600px;
+  --wrapper-h-lg: 750px;
+  --wrapper-h-xl: 850px;
+  --wrapper-h-2xl: 950px;
+  --wrapper-h-3xl: 1100px;
+}
+
+.cs-wrapper--auto {
+  height: auto;
+}
+
+.cs-wrapper--xs {
+  height: var(--wrapper-h-xs);
+}
+
+.cs-wrapper--sm {
+  height: var(--wrapper-h-sm);
+}
+
+.cs-wrapper--md {
+  height: var(--wrapper-h-md);
+}
+
+.cs-wrapper--lg {
+  height: var(--wrapper-h-lg);
+}
+
+.cs-wrapper--xl {
+  height: var(--wrapper-h-xl);
+}
+
+.cs-wrapper--2xl {
+  height: var(--wrapper-h-2xl);
+}
+
+.cs-wrapper--3xl {
+  height: var(--wrapper-h-3xl);
+}
+
+.cs-wrapper--full {
+  height: 100%;
+}
+
+.cs-wrapper--screen {
+  height: 100vh;
+}
+
+.cs-wrapper--fill {
+  flex: 1 1 auto;
+}
+
+.cs-wrapper {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.cs-wrapper--sm {
+  height: var(--wrapper-h-sm);
+  max-height: var(--wrapper-h-sm);
+}
+
+.table-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* or flex-start */
+  gap: 8px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.icon-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  line-height: 1;
+}

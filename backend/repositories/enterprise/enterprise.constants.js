@@ -1,0 +1,63 @@
+// ╔══════════════════════════════════════════════════════════════════════╗
+// ║ enterprise.constants.js — Catalog schema (tabela, campos)            ║
+// ╚══════════════════════════════════════════════════════════════════════╝
+
+export const catalog_schema = {
+  table: 'enterprises',
+  idField: 'id',
+  fields: [
+    'corporate_name',
+    'trade_name',
+    'cnpj',
+    'state_registration',
+    'municipal_registration',
+    'tax_regime_code',
+    'cnae',
+    'opening_date',
+    'status',
+    'zip_code',
+    'address',
+    'address_number',
+    'address_complement',
+    'district',
+    'city',
+    'state',
+    'city_ibge_code',
+    'phone',
+    'whatsapp',
+    'email',
+    'website',
+    'financial_contact',
+    'fiscal_contact',
+    'commercial_contact',
+    'nfe_environment',
+    'nfe_series',
+    'next_nfe_number',
+    'nfce_series',
+    'next_nfce_number',
+    'default_cfop_sale',
+    'default_cfop_purchase',
+    'sped_profile',
+    'sped_activity_type',
+    'logo_url',
+    'slogan',
+    'document_notes',
+    'pdf_footer',
+    'certificate_a1_path',
+    'certificate_password',
+    'accountant_name',
+    'accountant_cpf',
+    'accountant_crc',
+    'accountant_email',
+    'accountant_phone',
+    'is_active'
+  ],
+  searchFields: [
+    'corporate_name',
+    'trade_name',
+    'cnpj',
+    'email',
+    'city'
+  ],
+  defaultOrder: 'corporate_name ASC'
+};

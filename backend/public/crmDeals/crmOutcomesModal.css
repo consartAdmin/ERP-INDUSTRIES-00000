@@ -1,0 +1,194 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ crmOutcomesModal.css — Modal de Outcomes (CRM Reativação | CONSART)  ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.crm-omodal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.45);
+  z-index: 99999;
+  padding: 18px;
+}
+
+.crm-omodal.hidden { display: none !important; }
+
+.crm-omodal__dialog{
+  width: min(1040px, 96vw);
+  max-height: min(80vh, 760px);
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 22px 60px rgba(15, 23, 42, 0.35);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.crm-omodal__header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.crm-omodal__title{
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+
+.crm-omodal__title h3{
+  margin: 0;
+  font-size: 1.05rem;
+  color: #0f172a;
+}
+
+.crm-omodal__badge{
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid #dbeafe;
+  background: #eff6ff;
+  color: #1d4ed8;
+  white-space: nowrap;
+}
+
+.crm-omodal__close{
+  border: none;
+  background: #0f172a;
+  color: #fff;
+  border-radius: 999px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.crm-omodal__close:hover{ filter: brightness(1.05); }
+
+.crm-omodal__body{
+  padding: 14px 16px;
+  overflow: auto;
+}
+
+.crm-omodal__toolbar{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.crm-omodal__search{
+  flex: 1;
+  min-width: 260px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.crm-omodal__search input{
+  width: 100%;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  padding: 8px 12px;
+  outline: none;
+  font-size: 0.9rem;
+}
+
+.crm-omodal__search input:focus{
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37,99,235,0.18);
+}
+
+.crm-omodal__kpis{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.crm-omodal__kpi{
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 8px 10px;
+  min-width: 160px;
+}
+
+.crm-omodal__kpi .label{ font-size: 0.72rem; color: #64748b; text-transform: uppercase; letter-spacing: .06em; }
+.crm-omodal__kpi .value{ font-size: 1rem; font-weight: 800; color: #0f172a; margin-top: 2px; }
+
+.crm-otable{
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+}
+
+.crm-otable thead th{
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #0f172a;
+  color: #fff;
+  text-align: left;
+  font-size: 0.78rem;
+  letter-spacing: .04em;
+  padding: 10px 10px;
+  white-space: nowrap;
+}
+
+.crm-otable tbody td{
+  padding: 10px 10px;
+  border-top: 1px solid #eef2f7;
+  vertical-align: top;
+  font-size: 0.88rem;
+  color: #0f172a;
+}
+
+.crm-otable tbody tr:hover td{
+  background: #f8fafc;
+}
+
+.crm-otable .muted{
+  color: #64748b;
+  font-size: 0.82rem;
+}
+
+.crm-otable .pill{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid #dbeafe;
+  background: #eff6ff;
+  color: #1d4ed8;
+  white-space: nowrap;
+}
+
+.crm-omodal__empty{
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px dashed #cbd5e1;
+  background: #f8fafc;
+  color: #475569;
+}
+
+@media (max-width: 720px){
+  .crm-omodal__kpi{ min-width: 140px; }
+  .crm-otable thead{ display:none; }
+  .crm-otable, .crm-otable tbody, .crm-otable tr, .crm-otable td{ display:block; width:100%; }
+  .crm-otable tr{ border-top: 1px solid #e5e7eb; }
+  .crm-otable td{ border-top:none; }
+}

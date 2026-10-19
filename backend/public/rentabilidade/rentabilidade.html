@@ -1,0 +1,52 @@
+<!-- 📁 rentabilidade.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rentabilidade de Vendas</title>
+  <link rel="stylesheet" href="rentabilidade.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>📈 Análise de Rentabilidade</h1>
+
+    <!-- 🔎 Filtros -->
+    <div class="filtros">
+      <label for="orcamentoId">🔍 Nº Orçamento:</label>
+      <input type="text" id="orcamentoId" placeholder="Ex: 1025" />
+
+      <button id="btnBuscar">Buscar</button>
+    </div>
+
+    <!-- 📊 Tabela de Resultados -->
+    <table id="tabelaRentabilidade">
+      <thead>
+        <tr>
+          <th>SKU</th>
+          <th>Produto</th>
+          <th>Qtd</th>
+          <th>U.M</th>
+          <th>Preço Custo</th>
+          <th>Preço Venda</th>
+          <th>Desconto</th>
+          <th>Preço Final</th>
+          <th>Lucro (R$)</th>
+          <th>Margem (%)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Linhas geradas dinamicamente -->
+      </tbody>
+    </table>
+
+    <!-- 📌 Total Geral -->
+    <div id="resumo">
+      <p><strong>Lucro Total:</strong> <span id="lucroTotal">R$ 0,00</span></p>
+      <p><strong>Margem Média:</strong> <span id="margemMedia">0%</span></p>
+    </div>
+  </div>
+
+  <script src="rentabilidade.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+/* ===========================================================
+   Layout base
+   backend/public/caixa/css/caixa.layout.css
+   =========================================================== */
+html, body { height: 100%; }
+
+/* permite scroll horizontal da página se precisar */
+body.consart-theme.c-page{
+  overflow-x: auto;
+}
+
+/* container gigante na página do caixa */
+.c-container.c-container--2xl{
+  max-width: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
+.c-container > .tabs,
+.c-container > .tablist {
+  margin-top: calc(var(--topbar-h) + 8px);
+}
+
+html { scroll-padding-top: calc(var(--topbar-h) + 12px); }
+
+/* c-main pode rolar na horizontal */
+.c-main{
+  min-height: calc(100dvh - var(--topbar-h));
+  display:flex;
+  overflow-x: auto;
+}
+
+/* evita que o flex trave a largura e corte conteúdo */
+.c-container{
+  flex:1 1 auto;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+}

@@ -1,0 +1,632 @@
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ orders.html — Pedidos | PRODNEX ERP                               ║
+     ║ ✅ Integrado com style.css (containerConsart já importado)        ║
+     ║ ✅ Layout fullscreen com scroll interno                           ║
+     ║ ✅ Tabela responsiva com sticky header                            ║
+     ║ ✅ Estrutura pronta para orders.js                                ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png" />
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png" />
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png" />
+
+  <title>PEDIDOS | PRODNEX ERP</title>
+
+  <!-- Design system global -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/includes/css/textArea.css" />
+
+  <style>
+    /* Hierarquia e espaçamento das seções do modal de detalhes. */
+    #orderDetailsContent .order-details-box:not(:last-of-type) {
+      margin-bottom: 16px;
+    }
+
+    #orderDetailsContent .order-details-box__title {
+      margin-bottom: 6px;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: 0.01em;
+    }
+
+    /* Botão discreto para abrir os detalhes do pedido. */
+    #corpoTabelaMovimentacoes .btn-expand {
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      width: 26px !important;
+      min-width: 26px !important;
+      max-width: 26px !important;
+      height: 26px !important;
+      min-height: 26px !important;
+      padding: 0 !important;
+      font-family: Arial, sans-serif !important;
+      font-size: 22px !important;
+      font-weight: 400 !important;
+      line-height: 1 !important;
+      color: #475569 !important;
+      background: #ffffff !important;
+      border: 1px solid #cbd5e1 !important;
+      border-radius: 7px !important;
+      box-shadow: none !important;
+      cursor: pointer;
+      transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
+    }
+
+    #corpoTabelaMovimentacoes .btn-expand:hover {
+      color: #2563eb !important;
+      background: #eff6ff !important;
+      border-color: #93c5fd !important;
+      transform: translateX(1px);
+    }
+
+    #corpoTabelaMovimentacoes .btn-expand:focus-visible {
+      outline: 3px solid rgb(37 99 235 / 18%);
+      outline-offset: 2px;
+    }
+
+    /* Resumo fiscal do cliente em duas linhas no modal de detalhes. */
+    #orderNfeInformation.order-nfe-summary {
+      min-height: 0;
+      overflow-x: hidden;
+      overflow-y: hidden;
+    }
+
+    .order-nfe-summary__row {
+      display: grid !important;
+      grid-template-columns:
+        minmax(280px, 1.7fr) minmax(210px, 1fr) minmax(280px, 1.2fr) minmax(360px, 2fr);
+
+      align-items: start;
+      column-gap: 18px;
+      row-gap: 6px;
+
+      min-width: 0;
+      white-space: normal;
+    }
+
+    .order-nfe-summary__field {
+      display: block;
+      min-width: 0;
+
+      overflow-wrap: anywhere;
+      word-break: normal;
+    }
+
+    /* CNPJ/CPF, IE, código IBGE and CEP normally remain on one line. */
+    .order-nfe-summary__field:nth-child(2),
+    .order-nfe-summary__field:nth-child(3) {
+      white-space: nowrap;
+    }
+
+    #orderNfeInformation .textarea-rich__status {
+      display: block;
+      margin-top: 2px;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 768px) {
+      #orderNfeInformation.order-nfe-summary {
+        overflow-x: hidden;
+      }
+
+      .order-nfe-summary__row {
+        grid-template-columns: 1fr;
+        row-gap: 4px;
+        min-width: 0;
+        white-space: normal;
+      }
+    }
+
+    /* Forma de pagamento no mesmo formato compacto do resumo da NF-e. */
+    .order-payment-summary {
+      min-height: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+
+    .order-payment-summary__row {
+      display: flex;
+      align-items: baseline;
+      gap: 6px 24px;
+      min-width: max-content;
+      white-space: nowrap;
+    }
+
+    .order-payment-summary__field {
+      display: inline-block;
+    }
+
+    .order-payment-summary__installments>.order-payment-summary__row:first-child {
+      margin-top: 2px;
+    }
+
+    @media (max-width: 768px) {
+      .order-payment-summary {
+        overflow-x: hidden;
+      }
+
+      .order-payment-summary__row {
+        flex-wrap: wrap;
+        min-width: 0;
+        white-space: normal;
+      }
+    }
+
+    /* Informações complementares no mesmo padrão visual compacto. */
+    #orderDetailAdditionalInfo.order-additional-summary {
+      min-height: 0;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    /* Totais do pedido no mesmo padrão visual compacto. */
+    .order-totals-summary {
+      display: flex !important;
+      align-items: baseline;
+      gap: 6px 22px;
+      margin-top: 10px;
+      min-height: 0;
+      min-width: max-content;
+      white-space: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+
+    .order-totals-summary__item {
+      display: inline-block;
+    }
+
+    @media (max-width: 768px) {
+      #orderDetailsContent .order-details-box:not(:last-of-type) {
+        margin-bottom: 12px;
+      }
+
+      #orderDetailsContent .order-details-box__title {
+        font-size: 15px;
+      }
+
+      .order-totals-summary {
+        flex-wrap: wrap;
+        min-width: 0;
+        white-space: normal;
+        overflow-x: hidden;
+      }
+    }
+  </style>
+
+</head>
+
+<!-- Conteúdo da página -->
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <!-- ===================================================== -->
+    <!-- INTEGRATED TABLE                                      -->
+    <!-- ===================================================== -->
+
+    <section class="table-layout-integrated table-max-height-700">
+      <div class="table-layout-integrated__filter">
+
+
+        <!-- Line 1: fields side by side -->
+        <div class="fields-inline">
+
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <span>Buscar</span>
+            <input id="qPedidos" type="text" placeholder="por número, cliente, CNPJ/CPF" autocomplete="off" />
+          </div>
+
+          <div class="fields fields-h-6 fields-w-17 fields-font-3">
+            <date-range-field id="dtRangePedidos" label="Período" name-start="dtDePedidos" name-end="dtAtePedidos"
+              locale="pt-BR">
+            </date-range-field>
+
+            <input type="hidden" id="dtDePedidos" name="dtDePedidos">
+
+            <input type="hidden" id="dtAtePedidos" name="dtAtePedidos">
+          </div>
+
+          <div class="fields fields-h-6 fields-w-12 fields-font-3"> <span>Status</span>
+            <select id="statusFiltroPedidos">
+              <option value="TODOS">Todos</option>
+              <option value="ABERTO">Aberto</option>
+              <option value="CONVERTIDO">Convertido</option>
+              <option value="FATURADO">Faturado</option>
+              <option value="CANCELADO">Cancelado</option>
+            </select>
+          </div>
+
+
+          <div class="btn-inline btn-position-right">
+            <button id="btnBuscarPedidos" class="btn btn-new btn-h-5 btn-w-4" type="button">
+              🔍 Buscar
+            </button>
+
+            <button id="btnReloadPedidos" class="btn btn-new btn-h-5 btn-w-6" type="button">
+              🔄 Atualizar
+            </button>
+
+            <button id="btnRelatorioPedidos" class="btn btn-new btn-h-5 btn-w-9" type="button">
+              📄 Relatório PDF
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ✅ Área de rolagem da tabela -->
+      <div class="table-scroll table-height-flex table-row-h-28" data-table-settings="orders.corpotabelamovimentacoes">
+        <table class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th class="col-expand"></th>
+              <th class="col-id">#</th>
+              <th class="col-data">Data</th>
+              <th class="col-cliente">Cliente</th>
+              <th class="col-cnpj">CNPJ/CPF</th>
+              <th class="col-total">Total (R$)</th>
+              <th class="col-status">Status</th>
+              <th class="col-data-nfe">NF-e Emitida em</th>
+              <th class="col-acoes">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="corpoTabelaMovimentacoes"></tbody>
+        </table>
+      </div>
+
+      <!-- Paginação -->
+      <footer class="table-footer">
+
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+            <span id="apTableInfo">0 registros encontrados</span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+
+          <button type="button" id="pagAnterior" class="btn btn-clean btn-sm">
+            Anterior
+          </button>
+
+          <span id="infoPagina">Página 1 de 1</span>
+
+          <button type="button" id="pagProxima" class="btn btn-new btn-sm">
+            Próxima
+          </button>
+
+        </div>
+
+        <div class="table-footer__page-size">
+          <label for="apRowsPerPage">Mostrar</label>
+
+          <select id="apRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+            <option value="10">10 linhas</option>
+            <option value="20">20 linhas</option>
+            <option value="30">30 linhas</option>
+            <option value="50" selected>50 linhas</option>
+            <option value="100">100 linhas</option>
+          </select>
+        </div>
+
+      </footer>
+    </section>
+
+    <!-- ===================================================== -->
+    <!-- MODAL: ORDER DETAILS                                  -->
+    <!-- ===================================================== -->
+
+    <div id="orderDetailsModal" class="modal modal-width-10 modal-height-9 modal-header-color-3 modal-footer-color-2"
+      aria-hidden="true">
+      <div class="modal__backdrop" data-order-details-close></div>
+
+      <div class="modal__dialog">
+        <section class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="orderDetailsModalTitle">
+          <header class="modal__header">
+            <h2 id="orderDetailsModalTitle" class="modal__title">
+              Detalhes do Pedido
+            </h2>
+
+            <button type="button" class="modal__close" data-order-details-close aria-label="Fechar detalhes do pedido"
+              title="Fechar">
+              ×
+            </button>
+          </header>
+
+          <div id="orderDetailsModalBody" class="modal__body order-details-modal__body">
+            <div id="orderDetailsMessage" class="order-details-loading">
+              Selecione um pedido para visualizar os detalhes.
+            </div>
+
+            <div id="orderDetailsContent" class="order-details" hidden>
+              <!-- CLIENTE / DADOS PARA NF-E -->
+              <section class="order-details-box">
+                <div class="order-details-box__title">
+                  CLIENTE — INFORMAÇÕES PARA NF-E
+                </div>
+                <div id="orderNfeInformation"
+                  class="textarea textarea-rich order-nfe-summary textarea-w-10 textarea-bg-2 textarea-border-3 textarea-radius-4 textarea-padding-4 textarea-resize-none"
+                  role="textbox" aria-readonly="true" aria-describedby="orderNfeInformationHelp">
+                  Carregando informações do cliente…
+                </div>
+                <div id="orderNfeInformationHelp" class="order-details-checklist__note">
+                  Revise os dados antes de emitir a NF-e. Campos marcados com ⚠ precisam ser corrigidos.
+                </div>
+              </section>
+
+              <!-- Destinos mantidos para compatibilidade com orders.js. -->
+              <div id="orderNfeCompatibilityFields" hidden aria-hidden="true">
+                <span id="orderDetailCustomerName">—</span>
+                <span id="orderDetailCustomerDocument">—</span>
+                <span id="orderDetailCustomerIe">—</span>
+                <span id="orderDetailCustomerAddress">—</span>
+                <span id="orderDetailCustomerCityUf">—</span>
+                <span id="orderDetailCustomerIbge">—</span>
+                <span id="orderDetailCustomerZip">—</span>
+                <span id="orderDetailCustomerContact">—</span>
+              </div>
+
+              <!-- INFORMAÇÕES COMPLEMENTARES -->
+              <section class="order-details-box">
+                <div class="order-details-box__title">INFORMAÇÕES COMPLEMENTARES</div>
+                <div id="orderDetailAdditionalInfo"
+                  class="textarea textarea-rich order-additional-summary textarea-w-10 textarea-bg-2 textarea-border-3 textarea-radius-4 textarea-padding-4 textarea-resize-none"
+                  role="textbox" aria-readonly="true">
+                  Sem informações complementares.
+                </div>
+              </section>
+
+              <!-- Checklist mantido oculto para a validação já existente em orders.js. -->
+              <div hidden aria-hidden="true">
+                <ul>
+                  <li id="orderChecklistDocument"><span class="order-details-checklist__icon">⚠</span><span>Documento
+                      (CNPJ/CPF)</span></li>
+                  <li id="orderChecklistIe"><span class="order-details-checklist__icon">⚠</span><span>Inscrição
+                      Estadual (quando aplicável)</span></li>
+                  <li id="orderChecklistAddress"><span class="order-details-checklist__icon">⚠</span><span>Endereço
+                      completo (logradouro, número, bairro)</span></li>
+                  <li id="orderChecklistCityUf"><span class="order-details-checklist__icon">⚠</span><span>Município e
+                      UF</span></li>
+                  <li id="orderChecklistZip"><span class="order-details-checklist__icon">⚠</span><span>CEP</span></li>
+                  <li id="orderChecklistEmail"><span class="order-details-checklist__icon">⚠</span><span>E-mail para
+                      envio da NF-e</span></li>
+                </ul>
+              </div>
+
+              <!-- FORMA DE PAGAMENTO -->
+              <section class="order-details-box order-details-payment">
+                <div class="order-details-box__title">FORMA DE PAGAMENTO</div>
+                <div
+                  class="textarea textarea-rich order-payment-summary textarea-w-10 textarea-bg-2 textarea-border-3 textarea-radius-4 textarea-padding-4 textarea-resize-none"
+                  role="group" aria-label="Resumo da forma de pagamento">
+                  <div id="orderDetailPayments"></div>
+                  <div id="orderDetailInstallments"
+                    class="order-details-payment__installments order-payment-summary__installments"></div>
+                </div>
+              </section>
+
+              <!-- ITENS DO PEDIDO -->
+              <section class="order-details-box order-details-box--items">
+                <div class="order-details-box__title">ITENS DO PEDIDO</div>
+                <div class="table-scroll--rounded table-height-flex table-row-h-28" data-table-settings="orders.orderdetailitemsbody">
+                  <table class="table table-zebra table-zebra-hover table-sticky-head">
+                    <thead>
+                      <tr>
+                        <th>SKU</th>
+                        <th>DESCRIÇÃO</th>
+                        <th>NCM</th>
+                        <th>CEST</th>
+                        <th>U.M</th>
+                        <th>QTD</th>
+                        <th>UNITÁRIO</th>
+                        <th>DESC (R$)</th>
+                        <th>TOTAL</th>
+                        <th>PERFIL FISCAL</th>
+                      </tr>
+                    </thead>
+                    <tbody id="orderDetailItemsBody"></tbody>
+                  </table>
+                </div>
+
+                <div
+                  class="textarea textarea-rich order-totals-summary textarea-w-10 textarea-bg-2 textarea-border-3 textarea-radius-4 textarea-padding-4 textarea-resize-none"
+                  role="group" aria-label="Resumo dos totais do pedido">
+                  <span class="order-totals-summary__item"><strong>Subtotal:</strong>
+                    <span id="orderDetailSubtotal">R$ 0,00</span></span>
+                  <span class="order-totals-summary__item"><strong>Desc. Itens:</strong>
+                    <span id="orderDetailItemDiscounts">R$ 0,00</span></span>
+                  <span class="order-totals-summary__item"><strong>Desc. Geral:</strong>
+                    <span id="orderDetailGlobalDiscount">R$ 0,00</span></span>
+                  <span class="order-totals-summary__item"><strong>Descontos:</strong>
+                    <span id="orderDetailDiscounts">R$ 0,00</span></span>
+                  <span class="order-totals-summary__item"><strong>Frete:</strong>
+                    <span id="orderDetailFreight">R$ 0,00</span></span>
+                  <span class="order-totals-summary__item"><strong>Total geral:</strong>
+                    <span id="orderDetailTotal">R$ 0,00</span></span>
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <footer class="modal__footer">
+            <button type="button" class="btn btn-secondary" data-order-details-close>
+              Fechar
+            </button>
+          </footer>
+        </section>
+      </div>
+    </div>
+
+    <!-- Dynamic records use HTML templates; JavaScript only clones and fills them. -->
+    <template id="orderDetailPaymentTemplate">
+      <div class="order-payment-summary__row">
+        <span class="order-payment-summary__field"><strong>Forma:</strong> <span data-payment-method>—</span></span>
+        <span class="order-payment-summary__field"><strong>Condição:</strong> <span data-payment-term>—</span></span>
+        <span class="order-payment-summary__field"><strong>Valor:</strong> <span data-payment-amount>R$
+            0,00</span></span>
+      </div>
+    </template>
+
+    <template id="orderDetailInstallmentTemplate">
+      <div class="order-payment-summary__row">
+        <span class="order-payment-summary__field"><strong data-installment-label>Parcela 001:</strong></span>
+        <span class="order-payment-summary__field" data-installment-date>—</span>
+        <span class="order-payment-summary__field" data-installment-amount>R$ 0,00</span>
+      </div>
+    </template>
+
+    <template id="orderDetailItemTemplate">
+      <tr>
+        <td data-item-sku></td>
+        <td data-item-description></td>
+        <td data-item-ncm></td>
+        <td data-item-cest></td>
+        <td data-item-unit></td>
+        <td data-item-quantity class="ta-right"></td>
+        <td data-item-unit-price class="ta-right"></td>
+        <td data-item-discount class="ta-right"></td>
+        <td data-item-total class="ta-right"></td>
+        <td data-item-tax-profile></td>
+      </tr>
+    </template>
+
+  </main>
+
+  <!-- API_BASE fallback -->
+  <script>
+    window.API_BASE = window.apiBase || window.location.origin;
+  </script>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="/public/orders/js/orders.init.js"></script>
+
+  <script>
+    (() => {
+      const textarea = document.getElementById("orderNfeInformation");
+      const sourceContainer = document.getElementById("orderNfeCompatibilityFields");
+      const checklistIds = [
+        "orderChecklistDocument",
+        "orderChecklistIe",
+        "orderChecklistAddress",
+        "orderChecklistCityUf",
+        "orderChecklistZip",
+        "orderChecklistEmail"
+      ];
+
+      if (!textarea || !sourceContainer) return;
+
+      const read = (id) => {
+        const value = document.getElementById(id)?.textContent?.trim();
+        return value && value !== "—" ? value : "";
+      };
+
+      const display = (value, required = true) =>
+        value || (required ? "⚠ Não informado" : "Não informado");
+
+      const checklistHasWarning = (id) => {
+        const item = document.getElementById(id);
+        if (!item) return false;
+
+        const text = item.textContent || "";
+        return text.includes("⚠") || item.classList.contains("is-warning") ||
+          item.classList.contains("is-error") || item.getAttribute("aria-invalid") === "true";
+      };
+
+      const updateNfeTextarea = () => {
+        const name = read("orderDetailCustomerName");
+        const documentNumber = read("orderDetailCustomerDocument");
+        const stateRegistration = read("orderDetailCustomerIe");
+        const address = read("orderDetailCustomerAddress");
+        const cityUf = read("orderDetailCustomerCityUf");
+        const ibge = read("orderDetailCustomerIbge");
+        const zipCode = read("orderDetailCustomerZip");
+        const contact = read("orderDetailCustomerContact");
+
+        const requiredValues = [documentNumber, address, cityUf, zipCode];
+        const hasMissingRequiredData = requiredValues.some((value) => !value);
+        const hasChecklistWarning = checklistIds.some(checklistHasWarning);
+        const hasWarning = hasMissingRequiredData || hasChecklistWarning;
+
+        const fragment = document.createDocumentFragment();
+        const fields = [
+          ["Nome", display(name)],
+          ["CNPJ/CPF", display(documentNumber)],
+          ["Inscrição Estadual", display(stateRegistration, false)],
+          ["Endereço", display(address)],
+          ["Município/UF", display(cityUf)],
+          ["Código IBGE", display(ibge, false)],
+          ["CEP", display(zipCode)],
+          ["Contato", display(contact, false)]
+        ];
+
+        const rows = [
+          fields.slice(0, 4),
+          fields.slice(4)
+        ];
+
+        rows.forEach((rowFields) => {
+          const row = document.createElement("div");
+          row.className = "order-nfe-summary__row";
+
+          rowFields.forEach(([label, value]) => {
+            const field = document.createElement("span");
+            field.className = "order-nfe-summary__field";
+            const title = document.createElement("strong");
+            title.textContent = `${label}: `;
+            field.append(title, document.createTextNode(value));
+            row.appendChild(field);
+          });
+
+          fragment.appendChild(row);
+        });
+
+        const status = document.createElement("div");
+        status.className = "textarea-rich__status";
+        status.textContent = hasWarning
+          ? "⚠ Revise os campos não informados antes de emitir a NF-e."
+          : "✓ Dados essenciais conferidos para emissão da NF-e.";
+        fragment.appendChild(status);
+        textarea.replaceChildren(fragment);
+
+        textarea.classList.toggle("is-warning", hasWarning);
+        textarea.classList.toggle("is-success", !hasWarning);
+        textarea.removeAttribute("aria-invalid");
+      };
+
+      const observer = new MutationObserver(updateNfeTextarea);
+      observer.observe(sourceContainer, {
+        childList: true,
+        subtree: true,
+        characterData: true,
+        attributes: true
+      });
+
+      checklistIds.forEach((id) => {
+        const item = document.getElementById(id);
+        if (item) {
+          observer.observe(item, {
+            childList: true,
+            subtree: true,
+            characterData: true,
+            attributes: true
+          });
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", updateNfeTextarea, { once: true });
+      updateNfeTextarea();
+    })();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+/* moduleSystem.css — Criação de Módulos */
+.ms-check label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+/* Ações da tabela: estilo global em includes/css/actionIcons.css */
+.ms-actions-cell {
+  text-align: center;
+  white-space: nowrap;
+}

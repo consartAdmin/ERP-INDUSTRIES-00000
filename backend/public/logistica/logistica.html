@@ -1,0 +1,142 @@
+<!-- ╔══════════════════════════════════════════════════════╗ -->
+<!-- ║ 🚚 LOGÍSTICA – GESTÃO DE ENTREGAS E COLETAS         ║ -->
+<!-- ╚══════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>LOGÍSTICA ENTREGAS | PRODNEX ERP</title>
+
+  <link rel="stylesheet" href="/public/includes/css/style.css">
+  <link rel="stylesheet" href="/public/statusUsuario/statusUsuario.css" />
+
+  <!-- Página -->
+  <link rel="stylesheet" href="logistica.css" />
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+  <!-- Base da API no mesmo domínio -->
+  <script>
+    window.apiBase = window.location.origin;
+  </script>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body class="consart-theme c-page">
+  <main class="c-main">
+    <div class="c-container c-container--2xl">
+      <header class="page-header">
+        <h1>🚚 Gestão de Entregas e Coletas</h1>
+      </header>
+
+      <!-- 🔔 Mensagens -->
+      <div id="msgLogistica" class="callout" aria-live="polite"></div>
+
+      <!-- 📋 Formulário -->
+      <form id="formLogistica" class="form-grid" autocomplete="off">
+        <input type="text" id="cliente_nome" placeholder="Cliente" required />
+        <select id="tipo">
+          <option value="entrega">ENTREGA</option>
+          <option value="coleta">COLETA</option>
+        </select>
+        <input type="text" id="endereco" placeholder="Endereço completo" required />
+        <input type="text" id="cidade" placeholder="Cidade" required />
+        <input type="text" id="uf" placeholder="UF" maxlength="2" required />
+        <input type="date" id="data_prevista" required />
+        <input type="number" id="ordem" placeholder="Ordem da Rota" min="1" />
+        <input type="text" id="observacoes" placeholder="Observações" />
+
+        <div class="form-actions">
+          <button type="submit" id="btnSalvar" class="btn btn-success">➕ Adicionar</button>
+          <button type="button" id="btnCancelar" class="btn btn-danger" style="display:none;">Cancelar</button>
+        </div>
+      </form>
+
+      <!-- 🔍 Filtros -->
+      <section class="card">
+        <div class="filtros">
+          <input type="date" id="filtroData" />
+          <select id="filtroTipo">
+            <option value="">Todos</option>
+            <option value="entrega">Entrega</option>
+            <option value="coleta">Coleta</option>
+          </select>
+          <button type="button" class="btn" onclick="filtrar()">🔍 Filtrar</button>
+          <button type="button" class="btn" onclick="emitirRota()">🗺️ Emitir Rota do Dia</button>
+          <button type="button" class="btn" onclick="gerarPDF()">📄 Gerar PDF da Rota</button>
+        </div>
+      </section>
+
+      <!-- 📑 Tabela (com scroll do tema) -->
+      <section class="card">
+        <div class="c-scroll c-scroll--table" role="region" aria-label="Lista de Entregas e Coletas">
+          <table id="tabelaLogistica" class="tbl">
+            <thead>
+              <tr>
+                <th>Ordem</th>
+                <th>Cliente</th>
+                <th>Tipo</th>
+                <th>Endereço</th>
+                <th>Cidade</th>
+                <th>UF</th>
+                <th>Data Prevista</th>
+                <th>Status</th>
+                <th>Observações</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- renderizado via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 🗺️ Mapa -->
+      <section class="card">
+        <h2>🗺️ Mapa da Rota</h2>
+        <div id="mapaRota" aria-label="Mapa com a rota do dia"></div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Modal de Edição -->
+  <div id="modalEdicao" class="modal" style="display:none;">
+    <div class="modal-content">
+      <button class="fechar" type="button" onclick="fecharModalEdicao()" aria-label="Fechar">×</button>
+      <h2>✏️ Editar Entrega/Coleta</h2>
+      <form id="formEdicaoLogistica" class="form-grid">
+        <input type="hidden" id="editId" />
+        <input type="text" id="editCliente" placeholder="Cliente" required />
+        <select id="editTipo">
+          <option value="entrega">Entrega</option>
+          <option value="coleta">Coleta</option>
+        </select>
+        <input type="text" id="editEndereco" placeholder="Endereço completo" required />
+        <input type="text" id="editCidade" placeholder="Cidade" required />
+        <input type="text" id="editUF" placeholder="UF" maxlength="2" required />
+        <input type="date" id="editData" required />
+        <input type="number" id="editOrdem" placeholder="Ordem da Rota" min="1" />
+        <input type="text" id="editObservacoes" placeholder="Observações" />
+        <div class="form-actions">
+          <button type="submit" class="btn btn-success">💾 Salvar Alterações</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- ⚙️ Scripts globais -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <!-- Scripts da página -->
+  <script src="logistica.js" defer></script>
+
+</body>
+</html>

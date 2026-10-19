@@ -1,0 +1,28 @@
+/* ———————————————
+     panel.css
+—————————————————— */
+
+:root {
+  --consart-panel-padding: 24px;
+  --consart-panel-radius: 14px;
+  --consart-panel-border: #d5dbe5;
+  --consart-panel-shadow: 0 2px 8px rgba(0, 0, 0, .05);
+}
+
+.consart-panel {
+
+  background: #fff;
+
+  border: 1px solid var(--consart-panel-border);
+  border-radius: var(--consart-panel-radius);
+
+  box-shadow: var(--consart-panel-shadow);
+
+  padding: var(--consart-panel-padding);
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  margin-top: 14px;
+}

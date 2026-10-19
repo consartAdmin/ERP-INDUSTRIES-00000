@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Módulo de Emissão de NF-e — Guia Visual</title>
+<style>
+  :root{
+    --ink:#0f172a; --ink2:#1e293b; --muted:#64748b; --line:#cbd5e1; --line2:#e2e8f0;
+    --soft:#f8fafc;
+    --blue:#2563eb; --blueS:#eff6ff; --blueB:#bfdbfe;
+    --green:#047857; --greenS:#ecfdf5; --greenB:#a7f3d0;
+    --amber:#b45309; --amberS:#fffbeb; --amberB:#fde68a;
+    --red:#b91c1c; --redS:#fef2f2; --redB:#fecaca;
+    --purple:#6d28d9; --purpleS:#f5f3ff; --purpleB:#ddd6fe;
+    --slate:#475569; --slateS:#f1f5f9;
+  }
+  @page{ size:A4; margin:16mm 14mm 18mm 14mm; }
+  @page:first{ margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:"Segoe UI","Inter",system-ui,-apple-system,sans-serif;
+    color:var(--ink); font-size:9.6pt; line-height:1.5;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  h1,h2,h3,h4{ line-height:1.22; margin:0; font-weight:650; }
+  p{ margin:0 0 7px; }
+  code{
+    font-family:"Cascadia Mono","Consolas",monospace; font-size:8.5pt;
+    background:var(--slateS); padding:1px 4px; border-radius:3px; color:var(--ink2);
+  }
+  a{ color:var(--blue); text-decoration:none; }
+
+  /* ---------- CAPA ---------- */
+  .cover{
+    height:297mm; display:flex; flex-direction:column; justify-content:space-between;
+    padding:26mm 20mm 18mm; background:
+      radial-gradient(900px 420px at 88% -8%, #dbeafe 0%, rgba(219,234,254,0) 62%),
+      radial-gradient(700px 380px at -10% 108%, #ede9fe 0%, rgba(237,233,254,0) 60%),
+      #fff;
+    break-after:page;
+  }
+  .cover .kicker{
+    font-size:8.6pt; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--blue); font-weight:700;
+  }
+  .cover h1{ font-size:31pt; margin:12px 0 0; letter-spacing:-.02em; }
+  .cover h1 em{ font-style:normal; color:var(--blue); }
+  .cover .sub{ font-size:12.5pt; color:var(--slate); margin-top:12px; max-width:135mm; line-height:1.45; }
+  .cover .rule{ height:4px; width:74px; background:var(--blue); border-radius:3px; margin:20px 0 0; }
+  .cover .journey{ display:flex; gap:7px; margin-top:26mm; align-items:stretch; }
+  .cover .jbox{
+    flex:1; border:1px solid var(--line); border-radius:9px; padding:11px 12px; background:#fff;
+  }
+  .cover .jbox .n{ font-size:7.6pt; font-weight:700; color:var(--muted); letter-spacing:.08em; }
+  .cover .jbox .t{ font-size:10.5pt; font-weight:650; margin-top:3px; }
+  .cover .jbox .d{ font-size:8.2pt; color:var(--muted); margin-top:3px; line-height:1.35; }
+  .cover .meta{ display:flex; gap:26px; font-size:8.6pt; color:var(--slate); border-top:1px solid var(--line); padding-top:12px; }
+  .cover .meta b{ display:block; color:var(--ink); font-size:9.4pt; font-weight:650; }
+
+  /* ---------- ESTRUTURA ---------- */
+  .sec{ break-before:page; }
+  .sec-head{ border-bottom:2px solid var(--ink); padding-bottom:7px; margin-bottom:14px; display:flex; align-items:baseline; gap:11px; }
+  .sec-head .num{
+    font-size:8pt; font-weight:700; color:#fff; background:var(--ink);
+    padding:3px 8px; border-radius:4px; letter-spacing:.06em;
+  }
+  .sec-head h2{ font-size:16pt; letter-spacing:-.01em; }
+  h3{ font-size:11.4pt; margin:16px 0 7px; }
+  h3.first{ margin-top:4px; }
+  h4{ font-size:9.8pt; margin:12px 0 5px; color:var(--ink2); }
+  .lead{ font-size:10.4pt; color:var(--slate); margin-bottom:13px; line-height:1.5; }
+
+  /* ---------- CALLOUTS ---------- */
+  .callout{ border-radius:8px; padding:10px 13px; margin:11px 0; font-size:9.2pt; border:1px solid; break-inside:avoid; }
+  .callout .ct{ font-weight:700; font-size:8.4pt; letter-spacing:.07em; text-transform:uppercase; margin-bottom:4px; display:block; }
+  .c-info{ background:var(--blueS); border-color:var(--blueB); }   .c-info .ct{ color:var(--blue); }
+  .c-warn{ background:var(--amberS); border-color:var(--amberB); } .c-warn .ct{ color:var(--amber); }
+  .c-danger{ background:var(--redS); border-color:var(--redB); }   .c-danger .ct{ color:var(--red); }
+  .c-ok{ background:var(--greenS); border-color:var(--greenB); }   .c-ok .ct{ color:var(--green); }
+  .c-note{ background:var(--soft); border-color:var(--line); }     .c-note .ct{ color:var(--slate); }
+
+  /* ---------- TABELAS ---------- */
+  table{ width:100%; border-collapse:collapse; font-size:8.6pt; margin:9px 0 13px; break-inside:avoid; }
+  thead th{
+    background:var(--ink); color:#fff; text-align:left; padding:6px 8px;
+    font-weight:650; font-size:8.2pt; letter-spacing:.02em;
+  }
+  td{ padding:5px 8px; border-bottom:1px solid var(--line2); vertical-align:top; }
+  tbody tr:nth-child(even){ background:var(--soft); }
+  td code{ font-size:8pt; background:#fff; border:1px solid var(--line2); }
+  tbody tr:nth-child(even) td code{ background:#fff; }
+  table.tight td{ padding:4px 7px; font-size:8.3pt; }
+  .tag{ display:inline-block; font-size:7.6pt; font-weight:700; padding:1.5px 6px; border-radius:20px; white-space:nowrap; }
+  .t-422{ background:var(--amberS); color:var(--amber); border:1px solid var(--amberB); }
+  .t-409{ background:var(--purpleS); color:var(--purple); border:1px solid var(--purpleB); }
+  .t-404,.t-400{ background:var(--slateS); color:var(--slate); border:1px solid var(--line); }
+  .t-500,.t-502{ background:var(--redS); color:var(--red); border:1px solid var(--redB); }
+
+  /* ---------- DIAGRAMAS: base ---------- */
+  .dg{ break-inside:avoid; margin:13px 0 16px; }
+  .dg-cap{ font-size:8.2pt; color:var(--muted); margin-top:6px; font-style:italic; }
+  .dg-title{ font-size:8.4pt; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+
+  /* cartão genérico */
+  .card{ border:1.5px solid var(--line); border-radius:8px; padding:9px 10px; background:#fff; }
+  .card .ch{ font-size:9.4pt; font-weight:650; }
+  .card .cs{ font-size:7.9pt; color:var(--muted); line-height:1.35; margin-top:2px; }
+  .card .cc{ font-family:"Cascadia Mono",Consolas,monospace; font-size:7.6pt; color:var(--slate); margin-top:3px; }
+  .k-blue{ border-color:var(--blueB); background:var(--blueS); }
+  .k-green{ border-color:var(--greenB); background:var(--greenS); }
+  .k-amber{ border-color:var(--amberB); background:var(--amberS); }
+  .k-red{ border-color:var(--redB); background:var(--redS); }
+  .k-purple{ border-color:var(--purpleB); background:var(--purpleS); }
+  .k-slate{ border-color:var(--line); background:var(--soft); }
+
+  /* fluxo horizontal com setas */
+  .flow{ display:flex; align-items:center; gap:0; }
+  .flow .card{ flex:1; }
+  .arr{ flex:0 0 26px; text-align:center; color:var(--muted); font-size:15pt; line-height:1; }
+  .arr.sm{ flex:0 0 18px; font-size:12pt; }
+
+  /* fluxo vertical numerado (timeline) */
+  .steps{ position:relative; padding-left:30px; }
+  .steps:before{
+    content:""; position:absolute; left:11px; top:6px; bottom:6px; width:2px; background:var(--line);
+  }
+  .step{ position:relative; margin-bottom:9px; break-inside:avoid; }
+  .step:last-child{ margin-bottom:0; }
+  .step .bul{
+    position:absolute; left:-30px; top:1px; width:24px; height:24px; border-radius:50%;
+    background:var(--blue); color:#fff; font-size:9pt; font-weight:700;
+    display:flex; align-items:center; justify-content:center; border:3px solid #fff;
+  }
+  .step.s-green .bul{ background:var(--green); }
+  .step.s-amber .bul{ background:var(--amber); }
+  .step.s-red .bul{ background:var(--red); }
+  .step.s-purple .bul{ background:var(--purple); }
+  .step .sh{ font-size:10pt; font-weight:650; }
+  .step .sb{ font-size:8.8pt; color:var(--slate); margin-top:2px; line-height:1.45; }
+  .step .sb code{ font-size:8pt; }
+
+  /* grade de cartões */
+  .grid{ display:grid; gap:7px; }
+  .g2{ grid-template-columns:1fr 1fr; }
+  .g3{ grid-template-columns:1fr 1fr 1fr; }
+  .g4{ grid-template-columns:1fr 1fr 1fr 1fr; }
+
+  /* camadas (arquitetura) */
+  .layer{ display:flex; align-items:stretch; gap:8px; margin-bottom:6px; break-inside:avoid; }
+  .layer .lbl{
+    flex:0 0 74px; font-size:7.8pt; font-weight:700; letter-spacing:.05em; text-transform:uppercase;
+    color:var(--muted); display:flex; align-items:center; justify-content:flex-end; text-align:right;
+    padding-right:2px; line-height:1.2;
+  }
+  .layer .body{ flex:1; display:flex; gap:6px; }
+  .layer .body > *{ flex:1; }
+
+  /* caixa de código / pseudo-SQL */
+  pre{
+    background:#0f172a; color:#e2e8f0; border-radius:8px; padding:11px 13px; margin:9px 0 13px;
+    font-family:"Cascadia Mono",Consolas,monospace; font-size:7.9pt; line-height:1.5;
+    overflow:hidden; white-space:pre-wrap; break-inside:avoid;
+  }
+  pre .kw{ color:#93c5fd; } pre .st{ color:#86efac; } pre .cm{ color:#94a3b8; font-style:italic; }
+  pre .wn{ color:#fcd34d; } pre .er{ color:#fca5a5; }
+  pre.light{ background:var(--soft); color:var(--ink2); border:1px solid var(--line); }
+  pre.light .cm{ color:var(--muted); } pre.light .kw{ color:var(--blue); font-weight:600; }
+
+  /* legenda de cores */
+  .legend{ display:flex; gap:7px; flex-wrap:wrap; }
+  .lg{ display:flex; align-items:center; gap:6px; border:1px solid var(--line); border-radius:7px; padding:6px 9px; font-size:8.3pt; }
+  .sw{ width:13px; height:13px; border-radius:4px; flex:0 0 13px; border:1px solid rgba(0,0,0,.12); }
+
+  /* fórmula */
+  .formula{
+    background:#fff; border:1.5px dashed var(--blueB); border-radius:9px; padding:12px 14px;
+    text-align:center; margin:11px 0; break-inside:avoid;
+  }
+  .formula .eq{ font-family:"Cascadia Mono",Consolas,monospace; font-size:10pt; color:var(--ink); }
+  .formula .eq b{ color:var(--blue); }
+  .formula .note{ font-size:8.2pt; color:var(--muted); margin-top:6px; }
+
+  .kv{ font-size:8.8pt; }
+  .kv b{ color:var(--ink); }
+  ul.clean{ margin:5px 0 9px; padding-left:17px; font-size:9.2pt; }
+  ul.clean li{ margin-bottom:3.5px; }
+  .muted{ color:var(--muted); }
+  .nowrap{ white-space:nowrap; }
+  svg{ display:block; max-width:100%; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════ CAPA ══════════════════════════ -->
+<div class="cover">
+  <div>
+    <div class="kicker">CONSART ERP · Documentação Técnica</div>
+    <h1>Módulo de<br>Emissão de <em>NF-e</em></h1>
+    <div class="rule"></div>
+    <div class="sub">
+      Guia visual do fluxo completo: do <b>orçamento</b> até o registro
+      definitivo em <b>invoicesIssued</b>, passando por estoque, financeiro
+      e cancelamento.
+    </div>
+
+    <div class="journey">
+      <div class="jbox">
+        <div class="n">ETAPA 01</div>
+        <div class="t">Prever</div>
+        <div class="d">DANFE de conferência, sem efeito fiscal</div>
+      </div>
+      <div class="jbox">
+        <div class="n">ETAPA 02</div>
+        <div class="t">Emitir</div>
+        <div class="d">Reserva o número e transmite ao provedor</div>
+      </div>
+      <div class="jbox">
+        <div class="n">ETAPA 03</div>
+        <div class="t">Reconciliar</div>
+        <div class="d">Confirma e aplica todos os efeitos</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="meta">
+    <div><b>nfeIssuanceApi.js</b>Arquivo orquestrador</div>
+    <div><b>PlugNotas</b>Provedor fiscal</div>
+    <div><b>16/09/2026</b>Última atualização</div>
+    <div><b>Node.js · Express · PostgreSQL</b>Stack</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ 1. COMO LER ══════════════════════════ -->
+<div class="sec" style="break-before:avoid">
+  <div class="sec-head"><span class="num">01</span><h2>Como ler este documento</h2></div>
+
+  <p class="lead">
+    Todo diagrama deste guia usa o mesmo código de cores. Antes de seguir,
+    vale memorizar estas cinco cores — elas se repetem em todas as páginas.
+  </p>
+
+  <div class="dg">
+    <div class="legend">
+      <div class="lg"><span class="sw" style="background:#eff6ff;border-color:#bfdbfe"></span><b>Azul</b> &nbsp;processo interno / etapa normal</div>
+      <div class="lg"><span class="sw" style="background:#ecfdf5;border-color:#a7f3d0"></span><b>Verde</b> &nbsp;sucesso / estado final desejado</div>
+      <div class="lg"><span class="sw" style="background:#fffbeb;border-color:#fde68a"></span><b>Âmbar</b> &nbsp;atenção / requer decisão humana</div>
+      <div class="lg"><span class="sw" style="background:#fef2f2;border-color:#fecaca"></span><b>Vermelho</b> &nbsp;erro / bloqueio</div>
+      <div class="lg"><span class="sw" style="background:#f5f3ff;border-color:#ddd6fe"></span><b>Roxo</b> &nbsp;sistema externo (provedor, Asaas)</div>
+    </div>
+  </div>
+
+  <h3>Os três verbos do módulo</h3>
+  <p>
+    Quase tudo neste módulo se resume a três operações. Se você entender
+    o que cada uma faz — e principalmente o que cada uma <i>não</i> faz —
+    já entendeu a arquitetura.
+  </p>
+
+  <div class="dg">
+    <div class="grid g3">
+      <div class="card k-blue">
+        <div class="ch">1 · PREVER</div>
+        <div class="cc">GET /nfe-preview.pdf</div>
+        <div class="cs" style="margin-top:6px">
+          Monta e valida tudo, gera um PDF de conferência.
+          <b>Não</b> cria tentativa, <b>não</b> reserva número,
+          <b>não</b> fala com o provedor.
+        </div>
+      </div>
+      <div class="card k-purple">
+        <div class="ch">2 · EMITIR</div>
+        <div class="cc">POST /issue</div>
+        <div class="cs" style="margin-top:6px">
+          Reserva o número fiscal, cria a tentativa e
+          <b>transmite</b>. Devolve <code>PROCESSANDO</code> —
+          ainda <b>não</b> é uma nota autorizada.
+        </div>
+      </div>
+      <div class="card k-green">
+        <div class="ch">3 · RECONCILIAR</div>
+        <div class="cc">GET /status</div>
+        <div class="cs" style="margin-top:6px">
+          Pergunta ao provedor o que aconteceu e aplica
+          <b>todos</b> os efeitos: estoque, nota, financeiro.
+          Pode ser chamado quantas vezes quiser.
+        </div>
+      </div>
+    </div>
+    <div class="dg-cap">
+      A separação entre “emitir” e “reconciliar” existe porque a SEFAZ é
+      assíncrona: transmitir não é ser autorizado.
+    </div>
+  </div>
+
+  <div class="callout c-info">
+    <span class="ct">A regra de ouro do módulo</span>
+    Nada é gravado como definitivo antes da autorização. O orçamento só vira
+    <code>FATURADO</code>, o estoque só baixa e a nota só entra em
+    <code>invoicesIssued</code> quando o provedor confirma
+    <code>AUTORIZADA</code> — e isso acontece no <b>reconciliar</b>, nunca no
+    <b>emitir</b>.
+  </div>
+
+  <h3>Documento complementar</h3>
+  <p>
+    Este PDF é o guia <b>visual e didático</b>. A referência completa —
+    com todos os campos, colunas e assinaturas de função — está em
+    <code>docs/MODULO_EMISSAO_NFE_ORCAMENTO.md</code>.
+  </p>
+</div>
+
+<!-- ══════════════════════════ 2. MAPA GERAL ══════════════════════════ -->
+<div class="sec">
+  <div class="sec-head"><span class="num">02</span><h2>O módulo em uma página</h2></div>
+
+  <p class="lead">
+    Este é o mapa completo da jornada. Guarde esta página: todas as seções
+    seguintes são um zoom em algum trecho dela.
+  </p>
+
+  <div class="dg">
+  <svg viewBox="0 0 700 560" width="700" height="560" font-family="Segoe UI, sans-serif">
+    <defs>
+      <marker id="ah" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto">
+        <path d="M0,1 L8,4.5 L0,8 z" fill="#64748b"/>
+      </marker>
+      <marker id="ahg" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto">
+        <path d="M0,1 L8,4.5 L0,8 z" fill="#047857"/>
+      </marker>
+      <marker id="ahr" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto">
+        <path d="M0,1 L8,4.5 L0,8 z" fill="#b91c1c"/>
+      </marker>
+      <marker id="ahp" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto">
+        <path d="M0,1 L8,4.5 L0,8 z" fill="#6d28d9"/>
+      </marker>
+    </defs>
+
+    <!-- ORIGEM -->
+    <rect x="248" y="4" width="204" height="46" rx="9" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="350" y="23" text-anchor="middle" font-size="12.5" font-weight="650" fill="#0f172a">budgets</text>
+    <text x="350" y="39" text-anchor="middle" font-size="9" fill="#64748b">itens · pagamentos · frete · operação fiscal</text>
+
+    <!-- seta para preview -->
+    <path d="M248,27 L150,27 L150,66" stroke="#64748b" stroke-width="1.4" fill="none" marker-end="url(#ah)" stroke-dasharray="4 3"/>
+    <rect x="52" y="70" width="196" height="40" rx="8" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5"/>
+    <text x="150" y="86" text-anchor="middle" font-size="10" font-weight="650" fill="#1e40af">DANFE de conferência</text>
+    <text x="150" y="100" text-anchor="middle" font-size="8" fill="#2563eb">GET /nfe-preview.pdf · sem efeito fiscal</text>
+
+    <!-- seta principal -->
+    <path d="M350,50 L350,76" stroke="#64748b" stroke-width="1.6" fill="none" marker-end="url(#ah)"/>
+    <text x="358" y="68" font-size="8.4" fill="#475569">POST /issue { confirm: true }</text>
+
+    <!-- BLOCO EMISSÃO -->
+    <rect x="248" y="82" width="440" height="150" rx="10" fill="#fff" stroke="#bfdbfe" stroke-width="1.8"/>
+    <rect x="248" y="82" width="440" height="22" rx="10" fill="#eff6ff"/>
+    <rect x="248" y="96" width="440" height="8" fill="#eff6ff"/>
+    <text x="262" y="97" font-size="8.6" font-weight="700" fill="#1e40af" letter-spacing=".08em">EMITIR — issueBudgetNfe()</text>
+
+    <g font-size="9" fill="#1e293b">
+      <circle cx="268" cy="121" r="8" fill="#2563eb"/><text x="268" y="124.5" text-anchor="middle" font-size="8.5" font-weight="700" fill="#fff">1</text>
+      <text x="284" y="124">Monta orçamento + cliente + operação fiscal (CFOP)</text>
+      <circle cx="268" cy="142" r="8" fill="#2563eb"/><text x="268" y="145.5" text-anchor="middle" font-size="8.5" font-weight="700" fill="#fff">2</text>
+      <text x="284" y="145">Enriquece itens: Fiscal V2 + ICMS-ST de CST 60</text>
+      <circle cx="268" cy="163" r="8" fill="#2563eb"/><text x="268" y="166.5" text-anchor="middle" font-size="8.5" font-weight="700" fill="#fff">3</text>
+      <text x="284" y="166">Valida itens e configuração fiscal</text>
+      <circle cx="268" cy="184" r="8" fill="#6d28d9"/><text x="268" y="187.5" text-anchor="middle" font-size="8.5" font-weight="700" fill="#fff">4</text>
+      <text x="284" y="187" font-weight="650">TRANSAÇÃO: trava, reserva nº e cria a tentativa</text>
+      <circle cx="268" cy="205" r="8" fill="#6d28d9"/><text x="268" y="208.5" text-anchor="middle" font-size="8.5" font-weight="700" fill="#fff">5</text>
+      <text x="284" y="208">Transmite ao provedor e grava provider_id</text>
+    </g>
+
+    <!-- tabelas criadas -->
+    <path d="M248,184 L150,184 L150,210" stroke="#6d28d9" stroke-width="1.3" fill="none" marker-end="url(#ahp)"/>
+    <rect x="36" y="214" width="228" height="42" rx="8" fill="#f5f3ff" stroke="#ddd6fe" stroke-width="1.5"/>
+    <text x="150" y="230" text-anchor="middle" font-size="9.4" font-weight="650" fill="#5b21b6">budgetsNfeAttempts</text>
+    <text x="150" y="245" text-anchor="middle" font-size="8" fill="#6d28d9">+ budgetsNfeAttemptItems (snapshot fiscal)</text>
+
+    <!-- provedor -->
+    <path d="M300,232 L300,262" stroke="#64748b" stroke-width="1.6" fill="none" marker-end="url(#ah)" stroke-dasharray="4 3"/>
+    <text x="500" y="252" text-anchor="middle" font-size="8.6" fill="#475569" font-style="italic">
+      o provedor processa junto à SEFAZ — status inicial: PROCESSANDO
+    </text>
+
+    <!-- BLOCO RECONCILIAR -->
+    <rect x="150" y="268" width="538" height="30" rx="9" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="419" y="287" text-anchor="middle" font-size="10.4" font-weight="650" fill="#0f172a">
+      RECONCILIAR — GET /status (polling) · reconcileBudgetNfe()
+    </text>
+
+    <!-- 3 ramos -->
+    <path d="M300,298 L300,318" stroke="#047857" stroke-width="1.6" fill="none" marker-end="url(#ahg)"/>
+    <path d="M470,298 L470,318" stroke="#b45309" stroke-width="1.6" fill="none" marker-end="url(#ah)"/>
+    <path d="M620,298 L620,318" stroke="#b91c1c" stroke-width="1.6" fill="none" marker-end="url(#ahr)"/>
+
+    <!-- ramo autorizada -->
+    <rect x="150" y="322" width="234" height="196" rx="9" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1.8"/>
+    <text x="267" y="340" text-anchor="middle" font-size="10.4" font-weight="700" fill="#047857">AUTORIZADA</text>
+    <g font-size="8.7" fill="#065f46">
+      <rect x="164" y="350" width="206" height="26" rx="6" fill="#fff" stroke="#a7f3d0"/>
+      <text x="267" y="367" text-anchor="middle" font-weight="650">1. Baixa de estoque</text>
+      <path d="M267,376 L267,384" stroke="#047857" stroke-width="1.3" marker-end="url(#ahg)"/>
+      <rect x="164" y="388" width="206" height="26" rx="6" fill="#fff" stroke="#a7f3d0"/>
+      <text x="267" y="405" text-anchor="middle" font-weight="650">2. invoicesIssued (upsert)</text>
+      <path d="M267,414 L267,422" stroke="#047857" stroke-width="1.3" marker-end="url(#ahg)"/>
+      <rect x="164" y="426" width="206" height="26" rx="6" fill="#fff" stroke="#a7f3d0"/>
+      <text x="267" y="443" text-anchor="middle" font-weight="650">3. budgets = 'FATURADO'</text>
+      <path d="M267,452 L267,460" stroke="#047857" stroke-width="1.3" marker-end="url(#ahg)"/>
+      <rect x="164" y="464" width="206" height="40" rx="6" fill="#f5f3ff" stroke="#ddd6fe"/>
+      <text x="267" y="479" text-anchor="middle" font-weight="650" fill="#5b21b6">4. Asaas → boletos</text>
+      <text x="267" y="493" text-anchor="middle" font-size="7.8" fill="#6d28d9">falha aqui NÃO derruba a nota</text>
+    </g>
+
+    <!-- ramo cancelada -->
+    <rect x="396" y="322" width="150" height="196" rx="9" fill="#fffbeb" stroke="#fde68a" stroke-width="1.8"/>
+    <text x="471" y="340" text-anchor="middle" font-size="10.4" font-weight="700" fill="#b45309">CANCELADA</text>
+    <g font-size="8.5" fill="#92400e">
+      <rect x="408" y="350" width="126" height="26" rx="6" fill="#fff" stroke="#fde68a"/>
+      <text x="471" y="367" text-anchor="middle" font-weight="650">Nota cancelada</text>
+      <path d="M471,376 L471,384" stroke="#b45309" stroke-width="1.3" marker-end="url(#ah)"/>
+      <rect x="408" y="388" width="126" height="26" rx="6" fill="#fff" stroke="#fde68a"/>
+      <text x="471" y="405" text-anchor="middle" font-weight="650">Estorno estoque</text>
+      <path d="M471,414 L471,422" stroke="#b45309" stroke-width="1.3" marker-end="url(#ah)"/>
+      <rect x="408" y="426" width="126" height="40" rx="6" fill="#fff" stroke="#fde68a"/>
+      <text x="471" y="441" text-anchor="middle" font-weight="650">budgets =</text>
+      <text x="471" y="455" text-anchor="middle" font-weight="650">'CANCELADO'</text>
+    </g>
+
+    <!-- ramo rejeitada -->
+    <rect x="558" y="322" width="130" height="196" rx="9" fill="#fef2f2" stroke="#fecaca" stroke-width="1.8"/>
+    <text x="623" y="338" text-anchor="middle" font-size="9.6" font-weight="700" fill="#b91c1c">REJEITADA</text>
+    <text x="623" y="351" text-anchor="middle" font-size="9.6" font-weight="700" fill="#b91c1c">DENEGADA · ERRO</text>
+    <g font-size="8.5" fill="#991b1b">
+      <rect x="570" y="360" width="106" height="52" rx="6" fill="#fff" stroke="#fecaca"/>
+      <text x="623" y="377" text-anchor="middle">Nenhum efeito</text>
+      <text x="623" y="391" text-anchor="middle">colateral —</text>
+      <text x="623" y="405" text-anchor="middle" font-weight="650">só registra o erro</text>
+      <path d="M623,412 L623,422" stroke="#b91c1c" stroke-width="1.3" marker-end="url(#ahr)"/>
+      <rect x="570" y="426" width="106" height="52" rx="6" fill="#fff" stroke="#fecaca"/>
+      <text x="623" y="443" text-anchor="middle" font-weight="650">Nova tentativa</text>
+      <text x="623" y="457" text-anchor="middle">permitida</text>
+      <text x="623" y="470" text-anchor="middle" font-size="7.6">(attempt_number + 1)</text>
+    </g>
+
+    <!-- documentos finais -->
+    <path d="M267,518 L267,532" stroke="#047857" stroke-width="1.6" fill="none" marker-end="url(#ahg)"/>
+    <rect x="150" y="536" width="234" height="22" rx="7" fill="#fff" stroke="#a7f3d0" stroke-width="1.5"/>
+    <text x="267" y="551" text-anchor="middle" font-size="8.8" font-weight="650" fill="#047857">GET /xml · GET /danfe.pdf</text>
+  </svg>
+  <div class="dg-cap">
+    Mapa completo do módulo. As setas tracejadas indicam caminhos que não
+    transmitem documento fiscal.
+  </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ 3. ARQUITETURA ══════════════════════════ -->
+<div class="sec">
+  <div class="sec-head"><span class="num">03</span><h2>Arquitetura em camadas</h2></div>
+
+  <p class="lead">
+    O módulo segue uma separação estrita: a rota não sabe regra de negócio,
+    o controller não sabe SQL e o orquestrador não sabe HTTP.
+  </p>
+
+  <div class="dg">
+    <div class="layer">
+      <div class="lbl">Rota</div>
+      <div class="body">
+        <div class="card k-slate">
+          <div class="ch">budgetsIssuedsRoutes.js</div>
+          <div class="cc">/api/budgets-issued · requireAuth em todas</div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;color:#94a3b8;font-size:12pt;line-height:1;margin:1px 0">↓</div>
+    <div class="layer">
+      <div class="lbl">Controller</div>
+      <div class="body">
+        <div class="card k-slate">
+          <div class="ch">budgetsIssuedsController.js</div>
+          <div class="cs">Traduz HTTP ↔ serviço · cabeçalhos <code>no-store</code> · <code>confirm:true</code> · mapeia erro → status</div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;color:#94a3b8;font-size:12pt;line-height:1;margin:1px 0">↓</div>
+    <div class="layer">
+      <div class="lbl">Orquestrador</div>
+      <div class="body">
+        <div class="card k-blue">
+          <div class="ch">nfeIssuanceApi.js</div>
+          <div class="cs">
+            O cérebro do módulo: prepara dados, valida, reserva numeração,
+            decide o que transmitir e aplica os efeitos da reconciliação.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;color:#94a3b8;font-size:12pt;line-height:1;margin:1px 0">↓</div>
+    <div class="layer">
+      <div class="lbl">Serviços</div>
+      <div class="body">
+        <div class="card k-green">
+          <div class="ch" style="font-size:8.8pt">stockFromBudgets</div>
+          <div class="cs">baixa e estorno de estoque</div>
+        </div>
+        <div class="card k-green">
+          <div class="ch" style="font-size:8.8pt">invoicesIssuedApi</div>
+          <div class="cs">registro final da nota</div>
+        </div>
+        <div class="card k-green">
+          <div class="ch" style="font-size:8.8pt">nfeAsaasSync</div>
+          <div class="cs">contas a receber e boletos</div>
+        </div>
+        <div class="card k-green">
+          <div class="ch" style="font-size:8.8pt">nfePreview</div>
+          <div class="cs">PDF de conferência</div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;color:#94a3b8;font-size:12pt;line-height:1;margin:1px 0">↓</div>
+    <div class="layer">
+      <div class="lbl">Externo</div>
+      <div class="body">
+        <div class="card k-purple">
+          <div class="ch">tecnoSpeedNfeApi.js → PlugNotas</div>
+          <div class="cs">buildNFeFromOrder · emitirNFe · consultarNFe · listarNFe · obterXml · obterPdf</div>
+        </div>
+        <div class="card k-purple">
+          <div class="ch">asaasApi.js → Asaas</div>
+          <div class="cs">cobranças / boletos</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout c-note">
+    <span class="ct">Curiosidade que evita confusão</span>
+    O arquivo chama-se <code>tecnoSpeedNfeApi.js</code>, mas a API consumida é a
+    <b>PlugNotas</b> (<code>api.plugnotas.com.br</code>) — produto da TecnoSpeed.
+    Nos logs de boot aparece <code>[PlugNotasNFe]</code>.
+  </div>
+
+  <h3>Modelo de dados — quem aponta para quem</h3>
+
+  <div class="dg">
+  <svg viewBox="0 0 700 300" width="700" height="300" font-family="Segoe UI, sans-serif">
+    <defs>
+      <marker id="e1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+        <path d="M0,1 L7,4 L0,7 z" fill="#64748b"/>
+      </marker>
+    </defs>
+
+    <!-- origem -->
+    <rect x="8" y="16" width="150" height="60" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="83" y="34" text-anchor="middle" font-size="10" font-weight="650" fill="#0f172a">budgets</text>
+    <line x1="18" y1="41" x2="148" y2="41" stroke="#e2e8f0"/>
+    <text x="83" y="55" text-anchor="middle" font-size="8" fill="#64748b">budgetsItems</text>
+    <text x="83" y="68" text-anchor="middle" font-size="8" fill="#64748b">budgetsPayments · Shipping</text>
+
+    <!-- tentativa -->
+    <rect x="216" y="8" width="176" height="84" rx="8" fill="#f5f3ff" stroke="#ddd6fe" stroke-width="1.8"/>
+    <text x="304" y="26" text-anchor="middle" font-size="10" font-weight="650" fill="#5b21b6">budgetsNfeAttempts</text>
+    <line x1="226" y1="33" x2="382" y2="33" stroke="#ddd6fe"/>
+    <text x="304" y="47" text-anchor="middle" font-size="8" fill="#6d28d9">nfe_number · provider_id</text>
+    <text x="304" y="59" text-anchor="middle" font-size="8" fill="#6d28d9">integration_id · access_key</text>
+    <text x="304" y="71" text-anchor="middle" font-size="8" fill="#6d28d9">budgetsNfeAttemptItems</text>
+    <text x="304" y="79" text-anchor="middle" font-size="7.2" fill="#8b5cf6">(snapshot fiscal por item)</text>
+
+    <!-- destino -->
+    <rect x="452" y="16" width="160" height="60" rx="8" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1.8"/>
+    <text x="532" y="34" text-anchor="middle" font-size="10" font-weight="650" fill="#047857">invoicesIssued</text>
+    <line x1="462" y1="41" x2="602" y2="41" stroke="#a7f3d0"/>
+    <text x="532" y="55" text-anchor="middle" font-size="8" fill="#065f46">source_type = 'BUDGET'</text>
+    <text x="532" y="68" text-anchor="middle" font-size="8" fill="#065f46">UNIQUE (budget_id)</text>
+
+    <path d="M158,46 L210,46" stroke="#64748b" stroke-width="1.4" marker-end="url(#e1)"/>
+    <text x="184" y="41" text-anchor="middle" font-size="7.4" fill="#475569">1:N</text>
+    <path d="M392,46 L446,46" stroke="#64748b" stroke-width="1.4" marker-end="url(#e1)"/>
+    <text x="419" y="41" text-anchor="middle" font-size="7.4" fill="#475569">1:1</text>
+
+    <!-- catálogos -->
+    <text x="8" y="112" font-size="8.2" font-weight="700" fill="#64748b" letter-spacing=".07em">CATÁLOGOS DE APOIO (consultados, nunca alterados pelo fluxo)</text>
+    <rect x="8" y="120" width="164" height="50" rx="7" fill="#fff" stroke="#cbd5e1" stroke-width="1.3"/>
+    <text x="90" y="137" text-anchor="middle" font-size="9.2" font-weight="650" fill="#0f172a">nfeOperationTypes</text>
+    <text x="90" y="151" text-anchor="middle" font-size="7.6" fill="#64748b">CFOP interno/interestadual</text>
+    <text x="90" y="163" text-anchor="middle" font-size="7.6" fill="#64748b">moves_stock · generates_receivable</text>
+
+    <rect x="184" y="120" width="150" height="50" rx="7" fill="#fff" stroke="#cbd5e1" stroke-width="1.3"/>
+    <text x="259" y="137" text-anchor="middle" font-size="9.2" font-weight="650" fill="#0f172a">nfeStatusMap</text>
+    <text x="259" y="151" text-anchor="middle" font-size="7.6" fill="#64748b">code · is_final</text>
+    <text x="259" y="163" text-anchor="middle" font-size="7.6" fill="#64748b">is_authorized</text>
+
+    <rect x="346" y="120" width="120" height="50" rx="7" fill="#fff" stroke="#cbd5e1" stroke-width="1.3"/>
+    <text x="406" y="137" text-anchor="middle" font-size="9.2" font-weight="650" fill="#0f172a">nfe</text>
+    <text x="406" y="151" text-anchor="middle" font-size="7.6" fill="#64748b">sequence_number</text>
+    <text x="406" y="163" text-anchor="middle" font-size="7.6" fill="#64748b">(numeração fiscal)</text>
+
+    <rect x="478" y="120" width="214" height="50" rx="7" fill="#fff" stroke="#cbd5e1" stroke-width="1.3"/>
+    <text x="585" y="137" text-anchor="middle" font-size="9.2" font-weight="650" fill="#0f172a">Fiscal V2 (3 tabelas)</text>
+    <text x="585" y="151" text-anchor="middle" font-size="7.6" fill="#64748b">products_fiscal · fiscal_classification</text>
+    <text x="585" y="163" text-anchor="middle" font-size="7.6" fill="#64748b">fiscal_profile → NCM, CEST, CST, CFOP</text>
+
+    <!-- efeitos -->
+    <text x="8" y="202" font-size="8.2" font-weight="700" fill="#64748b" letter-spacing=".07em">EFEITOS DA AUTORIZAÇÃO</text>
+    <rect x="8" y="210" width="218" height="46" rx="7" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1.3"/>
+    <text x="117" y="228" text-anchor="middle" font-size="9.2" font-weight="650" fill="#047857">Estoque</text>
+    <text x="117" y="243" text-anchor="middle" font-size="7.6" fill="#065f46">productsStock · productsStockLots · productMovements</text>
+
+    <rect x="238" y="210" width="218" height="46" rx="7" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1.3"/>
+    <text x="347" y="228" text-anchor="middle" font-size="9.2" font-weight="650" fill="#047857">Financeiro</text>
+    <text x="347" y="243" text-anchor="middle" font-size="7.6" fill="#065f46">accountsReceivable · accountsReceivableAsaas</text>
+
+    <rect x="468" y="210" width="224" height="46" rx="7" fill="#fffbeb" stroke="#fde68a" stroke-width="1.3"/>
+    <text x="580" y="228" text-anchor="middle" font-size="9.2" font-weight="650" fill="#b45309">Fonte do ICMS-ST (leitura)</text>
+    <text x="580" y="243" text-anchor="middle" font-size="7.6" fill="#92400e">inboundInvoiceItems — notas de entrada</text>
+
+    <text x="350" y="284" text-anchor="middle" font-size="8" fill="#94a3b8" font-style="italic">
+      budgetsNfeAttempts é o centro de gravidade: toda a rastreabilidade fiscal passa por ela.
+    </text>
+  </svg>
+  </div>
+</div>
+
+<!-- ══════════════════════════ 4. EMISSÃO ══════════════════════════ -->
+<div class="sec">
+  <div class="sec-head"><span class="num">04</span><h2>Jornada da emissão, passo a passo</h2></div>
+
+  <p class="lead">
+    O que acontece entre o clique do usuário e a resposta <code>202</code>.
+    São sete etapas — e a quarta é a única que grava algo de forma definitiva.
+  </p>
+
+  <div class="dg">
+    <div class="steps">
+      <div class="step">
+        <div class="bul">1</div>
+        <div class="sh">Dados do orçamento e do cliente</div>
+        <div class="sb">
+          Valida o ID, carrega o orçamento, busca o cliente e o código IBGE
+          (7 dígitos, procurado em 8 nomes de campo alternativos).
+          Falha ao buscar o cliente é apenas <i>logada</i>, não interrompe.
+        </div>
+      </div>
+      <div class="step">
+        <div class="bul">2</div>
+        <div class="sh">Operação fiscal e escolha do CFOP</div>
+        <div class="sb">
+          Compara a UF do emitente (<code>NFE_EMPRESA_UF</code>) com a do
+          destinatário: igual → <code>cfop_internal</code>, diferente →
+          <code>cfop_interstate</code>.
+        </div>
+      </div>
+      <div class="step">
+        <div class="bul">3</div>
+        <div class="sh">Itens fiscais e enriquecimento</div>
+        <div class="sb">
+          Um <code>SELECT</code> único junta os itens ao Fiscal V2. Depois cada
+          item é enriquecido — e itens <b>CST 60</b> recebem o ICMS-ST retido.
+          Roda com concorrência limitada a 4, respeitando o pool do banco.
+        </div>
+      </div>
+      <div class="step">
+        <div class="bul">4</div>
+        <div class="sh">Validações de bloqueio</div>
+        <div class="sb">
+          Sem itens → <span class="tag t-422">422</span>
+          <code>BUDGET_WITHOUT_ITEMS</code>. Item sem configuração fiscal ativa →
+          <span class="tag t-422">422</span>
+          <code>BUDGET_ITEMS_WITHOUT_FISCAL_CONFIGURATION</code> (com a lista de SKUs).
+        </div>
+      </div>
+      <div class="step s-purple">
+        <div class="bul">5</div>
+        <div class="sh">A transação de reserva — o ponto sem volta</div>
+        <div class="sb">
+          Trava o orçamento, verifica se já existe NF-e, reserva o número
+          fiscal e cria a tentativa com o snapshot de todos os itens.
+          Detalhada na próxima página.
+        </div>
+      </div>
+      <div class="step s-purple">
+        <div class="bul">6</div>
+        <div class="sh">Consulta de recuperação e transmissão</div>
+        <div class="sb">
+          Antes de transmitir, pergunta ao provedor se aquele
+          <code>idIntegracao</code> já existe. Só então envia.
+        </div>
+      </div>
+      <div class="step s-green">
+        <div class="bul">7</div>
+        <div class="sh">Persistência do desfecho</div>
+        <div class="sb">
+          Grava <code>provider_id</code>, protocolo, ambiente e status.
+          Responde <span class="tag t-409" style="background:#ecfdf5;color:#047857;border-color:#a7f3d0">202</span>
+          com <code>status: "PROCESSANDO"</code>.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>A transação de reserva (etapa 5)</h3>
+  <p>
+    Tudo aqui acontece dentro de <b>uma única transação</b>, com um cliente
+    dedicado do pool. É isto que impede duas emissões simultâneas de receberem
+    o mesmo número fiscal.
+  </p>
+
+<pre><span class="kw">BEGIN</span>
+ │
+ ├─ <span class="kw">SELECT</span> ... <span class="kw">FROM</span> budgets <span class="kw">WHERE</span> budget_id = $1 <span class="kw">FOR UPDATE</span>
+ │     <span class="cm">└─ serializa: a segunda emissão espera aqui</span>
+ │
+ ├─ <span class="kw">SELECT</span> última tentativa ... <span class="kw">FOR UPDATE OF</span> a
+ │     <span class="er">├─ is_authorized          → 409 "já possui NF-e autorizada"</span>
+ │     <span class="er">└─ !is_final && !retryable → 409 "já está sendo enviada"</span>
+ │
+ ├─ <span class="wn">Define o número: reaproveita o anterior OU incrementa public.nfe</span>
+ │
+ ├─ <span class="kw">INSERT</span> budgetsNfeAttempts
+ │     <span class="cm">integration_id = "BUD-&lt;budget_id&gt;-A&lt;attempt_number&gt;"</span>
+ │
+ └─ <span class="kw">INSERT</span> budgetsNfeAttemptItems   <span class="cm">(1 linha por item)</span>
+<span class="kw">COMMIT</span></pre>
+
+  <div class="callout c-info">
+    <span class="ct">Por que o snapshot por item existe</span>
+    <code>budgetsNfeAttemptItems</code> congela NCM, CEST, CST, alíquotas, CFOP
+    e a memória de cálculo do ICMS-ST no instante da emissão. Se a configuração
+    fiscal do produto mudar amanhã, a nota emitida hoje continua auditável
+    exatamente como foi enviada.
+  </div>
+
+  <h3>A armadilha da recuperação (etapa 6)</h3>
+  <p>
+    Esta etapa existe para um caso real: a chamada anterior <i>chegou</i> ao
+    provedor, mas a gravação local falhou. Sem ela, o retry emitiria uma
+    segunda nota. Mas há uma sutileza perigosa:
+  </p>
+
+  <div class="dg">
+    <div class="flow">
+      <div class="card k-blue" style="flex:1.15">
+        <div class="ch" style="font-size:8.8pt">1. Pergunta ao provedor</div>
+        <div class="cc">listarNFe({ q: idIntegracao })</div>
+      </div>
+      <div class="arr sm">→</div>
+      <div class="card k-purple" style="flex:1.3">
+        <div class="ch" style="font-size:8.8pt">2. Tenta o lookup direto</div>
+        <div class="cs">/nfe/{cnpj}/{idIntegracao}/resumo</div>
+      </div>
+      <div class="arr sm">→</div>
+      <div class="card k-red" style="flex:1.55">
+        <div class="ch" style="font-size:8.8pt">3. Se der 404…</div>
+        <div class="cs">cai na busca por período (90 dias) e filtra por
+        <b>substring</b> e por <b>“somente dígitos”</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout c-danger">
+    <span class="ct">O bug que isso causava</span>
+    Para <code>idIntegracao = "BUD-1-A1"</code>, o termo reduzido a dígitos é
+    <b>"11"</b>. A busca então retornava <b>qualquer</b> NF-e dos últimos 90 dias
+    cujo número ou CNPJ do destinatário contivesse “11”. Pegar o primeiro
+    resultado da lista fazia a emissão <b>adotar a nota de outro orçamento e
+    nunca transmitir a verdadeira</b>.
+    <br><br>
+    <b>Correção:</b> <code>findProviderDocumentByIntegrationId()</code> exige
+    <code>idIntegracao</code> idêntico — ou confirma que foi o próprio provedor
+    que resolveu o ID pela URL. Também protege contra colisão de prefixo:
+    <code>BUD-1-A1</code> é substring de <code>BUD-1-A10</code> e de
+    <code>BUD-1-A1-R&lt;timestamp&gt;</code>.
+  </div>
+
+  <table>
+    <thead><tr><th style="width:42%">Resultado da consulta</th><th>Ação tomada</th></tr></thead>
+    <tbody>
+      <tr><td>Documento encontrado e <b>não</b> rejeitado</td><td>Reaproveita — <code>recovered: true</code>, <b>sem nova transmissão</b></td></tr>
+      <tr><td>Documento encontrado, mas rejeitado/erro</td><td>Gera novo <code>idIntegracao</code> (<code>…-R&lt;timestamp&gt;</code>) e transmite</td></tr>
+      <tr><td>Nada encontrado</td><td>Transmite normalmente</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Desfechos possíveis da transmissão</h3>
+  <table class="tight">
+    <thead><tr><th style="width:24%">Situação</th><th style="width:12%">HTTP</th><th>Código e significado</th></tr></thead>
+    <tbody>
+      <tr><td>Provedor recusou</td><td><span class="tag t-502">502</span></td><td><code>NFE_PROVIDER_ERROR</code> — ver <code>data</code> com o erro bruto</td></tr>
+      <tr><td>Sem identificador</td><td><span class="tag t-502">502</span></td><td><code>NFE_PROVIDER_ID_MISSING</code> — envio não pôde ser confirmado</td></tr>
+      <tr><td>Rejeição da SEFAZ</td><td><span class="tag t-422">422</span></td><td><code>NFE_REJECTED</code> — corrigir e reemitir (número é reaproveitado)</td></tr>
+      <tr><td>Sucesso</td><td><span class="tag t-409" style="background:#ecfdf5;color:#047857;border-color:#a7f3d0">202</span></td><td><code>PROCESSANDO</code> — agora é só reconciliar</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout c-note">
+    <span class="ct">Sobre o consumidor final</span>
+    Neste fluxo <code>consumidorFinal</code> é <b>fixo em true</b>
+    (<code>indFinal = 1</code>), por decisão fiscal registrada no código:
+    <code>indFinal</code> (consumidor final) e <code>indIEDest</code>
+    (contribuinte) são conceitos <b>independentes</b> — a existência de
+    inscrição estadual <b>não</b> deve derivar <code>indFinal</code>.
+    Vale só para orçamentos; não afeta Pedidos.
+  </div>
+</div>
+
+<!-- ══════════════════════════ 5. RECONCILIAÇÃO ══════════════════════════ -->
+<div class="sec">
+  <div class="sec-head"><span class="num">05</span><h2>Reconciliação: a árvore de decisão</h2></div>
+
+  <p class="lead">
+    <code>GET /status</code> é o motor de convergência do módulo. Ele pergunta
+    ao provedor o que aconteceu e aplica o desfecho. Pode ser chamado
+    repetidamente — todos os efeitos são idempotentes.
+  </p>
+
+  <div class="dg">
+  <svg viewBox="0 0 700 340" width="700" height="340" font-family="Segoe UI, sans-serif">
+    <defs>
+      <marker id="r1" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto">
+        <path d="M0,1 L8,4.5 L0,8 z" fill="#64748b"/>
+      </marker>
+    </defs>
+
+    <rect x="252" y="4" width="196" height="34" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="350" y="25" text-anchor="middle" font-size="9.8" font-weight="650" fill="#0f172a">GET /:budgetId/status</text>
+
+    <path d="M350,38 L350,56" stroke="#64748b" stroke-width="1.5" marker-end="url(#r1)"/>
+    <rect x="216" y="60" width="268" height="32" rx="8" fill="#fff" stroke="#cbd5e1" stroke-width="1.4"/>
+    <text x="350" y="74" text-anchor="middle" font-size="9" font-weight="650" fill="#0f172a">1 · Localiza a última tentativa</text>
+    <text x="350" y="86" text-anchor="middle" font-size="7.8" fill="#64748b">getBudgetNfeReference → resolveProviderId</text>
+
+    <path d="M350,92 L350,110" stroke="#64748b" stroke-width="1.5" marker-end="url(#r1)"/>
+    <rect x="216" y="114" width="268" height="32" rx="8" fill="#f5f3ff" stroke="#ddd6fe" stroke-width="1.4"/>
+    <text x="350" y="128" text-anchor="middle" font-size="9" font-weight="650" fill="#5b21b6">2 · Consulta o provedor</text>
+    <text x="350" y="140" text-anchor="middle" font-size="7.8" fill="#6d28d9">consultarNFe → normalizeProviderStatus</text>
+
+    <path d="M350,146 L350,164" stroke="#64748b" stroke-width="1.5" marker-end="url(#r1)"/>
+    <rect x="216" y="168" width="268" height="32" rx="8" fill="#fff" stroke="#cbd5e1" stroke-width="1.4"/>
+    <text x="350" y="182" text-anchor="middle" font-size="9" font-weight="650" fill="#0f172a">3 · Atualiza a tentativa (sempre)</text>
+    <text x="350" y="194" text-anchor="middle" font-size="7.8" fill="#64748b">status · protocolo · chave · authorized_at / rejected_at</text>
+
+    <!-- bifurcação -->
+    <path d="M350,200 L350,214" stroke="#64748b" stroke-width="1.5"/>
+    <path d="M118,214 L582,214" stroke="#64748b" stroke-width="1.5"/>
+    <path d="M118,214 L118,232" stroke="#047857" stroke-width="1.5" marker-end="url(#r1)"/>
+    <path d="M350,214 L350,232" stroke="#b45309" stroke-width="1.5" marker-end="url(#r1)"/>
+    <path d="M582,214 L582,232" stroke="#b91c1c" stroke-width="1.5" marker-end="url(#r1)"/>
+
+    <rect x="14" y="236" width="208" height="92" rx="8" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1.8"/>
+    <text x="118" y="254" text-anchor="middle" font-size="10" font-weight="700" fill="#047857">AUTORIZADA</text>
+    <text x="118" y="270" text-anchor="middle" font-size="8.2" fill="#065f46">estoque → invoicesIssued</text>
+    <text x="118" y="283" text-anchor="middle" font-size="8.2" fill="#065f46">→ FATURADO → boletos</text>
+    <text x="118" y="300" text-anchor="middle" font-size="7.6" fill="#059669" font-style="italic">a ordem importa:</text>
+    <text x="118" y="312" text-anchor="middle" font-size="7.6" fill="#059669" font-style="italic">é estritamente sequencial</text>
+
+    <rect x="246" y="236" width="208" height="92" rx="8" fill="#fffbeb" stroke="#fde68a" stroke-width="1.8"/>
+    <text x="350" y="254" text-anchor="middle" font-size="10" font-weight="700" fill="#b45309">CANCELADA</text>
+    <text x="350" y="270" text-anchor="middle" font-size="8.2" fill="#92400e">nota cancelada → estorno</text>
+    <text x="350" y="283" text-anchor="middle" font-size="8.2" fill="#92400e">de estoque → CANCELADO</text>
+    <text x="350" y="300" text-anchor="middle" font-size="7.6" fill="#b45309" font-style="italic">estorno usa marcas próprias</text>
+    <text x="350" y="312" text-anchor="middle" font-size="7.6" fill="#b45309" font-style="italic">de idempotência</text>
+
+    <rect x="478" y="236" width="208" height="92" rx="8" fill="#fef2f2" stroke="#fecaca" stroke-width="1.8"/>
+    <text x="582" y="254" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">REJEITADA / DENEGADA</text>
+    <text x="582" y="268" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">ERRO</text>
+    <text x="582" y="285" text-anchor="middle" font-size="8.2" fill="#991b1b">só grava error_code e</text>
+    <text x="582" y="297" text-anchor="middle" font-size="8.2" fill="#991b1b">error_message</text>
+    <text x="582" y="314" text-anchor="middle" font-size="7.6" fill="#dc2626" font-style="italic">nenhum efeito colateral</text>
+  </svg>
+  </div>
+
+  <h3>Ramo AUTORIZADA — a cascata ordenada</h3>
+  <p>
+    A ordem não é acidental. Cada passo depende do anterior, e o orçamento
+    só vira <code>FATURADO</code> depois que estoque e nota tiverem sucesso.
+  </p>
+
+  <div class="dg">
+    <div class="steps">
+      <div class="step s-green">
+        <div class="bul">1</div>
+        <div class="sh">Baixa de estoque</div>
+        <div class="sb">
+          <code>applyStockFromBudget</code>. Exige <code>authorized_at</code>
+          preenchido — e é por isso que o passo 3 do diagrama acima
+          (atualizar a tentativa) vem <b>antes</b> daqui.
+          Operação com <code>moves_stock = false</code> é marcada como
+          ignorada, sem movimentar.
+        </div>
+      </div>
+      <div class="step s-green">
+        <div class="bul">2</div>
+        <div class="sh">Registro em invoicesIssued</div>
+        <div class="sb">
+          <code>upsertFromBudget</code>. Se falhar →
+          <span class="tag t-500">500</span>
+          <code>INVOICES_ISSUED_SYNC_FAILED</code> e <b>o fluxo para aqui</b>.
+        </div>
+      </div>
+      <div class="step s-green">
+        <div class="bul">3</div>
+        <div class="sh">Vínculo e faturamento</div>
+        <div class="sb">
+          Grava <code>invoice_id</code> na tentativa e só então
+          <code>budgets.status = 'FATURADO'</code>.
+        </div>
+      </div>
+      <div class="step s-purple">
+        <div class="bul">4</div>
+        <div class="sh">Financeiro e boletos</div>
+        <div class="sb">
+          <code>syncAuthorizedBudgetNfe</code>. Erro aqui é
+          <b>capturado</b> e devolvido em <code>boleto_sync.ok = false</code> —
+          uma falha no Asaas <b>não</b> invalida a nota autorizada.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout c-warn">
+    <span class="ct">O tropeço mais comum em produção</span>
+    <code>upsertFromBudget</code> <b>exige a chave de acesso com 44 dígitos</b>.
+    Se o provedor devolver <code>AUTORIZADA</code> sem a chave, a reconciliação
+    falha com <code>INVOICES_ISSUED_SYNC_FAILED</code> e o orçamento fica
+    <b>sem</b> <code>FATURADO</code>. Não é perda de dado: basta chamar
+    <code>GET /status</code> novamente quando a chave estiver disponível.
+  </div>
+
+  <h3>Ramo CANCELADA</h3>
+  <table class="tight">
+    <thead><tr><th style="width:30%">Passo</th><th>O que faz</th></tr></thead>
+    <tbody>
+      <tr><td>Data e protocolo</td><td>Converte <code>dataCancelamento</code> (<code>DD/MM/AAAA</code> → <code>AAAA-MM-DD</code>); sem data usa <code>NOW()</code></td></tr>
+      <tr><td>Tentativa</td><td><code>cancelled_at = COALESCE(cancelled_at, data)</code></td></tr>
+      <tr><td>Nota</td><td>Status cancelado + <code>cancellation_reason</code> = <i>"&lt;mensagem&gt; Protocolo: &lt;protocolo&gt;"</i></td></tr>
+      <tr><td>Orçamento</td><td><code>budgets.status = 'CANCELADO'</code></td></tr>
+      <tr><td>Estoque</td><td><code>rollbackStockFromBudget</code> — estorno idempotente</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout c-info">
+    <span class="ct">Por que o cancelamento tem um filtro extra de ambiente</span>
+    O <code>UPDATE</code> da nota tem um fallback para registros antigos sem
+    <code>budget_id</code>. Como a sequência de numeração é <b>compartilhada
+    entre homologação e produção</b>, casar apenas por <code>nfe_number</code>
+    poderia cancelar a nota do outro ambiente. Por isso o fallback exige
+    <code>budget_id IS NULL</code> <b>e</b> o mesmo <code>nfe_environment</code>.
+    Se o ambiente não casar, ele simplesmente não dispara — falha segura.
+  </div>
+</div>
+
+<!-- ══════════════════════════ 6. ICMS-ST ══════════════════════════ -->
+<div class="sec">
+  <div class="sec-head"><span class="num">06</span><h2>ICMS-ST retido: o caso do CST 60</h2></div>
+
+  <p class="lead">
+    Este é o trecho fiscalmente mais delicado do módulo. Entender o
+    <i>porquê</i> torna o código óbvio.
+  </p>
+
+  <div class="callout c-note">
+    <span class="ct">O problema em uma frase</span>
+    Quando você vende uma mercadoria com <b>CST 60</b>, o ICMS-ST daquele
+    produto <b>já foi pago por alguém antes</b> — normalmente pelo fornecedor,
+    na entrada. A NF-e de saída precisa <i>informar</i> quanto foi retido
+    anteriormente. Ou seja: o dado não está no orçamento, está na
+    <b>nota de entrada</b>.
+  </div>
+
+  <div class="dg">
+    <div class="dg-title">O caminho do dado: da entrada para a saída</div>
+    <div class="flow">
+      <div class="card k-amber" style="flex:1.2">
+        <div class="ch" style="font-size:9pt">Nota de ENTRADA</div>
+        <div class="cc">inboundInvoiceItems</div>
+        <div class="cs" style="margin-top:5px">O fornecedor retido o ST e informou os valores</div>
+      </div>
+      <div class="arr">→</div>
+      <div class="card k-blue" style="flex:1.25">
+        <div class="ch" style="font-size:9pt">Rateio por quantidade</div>
+        <div class="cs" style="margin-top:5px">Valores da entrada referem-se à quantidade <b>total</b> dela — precisam ser convertidos</div>
+      </div>
+      <div class="arr">→</div>
+      <div class="card k-green" style="flex:1.2">
+        <div class="ch" style="font-size:9pt">Item da NF-e de SAÍDA</div>
+        <div class="cc">grupo ICMS60</div>
+        <div class="cs" style="margin-top:5px">vBCSTRet · pST · vICMSSTRet</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Como a origem é localizada</h3>
+  <table class="tight">
+    <thead><tr><th style="width:26%">Critério</th><th>Regra</th></tr></thead>
+    <tbody>
+      <tr><td>Chave de busca</td><td><b>Por produto</b> (<code>product_code</code> ou <code>product_id</code>). <b>Lotes não são mais usados.</b></td></tr>
+      <tr><td>Grade</td><td>Apenas <b>preferência de ordenação</b>, nunca filtro — o ST é definido por produto e muitas entradas não registram grade</td></tr>
+      <tr><td>Ordem</td><td>grade preferida → <code>created_at DESC</code> → <code>inbound_item_id DESC</code></td></tr>
+      <tr><td>Limite</td><td>25 candidatas; usa a <b>primeira completa</b></td></tr>
+      <tr><td>Elegibilidade</td><td>Colunas de ST preenchidas <b>ou</b> <code>raw_tax_payload → 'ICMS'</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>De onde vêm os valores (em ordem de prioridade)</h3>
+  <div class="dg">
+    <div class="grid g2">
+      <div class="card k-blue">
+        <div class="ch" style="font-size:9pt">1º · Colunas da tabela</div>
+        <div class="cc" style="margin-top:4px">icms_st_base · icms_st_rate<br>icms_st_value · fcp_st_*</div>
+        <div class="cs" style="margin-top:5px">Preenchidas na importação da entrada.</div>
+      </div>
+      <div class="card k-slate">
+        <div class="ch" style="font-size:9pt">2º · XML da entrada</div>
+        <div class="cc" style="margin-top:4px">raw_tax_payload (xml2js)</div>
+        <div class="cs" style="margin-top:5px">
+          Entrada CST <b>10/30/70</b> → <code>vBCST</code>, <code>pICMSST</code>, <code>vICMSST</code><br>
+          Entrada CST <b>60/500</b> → <code>vBCSTRet</code>, <code>pST</code>, <code>vICMSSTRet</code>
+        </div>
+      </div>
+    </div>
+    <div class="dg-cap">
+      A procedência é registrada <b>campo a campo</b> em
+      <code>source_value_origins</code>; <code>source_values_from</code> assume
+      <code>columns</code>, <code>raw_tax_payload</code> ou <code>mixed</code>.
+    </div>
+  </div>
+
+  <h3>A conta</h3>
+  <div class="formula">
+    <div class="eq">
+      quantidade em unidade base = <b>quantity × conversion_factor</b>
+    </div>
+    <div class="eq" style="margin-top:8px">
+      <b>proportion</b> = qtd. vendida<sub>base</sub> ÷ qtd. da entrada<sub>base</sub>
+    </div>
+    <div class="eq" style="margin-top:8px">
+      vBCSTRet = base<sub>entrada</sub> × <b>proportion</b> &nbsp;·&nbsp;
+      vICMSSTRet = valor<sub>entrada</sub> × <b>proportion</b>
+    </div>
+    <div class="note">Arredondamento em 2 casas · <code>proportion</code> guardado com 8 casas</div>
+  </div>
+
+  <table class="tight">
+    <thead><tr><th style="width:22%">Campo</th><th>Regra</th></tr></thead>
+    <tbody>
+      <tr><td><code>pST</code></td><td>Entrada CST 60/500: o <code>pST</code> do fornecedor (já consolidado).<br>Entrada CST 10/30/70: <code>pICMSST + pFCPST</code> — a alíquota suportada pelo consumidor final inclui o FCP-ST</td></tr>
+      <tr><td><code>vICMSSubstituto</code></td><td>Entrada retida: <code>vICMSSubstituto</code> do XML.<br>Entrada CST 10: <code>vICMS</code> (ICMS próprio do substituto)</td></tr>
+      <tr><td>Grupo FCP-ST</td><td>Só é emitido se <code>fcp_st_value &gt; 0</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout c-warn">
+    <span class="ct">Quando a venda é maior que a entrada (proportion &gt; 1)</span>
+    O ST retido <b>por unidade</b> é multiplicado pela quantidade vendida —
+    prática usual para CST 60. O caso é <b>sinalizado, não bloqueado</b>:
+    o log <code>[BUDGET NFE][ICMS-ST EXTRAPOLADO]</code> registra as
+    quantidades e a proporção, e o flag fica gravado em
+    <code>icms_st_retained.extrapolated = true</code> para auditoria.
+    <br><br>
+    <b>Limitação conhecida:</b> o cálculo usa <b>uma única</b> nota de entrada;
+    não agrega várias.
+  </div>
+
+  <div class="callout c-danger">
+    <span class="ct">Quando não há origem</span>
+    <span class="tag t-422">422</span> <code>BUDGET_ITEM_ICMS_ST_ORIGIN_NOT_FOUND</code><br>
+    <i>“[NFE] SKU &lt;sku&gt;: CST 60 exige a origem do ICMS-ST, mas &lt;motivo&gt;.”</i>
+    <br><br>
+    Precedido do log <code>[BUDGET NFE][ICMS-ST ORIGIN NOT RESOLVED]</code> com
+    o diagnóstico completo. <b>Também derruba o preview</b> — o que é
+    proposital: melhor descobrir na conferência do que na emissão.
+  </div>
+</div>
+
+<!-- ══════════════════════════ 7. NUMERAÇÃO + ESTADOS ══════════════════════════ -->
+<div class="sec">
+  <div class="sec-head"><span class="num">07</span><h2>Numeração fiscal e máquina de estados</h2></div>
+
+  <h3 class="first">A sequência de números</h3>
+  <p>
+    A tabela <code>public.nfe</code> guarda o <b>último número reservado</b> na
+    linha com <code>is_active = TRUE</code>. A reserva acontece <b>dentro</b> da
+    transação que cria a tentativa — é isso que garante que duas emissões
+    simultâneas nunca recebam o mesmo número.
+  </p>
+
+<pre class="light"><span class="kw">WITH</span> active_sequence <span class="kw">AS</span> (
+  <span class="kw">SELECT</span> id <span class="kw">FROM</span> public.nfe <span class="kw">WHERE</span> is_active <span class="kw">AND</span> ... <span class="kw">LIMIT</span> 1 <span class="kw">FOR UPDATE</span>
+)
+<span class="kw">UPDATE</span> public.nfe <span class="kw">SET</span> sequence_number = sequence_number + 1
+<span class="kw">RETURNING</span> sequence_number   <span class="cm">-- o número reservado</span></pre>
+
+  <h3>Reaproveitar ou queimar?</h3>
+  <p>
+    Uma NF-e <b>rejeitada</b> nunca foi autorizada pela SEFAZ — logo seu número
+    pode voltar a ser usado. Uma <b>denegada</b>, não: ela já foi registrada.
+    Esta distinção evita lacunas desnecessárias na numeração.
+  </p>
+
+  <div class="dg">
+    <div class="grid g2">
+      <div class="card k-green">
+        <div class="ch">✓ Número REAPROVEITADO</div>
+        <div class="cs" style="margin-top:5px">
+          Status anterior: <code>ERRO</code>, <code>ERROR</code>,
+          <code>REJEITADA</code>, <code>REJEITADO</code>, <code>REJECTED</code>
+        </div>
+        <div class="cc" style="margin-top:6px">[BUDGET NFE][NUMERO REAPROVEITADO]</div>
+        <div class="cs" style="margin-top:5px">Sem lacuna · sem burocracia</div>
+      </div>
+      <div class="card k-amber">
+        <div class="ch">⚠ Número QUEIMADO</div>
+        <div class="cs" style="margin-top:5px">
+          Status anterior: <code>DENEGADA</code>, <code>DENEGADO</code>,
+          <code>DENIED</code>, <code>CANCELADA</code>
+        </div>
+        <div class="cc" style="margin-top:6px">[BUDGET NFE][NUMERO QUEIMADO]</div>
+        <div class="cs" style="margin-top:5px">
+          Exige <b>inutilização de numeração</b> junto à SEFAZ —
+          <b>não automatizada</b>. Monitore este log.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout c-note">
+    <span class="ct">Detalhe de schema que viabiliza isso</span>
+    <code>budgetsNfeAttempts.nfe_number</code> <b>não</b> tem restrição de
+    unicidade — duas tentativas do mesmo orçamento podem compartilhar o número
+    reaproveitado. As restrições únicas estão em
+    <code>(budget_id, attempt_number)</code>, <code>access_key</code> e
+    <code>provider_id</code>.
+  </div>
+
+  <h3>Máquina de estados</h3>
+  <p>
+    O status nunca é texto livre: é sempre resolvido em
+    <code>nfeStatusMap</code>. E o que governa as transições são as
+    <b>flags</b> <code>is_final</code> e <code>is_authorized</code> —
+    não o texto do código.
+  </p>
+
+  <div class="dg">
+  <svg viewBox="0 0 700 250" width="700" height="250" font-family="Segoe UI, sans-serif">
+    <defs>
+      <marker id="s1" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto">
+        <path d="M0,1 L8,4.5 L0,8 z" fill="#64748b"/>
+      </marker>
+      <marker id="s2" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto">
+        <path d="M0,1 L8,4.5 L0,8 z" fill="#2563eb"/>
+      </marker>
+    </defs>
+
+    <rect x="16" y="46" width="112" height="42" rx="21" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+    <text x="72" y="64" text-anchor="middle" font-size="9.6" font-weight="700" fill="#1e40af">ENVIANDO</text>
+    <text x="72" y="78" text-anchor="middle" font-size="7.4" fill="#2563eb">POST /issue</text>
+
+    <path d="M128,67 L188,67" stroke="#64748b" stroke-width="1.5" marker-end="url(#s1)"/>
+    <text x="158" y="60" text-anchor="middle" font-size="7.2" fill="#475569">transmitiu</text>
+
+    <rect x="192" y="46" width="124" height="42" rx="21" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+    <text x="254" y="64" text-anchor="middle" font-size="9.6" font-weight="700" fill="#1e40af">PROCESSANDO</text>
+    <text x="254" y="78" text-anchor="middle" font-size="7.4" fill="#2563eb">is_final = false</text>
+
+    <!-- laço de polling -->
+    <path d="M240,46 C240,12 300,12 300,44" stroke="#2563eb" stroke-width="1.4" fill="none" marker-end="url(#s2)" stroke-dasharray="3 2"/>
+    <text x="270" y="9" text-anchor="middle" font-size="7.2" fill="#2563eb">GET /status (polling)</text>
+
+    <!-- para autorizada -->
+    <path d="M316,58 L390,42" stroke="#047857" stroke-width="1.6" marker-end="url(#s1)"/>
+    <rect x="396" y="18" width="124" height="42" rx="21" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+    <text x="458" y="36" text-anchor="middle" font-size="9.6" font-weight="700" fill="#047857">AUTORIZADA</text>
+    <text x="458" y="50" text-anchor="middle" font-size="7.4" fill="#059669">is_authorized = true</text>
+
+    <!-- cancelada: à direita da autorizada, sem cruzar nada -->
+    <text x="540" y="12" text-anchor="middle" font-size="7.4" fill="#b45309">cancelamento</text>
+    <path d="M520,39 L556,39" stroke="#b45309" stroke-width="1.6" marker-end="url(#s1)"/>
+    <rect x="560" y="18" width="126" height="42" rx="21" fill="#fffbeb" stroke="#b45309" stroke-width="1.8"/>
+    <text x="623" y="36" text-anchor="middle" font-size="9.6" font-weight="700" fill="#b45309">CANCELADA</text>
+    <text x="623" y="50" text-anchor="middle" font-size="7.4" fill="#d97706">estorna o estoque</text>
+
+    <!-- para rejeitada -->
+    <path d="M316,76 L390,104" stroke="#b91c1c" stroke-width="1.6" marker-end="url(#s1)"/>
+    <rect x="396" y="88" width="124" height="52" rx="12" fill="#fef2f2" stroke="#b91c1c" stroke-width="1.8"/>
+    <text x="458" y="106" text-anchor="middle" font-size="9" font-weight="700" fill="#b91c1c">REJEITADA</text>
+    <text x="458" y="119" text-anchor="middle" font-size="9" font-weight="700" fill="#b91c1c">DENEGADA · ERRO</text>
+    <text x="458" y="133" text-anchor="middle" font-size="7.2" fill="#dc2626">is_final = true · retryable</text>
+
+    <!-- retry: volta pela esquerda, por baixo, sem atravessar caixas -->
+    <path d="M392,132 L300,132 L300,94" stroke="#b91c1c" stroke-width="1.4" fill="none" marker-end="url(#s1)" stroke-dasharray="4 3"/>
+    <text x="344" y="146" text-anchor="middle" font-size="7.4" fill="#b91c1c">nova tentativa</text>
+    <text x="344" y="156" text-anchor="middle" font-size="7.4" fill="#b91c1c">attempt_number + 1</text>
+
+    <!-- legenda flags -->
+    <rect x="16" y="150" width="272" height="76" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="28" y="166" font-size="8" font-weight="700" fill="#475569" letter-spacing=".06em">O QUE AS FLAGS DECIDEM</text>
+    <text x="28" y="182" font-size="8" fill="#334155">is_authorized → bloqueia nova emissão (409)</text>
+    <text x="28" y="196" font-size="8" fill="#334155">is_final       → permite nova tentativa se retryable</text>
+    <text x="28" y="210" font-size="8" fill="#334155">ambas         → preenchem authorized_at / rejected_at</text>
+    <text x="28" y="221" font-size="7.4" fill="#94a3b8" font-style="italic">nunca compare o texto do status: use as flags</text>
+  </svg>
+  </div>
+
+  <table class="tight">
+    <thead><tr><th style="width:22%">Código interno</th><th>Sinônimos aceitos na resolução</th></tr></thead>
+    <tbody>
+      <tr><td><code>ENVIANDO</code></td><td>ENVIANDO · SENDING · PROCESSANDO · PROCESSING · PENDENTE · PENDING</td></tr>
+      <tr><td><code>PROCESSANDO</code></td><td>PROCESSANDO · PROCESSING · ENVIANDO · SENDING · PENDENTE · PENDING</td></tr>
+      <tr><td><code>AUTORIZADA</code></td><td>AUTORIZADA · AUTORIZADO · AUTHORIZED</td></tr>
+      <tr><td><code>REJEITADA</code></td><td>REJEITADA · REJEITADO · REJECTED</td></tr>
+      <tr><td><code>DENEGADA</code></td><td>DENEGADA · DENEGADO · DENIED</td></tr>
+      <tr><td><code>CANCELADA</code></td><td>CANCELADA · CANCELADO · CANCELLED · CANCELED</td></tr>
+      <tr><td><code>ERRO</code></td><td>ERRO · ERROR</td></tr>
+    </tbody>
+  </table>
+  <p class="muted" style="font-size:8.4pt">
+    Status não cadastrado → <span class="tag t-500">500</span>
+    <code>NFE_STATUS_MAP_MISSING</code>. O provedor também é interpretado pela
+    <b>mensagem</b>: textos como <i>“autorizado o uso”</i> ou <i>“rejeição”</i>
+    são reconhecidos mesmo sem status estruturado.
+  </p>
+</div>
+
+<!-- ══════════════════════════ 8. IDEMPOTÊNCIA ══════════════════════════ -->
+<div class="sec">
+  <div class="sec-head"><span class="num">08</span><h2>As travas: idempotência e concorrência</h2></div>
+
+  <p class="lead">
+    NF-e é um domínio onde duplicar é pior que falhar. Estas são as doze travas
+    que protegem o fluxo — vale conhecê-las antes de alterar qualquer etapa.
+  </p>
+
+  <table>
+    <thead><tr><th style="width:38%">Risco</th><th>Proteção</th></tr></thead>
+    <tbody>
+      <tr><td>Duas emissões simultâneas do mesmo orçamento</td><td><code>SELECT … FROM budgets FOR UPDATE</code> abrindo a transação</td></tr>
+      <tr><td>Número de NF-e duplicado</td><td>Reserva com <code>FOR UPDATE</code> em <code>public.nfe</code>, na mesma transação da tentativa</td></tr>
+      <tr><td>Emissão sobre nota já autorizada</td><td><code>is_authorized</code> → <span class="tag t-409">409</span> <code>BUDGET_NFE_ALREADY_ISSUED</code></td></tr>
+      <tr><td>Emissão durante processamento</td><td><code>!is_final && !retryable</code> → <span class="tag t-409">409</span></td></tr>
+      <tr><td>Transmissão duplicada ao provedor</td><td><code>idIntegracao</code> determinístico + recuperação com <b>match exato</b></td></tr>
+      <tr><td>Documento do provedor duplicado localmente</td><td>Índices únicos parciais em <code>provider_id</code> e <code>access_key</code></td></tr>
+      <tr><td>Baixa de estoque repetida</td><td><code>stock_applied_at</code> na tentativa <b>e em cada item</b></td></tr>
+      <tr><td>Estorno repetido</td><td><code>stock_reversed_at</code></td></tr>
+      <tr><td>Nota duplicada em <code>invoicesIssued</code></td><td><code>ON CONFLICT (budget_id)</code></td></tr>
+      <tr><td>Boletos duplicados</td><td><code>pg_advisory_lock(73115, budgetId)</code> + <code>externalReference</code></td></tr>
+      <tr><td>Item duplicado na NF-e</td><td>Join <code>LATERAL … LIMIT 1</code> em <code>products_fiscal_v2</code></td></tr>
+      <tr><td>Esgotamento do pool de conexões</td><td>Enriquecimento com concorrência limitada a 4 (<code>PGPOOL_MAX</code> = 10)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout c-ok">
+    <span class="ct">Consequência prática</span>
+    <code>GET /status</code> é <b>seguro para polling</b>. A tela pode chamá-lo
+    em loop sem risco de duplicar estoque, nota ou boleto.
+  </div>
+
+  <h3>Estoque — as portas de entrada</h3>
+  <table class="tight">
+    <thead><tr><th style="width:44%">Verificação</th><th>Resultado</th></tr></thead>
+    <tbody>
+      <tr><td><code>attemptId</code> inválido</td><td><span class="tag t-400">400</span> <code>INVALID_NFE_ATTEMPT_ID</code></td></tr>
+      <tr><td>Tentativa inexistente</td><td><span class="tag t-404">404</span> <code>BUDGET_NFE_ATTEMPT_NOT_FOUND</code></td></tr>
+      <tr><td><code>authorized_at</code> nulo</td><td><span class="tag t-409">409</span> <code>BUDGET_NFE_NOT_AUTHORIZED</code></td></tr>
+      <tr><td><code>stock_applied_at</code> preenchido</td><td>Retorna <code>alreadyApplied: true</code> — sem novo movimento</td></tr>
+      <tr><td>Operação com <code>moves_stock = false</code></td><td>Marca como aplicado e retorna <b>sem movimentar</b></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Financeiro — quando o boleto realmente nasce</h3>
+  <div class="dg">
+    <div class="flow">
+      <div class="card k-slate"><div class="ch" style="font-size:8.6pt">generates_receivable</div><div class="cs">= false → não faz nada</div></div>
+      <div class="arr sm">→</div>
+      <div class="card k-slate"><div class="ch" style="font-size:8.6pt">Tem parcelas?</div><div class="cs">nenhuma → skipped</div></div>
+      <div class="arr sm">→</div>
+      <div class="card k-blue"><div class="ch" style="font-size:8.6pt">Conta a receber</div><div class="cs">sempre criada primeiro</div></div>
+      <div class="arr sm">→</div>
+      <div class="card k-purple"><div class="ch" style="font-size:8.6pt">Boleto Asaas</div><div class="cs">só se AUTOMATIC + ASAAS</div></div>
+    </div>
+  </div>
+  <p style="font-size:8.8pt">
+    Se alguma parcela exigir Asaas automático e o cliente <b>não</b> tiver
+    <code>asaas_id</code>, a função lança erro — e ele aparece em
+    <code>boleto_sync.error</code>, sem invalidar a nota.
+  </p>
+</div>
+
+<!-- ══════════════════════════ 9. ERROS ══════════════════════════ -->
+<div class="sec">
+  <div class="sec-head"><span class="num">09</span><h2>Catálogo de erros</h2></div>
+
+  <p class="lead">
+    Toda resposta de erro segue o mesmo formato. O <code>error</code> é um
+    código estável — use-o nas integrações, nunca a mensagem.
+  </p>
+
+<pre class="light">{ <span class="kw">"ok"</span>: false, <span class="kw">"error"</span>: <span class="st">"&lt;código&gt;"</span>, <span class="kw">"message"</span>: <span class="st">"&lt;texto&gt;"</span>, <span class="kw">"data"</span>: { } }</pre>
+
+  <h4>Validação do orçamento</h4>
+  <table class="tight">
+    <thead><tr><th style="width:36%">Código</th><th style="width:9%">HTTP</th><th>Causa / ação</th></tr></thead>
+    <tbody>
+      <tr><td><code>ISSUE_CONFIRMATION_REQUIRED</code></td><td><span class="tag t-400">400</span></td><td>Body sem <code>confirm: true</code></td></tr>
+      <tr><td><code>INVALID_BUDGET_ID</code></td><td><span class="tag t-400">400</span></td><td>ID inválido na reconciliação</td></tr>
+      <tr><td><i>(sem código)</i></td><td><span class="tag t-404">404</span></td><td>Orçamento não encontrado</td></tr>
+      <tr><td><code>BUDGET_WITHOUT_ITEMS</code></td><td><span class="tag t-422">422</span></td><td>Incluir itens no orçamento</td></tr>
+      <tr><td><code>BUDGET_ITEMS_WITHOUT_FISCAL_CONFIGURATION</code></td><td><span class="tag t-422">422</span></td><td>Configurar Fiscal V2 — SKUs em <code>data.skus</code></td></tr>
+    </tbody>
+  </table>
+
+  <h4>Operação fiscal</h4>
+  <table class="tight">
+    <thead><tr><th style="width:36%">Código</th><th style="width:9%">HTTP</th><th>Causa / ação</th></tr></thead>
+    <tbody>
+      <tr><td><code>BUDGET_OPERATION_TYPE_REQUIRED</code></td><td><span class="tag t-422">422</span></td><td>Selecionar a operação fiscal no orçamento</td></tr>
+      <tr><td><code>BUDGET_OPERATION_TYPE_INVALID</code></td><td><span class="tag t-422">422</span></td><td>Operação inexistente ou inativa</td></tr>
+      <tr><td><code>BUDGET_OPERATION_CFOP_MISSING</code></td><td><span class="tag t-422">422</span></td><td>BONUS/DEVOLUCAO/TRANSFERENCIA/REMESSA sem CFOP configurado</td></tr>
+      <tr><td><code>NFE_ISSUER_STATE_NOT_CONFIGURED</code></td><td><span class="tag t-500">500</span></td><td>Definir <code>NFE_EMPRESA_UF</code> no <code>.env</code></td></tr>
+    </tbody>
+  </table>
+
+  <h4>Fiscal do item</h4>
+  <table class="tight">
+    <thead><tr><th style="width:36%">Código</th><th style="width:9%">HTTP</th><th>Causa / ação</th></tr></thead>
+    <tbody>
+      <tr><td><code>BUDGET_ITEM_ICMS_ST_ORIGIN_NOT_FOUND</code></td><td><span class="tag t-422">422</span></td><td>CST 60 sem origem de ST — conferir <code>inboundInvoiceItems</code> do produto</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Emissão e provedor</h4>
+  <table class="tight">
+    <thead><tr><th style="width:36%">Código</th><th style="width:9%">HTTP</th><th>Causa / ação</th></tr></thead>
+    <tbody>
+      <tr><td><code>BUDGET_NFE_ALREADY_ISSUED</code></td><td><span class="tag t-409">409</span></td><td>NF-e autorizada ou em processamento → usar <code>GET /status</code></td></tr>
+      <tr><td><code>NFE_ACTIVE_SEQUENCE_NOT_FOUND</code></td><td><span class="tag t-422">422</span></td><td>Nenhuma linha ativa em <code>public.nfe</code></td></tr>
+      <tr><td><code>NFE_REJECTED</code></td><td><span class="tag t-422">422</span></td><td>Rejeição da SEFAZ — corrigir e reemitir</td></tr>
+      <tr><td><code>NFE_PROVIDER_ERROR</code></td><td><span class="tag t-502">502</span></td><td>Provedor recusou — ver <code>data</code></td></tr>
+      <tr><td><code>NFE_PROVIDER_ID_MISSING</code></td><td><span class="tag t-502">502</span></td><td>Envio não pôde ser confirmado</td></tr>
+      <tr><td><code>NFE_STATUS_MAP_MISSING</code></td><td><span class="tag t-500">500</span></td><td>Popular <code>nfeStatusMap</code></td></tr>
+    </tbody>
+  </table>
+
+  <h4>Reconciliação e documentos</h4>
+  <table class="tight">
+    <thead><tr><th style="width:36%">Código</th><th style="width:9%">HTTP</th><th>Causa / ação</th></tr></thead>
+    <tbody>
+      <tr><td><code>BUDGET_NFE_NOT_FOUND</code></td><td><span class="tag t-404">404</span></td><td>Sem tentativa ou sem NF-e vinculada</td></tr>
+      <tr><td><code>NFE_PROVIDER_DOCUMENT_NOT_FOUND</code></td><td><span class="tag t-404">404</span></td><td>Documento não localizado no provedor</td></tr>
+      <tr><td><code>NFE_PROVIDER_LOOKUP_FAILED</code></td><td><span class="tag t-502">502</span></td><td>Falha ao listar no provedor</td></tr>
+      <tr><td><code>NFE_PROVIDER_STATUS_FAILED</code></td><td><span class="tag t-502">502</span></td><td>Falha ao consultar o resumo</td></tr>
+      <tr><td><code>INVOICES_ISSUED_SYNC_FAILED</code></td><td><span class="tag t-500">500</span></td><td><b>Normalmente chave de 44 dígitos ausente</b> — repetir <code>GET /status</code></td></tr>
+      <tr><td><code>BUDGET_NFE_XML_FAILED</code></td><td><span class="tag t-502">502</span></td><td>XML indisponível no provedor</td></tr>
+      <tr><td><code>BUDGET_NFE_DANFE_FAILED</code></td><td><span class="tag t-502">502</span></td><td>PDF indisponível no provedor</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══════════════════════════ 10. OPERAÇÃO ══════════════════════════ -->
+<div class="sec">
+  <div class="sec-head"><span class="num">10</span><h2>Operação: logs, ambiente e diagnóstico</h2></div>
+
+  <h3 class="first">Logs para <code>grep</code></h3>
+  <table class="tight">
+    <thead><tr><th style="width:44%">Prefixo</th><th>Quando aparece</th></tr></thead>
+    <tbody>
+      <tr><td><code>[BUDGET NFE][ANTES DO ENVIO]</code></td><td>Imediatamente antes de transmitir</td></tr>
+      <tr><td><code>[BUDGET NFE][CONSULTA PROVIDER]</code></td><td>Resposta da consulta de recuperação</td></tr>
+      <tr><td><code>[BUDGET NFE][RESPOSTA COMPLETA]</code></td><td>Resposta integral do provedor</td></tr>
+      <tr><td><code>[BUDGET NFE][RECONCILIACAO]</code></td><td>Resposta da consulta de status</td></tr>
+      <tr><td><code>[BUDGET NFE][NUMERO REAPROVEITADO]</code></td><td>Número reutilizado após rejeição</td></tr>
+      <tr><td><code>[BUDGET NFE][NUMERO QUEIMADO]</code></td><td><b>⚠ monitorar</b> — número perdido, exige inutilização</td></tr>
+      <tr><td><code>[BUDGET NFE][ICMS-ST ORIGIN RESOLVED]</code></td><td>Origem do ST localizada</td></tr>
+      <tr><td><code>[BUDGET NFE][ICMS-ST EXTRAPOLADO]</code></td><td><b>⚠</b> venda maior que a entrada de origem</td></tr>
+      <tr><td><code>[BUDGET NFE][ICMS-ST ORIGIN NOT RESOLVED]</code></td><td>Diagnóstico antes do erro 422</td></tr>
+      <tr><td><code>[BUDGET NFE][ASAAS][SYNC]</code> / <code>[SYNC ERROR]</code></td><td>Resultado do financeiro</td></tr>
+      <tr><td><code>[NFE][STOCK_MODE]</code></td><td>Modo de estoque vigente (simples / com lote)</td></tr>
+      <tr><td><code>[BUDGET NFE][PREVIEW NUMBER]</code></td><td>Número indicativo do preview</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Variáveis de ambiente</h3>
+  <table class="tight">
+    <thead><tr><th style="width:34%">Variável</th><th style="width:12%">Obrigatória</th><th>Uso</th></tr></thead>
+    <tbody>
+      <tr><td><code>NFE_EMPRESA_UF</code> / <code>EMPRESA_UF</code></td><td><b>Sim</b></td><td>UF do emitente — decide CFOP interno × interestadual</td></tr>
+      <tr><td><code>EMPRESA_CNPJ</code></td><td><b>Sim</b></td><td>CNPJ nas consultas ao provedor</td></tr>
+      <tr><td><code>NFE_AMBIENTE</code></td><td><b>Sim</b></td><td><code>producao</code> / <code>homologacao</code></td></tr>
+      <tr><td><code>PLUGNOTAS_MOCK</code></td><td>Não</td><td><code>1</code> → modo simulado, <b>não transmite</b></td></tr>
+      <tr><td><code>ASAAS_API_KEY</code></td><td>Condicional</td><td>Necessária para boleto automático</td></tr>
+      <tr><td><code>PGPOOL_MAX</code></td><td>Não</td><td>Máximo de conexões (padrão <b>10</b>)</td></tr>
+      <tr><td><code>PG_CONNECT_TIMEOUT_MS</code></td><td>Não</td><td>Timeout de aquisição (padrão <b>8000</b>)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout c-warn">
+    <span class="ct">Ao rodar scripts isolados</span>
+    <code>backend/config/db.js</code> <b>não</b> carrega <code>dotenv</code> por
+    conta própria — o <code>.env</code> é injetado pelo processo do servidor.
+    Em scripts, use <code>node --env-file=.env …</code>.
+  </div>
+
+  <h3>Diagnóstico rápido: sintoma → o que verificar</h3>
+  <table class="tight">
+    <thead><tr><th style="width:36%">Sintoma</th><th>Verificar</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag t-409">409</span> ao emitir</td><td>Última tentativa; se travada em <code>PROCESSANDO</code>, chamar <code>GET /status</code> para convergir</td></tr>
+      <tr><td>Autorizada mas <b>não</b> <code>FATURADO</code></td><td><code>INVOICES_ISSUED_SYNC_FAILED</code> — geralmente <code>nfe_key</code> ausente. Repetir <code>GET /status</code></td></tr>
+      <tr><td>Estoque não baixou</td><td><code>moves_stock</code> da operação · <code>stock_applied_at</code> na tentativa e nos itens</td></tr>
+      <tr><td>Boletos não gerados</td><td><code>generates_receivable</code> · existem parcelas? · <code>asaas_id</code> do cliente · <code>boleto_mode = AUTOMATIC</code> · <code>boleto_sync.failed[]</code></td></tr>
+      <tr><td><code>recovered: true</code> inesperado</td><td><code>integration_id</code> da tentativa e o log <code>[CONSULTA PROVIDER]</code></td></tr>
+      <tr><td>Itens duplicados na nota</td><td>Vínculos duplicados com <code>is_current = TRUE</code> em <code>products_fiscal_v2</code></td></tr>
+      <tr><td>Lacuna na numeração</td><td>Log <code>[NUMERO QUEIMADO]</code> → providenciar inutilização</td></tr>
+      <tr><td>Emissão não transmite nada</td><td><code>PLUGNOTAS_MOCK=1</code> no ambiente?</td></tr>
+      <tr><td><code>connection timeout</code> em scripts</td><td>Instância Cloud SQL desligada · falta <code>--env-file</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Pontos de atenção conhecidos</h3>
+  <div class="dg">
+    <div class="grid g2">
+      <div class="card k-red">
+        <div class="ch" style="font-size:9pt">Rotas sem autenticação</div>
+        <div class="cs" style="margin-top:4px">
+          <code>/api/budgets-nfe-attempts</code> (CRUD, incluindo
+          <code>DELETE</code> e <code>PATCH /status</code>) <b>não</b> aplica
+          <code>requireAuth</code>, ao contrário de
+          <code>/api/budgets-issued</code>. Recomenda-se proteger.
+        </div>
+      </div>
+      <div class="card k-amber">
+        <div class="ch" style="font-size:9pt">Inutilização manual</div>
+        <div class="cs" style="margin-top:4px">
+          Números queimados por <code>DENEGADA</code>/<code>CANCELADA</code>
+          exigem inutilização junto à SEFAZ — o processo <b>não</b> é
+          automatizado.
+        </div>
+      </div>
+      <div class="card k-amber">
+        <div class="ch" style="font-size:9pt">ICMS-ST de uma só entrada</div>
+        <div class="cs" style="margin-top:4px">
+          O cálculo não agrega múltiplas notas de entrada; extrapola por unidade
+          quando a venda é maior.
+        </div>
+      </div>
+      <div class="card k-slate">
+        <div class="ch" style="font-size:9pt">Janela de 90 dias</div>
+        <div class="cs" style="margin-top:4px">
+          <code>listarNFe</code> cobre apenas os últimos 90 dias; documentos mais
+          antigos dependem do lookup direto por <code>idIntegracao</code>.
+        </div>
+      </div>
+      <div class="card k-slate">
+        <div class="ch" style="font-size:9pt"><code>lot_number</code> sempre nulo</div>
+        <div class="cs" style="margin-top:4px">
+          O snapshot lê o campo, mas a consulta não o traz. Popular exigiria
+          join com <code>productsStockLots</code>, cujo nome de coluna varia
+          entre instalações.
+        </div>
+      </div>
+      <div class="card k-slate">
+        <div class="ch" style="font-size:9pt">Log verboso</div>
+        <div class="cs" style="margin-top:4px">
+          A resposta integral do provedor vai para o log — ótimo para auditoria
+          fiscal, pesado em volume.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ 11. GLOSSÁRIO ══════════════════════════ -->
+<div class="sec">
+  <div class="sec-head"><span class="num">11</span><h2>Glossário fiscal e técnico</h2></div>
+
+  <p class="lead">
+    Termos que aparecem no código e nas mensagens de erro, em linguagem direta.
+  </p>
+
+  <table>
+    <thead><tr><th style="width:20%">Termo</th><th>Significado</th></tr></thead>
+    <tbody>
+      <tr><td><b>NF-e</b></td><td>Nota Fiscal eletrônica. Documento fiscal autorizado pela SEFAZ antes de a mercadoria circular.</td></tr>
+      <tr><td><b>DANFE</b></td><td>A representação <i>impressa</i> da NF-e. Não é a nota — é o espelho dela. O “preview” deste módulo é um DANFE de conferência, sem valor fiscal.</td></tr>
+      <tr><td><b>SEFAZ</b></td><td>Secretaria da Fazenda do estado. É quem autoriza, rejeita ou denega.</td></tr>
+      <tr><td><b>CFOP</b></td><td>Código Fiscal de Operações e Prestações — 4 dígitos que dizem <i>o que</i> é a operação. Muda se a venda é dentro do estado ou para fora (daí <code>cfop_internal</code> × <code>cfop_interstate</code>).</td></tr>
+      <tr><td><b>NCM</b></td><td>Classificação da mercadoria (8 dígitos). Define tributação federal.</td></tr>
+      <tr><td><b>CEST</b></td><td>Código que identifica mercadorias sujeitas a substituição tributária.</td></tr>
+      <tr><td><b>CST</b></td><td>Código de Situação Tributária do ICMS. O <b>CST 60</b> significa “ICMS cobrado anteriormente por substituição tributária” — o eixo da seção 06.</td></tr>
+      <tr><td><b>CSOSN</b></td><td>O equivalente ao CST para empresas do Simples Nacional (3 dígitos, ex.: 500).</td></tr>
+      <tr><td><b>ICMS-ST</b></td><td>Substituição tributária: um contribuinte da cadeia paga o ICMS de todos os seguintes. Quem revende com CST 60 não recolhe de novo, mas precisa <i>informar</i> o que já foi retido.</td></tr>
+      <tr><td><b>MVA</b></td><td>Margem de Valor Agregado — presunção de margem usada para calcular a base do ST.</td></tr>
+      <tr><td><b>FCP-ST</b></td><td>Fundo de Combate à Pobreza incidente sobre o ST. Só é informado quando existe valor.</td></tr>
+      <tr><td><b>indFinal</b></td><td>Indica se o destinatário é consumidor final. <b>Independente</b> de ser contribuinte de ICMS (<code>indIEDest</code>) — confundir os dois é erro clássico.</td></tr>
+      <tr><td><b>Inutilização de numeração</b></td><td>Procedimento para declarar à SEFAZ que um número de NF-e não será usado. Necessário quando um número é “queimado”.</td></tr>
+      <tr><td><b>Denegada</b></td><td>A SEFAZ registrou a nota mas negou o uso (tipicamente por irregularidade cadastral). Diferente de rejeitada: o número <b>não</b> pode ser reutilizado.</td></tr>
+      <tr><td><b>idIntegracao</b></td><td>Identificador que <i>nós</i> damos ao documento no provedor. Formato deste módulo: <code>BUD-&lt;budget_id&gt;-A&lt;tentativa&gt;</code>. É a chave da idempotência de transmissão.</td></tr>
+      <tr><td><b>Chave de acesso</b></td><td>Os 44 dígitos que identificam a NF-e nacionalmente. <b>Obrigatória</b> para registrar a nota em <code>invoicesIssued</code>.</td></tr>
+      <tr><td><b>Tentativa (attempt)</b></td><td>Uma linha em <code>budgetsNfeAttempts</code>. Cada reemissão cria uma nova, preservando o histórico completo.</td></tr>
+      <tr><td><b>Snapshot fiscal</b></td><td>Cópia congelada dos dados fiscais do item no momento da emissão (<code>budgetsNfeAttemptItems</code>). Garante auditoria mesmo se o cadastro mudar depois.</td></tr>
+      <tr><td><b>Idempotência</b></td><td>Propriedade de uma operação que pode ser repetida sem efeito adicional. É o que torna <code>GET /status</code> seguro para polling.</td></tr>
+      <tr><td><b>Advisory lock</b></td><td>Trava nomeada do PostgreSQL, usada no financeiro (<code>pg_advisory_lock</code>) para serializar por orçamento.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout c-note" style="margin-top:20px">
+    <span class="ct">Referência completa</span>
+    Este PDF é o guia visual. Para a referência exaustiva — todas as colunas,
+    assinaturas de função, contratos de retorno e trechos de SQL — consulte
+    <code>docs/MODULO_EMISSAO_NFE_ORCAMENTO.md</code>.
+    <br><br>
+    <span class="muted" style="font-size:8.4pt">
+      Documento gerado a partir da leitura do código em 16/09/2026. Ao alterar
+      <code>nfeIssuanceApi.js</code>, <code>stockFromBudgetsService.js</code>,
+      <code>nfeAsaasSyncApi.js</code> ou <code>invoicesIssuedApi.js</code>,
+      revise as seções correspondentes.
+    </span>
+  </div>
+</div>
+
+</body>
+</html>

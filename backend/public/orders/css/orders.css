@@ -1,0 +1,10 @@
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║ orders.css — Estilos do módulo de Pedidos — PRODNEX ERP      ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+@import './orders.page.css';
+@import './orders.list.css';
+@import './orders.editor.css';
+@import './orders.items.css';
+@import './orders.details.css';
+@import './orders.responsive.css';

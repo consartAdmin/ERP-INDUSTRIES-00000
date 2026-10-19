@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Favicons (SEM /public) -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/imagens/brasaoConsartInfinity.png">
+
+  <title>USUÁRIO x VENDEDOR | PRODNEX ERP</title>
+
+  <!-- 🎨 Design System CONSART -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- CSS local -->
+  <link rel="stylesheet" href="./sellerByUser.css">
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <div class="header header-h-5">
+      <div class="fields-inline fields-gap-3">
+        <div class="fields fields-h-5 fields-w-20 fields-font-3">
+          <span class="searchbox__icon" aria-hidden="true">🔎</span>
+        </div>
+      </div>
+
+      <div class="fields-inline fields-gap-3">
+        <div class="fields fields-h-5 fields-w-20 fields-font-3">
+          <input id="inputBuscaUser" type="number" inputmode="numeric" placeholder="Filtrar por User ID..."
+            autocomplete="off">
+        </div>
+
+        <div class="btn-inline btn-position-right">
+          <button id="btnFiltrarUser" class="btn btn-new btn-sm" type="button" title="Filtrar">Filtrar</button>
+        </div>
+
+        <div class="fields fields-h-5 fields-w-20 fields-font-3">
+          <label class="checkline sbu-switch" title="Mostrar vínculos inativos também">
+            <input type="checkbox" id="chkInativos">
+            <span>Incluir inativos</span>
+          </label>
+        </div>
+
+        <div class="btn-inline btn-position-right">
+          <button id="btnNovo" type="button" class="btn btn-new btn-sm">
+            + Novo Vínculo
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter">
+
+        <div class="fields-inline fields-gap-3">
+          <div class="fields fields-h-5 fields-w-20 fields-font-3">
+            <span id="formModeBadge" class="badge badge--new">Modo: Novo Vínculo</span>
+            <span id="formIdHint" class="muted"></span>
+          </div>
+        </div>
+
+        <div class="btn-inline">
+          <button id="btnCancelar" type="button" class="btn btn-new btn-sm">Cancelar</button>
+          <button id="btnSalvar" type="button" class="btn btn-new btn-sm">Salvar</button>
+        </div>
+      </div>
+
+      <!-- ✅ USER ID (com seta para modal) -->
+      <div class="fields-inline fields-gap-3">
+        <div class="fields fields-h-5 fields-w-20 fields-font-3">
+          <label for="inputUserId">User ID</label>
+        </div>
+      </div>
+
+      <div class="fields fields-h-5 fields-w-12 fields-font-3">
+        <input id="inputUserId" type="number" inputmode="numeric" class="i-text" placeholder="Ex.: 10"
+          autocomplete="off" />
+      </div>
+
+      <div class="btn-inline">
+        <button type="button" class="btn btn-new btn-sm" title="Buscar usuário" aria-label="Buscar usuário"
+          data-arrow="user">▾</button>
+      </div>
+
+      <div>
+        <small class="muted">Dica: clique na seta (▾) ou use F2 / Ctrl+K.</small>
+      </div>
+
+      <!-- ✅ SELLER ID (com seta para modal) -->
+      <div class="fields-inline fields-gap-3">
+        <div class="fields fields-h-5 fields-w-20 fields-font-3">
+          <label for="inputSellerId">Seller ID</label>
+        </div>
+      </div>
+
+      <div class="fields fields-h-5 fields-w-20 fields-font-3">
+        <input id="inputSellerId" type="number" inputmode="numeric" class="i-text" placeholder="Ex.: 4"
+          autocomplete="off" />
+      </div>
+
+      <div class="btn-inline">
+        <button type="button" class="btn btn-new btn-sm" title="Buscar vendedor" aria-label="Buscar vendedor"
+          data-arrow="seller">▾</button>
+      </div>
+
+      <div class="fields fields-h-5 fields-w-20 fields-font-3">
+        <small class="muted">Podemos evoluir para autocomplete. Por enquanto: seta abre modal.</small>
+      </div>
+
+      <div class="fields fields-h-5 fields-w-20 fields-font-3">
+        <label class="checkline checkline--center" title="Marca como vendedor principal do usuário">
+          <input type="checkbox" id="chkPrimary">
+          <span>Principal</span>
+        </label>
+      </div>
+
+      <div class="fields fields-h-5 fields-w-20 fields-font-3">
+        <input type="checkbox" id="chkAtivo" checked>
+        <span>Ativo</span>
+        </label>
+      </div>
+
+      <div class="fields fields-h-5 fields-w-20 fields-font-3">
+        <div class="note__title">Boas práticas</div>
+        Para cada usuário, mantenha apenas <b>1 principal</b>. Você pode ativar/inativar vínculos sem perder
+        histórico.
+      </div>
+
+      <div>
+        <span class="dot"></span>
+        <b>Vínculos cadastrados</b>
+        <span class="muted" id="tableSubtitle">—</span>
+      </div>
+
+
+      <div class="table-scroll table-height-200 table-row-h-20" data-table-settings="sellerbyuser.listasbu">
+        <table class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th class="col-id">ID</th>
+              <th class="col-user">User</th>
+              <th class="col-seller">Seller</th>
+              <th class="col-primary">Principal</th>
+              <th class="col-status">Status</th>
+              <th class="col-dates">Atualizado</th>
+              <th class="col-actions">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="listaSBU"></tbody>
+        </table>
+      </div>
+
+      <footer class="table-footer">
+
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+            <span id="apTableInfo">0 Registros </span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button type="button" id="btnPreviousPage" class="btn btn-clean btn-sm">
+            Anterior
+          </button>
+
+          <span id="apPageInfo">Página 1 de 1</span>
+
+          <button type="button" id="btnNextPage" class="btn btn-new btn-sm">
+            Próxima
+          </button>
+        </div>
+
+        <div class="table-footer__page-size">
+          <label for="apRowsPerPage">Mostrar</label>
+
+          <select id="apRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+            <option value="10">10 linhas</option>
+            <option value="20">20 linhas</option>
+            <option value="30">30 linhas</option>
+            <option value="50" selected>50 linhas</option>
+            <option value="100">100 linhas</option>
+          </select>
+        </div>
+
+      </footer>
+    </section>
+  </main>
+
+  <!-- core.js -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <!-- Script da página -->
+  <script type="module" src="./sellerByUser.js"></script>
+</body>
+
+</html>

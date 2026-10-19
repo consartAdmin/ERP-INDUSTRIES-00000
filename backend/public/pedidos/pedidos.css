@@ -1,0 +1,77 @@
+/* ╔══════════════════════════════════╗
+   ║ 📦 Pedidos – Estilos de Página   ║
+   ╚══════════════════════════════════╝ */
+
+/* ===== Card base ===== */
+.card{
+  background:#fff;
+  border:1px solid var(--c-input-bd);
+  border-radius:var(--radius);
+  padding:var(--c-space-6);
+  box-shadow:0 1px 0 rgba(0,0,0,.03), inset 0 1px 0 rgba(255,255,255,.6);
+}
+.card-title{
+  margin:0 0 var(--c-space-4);
+  font-weight:700;
+  color:#0f172a;
+}
+
+/* ===== Barra de filtros sticky ===== */
+.sticky-toolbar{
+  position: sticky;
+  top: var(--c-header-h);             /* fica logo abaixo do seu menu fixo */
+  z-index: 5;
+  background: linear-gradient(180deg, #fff, #fff);
+  border:1px solid var(--c-input-bd);
+  border-radius: var(--radius);
+  padding: var(--c-space-4);
+  margin-bottom: var(--c-space-6);
+}
+.toolbar-row{
+  display:flex; align-items:center; justify-content:space-between;
+  gap: var(--c-space-4);
+  flex-wrap: wrap;
+}
+.toolbar-left, .toolbar-right{
+  display:flex; align-items:center; gap: var(--c-space-3); flex-wrap:wrap;
+}
+.pagesize select{ min-width: 80px; }
+
+/* ===== Tabela ===== */
+.tabela{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+  background:#fff;
+  min-width: 880px;
+}
+.tabela thead th{
+  position:sticky; top:0; z-index:1;
+  background:#fff;
+  border-bottom:1px solid var(--c-input-bd);
+  box-shadow:0 2px 0 rgba(0,0,0,.03);
+}
+.tabela th, .tabela td{
+  padding:10px 12px;
+  border:1px solid #e5e7eb;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.tabela tbody tr:hover{ background:#f8fbff; }
+.num{ text-align:right; }
+
+/* ===== Botões de ação ===== */
+.btn-acao{
+  padding:.25rem .5rem;
+  border:1px solid var(--c-input-bd);
+  border-radius:.4rem;
+  background:#fff;
+  cursor:pointer;
+}
+.btn-acao:hover{ background: var(--c-input-bg); }
+.btn-excluir[disabled]{ opacity:.5; cursor:not-allowed; filter:grayscale(.5); }
+
+/* ===== Responsivo ===== */
+@media (max-width: 640px){
+  .card{ padding: var(--c-space-4); }
+  .tabela{ min-width: 720px; }
+}

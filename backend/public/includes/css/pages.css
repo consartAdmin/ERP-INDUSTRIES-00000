@@ -1,0 +1,23 @@
+/* ==========================================================================
+   pages.css — Hooks por página e pequenos ajustes contextuais
+   ========================================================================== */
+
+/* Página de produtos (lista) */
+.page-products .linha-filtros { gap: var(--gap); margin-bottom: var(--gap-sm); }
+.page-products #tblProducts .col-id       { width: 80px; }
+.page-products #tblProducts .col-code     { width: 180px; }
+.page-products #tblProducts .col-preco    { width: 140px; text-align: right; }
+.page-products #tblProducts .col-estoque  { width: 120px; text-align: right; }
+.page-products #tblProducts .col-img      { width: 160px; }
+.page-products #tblProducts .col-actions  { width: 120px; }
+
+/* Editar produto (exemplo) */
+.page-edit-product .toolbar { display:flex; gap: var(--gap-sm); justify-content: flex-end; }
+
+/* Impressão básica */
+@media print {
+  .menu-principal, #paginacao, .linha-filtros, .rodape { display: none !important; }
+  body { background: #fff; }
+  .c-container { max-width: 100%; padding: 0; }
+  table, thead th, tbody td { border-color: #999 !important; }
+}

@@ -1,0 +1,89 @@
+<!-- ╔══════════════════════════════════════════════════════════════╗
+     ║ roleta.html — Roleta Premiada (PRODNEX ERP)                   ║
+     ║ Path: public/roleta/roleta.html                               ║
+     ║ Abre com: /roleta/roleta.html?t=TOKEN                         ║
+     ╚══════════════════════════════════════════════════════════════╝ -->
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Roleta Premiada • PRODNEX ERP</title>
+
+  <!-- (Opcional) Favicons do seu ERP -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <link rel="stylesheet" href="roleta.css" />
+</head>
+
+<body>
+  <main class="page">
+    <header class="top">
+      <div class="brand">
+        <div class="brand-mark">🎯</div>
+        <div class="brand-text">
+          <div class="brand-title">PRODNEX ERP</div>
+          <div class="brand-sub">Roleta Premiada</div>
+        </div>
+      </div>
+
+      <div class="campaign">
+        <h1 id="campaignName">Roleta Premiada</h1>
+        <p id="campaignHint" class="hint">
+          Abra pelo link correto: <span class="mono">/roleta/roleta.html?t=TOKEN</span>
+        </p>
+      </div>
+    </header>
+
+    <section class="content">
+      <div class="wheel-card">
+        <div class="wheel-wrap">
+          <!-- Ponteiro -->
+          <div class="pointer" aria-hidden="true"></div>
+
+          <!-- Canvas -->
+          <canvas id="wheel" width="560" height="560" aria-label="Roleta"></canvas>
+
+          <!-- Centro (decorativo) -->
+          <div class="center-cap" aria-hidden="true"></div>
+        </div>
+
+        <div class="actions">
+          <button id="spinBtn" class="btn-primary" type="button">GIRAR</button>
+          <button id="reloadBtn" class="btn-ghost" type="button">RECARREGAR</button>
+        </div>
+
+        <div class="result-box">
+          <div class="result-title">Resultado</div>
+          <div id="result" class="result-text muted">Aguardando...</div>
+        </div>
+      </div>
+
+      <aside class="info-card">
+        <h2>Como funciona</h2>
+        <ul>
+          <li>O prêmio é escolhido com segurança no <b>servidor</b>.</li>
+          <li>O link do cliente tem um <b>token único</b>.</li>
+          <li>Quando atingir o limite de giros, o sistema bloqueia.</li>
+        </ul>
+
+        <div class="tips">
+          <div class="tip-title">Dica</div>
+          <div class="tip-text">
+            Se aparecer “Token inválido”, confira se você abriu com <span class="mono">?t=...</span>.
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <footer class="footer">
+      <span>PRODNEX ERP • Roleta Premiada</span>
+      <span class="muted">©</span>
+    </footer>
+  </main>
+
+  <script src="roleta.js"></script>
+</body>
+</html>

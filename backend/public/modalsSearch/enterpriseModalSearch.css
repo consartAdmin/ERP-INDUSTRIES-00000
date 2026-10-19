@@ -1,0 +1,217 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ enterpriseModalSearch.css — Modal de Busca de Empresas               ║
+   ║ PRODNEX ERP                                                          ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.enterprise-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15, 23, 42, .45);
+    backdrop-filter: blur(2px);
+    animation: enterpriseFadeIn .15s ease;
+}
+
+.enterprise-modal {
+    width: min(1200px, 96vw);
+    height: min(760px, 92vh);
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid #d6dbe4;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, .18);
+}
+
+.enterprise-modal__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 20px;
+    background: linear-gradient(#fafafa, #f2f2f2);
+    border-bottom: 1px solid #d8d8d8;
+}
+
+.enterprise-modal__header h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.enterprise-modal__header p {
+    margin: 6px 0 0;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.enterprise-modal__close {
+    width: 34px;
+    height: 34px;
+    border: 1px solid #cfd6df;
+    border-radius: 8px;
+    background: #fff;
+    cursor: pointer;
+    font-size: 24px;
+    line-height: 1;
+    transition: .15s;
+}
+
+.enterprise-modal__close:hover {
+    background: #f4f4f4;
+}
+
+.enterprise-modal__toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: #f6f7f9;
+    border-bottom: 1px solid #d9dde4;
+}
+
+.enterprise-modal__toolbar input {
+    flex: 1;
+    min-width: 260px;
+    height: 34px;
+    border: 1px solid #cfd6df;
+    border-radius: 6px;
+    padding: 0 10px;
+    font-size: 14px;
+    outline: none;
+}
+
+.enterprise-modal__toolbar select {
+    height: 34px;
+    border: 1px solid #cfd6df;
+    border-radius: 6px;
+    padding: 0 10px;
+    font-size: 14px;
+    outline: none;
+    background: #fff;
+}
+
+.enterprise-modal__toolbar input:focus {
+    border-color: #1976d2;
+    box-shadow: 0 0 0 3px rgba(25, 118, 210, .12);
+}
+
+.enterprise-modal__toolbar select:focus {
+    border-color: #1976d2;
+    box-shadow: 0 0 0 3px rgba(25, 118, 210, .12);
+}
+
+.enterprise-modal__body {
+    flex: 1;
+    overflow: auto;
+}
+
+.enterprise-modal__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.enterprise-modal__table thead {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.enterprise-modal__table thead th {
+    background: #eceff3;
+    border-bottom: 1px solid #cfd6df;
+    border-right: 1px solid #dde3ea;
+    padding: 9px 10px;
+    white-space: nowrap;
+    text-align: left;
+    font-weight: 700;
+    color: #374151;
+}
+
+.enterprise-modal__table tbody td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #eceff4;
+}
+
+.enterprise-modal__table tbody tr:nth-child(even) {
+    background: #fafafa;
+}
+
+.enterprise-modal__table tbody tr:hover {
+    background: #edf6ff;
+    cursor: pointer;
+}
+
+.enterprise-modal__table tbody tr.selected {
+    background: #d9ecff;
+}
+
+.enterprise-modal__empty {
+    padding: 50px !important;
+    text-align: center;
+    color: #7b8794;
+    font-size: 14px;
+}
+
+.enterprise-modal__footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    background: #f7f7f8;
+    border-top: 1px solid #d8dde5;
+}
+
+.enterprise-modal__footer span {
+    min-width: 180px;
+    text-align: center;
+    font-size: 13px;
+    color: #475569;
+    font-weight: 600;
+}
+
+@media (max-width: 900px) {
+    .enterprise-modal {
+        width: 98vw;
+        height: 95vh;
+        border-radius: 0;
+    }
+
+    .enterprise-modal__toolbar {
+        flex-wrap: wrap;
+        align-items: stretch;
+    }
+
+    .enterprise-modal__toolbar input {
+        min-width: 100%;
+    }
+
+    .enterprise-modal__toolbar select {
+        flex: 1;
+    }
+
+    .enterprise-modal__toolbar button {
+        flex: 1;
+    }
+
+    .enterprise-modal__header h2 {
+        font-size: 18px;
+    }
+}
+
+@keyframes enterpriseFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

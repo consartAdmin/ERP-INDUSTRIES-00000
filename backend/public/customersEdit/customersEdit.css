@@ -1,0 +1,225 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ customersEdit.css — Edição de Clientes | PRODNEX ERP               ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+/*
+ * Cada aba controla o próprio conteúdo. Quando ativa, a aba vira uma
+ * coluna flex para manter exatamente o mesmo espaçamento entre seções.
+ */
+#tab-dados-gerais.is-active,
+#tab-financeiro.is-active,
+#tab-informacoes-complementares.is-active,
+#tab-notas-fiscais.is-active,
+#tab-anexos.is-active {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Evita que margens individuais alterem o espaçamento vertical das abas. */
+#tab-dados-gerais>.section,
+#tab-financeiro>.section,
+#tab-informacoes-complementares>.section,
+#tab-notas-fiscais>.section,
+#tab-anexos>.section {
+  margin-block: 0;
+}
+
+/* Garante que painéis inativos nunca apareçam antes/depois do JS iniciar. */
+.tab-panel[hidden] {
+  display: none !important;
+}
+
+/* =========================================================
+   CUSTOMERS EDIT — FIELD VALUES IN BOLD
+   ========================================================= */
+
+#formCliente input,
+#formCliente select,
+#formCliente textarea {
+  font-weight: 700;
+}
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ customersEdit.css — Edição de Clientes | PRODNEX ERP               ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+/*
+ * Cada aba controla o próprio conteúdo. Quando ativa, a aba vira uma
+ * coluna flex para manter exatamente o mesmo espaçamento entre seções.
+ */
+#tab-dados-gerais.is-active,
+#tab-financeiro.is-active,
+#tab-informacoes-complementares.is-active,
+#tab-notas-fiscais.is-active,
+#tab-anexos.is-active {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Evita que margens individuais alterem o espaçamento vertical das abas. */
+#tab-dados-gerais>.section,
+#tab-financeiro>.section,
+#tab-informacoes-complementares>.section,
+#tab-notas-fiscais>.section,
+#tab-anexos>.section {
+  margin-block: 0;
+}
+
+/* Garante que painéis inativos nunca apareçam antes/depois do JS iniciar. */
+.tab-panel[hidden] {
+  display: none !important;
+}
+
+/* =========================================================
+   CUSTOMERS EDIT — FIELD VALUES IN BOLD
+   ========================================================= */
+
+#formCliente input,
+#formCliente select,
+#formCliente textarea {
+  font-weight: 700;
+}
+
+/* =========================================================
+   ABA ANEXOS
+   ========================================================= */
+
+.customer-attachments-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 18px 12px;
+  border: 1.5px dashed #b8c2cc;
+  border-radius: 6px;
+  background: #f8fafc;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.customer-attachments-dropzone span {
+  color: #64748b;
+  font-size: 0.85em;
+}
+
+.customer-attachments-dropzone:hover,
+.customer-attachments-dropzone:focus-visible,
+.customer-attachments-dropzone.is-over {
+  border-color: #2563eb;
+  background: #eff6ff;
+  outline: none;
+}
+
+.customer-attachments-pending {
+  display: grid;
+  gap: 4px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.customer-attachments-pending:empty {
+  display: none;
+}
+
+.customer-attachments-pending li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.customer-attachments-pending li .ca-file-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.customer-attachments-count,
+.ca-muted {
+  color: #64748b;
+  font-weight: 400;
+}
+
+.ca-link {
+  padding: 0 4px;
+  border: none;
+  background: none;
+  color: #2563eb;
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ca-link:hover {
+  text-decoration: underline;
+}
+
+.ca-link--danger {
+  color: #b91c1c;
+}
+
+.ca-badge {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  color: #334155;
+  font-size: 0.85em;
+}
+
+.ca-badge--contrato {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.ca-badge--comprovante {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.ca-badge--outros {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+/* ── Botões "+" de cadastro rápido (Plano de Contas / Categoria / Subcategoria)
+   mesmo estilo da Edição de Produtos (editProducts.css) ── */
+.quick-add-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-left: 4px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.quick-add-btn:hover,
+.quick-add-btn:focus-visible {
+  background: #dbeafe;
+  color: #2563eb;
+  outline: none;
+}
+
+.quick-add-btn:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}

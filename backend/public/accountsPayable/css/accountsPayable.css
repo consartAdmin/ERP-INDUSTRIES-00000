@@ -1,0 +1,132 @@
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║ ACCOUNTS PAYABLE — FILTER ACTIONS                           ║
+   ║ PRODNEX ERP                                                 ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+
+/* ==============================================================
+   DESKTOP
+   ============================================================== */
+
+.ap-filter-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+
+    width: 100%;
+    margin-left: auto;
+
+    gap: 10px;
+}
+
+.ap-filter-actions>.btn {
+    flex: 0 0 auto;
+    margin: 0;
+
+    white-space: nowrap;
+}
+
+.ap-filter-actions .btn img {
+    flex: 0 0 auto;
+}
+
+
+/* ==============================================================
+   TABLET
+   ============================================================== */
+
+@media (max-width: 900px) {
+    .ap-filter-actions {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+
+        row-gap: 10px;
+        column-gap: 10px;
+    }
+}
+
+
+/* ==============================================================
+   MOBILE
+   ============================================================== */
+
+@media (max-width: 600px) {
+    .ap-filter-actions {
+        align-items: stretch;
+        flex-direction: column;
+
+        width: 100%;
+    }
+
+    .ap-filter-actions>.btn {
+        width: 100%;
+    }
+}
+
+.ap-payment-classification-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.ap-payment-classification-grid .ap-chart-account-field {
+    grid-column: span 1;
+}
+
+/* Section dividers — modal "Pagar Conta a Pagar" */
+/* Section titles — Pagar e Editar Conta a Pagar */
+#payModal .ap-modal-section-title,
+#new-accounts-payable-modal-consart .ap-modal-section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    margin: 6px 0 2px;
+    color: #2c609f;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .02em;
+}
+
+#payModal .ap-modal-section-title::after,
+#new-accounts-payable-modal-consart .ap-modal-section-title::after {
+    content: "";
+    height: 1px;
+    flex: 1 1 auto;
+    background: #d8e2ef;
+}
+
+#payModal .ap-modal-section-title:first-of-type,
+#new-accounts-payable-modal-consart .ap-modal-section-title:first-of-type {
+    margin-top: 0;
+}
+
+.ap-chart-account-picker {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 4px;
+}
+
+.ap-chart-account-picker #pay_chart_account_display {
+    min-width: 0;
+    cursor: pointer;
+    background: #fff;
+}
+
+.ap-chart-account-picker .btn {
+    width: 30px;
+    min-width: 30px;
+    padding-inline: 4px;
+}
+
+@media (max-width: 1100px) {
+    .ap-payment-classification-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .ap-payment-classification-grid {
+        grid-template-columns: 1fr;
+    }
+}

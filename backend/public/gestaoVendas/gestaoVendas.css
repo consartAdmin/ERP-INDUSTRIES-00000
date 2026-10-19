@@ -1,0 +1,85 @@
+/* =========================
+   Gestão de Vendas (padrão Caixa)
+   ========================= */
+:root{
+  --bd:#e5ebf4;
+  --bd-soft:#eef2f8;
+  --fg:#2c3e50;
+  --muted:#607188;
+  --radius:12px;
+}
+
+.titulo-modulo{
+  margin: 10px 0 18px;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+/* Tabs */
+.tabs{ display:flex; gap:8px; margin-bottom:12px; }
+.tab-btn{
+  border:1px solid #cfd7e6; border-radius:10px; background:#fff;
+  padding:8px 12px; cursor:pointer;
+}
+.tab-btn.active{ background:#f6f8fc; border-color:#b9c3d8; font-weight:600; }
+
+.tab-content{ display:none; }
+.tab-content.active{ display:block; }
+
+.card{
+  background:#fff; border:1px solid var(--bd); border-radius:var(--radius);
+  padding:16px; box-shadow:0 2px 6px rgba(0,0,0,.04); margin-bottom:16px;
+}
+
+/* Grid helpers */
+.grid{ display:grid; gap:12px; }
+.grid--3{ grid-template-columns: repeat(3, minmax(0,1fr)); }
+.grid--4{ grid-template-columns: repeat(4, minmax(0,1fr)); }
+.form-group{ display:flex; flex-direction:column; gap:6px; }
+.form-group--full{ grid-column: 1 / -1; }
+.form-group input, .form-group select, .form-group textarea{
+  border:1px solid #d6dcea; border-radius:10px; padding:10px;
+  font-size:14px; background:#fff;
+}
+
+/* Actions */
+.actions{ display:flex; gap:10px; justify-content:flex-end; }
+
+/* Lista / toolbar */
+.lista__toolbar{
+  display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;
+  margin-bottom:10px;
+}
+.filtros{ display:flex; gap:8px; flex-wrap:wrap; }
+.toolbar-actions{ display:flex; gap:8px; }
+
+/* Tabela */
+.tabela-wrapper{ overflow:auto; border:1px solid var(--bd); border-radius:12px; }
+.tabela{ width:100%; border-collapse:separate; border-spacing:0; }
+.tabela thead th{
+  background:#f7f9fe; position:sticky; top:0; z-index:1;
+  border-bottom:1px solid var(--bd); padding:10px; text-align:left; font-weight:600;
+}
+.tabela tbody td{
+  border-bottom:1px solid var(--bd-soft); padding:10px; font-size:14px;
+}
+.tabela tbody tr:hover{ background:#fafcff; }
+.col-acoes{ width:110px; white-space:nowrap; }
+
+/* Paginação */
+.paginacao{ display:flex; align-items:center; gap:10px; justify-content:center; padding:10px; }
+
+/* Relatório */
+.relatorio__filtros{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+.relatorio__totais{
+  display:grid; grid-template-columns: repeat(3, minmax(0,1fr));
+  gap:12px; margin-bottom:12px;
+}
+.kpi{ border:1px dashed #d9e1ef; border-radius:12px; padding:12px; background:#f9fbff; }
+.kpi__label{ color:#667; font-size:13px; margin-bottom:4px; }
+.kpi__value{ font-size:18px; font-weight:700; }
+
+/* Botões base herdam do tema */
+.btn{ cursor:pointer; }
+.btn--primary{ background:#2b7cff; color:#fff; border:1px solid #2b7cff; }
+.btn--secondary{ background:#eef4ff; border:1px solid #c9d6ff; }

@@ -1,0 +1,247 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ FILE: backend/public/database/database.css                          ║
+   ║ MODULE: Database Viewer / Editor                                    ║
+   ║ Tabela, campos e modal vêm de table.css / fields.css / modals.css   ║
+   ║ (importados por style.css). Aqui fica apenas o layout da página.    ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+/* =========================================================
+   PAGE LAYOUT
+========================================================= */
+:root {
+  /* Menu superior + barra de título + barra de status (ajuste fino aqui) */
+  --db-page-offset: 176px;
+}
+
+.db-page {
+  display: grid;
+  grid-template-columns: 310px 1fr;
+  height: calc(100vh - var(--db-page-offset));
+  overflow: hidden;
+}
+
+/* =========================================================
+   SIDEBAR (lista de tabelas)
+========================================================= */
+.db-sidebar {
+  background: #0f172a;
+  color: #fff;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 26px;
+}
+
+.brand span {
+  font-size: 13px;
+  color: #cbd5e1;
+}
+
+.sidebar-search {
+  margin: 22px 0 14px;
+}
+
+.tables-list {
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.table-item {
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  color: #dbeafe;
+  padding: 11px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.table-item:hover,
+.table-item.active {
+  background: #1e3a8a;
+  color: #fff;
+}
+
+/* =========================================================
+   CONTENT
+========================================================= */
+.db-content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.db-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.db-header h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.db-header p {
+  margin: 6px 0 0;
+  color: #64748b;
+}
+
+/* Células longas não estouram a grade */
+#dataTable th,
+#dataTable td {
+  white-space: nowrap;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#dataTable td.empty {
+  color: #64748b;
+  padding: 28px;
+}
+
+/* =========================================================
+   TABS
+========================================================= */
+.db-tabs {
+  justify-content: flex-start;
+  margin-bottom: -18px;
+}
+
+/* =========================================================
+   ESTRUTURA
+========================================================= */
+.db-structure {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-right: 4px;
+}
+
+.db-structure__section {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.db-structure__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.db-structure__header h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.db-structure__info {
+  margin: 0;
+}
+
+.db-structure .table-scroll {
+  max-height: 340px;
+}
+
+.db-struct-table td {
+  white-space: nowrap;
+  max-width: 420px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.db-muted {
+  color: #64748b;
+}
+
+.db-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.db-badge--pk {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.db-badge--fk {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+/* =========================================================
+   MODAL (complementos ao modals.css)
+========================================================= */
+.modal-spacer {
+  flex: 1;
+}
+
+.db-check-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 6px 14px;
+  max-height: 220px;
+  overflow: auto;
+  padding: 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.db-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.db-check small {
+  color: #94a3b8;
+}
+
+.db-warning {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #fef2f2;
+  color: #991b1b;
+  font-size: 13px;
+}
+
+.db-sql-preview {
+  margin: 16px 0 0;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #0f172a;
+  color: #e2e8f0;
+  font-family: Consolas, 'Courier New', monospace;
+  font-size: 12.5px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.hidden {
+  display: none !important;
+}

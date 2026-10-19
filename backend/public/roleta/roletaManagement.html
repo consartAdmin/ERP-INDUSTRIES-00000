@@ -1,0 +1,297 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ roletaManagement.html — Roleta Management (PRODNEX ERP)             ║
+     ║ Path: public/roleta/roletaManagement.html                           ║
+     ║ - Criar campanhas, vincular produtos, gerar links/token, acompanhar  ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Roleta Management • PRODNEX ERP</title>
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <link rel="stylesheet" href="roletaManagement.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="title">
+        <div class="badge">🎯</div>
+        <div>
+          <div class="h1">Roleta Management</div>
+          <div class="sub">Criar campanhas • Produtos • Tokens • Acompanhar giros</div>
+        </div>
+      </div>
+
+      <div class="right">
+        <button id="btnReload" class="btn ghost">Recarregar</button>
+      </div>
+    </header>
+
+    <section class="tabs">
+      <button class="tab active" data-tab="tabCampaigns">Campanhas</button>
+      <button class="tab" data-tab="tabProducts">Produtos da Campanha</button>
+      <button class="tab" data-tab="tabTokens">Tokens / Links</button>
+      <button class="tab" data-tab="tabSpins">Giros (Resultados)</button>
+    </section>
+
+    <main class="content">
+
+      <!-- ===================== TAB: CAMPANHAS ===================== -->
+      <section id="tabCampaigns" class="panel active">
+        <div class="panelHead">
+          <div class="panelTitle">Campanhas</div>
+          <div class="panelActions">
+            <input id="cSearch" class="input" placeholder="Buscar campanha (nome)..." />
+            <button id="btnLoadCampaigns" class="btn">Buscar</button>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <div class="cardTitle">Criar Campanha</div>
+
+            <div class="formRow">
+              <label>Nome</label>
+              <input id="cName" class="input" placeholder="Ex: Campanha Março" />
+            </div>
+
+            <div class="formRow">
+              <label>Descrição</label>
+              <input id="cDesc" class="input" placeholder="Opcional" />
+            </div>
+
+            <div class="row3">
+              <div class="formRow">
+                <label>Início (opcional)</label>
+                <input id="cStartsAt" class="input" type="datetime-local" />
+              </div>
+              <div class="formRow">
+                <label>Fim (opcional)</label>
+                <input id="cEndsAt" class="input" type="datetime-local" />
+              </div>
+              <div class="formRow">
+                <label>Max giros/cliente</label>
+                <input id="cMaxSpins" class="input" type="number" min="1" value="1" />
+              </div>
+            </div>
+
+            <div class="row2">
+              <label class="check">
+                <input id="cActive" type="checkbox" checked />
+                <span>Ativa</span>
+              </label>
+
+              <button id="btnCreateCampaign" class="btn primary">Criar Campanha</button>
+            </div>
+
+            <div class="note muted">
+              Dica: Crie a campanha aqui, depois vá na aba “Produtos da Campanha” para adicionar os produtos.
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="cardTitle">Lista de Campanhas</div>
+
+            <div class="tableWrap">
+              <table class="table" id="tblCampaigns">
+                <thead>
+                  <tr>
+                    <th style="width:90px;">ID</th>
+                    <th>Nome</th>
+                    <th style="width:120px;">Ativa</th>
+                    <th style="width:160px;">Max/Cliente</th>
+                    <th style="width:140px;">Selecionar</th>
+                  </tr>
+                </thead>
+                <tbody id="tbodyCampaigns"></tbody>
+              </table>
+            </div>
+
+            <div class="footerLine">
+              <div class="muted">Campanha selecionada:</div>
+              <div id="selectedCampaignLabel" class="pill">Nenhuma</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== TAB: PRODUTOS ===================== -->
+      <section id="tabProducts" class="panel">
+        <div class="panelHead">
+          <div class="panelTitle">Produtos da Campanha</div>
+          <div class="panelActions">
+            <div class="pill" id="prodCampaignPill">Campanha: (nenhuma)</div>
+            <button id="btnLoadCampaignProducts" class="btn">Carregar</button>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <div class="cardTitle">Adicionar Produto</div>
+
+            <div class="row2">
+              <div class="formRow">
+                <label>Product Code (SKU)</label>
+                <input id="pCode" class="input" placeholder="Ex: 000123" />
+              </div>
+              <div class="formRow">
+                <label>Peso (weight)</label>
+                <input id="pWeight" class="input" type="number" min="1" value="1" />
+              </div>
+            </div>
+
+            <div class="row2">
+              <label class="check">
+                <input id="pActive" type="checkbox" checked />
+                <span>Ativo</span>
+              </label>
+
+              <button id="btnAddProductToCampaign" class="btn primary">Adicionar</button>
+            </div>
+
+            <div class="note muted">
+              Observação: o sistema faz JOIN em <span class="mono">public.products</span> para trazer o nome do produto (campo <span class="mono">name</span>).
+              Se seu schema for diferente, eu ajusto o JOIN no backend.
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="cardTitle">Produtos Vinculados</div>
+
+            <div class="tableWrap">
+              <table class="table" id="tblCampaignProducts">
+                <thead>
+                  <tr>
+                    <th style="width:90px;">ID</th>
+                    <th style="width:150px;">SKU</th>
+                    <th>Nome</th>
+                    <th style="width:110px;">Peso</th>
+                    <th style="width:110px;">Ativo</th>
+                    <th style="width:120px;">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="tbodyCampaignProducts"></tbody>
+              </table>
+            </div>
+
+            <div class="note muted">
+              Remover produto: remove apenas o vínculo da campanha (não remove o produto do seu cadastro).
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== TAB: TOKENS ===================== -->
+      <section id="tabTokens" class="panel">
+        <div class="panelHead">
+          <div class="panelTitle">Tokens / Links</div>
+          <div class="panelActions">
+            <div class="pill" id="tokenCampaignPill">Campanha: (nenhuma)</div>
+            <input id="tSearch" class="input" placeholder="Buscar por customer_id ou token..." />
+            <button id="btnLoadTokens" class="btn">Carregar</button>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <div class="cardTitle">Gerar Token para Cliente</div>
+
+            <div class="formRow">
+              <label>Customer ID</label>
+              <input id="tCustomerId" class="input" placeholder="Ex: cus_000140914867" />
+            </div>
+
+            <div class="row3">
+              <div class="formRow">
+                <label>Expira em (opcional)</label>
+                <input id="tExpiresAt" class="input" type="datetime-local" />
+              </div>
+              <div class="formRow">
+                <label>&nbsp;</label>
+                <button id="btnGenerateToken" class="btn primary">Gerar Link</button>
+              </div>
+              <div class="formRow">
+                <label>&nbsp;</label>
+                <button id="btnCopyLastLink" class="btn ghost">Copiar Último Link</button>
+              </div>
+            </div>
+
+            <div class="note muted">
+              O link será gerado como: <span class="mono">/roleta/roleta.html?t=TOKEN</span>.
+            </div>
+
+            <div class="resultBox">
+              <div class="muted">Último link:</div>
+              <div id="lastLink" class="mono">—</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="cardTitle">Tokens Criados</div>
+
+            <div class="tableWrap">
+              <table class="table" id="tblTokens">
+                <thead>
+                  <tr>
+                    <th style="width:90px;">ID</th>
+                    <th style="width:170px;">Customer</th>
+                    <th>Token</th>
+                    <th style="width:180px;">Expira</th>
+                    <th style="width:110px;">Ativo</th>
+                    <th style="width:130px;">Link</th>
+                  </tr>
+                </thead>
+                <tbody id="tbodyTokens"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== TAB: SPINS ===================== -->
+      <section id="tabSpins" class="panel">
+        <div class="panelHead">
+          <div class="panelTitle">Giros (Resultados)</div>
+          <div class="panelActions">
+            <div class="pill" id="spinsCampaignPill">Campanha: (nenhuma)</div>
+            <input id="sCustomerId" class="input" placeholder="Filtrar customer_id (opcional)" />
+            <button id="btnLoadSpins" class="btn">Carregar</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="cardTitle">Histórico de Giros</div>
+
+          <div class="tableWrap">
+            <table class="table" id="tblSpins">
+              <thead>
+                <tr>
+                  <th style="width:90px;">ID</th>
+                  <th style="width:170px;">Customer</th>
+                  <th style="width:180px;">Token</th>
+                  <th style="width:150px;">SKU</th>
+                  <th>Produto</th>
+                  <th style="width:190px;">Data</th>
+                </tr>
+              </thead>
+              <tbody id="tbodySpins"></tbody>
+            </table>
+          </div>
+
+          <div class="note muted">
+            Cada giro fica registrado no banco em <span class="mono">public.roleta_spins</span>.
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="roletaManagement.js"></script>
+</body>
+</html>

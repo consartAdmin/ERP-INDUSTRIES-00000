@@ -1,0 +1,836 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ crmDeals.css — Estilos CRM Gestão de Vendas | PRODNEX ERP          ║
+   ║ ✅ Kanban dinâmico                                                  ║
+   ║ ✅ Coluna final sticky                                              ║
+   ║ ✅ Summary horizontal com scroll                                    ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+:root{
+  --crm-col-min: 260px;
+  --crm-col-max: 260px;
+  --crm-col-padding: 12px;
+  --crm-col-gap: 18px;
+  --crm-col-body-minh: 500px;
+  --crm-col-body-h: 560px;
+
+  --crm-drag-outline: 2px;
+  --crm-drag-outline-offset: 3px;
+}
+
+/* ===========================
+   Layout base
+   =========================== */
+
+.page-crm-consart{
+  padding: 18px;
+}
+
+.section-card{
+  position: relative;
+  background: var(--card, #ffffff);
+  border-radius: var(--radius-xl, 18px);
+  border: 1px solid var(--line-soft, #e2e8f0);
+  box-shadow: var(--shadow-lg, 0 12px 30px rgba(15, 23, 42, 0.10));
+  padding: var(--gap-lg, 24px);
+  min-height: 650px;
+}
+
+/* ===========================
+   Cabeçalho
+   =========================== */
+
+.crm-header{
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.crm-header__titles{
+  min-width: 240px;
+}
+
+.crm-header__titles h1{
+  margin: 0 0 4px 0;
+  font-size: 1.7rem;
+  color: var(--c-primary-700, #0f172a);
+}
+
+.crm-header__titles p{
+  margin: 0;
+  color: var(--muted, #64748b);
+  font-size: 0.95rem;
+}
+
+.crm-header__filters{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 220px;
+}
+
+.crm-label{
+  font-size: 0.8rem;
+  color: var(--muted-strong, #475569);
+  font-weight: 500;
+}
+
+.crm-select{
+  border-radius: 999px;
+  border: 1px solid var(--line, #cbd5f1);
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  background: #ffffff;
+  outline: none;
+  min-height: 34px;
+}
+
+.crm-hint{
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+/* Filtros em grade (CRM Consart: Estado, Cidade, Segmento, Vendedor) */
+.crm-header__filters--grid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(180px, 220px));
+  gap: 6px 10px;
+}
+
+.crm-filter{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.crm-filter .crm-select{
+  width: 100%;
+}
+
+.crm-filter--full{
+  grid-column: 1 / -1;
+}
+
+.crm-header__center{
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 16px;
+}
+
+/* ===========================
+   Summary topo
+   =========================== */
+
+.crm-outcomes-summary{
+  min-width: 680px;
+  max-width: 920px;
+  border-radius: 18px;
+  padding: 10px 12px;
+  background: #ffffff;
+  box-shadow: 0 14px 40px rgba(15, 23, 42, 0.10);
+  overflow: hidden;
+}
+
+.crm-outcomes-summary__row{
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  gap: 10px;
+  align-items: stretch;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding: 2px 2px 6px;
+  scrollbar-gutter: stable;
+}
+
+.crm-outcomes-summary__metric{
+  flex: 0 0 auto !important;
+  min-width: 170px;
+  border-radius: 14px;
+  padding: 8px 10px;
+  background: rgba(255,255,255,0.65);
+  border: 1px solid rgba(226,232,240,0.9);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.crm-outcomes-summary__metric--btn{
+  appearance: none;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 14px;
+  transition: 140ms;
+}
+
+.crm-outcomes-summary__metric--btn:hover{
+  background: rgba(15, 23, 42, 0.03);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+}
+
+.crm-outcomes-summary__metric--btn:active{
+  transform: translateY(0);
+}
+
+.crm-outcomes-summary__label{
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+.crm-outcomes-summary__value{
+  font-size: 1.02rem;
+  line-height: 1.1;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.crm-outcomes-summary__sub{
+  font-size: 0.7rem;
+  color: #9ca3af;
+  white-space: nowrap;
+}
+
+.crm-outcomes-summary__placeholder{
+  font-size: 0.8rem;
+  color: #9ca3af;
+  text-align: center;
+}
+
+.crm-outcomes-summary__row::-webkit-scrollbar{
+  height: 8px;
+}
+.crm-outcomes-summary__row::-webkit-scrollbar-thumb{
+  background: rgba(15,23,42,0.12);
+  border-radius: 999px;
+}
+.crm-outcomes-summary__row::-webkit-scrollbar-track{
+  background: rgba(15,23,42,0.04);
+  border-radius: 999px;
+}
+
+/* ===========================
+   Botão Novo card
+   =========================== */
+
+.crm-actions{
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+}
+
+.crm-btn-add-card{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.35);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+}
+
+.crm-btn-add-card__icon{
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.crm-btn-add-card:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.45);
+  filter: brightness(1.03);
+}
+
+.crm-btn-add-card:active{
+  transform: translateY(0);
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.35);
+}
+
+/* ===========================
+   Kanban
+   =========================== */
+
+.crm-kanban{
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--crm-col-gap);
+  overflow-x: auto;
+  padding-bottom: 16px;
+  scroll-behavior: smooth;
+  min-height: 500px;
+  min-height: 0;
+}
+
+.crm-kanban__stages{
+  display: flex;
+  align-items: stretch;
+  flex-wrap: nowrap;
+  gap: var(--crm-col-gap);
+  min-height: 0;
+}
+
+.crm-kanban__outcomes{
+  position: sticky;
+  right: 0;
+  top: 0;
+  z-index: 50;
+  flex: 0 0 var(--crm-col-min);
+  min-width: var(--crm-col-min);
+  max-width: var(--crm-col-max);
+  align-self: stretch;
+  background: #fff;
+}
+
+.crm-kanban__outcomes::before{
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 0;
+  bottom: 0;
+  width: 10px;
+  background: linear-gradient(to left, rgba(255,255,255,0), rgba(255,255,255,1));
+  pointer-events: none;
+}
+
+.crm-column{
+  background: var(--card-soft, #f8fafc);
+  border-radius: 16px;
+  min-width: var(--crm-col-min);
+  max-width: var(--crm-col-max);
+  flex: 0 0 var(--crm-col-min);
+  padding: var(--crm-col-padding);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.crm-column--final{
+  min-width: var(--crm-col-min);
+  max-width: var(--crm-col-max);
+  flex: 0 0 var(--crm-col-min);
+  background: var(--card-soft, #f8fafc);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+}
+
+.crm-column__header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 0 4px 4px;
+  border-bottom: 1px dashed var(--line-soft, #dbeafe);
+}
+
+.crm-column__title-wrap{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.crm-column__badge{
+  width: 8px;
+  height: 18px;
+  border-radius: 999px;
+}
+
+.crm-column__title{
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--c-primary-700, #0f172a);
+}
+
+.crm-column__counter{
+  background: #0f172a;
+  color: #ffffff;
+  border-radius: 999px;
+  padding: 2px 9px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.crm-column__body{
+  position: relative;
+  z-index: 1;
+  margin-top: 6px;
+  padding: 4px 6px 4px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: var(--crm-col-body-minh);
+  height: var(--crm-col-body-h);
+  max-height: var(--crm-col-body-h);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.crm-column__body--drag-over{
+  outline: var(--crm-drag-outline) dashed #60a5fa;
+  outline-offset: var(--crm-drag-outline-offset);
+  background: rgba(191, 219, 254, 0.2);
+}
+
+.crm-column__body--final{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  min-height: var(--crm-col-body-minh);
+  height: var(--crm-col-body-h);
+  max-height: var(--crm-col-body-h);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 6px;
+}
+
+#crm-kanban-stages .crm-column__body::-webkit-scrollbar,
+.crm-column__body--final::-webkit-scrollbar{
+  width: 10px;
+}
+#crm-kanban-stages .crm-column__body::-webkit-scrollbar-thumb,
+.crm-column__body--final::-webkit-scrollbar-thumb{
+  background: rgba(15,23,42,0.18);
+  border-radius: 999px;
+}
+#crm-kanban-stages .crm-column__body::-webkit-scrollbar-track,
+.crm-column__body--final::-webkit-scrollbar-track{
+  background: transparent;
+}
+
+/* ===========================
+   Cards
+   =========================== */
+
+.crm-card{
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid var(--line-soft, #e2e8f0);
+  padding: 8px 10px;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
+  cursor: grab;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+}
+
+.crm-card:active{
+  cursor: grabbing;
+}
+
+.crm-card:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.14);
+  border-color: #93c5fd;
+}
+
+.crm-card__row-top{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+}
+
+.crm-card__customer{
+  font-weight: 600;
+  font-size: 0.7rem;
+  color: #0f172a;
+}
+
+.crm-card__value{
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #059669;
+}
+
+.crm-card__row-middle{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+}
+
+.crm-card__seller{
+  font-size: 0.8rem;
+  color: #475569;
+}
+
+.crm-chip{
+  font-size: 0.72rem;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.crm-chip--lead{
+  background: #f8fafc;
+  color: #334155;
+  border-color: #cbd5e1;
+}
+
+.crm-card__next-step{
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
+.crm-card__footer{
+  margin-top: 2px;
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+
+/* ===========================
+   Dropzones finais
+   =========================== */
+
+.crm-outcome-dropzone{
+  height: auto;
+  min-height: 94px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px 12px;
+  border-radius: 16px;
+  border: 2px dashed #cbd5e1;
+  background: #f8fafc;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.10);
+  cursor: pointer;
+  transition: 140ms;
+}
+
+.crm-dropzone--over,
+.crm-outcome-dropzone.crm-drop-over{
+  border-color: #2563eb;
+  background: #eff6ff;
+  box-shadow: 0 18px 36px rgba(37, 99, 235, 0.28);
+  transform: translateY(-2px);
+}
+
+.crm-outcome-title{
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.crm-outcome-subtitle{
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.crm-outcome-code{
+  font-size: 0.7rem;
+  color: #94a3b8;
+  margin-top: 6px;
+}
+
+/* ===========================
+   Modais Novo Card / Queda de Venda
+   (estrutura e tamanhos vêm do modals.css)
+   =========================== */
+
+.crm-deal-modal .modal-form-grid{
+  align-items: start;
+}
+
+.crm-deal-modal .crm-quick-add-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-left: 4px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.crm-deal-modal .crm-quick-add-btn:hover,
+.crm-deal-modal .crm-quick-add-btn:focus-visible{
+  background: #dbeafe;
+  color: #2563eb;
+  outline: none;
+}
+
+.crm-deal-modal .crm-quick-error{
+  margin: 8px 0 0;
+  color: #b91c1c;
+  font-size: 12px;
+}
+
+.crm-deal-modal .crm-hint{
+  display: block;
+  margin-top: 3px;
+}
+
+/* ===========================
+   Responsivo
+   =========================== */
+
+@media (max-width: 1100px){
+  .crm-outcomes-summary{
+    min-width: 520px;
+    max-width: 720px;
+  }
+}
+
+@media (max-width: 860px){
+  .crm-header{
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .crm-outcomes-summary{
+    min-width: 100%;
+    max-width: 100%;
+    border-radius: 16px;
+  }
+
+  .crm-outcomes-summary__metric{
+    min-width: 160px;
+  }
+
+  .crm-kanban{
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  .crm-kanban__stages{
+    flex-direction: column;
+  }
+
+  .crm-kanban__outcomes{
+    position: relative;
+    right: auto;
+    top: auto;
+    min-width: 100%;
+    max-width: 100%;
+    background: transparent;
+  }
+
+  .crm-column,
+  .crm-column--final{
+    min-width: 100%;
+    max-width: 100%;
+    flex: 1 1 auto;
+  }
+
+  .crm-modal__dialog{
+    margin: 0 12px;
+  }
+}
+
+/* ===========================
+   Botão Novo Card
+   =========================== */
+
+.crm-actions{
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 18px;
+}
+
+.crm-btn-add-card{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 18px 0 10px;
+  border: 1px solid #bfe3ff;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #dff4ff 0%, #cfeeff 45%, #bae6fd 100%);
+  color: #0f3d5e;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  user-select: none;
+  box-shadow:
+    0 8px 20px rgba(125, 190, 255, 0.28),
+    inset 0 1px 0 rgba(255,255,255,0.75);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    filter 0.18s ease,
+    background 0.18s ease;
+  overflow: hidden;
+}
+
+.crm-btn-add-card::before{
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 15px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.45), rgba(255,255,255,0.10));
+  pointer-events: none;
+}
+
+.crm-btn-add-card:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.02);
+  box-shadow:
+    0 12px 26px rgba(125, 190, 255, 0.34),
+    inset 0 1px 0 rgba(255,255,255,0.85);
+}
+
+.crm-btn-add-card:active{
+  transform: translateY(0);
+  box-shadow:
+    0 6px 14px rgba(125, 190, 255, 0.24),
+    inset 0 1px 0 rgba(255,255,255,0.65);
+}
+
+.crm-btn-add-card:focus-visible{
+  outline: none;
+  box-shadow:
+    0 0 0 4px rgba(125, 190, 255, 0.30),
+    0 10px 24px rgba(125, 190, 255, 0.30);
+}
+
+.crm-btn-add-card__icon{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 27px;
+  height: 27px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(255,255,255,0.75);
+  color: #2563eb;
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1;
+  flex: 0 0 27px;
+  box-shadow: 0 3px 8px rgba(37, 99, 235, 0.10);
+}
+
+.crm-btn-add-card__text{
+  position: relative;
+  z-index: 1;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* ===========================
+   Help tooltip - Follow-up
+   =========================== */
+
+.crm-column__title{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.crm-help-tip{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: #e0f2fe;
+  color: #0f3d5e;
+  border: 1px solid #bae6fd;
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: help;
+  user-select: none;
+  flex: 0 0 18px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.crm-help-tip:hover,
+.crm-help-tip:focus-visible{
+  background: #bae6fd;
+  box-shadow: 0 6px 16px rgba(14, 116, 144, 0.18);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.crm-help-tip::after{
+  content: attr(data-tooltip);
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  max-width: 300px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #0f172a;
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: pre-line;
+  text-align: left;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.30);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 300;
+}
+
+.crm-help-tip::before{
+  content: "";
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 7px solid #0f172a;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 301;
+}
+
+.crm-help-tip:hover::after,
+.crm-help-tip:hover::before,
+.crm-help-tip:focus-visible::after,
+.crm-help-tip:focus-visible::before{
+  opacity: 1;
+  visibility: visible;
+}
+/* ⚙️ Configurar Kanban (js/settings.kanban.js) */
+.crm-actions{
+  align-items: center;
+}
+
+.crm-actions .crm-kanban-settings{
+  position: static;
+  margin-left: auto;
+  width: 32px;
+  height: 32px;
+  font-size: 18px;
+  opacity: .7;
+  background: #f1f5f9;
+}

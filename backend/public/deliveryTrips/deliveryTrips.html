@@ -1,0 +1,782 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ deliveryTrips.html — Entregas e Motoristas                          ║
+     ║ PRODNEX ERP | Frontend (ESM)                                        ║
+     ║ ✅ Rotas do dia (motorista + veículo + paradas)                     ║
+     ║ ✅ Paradas de ENTREGA / COLETA: Pedidos, Orçamentos e NF-e          ║
+     ║ ✅ Baixa de paradas (entregue / falhou) + romaneio para impressão   ║
+     ║ ✅ Cadastro de motoristas (funcionários) e veículos                 ║
+     ║ ✅ Design System: header + tabs + table-layout-integrated + modals  ║
+     ║ API: /api/delivery-trips                                            ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>ENTREGAS E MOTORISTAS | PRODNEX ERP</title>
+
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/modalsSearch/suppliersModalSearch.css" />
+  <link rel="stylesheet" href="./deliveryTrips.css?v=6" />
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <!-- ===================================================== -->
+    <!-- HEADER                                                -->
+    <!-- ===================================================== -->
+    <div class="header">
+      <div class="fields fields-inline fields-gap-3">
+        <div class="fields fields-h-6 fields-w-40 fields-font-3">
+          <div>
+            <h2 class="page-header__title">Entregas e Motoristas</h2>
+            <p class="page-header__subtitle">Rotas de entrega e coleta, com motorista, veículo e paradas.</p>
+          </div>
+        </div>
+
+        <div class="btn-position-right">
+          <button type="button" class="btn btn-new btn-sm" id="btnReload">⟳ Atualizar</button>
+          <button type="button" class="btn btn-new btn-sm" id="btnNewTrip">➕ Nova Rota</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- TABS                                                  -->
+    <!-- ===================================================== -->
+    <section class="tabs">
+      <div class="tab-list" role="tablist" aria-label="Entregas">
+        <button type="button" class="tab is-active" role="tab" aria-selected="true" aria-controls="tab-rotas"
+          data-tab="rotas">📄 Rotas</button>
+        <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="tab-montar"
+          data-tab="montar">🗺️ Montar Rota</button>
+        <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="tab-motoristas"
+          data-tab="motoristas">👤 Motoristas</button>
+        <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="tab-veiculos"
+          data-tab="veiculos">🚐 Veículos</button>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ TAB: ROTAS ═══════════════════════ -->
+    <div id="tab-rotas" class="tab-panel is-active" role="tabpanel" tabindex="0">
+
+      <section class="table-layout-integrated table-max-height-400">
+        <div class="table-layout-integrated__filter">
+
+          <div class="fields fields-inline fields-gap-3">
+            <div class="fields fields-h-6 fields-w-25 fields-font-3">
+              <label for="tripSearch">🔎 Pesquisar</label>
+              <input id="tripSearch" type="text" placeholder="Nome, nº da rota, motorista, placa..."
+                autocomplete="off" />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-12 fields-font-3">
+              <label for="tripStatusFilter">Status</label>
+              <select id="tripStatusFilter">
+                <option value="">Todos</option>
+                <option value="PLANEJADA">Planejada</option>
+                <option value="EM_ROTA">Em rota</option>
+                <option value="CONCLUIDA">Concluída</option>
+                <option value="CANCELADA">Cancelada</option>
+              </select>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-12 fields-font-3">
+              <label for="tripDateFrom">De</label>
+              <input id="tripDateFrom" type="date" />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-12 fields-font-3">
+              <label for="tripDateTo">Até</label>
+              <input id="tripDateTo" type="date" />
+            </div>
+
+            <div class="btn-inline">
+              <button id="btnTripSearch" class="btn btn-filter btn-sm" type="button">Filtrar</button>
+              <button id="btnTripClear" class="btn btn-clean btn-sm" type="button">Limpar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-scroll table-height-flex table-row-h-28" data-table-settings="deliverytrips.tripstablebody">
+          <table class="table table-zebra table-zebra-hover table-sticky-head">
+            <thead>
+              <tr>
+                <th style="width:70px;">Nº</th>
+                <th style="width:110px;">Data</th>
+                <th style="width:220px;">Nome</th>
+                <th style="width:220px;">Motorista</th>
+                <th style="width:170px;">Veículo</th>
+                <th style="width:150px;">Entregas / Coletas</th>
+                <th style="width:150px;">Progresso</th>
+                <th style="width:120px;">Status</th>
+                <th class="col-actions" style="width:260px;">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tripsTableBody"></tbody>
+          </table>
+        </div>
+
+        <footer class="table-footer">
+          <div class="table-footer__info">
+            <div class="summary-pill summary-pill--success summary-width-5 summary-left-space-3">
+              <span id="lblTripCount">0 rota(s)</span>
+            </div>
+          </div>
+
+          <div class="table-footer__pagination">
+            <button id="btnTripPrev" type="button" class="btn btn-toolbar btn-sm" disabled>Anterior</button>
+            <span id="lblTripPage">Página 1 de 1</span>
+            <button id="btnTripNext" type="button" class="btn btn-toolbar btn-sm" disabled>Próxima</button>
+          </div>
+
+          <div class="table-footer__page-size">
+            <label for="tripPageSize">Mostrar</label>
+            <div class="fields fields-h-6 fields-w-3 fields-font-3">
+              <select id="tripPageSize" class="table-footer__page-size-select">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30" selected>30</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+            </div>
+          </div>
+        </footer>
+      </section>
+    </div>
+
+    <!-- ═══════════════════════ TAB: MONTAR ROTA ═══════════════════════ -->
+    <div id="tab-montar" class="tab-panel" role="tabpanel" tabindex="0" hidden>
+
+      <!-- Cabeçalho da rota -->
+      <section class="table-layout-integrated table-max-height-700">
+        <div class="table-layout-integrated__filter">
+          <div class="fields fields-inline fields-gap-3">
+            <div>
+              <h3 class="dt-section-title" id="tripFormTitle">🗺️ Nova Rota</h3>
+              <div class="dt-subtitle" id="tripFormInfo">Preencha os dados e adicione Pedidos, Orçamentos ou Notas
+                Fiscais como paradas.</div>
+            </div>
+            <div class="btn-inline btn-position-right" id="tripActions"></div>
+          </div>
+
+          <form id="formTrip" class="dt-form" autocomplete="off">
+            <input type="hidden" id="trip_id" />
+
+            <div class="fields-inline fields-inline-wrap fields-gap-3">
+              <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                <label for="trip_date">Data *</label>
+                <input id="trip_date" type="date" required />
+              </div>
+
+              <div class="fields fields-h-6 fields-w-25 fields-font-3">
+                <label for="trip_name">Nome / Região</label>
+                <input id="trip_name" type="text" maxlength="120" placeholder="Ex: ROTA CENTRO - MANHÃ" />
+              </div>
+
+              <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                <label for="trip_driver_id">Motorista</label>
+                <select id="trip_driver_id">
+                  <option value="">— selecione —</option>
+                </select>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                <label for="trip_vehicle_id">Veículo</label>
+                <select id="trip_vehicle_id">
+                  <option value="">— selecione —</option>
+                </select>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-8 fields-font-3">
+                <label for="trip_start_km">KM saída</label>
+                <input id="trip_start_km" type="number" min="0" step="1" />
+              </div>
+
+              <div class="fields fields-h-6 fields-w-8 fields-font-3">
+                <label for="trip_end_km">KM chegada</label>
+                <input id="trip_end_km" type="number" min="0" step="1" />
+              </div>
+
+              <div class="fields fields-h-6 fields-w-30 fields-font-3">
+                <label for="trip_notes">Observações</label>
+                <input id="trip_notes" type="text" placeholder="Observações para o motorista..." />
+              </div>
+
+              <div class="btn-inline">
+                <button type="submit" class="btn btn-save btn-sm" id="btnSaveTrip">💾 Salvar Rota</button>
+              </div>
+            </div>
+          </form>
+
+          <div class="dt-summary" id="tripSummary" hidden></div>
+        </div>
+
+        <!-- Paradas da rota -->
+        <div class="table-scroll table-max-height-flex table-row-h-28" data-table-settings="deliverytrips.stopstablebody">
+          <table class="table table-zebra table-zebra-hover table-sticky-head" aria-label="Paradas da rota">
+            <thead>
+              <tr>
+                <th style="width:80px;">Ordem</th>
+                <th style="width:100px;">Tipo</th>
+                <th style="width:130px;">Origem</th>
+                <th style="width:240px;">Cliente / Local</th>
+                <th style="width:320px;">Endereço</th>
+                <th style="width:90px;">Vol / Peso</th>
+                <th style="width:80px;" class="dt-num">Valor</th>
+                <th style="width:120px;">Status</th>
+                <th class="col-actions" style="width:320px;">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="stopsTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Adicionar paradas (abre o modal de seleção) -->
+      <div class="btn-inline dt-mt" id="addStopsPanel">
+        <button type="button" class="btn btn-new btn-sm" id="btnOpenAddStops">➕ Adicionar paradas</button>
+        <button type="button" class="btn btn-toolbar btn-sm" id="btnManualStop">✍️ Parada avulsa</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════ TAB: MOTORISTAS ═══════════════════════ -->
+    <div id="tab-motoristas" class="tab-panel" role="tabpanel" tabindex="0" hidden>
+      <section class="table-layout-integrated table-max-height-600">
+        <div class="table-layout-integrated__filter">
+          <div class="fields fields-inline fields-gap-3">
+            <div>
+              <h3 class="dt-section-title">👤 Motoristas</h3>
+              <div class="dt-subtitle">O motorista é um funcionário (cadastro de Funcionários) com os dados da CNH.
+              </div>
+            </div>
+            <div class="btn-position-right">
+              <button type="button" class="btn btn-new btn-sm" id="btnNewDriver">➕ Novo Motorista</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-scroll table-height-flex table-row-h-28" data-table-settings="deliverytrips.driverstablebody">
+          <table class="table table-zebra table-zebra-hover table-sticky-head" aria-label="Motoristas">
+            <thead>
+              <tr>
+                <th style="width:260px;">Nome</th>
+                <th style="width:140px;">CPF</th>
+                <th style="width:140px;">CNH</th>
+                <th style="width:90px;">Cat.</th>
+                <th style="width:130px;">Validade</th>
+                <th style="width:150px;">Telefone</th>
+                <th style="width:100px;">Status</th>
+                <th class="col-actions" style="width:120px;">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="driversTableBody"></tbody>
+          </table>
+        </div>
+
+        <footer class="table-footer">
+          <div class="table-footer__info">
+            <div class="summary-pill summary-pill--success summary-width-5 summary-left-space-3">
+              <span id="lblDriverCount">0 motorista(s)</span>
+            </div>
+          </div>
+        </footer>
+      </section>
+    </div>
+
+    <!-- ═══════════════════════ TAB: VEÍCULOS ═══════════════════════ -->
+    <div id="tab-veiculos" class="tab-panel" role="tabpanel" tabindex="0" hidden>
+      <section class="table-layout-integrated table-max-height-600">
+        <div class="table-layout-integrated__filter">
+          <div class="fields fields-inline fields-gap-3">
+            <div>
+              <h3 class="dt-section-title">🚐 Veículos</h3>
+              <div class="dt-subtitle">Frota própria usada nas rotas.</div>
+            </div>
+            <div class="btn-position-right">
+              <button type="button" class="btn btn-new btn-sm" id="btnNewVehicle">➕ Novo Veículo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-scroll table-height-flex table-row-h-28" data-table-settings="deliverytrips.vehiclestablebody">
+          <table class="table table-zebra table-zebra-hover table-sticky-head" aria-label="Veículos">
+            <thead>
+              <tr>
+                <th style="width:120px;">Placa</th>
+                <th style="width:260px;">Descrição</th>
+                <th style="width:140px;">Marca</th>
+                <th style="width:120px;">Tipo</th>
+                <th style="width:80px;">Ano</th>
+                <th style="width:140px;">Capacidade</th>
+                <th style="width:100px;">Status</th>
+                <th class="col-actions" style="width:120px;">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="vehiclesTableBody"></tbody>
+          </table>
+        </div>
+
+        <footer class="table-footer">
+          <div class="table-footer__info">
+            <div class="summary-pill summary-pill--success summary-width-5 summary-left-space-3">
+              <span id="lblVehicleCount">0 veículo(s)</span>
+            </div>
+          </div>
+        </footer>
+      </section>
+    </div>
+  </main>
+
+  <!-- ===================================================== -->
+  <!-- MODAL — ADICIONAR PARADAS                             -->
+  <!-- ===================================================== -->
+  <div class="modal" id="addStopsModal" aria-hidden="true">
+    <div class="modal__backdrop" data-modal-close></div>
+
+    <div class="modal__dialog">
+      <div class="modal__panel modal-width-13 modal-height-12 modal-header-color-2 modal-footer-color-1" role="dialog"
+        aria-modal="true" aria-labelledby="addStopsModalTitle">
+        <header class="modal__header">
+          <h2 class="modal__title" id="addStopsModalTitle">➕ Adicionar paradas</h2>
+          <button type="button" class="modal__close" data-modal-close aria-label="Fechar modal"
+            title="Fechar">×</button>
+        </header>
+
+        <div class="modal__body">
+          <div class="dt-mode-switch" role="tablist" aria-label="Origem da parada">
+            <button type="button" class="dt-mode-btn is-active" role="tab" aria-selected="true"
+              data-add-mode="docs">📄 Documentos</button>
+            <button type="button" class="dt-mode-btn" role="tab" aria-selected="false"
+              data-add-mode="manual">✍️ Manual (entrega / coleta avulsa)</button>
+          </div>
+
+          <!-- Modo: documentos (Pedidos / Orçamentos / NF-e) -->
+          <div id="addModeDocs">
+          <section class="modal-section">
+            <div class="fields fields-inline fields-inline-wrap fields-gap-3">
+              <div class="fields fields-h-6 fields-w-13 fields-font-3">
+                <label for="srcType">Documento</label>
+                <select id="srcType">
+                  <option value="PEDIDO">📝 Pedidos</option>
+                  <option value="ORCAMENTO">📑 Orçamentos</option>
+                  <option value="NFE">🧾 Notas Fiscais</option>
+                </select>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                <label for="srcMovement">Movimento</label>
+                <select id="srcMovement">
+                  <option value="ENTREGA">🚚 Entrega</option>
+                  <option value="COLETA">📦 Coleta</option>
+                </select>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-25 fields-font-3">
+                <label for="srcSearch">🔎 Pesquisar</label>
+                <input id="srcSearch" type="text" placeholder="Nº, cliente, CNPJ/CPF, chave NF-e, cidade, bairro..."
+                  autocomplete="off" />
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                <label for="srcDateFrom">Emissão de</label>
+                <input id="srcDateFrom" type="date" />
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                <label for="srcDateTo">Até</label>
+                <input id="srcDateTo" type="date" />
+              </div>
+
+              <label class="dt-check"><input id="srcOnlyFree" type="checkbox" checked /> Só não agendados</label>
+
+              <div class="btn-inline">
+                <button id="btnSrcSearch" class="btn btn-search btn-sm" type="button">🔎 Buscar</button>
+              </div>
+            </div>
+          </section>
+
+          <div class="modal-divider"></div>
+
+          <div class="table-scroll table-row-h-28" data-table-settings="deliverytrips.srctablebody">
+            <table class="table table-zebra table-zebra-hover table-sticky-head" aria-label="Documentos disponíveis">
+              <thead>
+                <tr>
+                  <th style="width:44px;"><input type="checkbox" id="srcCheckAll" title="Selecionar todos" /></th>
+                  <th style="width:90px;">Nº</th>
+                  <th style="width:100px;">Emissão</th>
+                  <th style="width:260px;">Cliente</th>
+                  <th style="width:320px;">Endereço</th>
+                  <th style="width:120px;">Valor</th>
+                  <th style="width:130px;">Status</th>
+                  <th style="width:200px;">Agendamento</th>
+                </tr>
+              </thead>
+              <tbody id="srcTableBody">
+                <tr>
+                  <td colspan="8" class="dt-empty">Use a busca para listar documentos.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          </div>
+
+          <!-- Modo: manual (entrega / coleta sem documento) -->
+          <form id="formManualStop" autocomplete="off" hidden>
+            <input type="hidden" id="ms_customer_id" />
+
+            <section class="modal-section">
+              <div class="fields-inline fields-inline-wrap fields-gap-3">
+                <div class="fields fields-h-5 fields-w-12 fields-font-3">
+                  <label for="ms_movement">Movimento</label>
+                  <select id="ms_movement">
+                    <option value="ENTREGA">🚚 Entrega</option>
+                    <option value="COLETA">📦 Coleta</option>
+                  </select>
+                </div>
+
+                <div class="fields fields-h-5 fields-w-30 fields-font-3">
+                  <label for="ms_name">Cliente / Fornecedor / Local *</label>
+                  <input id="ms_name" type="text" maxlength="255" required />
+                </div>
+
+                <div class="btn-inline">
+                  <button type="button" class="btn btn-lookup btn-sm" id="btnMsPickCustomer">🔎 Cliente / Fornecedor</button>
+                </div>
+
+                <div class="fields fields-h-5 fields-w-15 fields-font-3">
+                  <label for="ms_phone">Telefone</label>
+                  <input id="ms_phone" type="text" maxlength="50" />
+                </div>
+              </div>
+            </section>
+
+            <div class="modal-divider"></div>
+
+            <section class="modal-section">
+              <div class="fields-inline fields-inline-wrap fields-gap-3">
+                <div class="fields fields-h-5 fields-w-30 fields-font-3">
+                  <label for="ms_address">Endereço</label>
+                  <input id="ms_address" type="text" maxlength="500" placeholder="Rua, número, complemento" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-15 fields-font-3">
+                  <label for="ms_neighborhood">Bairro</label>
+                  <input id="ms_neighborhood" type="text" maxlength="120" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-15 fields-font-3">
+                  <label for="ms_city">Cidade</label>
+                  <input id="ms_city" type="text" maxlength="120" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-5 fields-font-3">
+                  <label for="ms_state">UF</label>
+                  <input id="ms_state" type="text" maxlength="2" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-40 fields-font-3">
+                  <label for="ms_notes">Observações</label>
+                  <input id="ms_notes" type="text" />
+                </div>
+              </div>
+            </section>
+          </form>
+        </div>
+
+        <footer class="modal__footer">
+          <div class="summary-pill summary-pill--info summary-width-5" id="addDocsInfo">
+            <span id="lblSrcSelected">0 selecionado(s)</span>
+          </div>
+          <button type="button" class="btn btn-cancel btn-sm" data-modal-close>Fechar</button>
+          <button type="button" class="btn btn-new btn-sm" id="btnAddSelected">➕ Adicionar selecionados à
+            rota</button>
+          <button type="submit" class="btn btn-save btn-sm" form="formManualStop" id="btnMsSubmit" hidden>➕ Adicionar
+            parada</button>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================== -->
+  <!-- MODAL — EDITAR PARADA                                 -->
+  <!-- ===================================================== -->
+  <div class="modal" id="editStopModal" aria-hidden="true">
+    <div class="modal__backdrop" data-modal-close></div>
+
+    <div class="modal__dialog">
+      <div class="modal__panel modal-width-8 modal-header-color-2 modal-footer-color-1" role="dialog" aria-modal="true"
+        aria-labelledby="editStopModalTitle">
+        <header class="modal__header">
+          <h2 class="modal__title" id="editStopModalTitle">✏️ Editar parada</h2>
+          <button type="button" class="modal__close" data-modal-close aria-label="Fechar modal"
+            title="Fechar">×</button>
+        </header>
+
+        <form id="formEditStop" autocomplete="off">
+          <input type="hidden" id="es_stop_id" />
+
+          <div class="modal__body">
+            <section class="modal-section">
+              <div class="fields-inline fields-inline-wrap fields-gap-3">
+                <div class="fields fields-h-5 fields-w-40 fields-font-3">
+                  <label for="es_name">Cliente / Local *</label>
+                  <input id="es_name" type="text" maxlength="255" required />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-15 fields-font-3">
+                  <label for="es_phone">Telefone</label>
+                  <input id="es_phone" type="text" maxlength="50" />
+                </div>
+              </div>
+            </section>
+
+            <div class="modal-divider"></div>
+
+            <section class="modal-section">
+              <div class="fields-inline fields-inline-wrap fields-gap-3">
+                <div class="fields fields-h-5 fields-w-40 fields-font-3">
+                  <label for="es_address">Endereço</label>
+                  <input id="es_address" type="text" maxlength="500" placeholder="Rua, número, complemento" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-15 fields-font-3">
+                  <label for="es_neighborhood">Bairro</label>
+                  <input id="es_neighborhood" type="text" maxlength="120" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-15 fields-font-3">
+                  <label for="es_city">Cidade</label>
+                  <input id="es_city" type="text" maxlength="120" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-5 fields-font-3">
+                  <label for="es_state">UF</label>
+                  <input id="es_state" type="text" maxlength="2" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-12 fields-font-3">
+                  <label for="es_postal_code">CEP</label>
+                  <input id="es_postal_code" type="text" maxlength="12" />
+                </div>
+              </div>
+            </section>
+
+            <div class="modal-divider"></div>
+
+            <section class="modal-section">
+              <div class="fields-inline fields-inline-wrap fields-gap-3">
+                <div class="fields fields-h-5 fields-w-12 fields-font-3">
+                  <label for="es_volumes">Volumes</label>
+                  <input id="es_volumes" type="number" min="0" step="1" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-12 fields-font-3">
+                  <label for="es_gross_weight">Peso (kg)</label>
+                  <input id="es_gross_weight" type="number" min="0" step="0.001" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-40 fields-font-3">
+                  <label for="es_notes">Observações</label>
+                  <input id="es_notes" type="text" />
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <footer class="modal__footer">
+            <button type="button" class="btn btn-cancel btn-sm" id="btnEsCancel">Cancelar</button>
+            <button type="submit" class="btn btn-save btn-sm">💾 Salvar parada</button>
+          </footer>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================== -->
+  <!-- MODAL — MOTORISTA                                     -->
+  <!-- ===================================================== -->
+  <div class="modal" id="driverModal" aria-hidden="true">
+    <div class="modal__backdrop" data-modal-close></div>
+
+    <div class="modal__dialog">
+      <div class="modal__panel modal-width-8 modal-header-color-2 modal-footer-color-1" role="dialog" aria-modal="true"
+        aria-labelledby="driverFormTitle">
+        <header class="modal__header">
+          <h2 class="modal__title" id="driverFormTitle">👤 Novo Motorista</h2>
+          <button type="button" class="modal__close" data-modal-close aria-label="Fechar modal"
+            title="Fechar">×</button>
+        </header>
+
+        <form id="formDriver" autocomplete="off">
+          <input type="hidden" id="driver_id" />
+
+          <div class="modal__body">
+            <section class="modal-section">
+              <div class="fields-inline fields-inline-wrap fields-gap-3">
+                <div class="fields fields-h-5 fields-w-30 fields-font-3">
+                  <label for="driver_employee_id">Funcionário *</label>
+                  <select id="driver_employee_id" required>
+                    <option value="">— selecione —</option>
+                  </select>
+                </div>
+
+                <div class="fields fields-h-5 fields-w-15 fields-font-3">
+                  <label for="driver_cnh_number">Nº CNH</label>
+                  <input id="driver_cnh_number" type="text" maxlength="20" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-6 fields-font-3">
+                  <label for="driver_cnh_category">Categoria</label>
+                  <input id="driver_cnh_category" type="text" maxlength="5" placeholder="B" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-13 fields-font-3">
+                  <label for="driver_cnh_expiration">Validade CNH</label>
+                  <input id="driver_cnh_expiration" type="date" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-15 fields-font-3">
+                  <label for="driver_phone">Telefone</label>
+                  <input id="driver_phone" type="text" maxlength="30" placeholder="(usa o do funcionário)" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-10 fields-font-3">
+                  <label for="driver_is_active">Status</label>
+                  <select id="driver_is_active">
+                    <option value="true">Ativo</option>
+                    <option value="false">Inativo</option>
+                  </select>
+                </div>
+
+                <div class="fields fields-h-5 fields-w-40 fields-font-3">
+                  <label for="driver_notes">Observações</label>
+                  <input id="driver_notes" type="text" />
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <footer class="modal__footer">
+            <button type="button" class="btn btn-cancel btn-sm" id="btnDriverCancel">Cancelar</button>
+            <button type="submit" class="btn btn-save btn-sm">💾 Salvar Motorista</button>
+          </footer>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================== -->
+  <!-- MODAL — VEÍCULO                                       -->
+  <!-- ===================================================== -->
+  <div class="modal" id="vehicleModal" aria-hidden="true">
+    <div class="modal__backdrop" data-modal-close></div>
+
+    <div class="modal__dialog">
+      <div class="modal__panel modal-width-8 modal-header-color-2 modal-footer-color-1" role="dialog" aria-modal="true"
+        aria-labelledby="vehicleFormTitle">
+        <header class="modal__header">
+          <h2 class="modal__title" id="vehicleFormTitle">🚐 Novo Veículo</h2>
+          <button type="button" class="modal__close" data-modal-close aria-label="Fechar modal"
+            title="Fechar">×</button>
+        </header>
+
+        <form id="formVehicle" autocomplete="off">
+          <input type="hidden" id="vehicle_id" />
+
+          <div class="modal__body">
+            <section class="modal-section">
+              <div class="fields-inline fields-inline-wrap fields-gap-3">
+                <div class="fields fields-h-5 fields-w-12 fields-font-3">
+                  <label for="vehicle_plate">Placa *</label>
+                  <input id="vehicle_plate" type="text" maxlength="10" placeholder="ABC1D23" required />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-25 fields-font-3">
+                  <label for="vehicle_description">Descrição / Modelo *</label>
+                  <input id="vehicle_description" type="text" maxlength="120" placeholder="Ex: Fiorino Furgão"
+                    required />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-15 fields-font-3">
+                  <label for="vehicle_brand">Marca</label>
+                  <input id="vehicle_brand" type="text" maxlength="60" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-13 fields-font-3">
+                  <label for="vehicle_vehicle_type">Tipo</label>
+                  <select id="vehicle_vehicle_type">
+                    <option value="CARRO">Carro</option>
+                    <option value="UTILITARIO">Utilitário</option>
+                    <option value="VAN">Van</option>
+                    <option value="CAMINHAO">Caminhão</option>
+                    <option value="MOTO">Moto</option>
+                    <option value="OUTRO">Outro</option>
+                  </select>
+                </div>
+
+                <div class="fields fields-h-5 fields-w-8 fields-font-3">
+                  <label for="vehicle_model_year">Ano</label>
+                  <input id="vehicle_model_year" type="number" min="1950" max="2100" step="1" />
+                </div>
+              </div>
+            </section>
+
+            <div class="modal-divider"></div>
+
+            <section class="modal-section">
+              <div class="fields-inline fields-inline-wrap fields-gap-3">
+                <div class="fields fields-h-5 fields-w-15 fields-font-3">
+                  <label for="vehicle_renavam">RENAVAM</label>
+                  <input id="vehicle_renavam" type="text" maxlength="20" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-13 fields-font-3">
+                  <label for="vehicle_capacity_kg">Capacidade (kg)</label>
+                  <input id="vehicle_capacity_kg" type="number" min="0" step="0.01" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-13 fields-font-3">
+                  <label for="vehicle_capacity_m3">Capacidade (m³)</label>
+                  <input id="vehicle_capacity_m3" type="number" min="0" step="0.001" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-10 fields-font-3">
+                  <label for="vehicle_is_active">Status</label>
+                  <select id="vehicle_is_active">
+                    <option value="true">Ativo</option>
+                    <option value="false">Inativo</option>
+                  </select>
+                </div>
+
+                <div class="fields fields-h-5 fields-w-40 fields-font-3">
+                  <label for="vehicle_notes">Observações</label>
+                  <input id="vehicle_notes" type="text" />
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <footer class="modal__footer">
+            <button type="button" class="btn btn-cancel btn-sm" id="btnVehicleCancel">Cancelar</button>
+            <button type="submit" class="btn btn-save btn-sm">💾 Salvar Veículo</button>
+          </footer>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="./deliveryTrips.js?v=9"></script>
+</body>
+
+</html>

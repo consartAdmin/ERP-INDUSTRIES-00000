@@ -1,0 +1,353 @@
+/* ╔══════════════════════════════════════════════════════════════════╗
+ * ║ nfeInbox.modals.css — Detail/Entry modals | PRODNEX ERP (ESM)   ║
+ * ╚══════════════════════════════════════════════════════════════════╝ */
+
+/* ==========================================================================
+   ROOT MODALS
+   ========================================================================== */
+.nfi-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.nfi-modal[hidden] {
+  display: none !important;
+}
+
+/* ==========================================================================
+   BACKDROP
+   ========================================================================== */
+.nfi-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.58);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* ==========================================================================
+   CONTENT
+   ========================================================================== */
+.nfi-modal-content {
+  position: relative;
+  z-index: 1;
+  width: min(1100px, 100%);
+  max-height: calc(100vh - 48px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #dbe3ef;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow:
+    0 24px 60px rgba(15, 23, 42, 0.22),
+    0 10px 24px rgba(15, 23, 42, 0.12);
+}
+
+/* Entry modal smaller */
+#nfi-entry-modal .nfi-modal-content {
+  width: min(760px, 100%);
+}
+
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+.nfi-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
+  border-bottom: 1px solid #e5edf7;
+  background: linear-gradient(180deg, #f8fbff 0%, #eef5ff 100%);
+}
+
+.nfi-modal-header h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.08rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.nfi-modal-close {
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  border: 1px solid #d7e0ec;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #334155;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.nfi-modal-close:hover {
+  background: #f8fafc;
+  border-color: #c7d2e2;
+  transform: translateY(-1px);
+}
+
+.nfi-modal-close:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.14);
+}
+
+/* ==========================================================================
+   BODY
+   ========================================================================== */
+.nfi-modal-body {
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: 22px;
+  background: #f8fafc;
+}
+
+.nfi-modal-body::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.nfi-modal-body::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+.nfi-modal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.nfi-modal-subtitle {
+  margin: 0 0 18px;
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.nfi-modal-question {
+  margin: 18px 0 0;
+  color: #0f172a;
+  font-size: 0.96rem;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   GRID / BLOCKS
+   ========================================================================== */
+.nfi-modal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.nfi-modal-block {
+  padding: 16px 18px;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+}
+
+.nfi-modal-block h4 {
+  margin: 0 0 14px;
+  color: #0f172a;
+  font-size: 0.98rem;
+  font-weight: 800;
+}
+
+.nfi-modal-block p {
+  margin: 0;
+  color: #334155;
+  font-size: 0.94rem;
+  line-height: 1.55;
+  word-break: break-word;
+}
+
+.nfi-modal-block p + p {
+  margin-top: 10px;
+}
+
+.nfi-modal-block strong {
+  color: #64748b;
+  font-weight: 800;
+}
+
+/* ==========================================================================
+   ENTRY ACTIONS
+   ========================================================================== */
+.nfi-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+/* ==========================================================================
+   DETAIL XML
+   ========================================================================== */
+.nfi-xml-toggle {
+  margin-top: 18px;
+  border: 1px solid #dbe3ef;
+  border-radius: 18px;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.nfi-xml-toggle summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 14px 18px;
+  color: #0f172a;
+  font-size: 0.95rem;
+  font-weight: 800;
+  border-bottom: 1px solid transparent;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  user-select: none;
+}
+
+.nfi-xml-toggle summary::-webkit-details-marker {
+  display: none;
+}
+
+.nfi-xml-toggle[open] summary {
+  border-bottom-color: #e5edf7;
+}
+
+.nfi-xml-toggle summary::after {
+  content: '▾';
+  float: right;
+  color: #64748b;
+  font-size: 0.95rem;
+  transition: transform 0.18s ease;
+}
+
+.nfi-xml-toggle[open] summary::after {
+  transform: rotate(180deg);
+}
+
+.nfi-xml-viewer {
+  min-height: 280px;
+  max-height: 420px;
+  overflow: auto;
+  margin: 0;
+  padding: 16px;
+  border: 0;
+  background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
+  color: #dbeafe;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.nfi-xml-viewer::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.nfi-xml-viewer::-webkit-scrollbar-thumb {
+  background: rgba(203, 213, 225, 0.45);
+  border-radius: 999px;
+}
+
+/* ==========================================================================
+   SPANS INSIDE MODALS
+   ========================================================================== */
+#nfi-entry-chave,
+#nfi-detail-chave,
+#nfi-detail-mod-serie-num,
+#nfi-detail-emitente-cnpj,
+#nfi-detail-dest-cnpj {
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   STATUS-LIKE VALUES
+   ========================================================================== */
+#nfi-detail-situacao,
+#nfi-detail-manifestacao {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 4px 12px;
+  border: 1px solid #dbeafe;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* ==========================================================================
+   BUTTON IMPROVEMENTS INSIDE MODALS
+   ========================================================================== */
+.nfi-modal .btn {
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    filter 0.18s ease;
+}
+
+.nfi-modal .btn:hover {
+  transform: translateY(-1px);
+}
+
+.nfi-modal .btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 900px) {
+  .nfi-modal-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .nfi-modal {
+    padding: 12px;
+  }
+
+  .nfi-modal-content {
+    max-height: calc(100vh - 24px);
+    border-radius: 16px;
+  }
+
+  .nfi-modal-header,
+  .nfi-modal-body {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .nfi-modal-actions {
+    flex-direction: column;
+  }
+
+  .nfi-modal-actions .btn {
+    width: 100%;
+  }
+
+  .nfi-xml-viewer {
+    min-height: 220px;
+    max-height: 320px;
+  }
+}

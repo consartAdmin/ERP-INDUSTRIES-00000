@@ -1,0 +1,848 @@
+/* ╔══════════════════════════════════════════════════════════════════╗
+   ║ button.css — Standard Buttons | PRODNEX ERP                    ║
+   ║ Pastel semantic colors, reusable sizes and inline positioning  ║
+   ╚══════════════════════════════════════════════════════════════════╝ */
+
+/* ====================================================================
+   TOKENS
+==================================================================== */
+
+:root {
+  /* Base */
+  --btn-radius: 6px;
+  --btn-radius-lg: 8px;
+  --btn-font-weight: 600;
+
+  /* Espaço interno entre ícone e texto */
+  --btn-content-gap: 6px;
+
+  /* Espaço entre botões — níveis 0 a 10 */
+  --btn-gap-0: 0;
+  --btn-gap-1: 2px;
+  --btn-gap-2: 4px;
+  --btn-gap-3: 6px;
+  --btn-gap-4: 8px;
+  --btn-gap-5: 10px;
+  --btn-gap-6: 12px;
+  --btn-gap-7: 16px;
+  --btn-gap-8: 20px;
+  --btn-gap-9: 24px;
+  --btn-gap-10: 32px;
+
+  /* Espaçamento interno — níveis 1 a 20 */
+  --btn-padding-1: 2px;
+  --btn-padding-2: 4px;
+  --btn-padding-3: 6px;
+  --btn-padding-4: 8px;
+  --btn-padding-5: 10px;
+  --btn-padding-6: 12px;
+  --btn-padding-7: 14px;
+  --btn-padding-8: 16px;
+  --btn-padding-9: 18px;
+  --btn-padding-10: 20px;
+  --btn-padding-11: 22px;
+  --btn-padding-12: 24px;
+  --btn-padding-13: 26px;
+  --btn-padding-14: 28px;
+  --btn-padding-15: 30px;
+  --btn-padding-16: 32px;
+  --btn-padding-17: 34px;
+  --btn-padding-18: 36px;
+  --btn-padding-19: 38px;
+  --btn-padding-20: 40px;
+
+  /* Distância padrão dos grupos */
+  --btn-inline-gap: var(--btn-gap-6);
+  /* Neutral — navigation and secondary actions */
+  --btn-neutral-bg: #F5FFFA;
+  --btn-neutral-bd: #020508;
+  --btn-neutral-tx: #1C1C1C;
+  --btn-neutral-hover-bg: #f0f2f5;
+  --btn-neutral-hover-bd: #aeb7c4;
+
+  /* Primary — create, save and confirm */
+  --btn-primary-bg: #F5FFFA;
+  --btn-primary-bd: #020508;
+  --btn-primary-tx: #1C1C1C;
+  --btn-primary-hover-bg: #e4f5e9;
+  --btn-primary-hover-bd: #7db98f;
+
+  /* Information — search, filter and view */
+  --btn-info-bg: #F5FFFA;
+  --btn-info-bd: #020508;
+  --btn-info-tx: #1C1C1C;
+  --btn-info-hover-bg: #e7f0fa;
+  --btn-info-hover-bd: #8daed3;
+
+  /* Warning — edit and update */
+  --btn-warning-bg: #F5FFFA;
+  --btn-warning-bd: #020508;
+  --btn-warning-tx: #1C1C1C;
+  --btn-warning-hover-bg: #fdf2d5;
+  --btn-warning-hover-bd: #c9ad68;
+
+  /* Danger — delete and cancel */
+  --btn-danger-bg: #F5FFFA;
+  --btn-danger-bd: #020508;
+  --btn-danger-tx: #1C1C1C;
+  --btn-danger-hover-bg: #fce8e8;
+  --btn-danger-hover-bd: #ca8f8f;
+
+  /* PDF —  */
+  --btn-pdf-bg: #F5FFFA;
+  --btn-pdf-bd: #e14848;
+  --btn-pdf-tx: #1C1C1C;
+  --btn-pdf-hover-bg: #fce8e8;
+  --btn-pdf-hover-bd: #ca8f8f;
+
+  /* Small */
+  --btn-sm-width: 10px;
+  --btn-sm-height: 30px;
+  --btn-sm-padding-x: 20px;
+  --btn-sm-font-size: 10px;
+
+  /* Medium */
+  --btn-md-width: 130px;
+  --btn-md-height: 40px;
+  --btn-md-padding-x: 16px;
+  --btn-md-font-size: 14px;
+
+  /* Large */
+  --btn-lg-width: 170px;
+  --btn-lg-height: 44px;
+  --btn-lg-padding-x: 18px;
+  --btn-lg-font-size: 15px;
+
+  /* Icon */
+  --btn-icon-size: 36px;
+  --btn-icon-sm-size: 28px;
+
+  /* Effects */
+  --btn-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --btn-shadow-hover: 0 4px 10px rgba(0, 0, 0, 0.12);
+  --btn-focus: rgba(37, 99, 235, 0.25);
+
+  /* Button widths */
+  --btn-width-1: 50px;
+  --btn-width-2: 60px;
+  --btn-width-3: 70px;
+  --btn-width-4: 80px;
+  --btn-width-5: 90px;
+  --btn-width-6: 100px;
+  --btn-width-7: 110px;
+  --btn-width-8: 120px;
+  --btn-width-9: 130px;
+  --btn-width-10: 140px;
+
+  /* Button heights */
+  --btn-height-1: 20px;
+  --btn-height-2: 24px;
+  --btn-height-3: 25px;
+  --btn-height-4: 30px;
+  --btn-height-5: 32px;
+  --btn-height-6: 34px;
+  --btn-height-7: 36px;
+  --btn-height-8: 40px;
+  --btn-height-9: 44px;
+  --btn-height-10: 48px;
+}
+
+/* ====================================================================
+   BASE BUTTON
+==================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--btn-content-gap);
+
+  min-width: 0;
+  height: var(--btn-md-height);
+  padding: 0 var(--btn-md-padding-x);
+
+  background: var(--btn-neutral-bg);
+  border: 1px solid var(--btn-neutral-bd);
+  border-radius: var(--btn-radius);
+  color: var(--btn-neutral-tx);
+
+  font-family: inherit;
+  font-size: var(--btn-md-font-size);
+  font-weight: var(--btn-font-weight);
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  text-decoration: none;
+
+  appearance: none;
+  cursor: pointer;
+  user-select: none;
+
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+.btn:hover {
+  background: var(--btn-neutral-hover-bg);
+  border-color: var(--btn-neutral-hover-bd);
+  box-shadow: var(--btn-shadow-hover);
+}
+
+.btn:active {
+  box-shadow: var(--btn-shadow);
+  transform: translateY(1px);
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--btn-focus);
+  outline-offset: 2px;
+}
+
+.btn:disabled,
+.btn[disabled],
+.btn[aria-disabled="true"] {
+  opacity: 0.55;
+  box-shadow: none;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ====================================================================
+   BUTTON SIZES
+==================================================================== */
+
+.btn-sm {
+  width: auto;
+  min-width: var(--btn-sm-width);
+  height: var(--btn-sm-height);
+  padding: 0 var(--btn-sm-padding-x);
+  font-size: var(--btn-sm-font-size);
+}
+
+.btn-md {
+  width: var(--btn-md-width);
+  height: var(--btn-md-height);
+  padding: 0 var(--btn-md-padding-x);
+  font-size: var(--btn-md-font-size);
+}
+
+.btn-lg {
+  width: var(--btn-lg-width);
+  height: var(--btn-lg-height);
+  padding: 0 var(--btn-lg-padding-x);
+  border-radius: var(--btn-radius-lg);
+  font-size: var(--btn-lg-font-size);
+}
+
+.btn-icon {
+  width: var(--btn-icon-size);
+  min-width: var(--btn-icon-size);
+  height: var(--btn-icon-size);
+  padding: 0;
+}
+
+.btn-icon-sm {
+  width: var(--btn-icon-sm-size);
+  min-width: var(--btn-icon-sm-size);
+  height: var(--btn-icon-sm-size);
+  padding: 0;
+}
+
+/* ====================================================================
+   PRIMARY BUTTONS
+   Create, save and confirm
+==================================================================== */
+
+.btn-confirm,
+.btn-save,
+.btn-new {
+  background: var(--btn-primary-bg);
+  border-color: var(--btn-primary-bd);
+  color: var(--btn-primary-tx);
+}
+
+.btn-confirm:hover,
+.btn-save:hover,
+.btn-new:hover {
+  background: var(--btn-primary-hover-bg);
+  border-color: var(--btn-primary-hover-bd);
+  color: var(--btn-primary-tx);
+}
+
+/* ====================================================================
+   INFORMATION BUTTONS
+   Search, filter, lookup, view and report
+==================================================================== */
+
+.btn-search,
+.btn-filter,
+.btn-lookup,
+.btn-view,
+.btn-report {
+  background: var(--btn-info-bg);
+  border-color: var(--btn-info-bd);
+  color: var(--btn-info-tx);
+}
+
+.btn-search:hover,
+.btn-filter:hover,
+.btn-lookup:hover,
+.btn-view:hover,
+.btn-report:hover {
+  background: var(--btn-info-hover-bg);
+  border-color: var(--btn-info-hover-bd);
+  color: var(--btn-info-tx);
+}
+
+/* ====================================================================
+   WARNING BUTTONS
+   Edit and update
+==================================================================== */
+
+.btn-edit,
+.btn-update {
+  background: var(--btn-warning-bg);
+  border-color: var(--btn-warning-bd);
+  color: var(--btn-warning-tx);
+}
+
+.btn-edit:hover,
+.btn-update:hover {
+  background: var(--btn-warning-hover-bg);
+  border-color: var(--btn-warning-hover-bd);
+  color: var(--btn-warning-tx);
+}
+
+/* ====================================================================
+   DANGER BUTTONS
+   Delete and cancel
+==================================================================== */
+
+.btn-delete,
+.btn-cancel {
+  background: var(--btn-danger-bg);
+  border-color: var(--btn-danger-bd);
+  color: var(--btn-danger-tx);
+}
+
+.btn-delete:hover,
+.btn-cancel:hover {
+  background: var(--btn-danger-hover-bg);
+  border-color: var(--btn-danger-hover-bd);
+  color: var(--btn-danger-tx);
+}
+
+/* ====================================================================
+   PDF BUTTONS
+   ==================================================================== */
+.btn-pdf {
+  background: var(--btn-pdf-bg);
+  border-color: var(--btn-pdf-bd);
+  color: var(--btn-pdf-tx);
+}
+
+.btn-pdf:hover,
+.btn-pdf:hover {
+  background: var(--btn-pdf-hover-bg);
+  border-color: var(--btn-pdf-hover-bd);
+  color: var(--btn-pdf-tx);
+}
+
+/* ====================================================================
+   NEUTRAL BUTTONS
+   Clean, close, navigation and alternate views
+==================================================================== */
+
+.btn-clean,
+.btn-close,
+.btn-before,
+.btn-next,
+.btn-list,
+.btn-kanban {
+  background: var(--btn-neutral-bg);
+  border-color: var(--btn-neutral-bd);
+  color: var(--btn-neutral-tx);
+}
+
+.btn-clean:hover,
+.btn-close:hover,
+.btn-before:hover,
+.btn-next:hover,
+.btn-list:hover,
+.btn-kanban:hover {
+  background: var(--btn-neutral-hover-bg);
+  border-color: var(--btn-neutral-hover-bd);
+  color: var(--btn-neutral-tx);
+}
+
+/* ====================================================================
+   BUTTON POSITIONS
+==================================================================== */
+
+/* Compact group of inline buttons */
+.btn-inline {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+
+  width: fit-content;
+  max-width: 100%;
+  flex: 0 0 auto;
+  gap: var(--btn-inline-gap);
+
+  margin: 0;
+  padding: 0;
+
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+
+  user-select: none;
+}
+
+/* Prevent inline buttons from stretching or shrinking */
+.btn-inline>.btn {
+  width: auto;
+  flex: 0 0 auto;
+}
+
+/* ====================================================================
+   BUTTON GROUP GAPS
+   Controle da distância entre botões
+
+   HOW TO USE:
+   <div class="btn-inline btn-gap-2">
+==================================================================== */
+
+.btn-gap-0 {
+  gap: var(--btn-gap-0);
+}
+
+.btn-gap-1 {
+  gap: var(--btn-gap-1);
+}
+
+.btn-gap-2 {
+  gap: var(--btn-gap-2);
+}
+
+.btn-gap-3 {
+  gap: var(--btn-gap-3);
+}
+
+.btn-gap-4 {
+  gap: var(--btn-gap-4);
+}
+
+.btn-gap-5 {
+  gap: var(--btn-gap-5);
+}
+
+.btn-gap-6 {
+  gap: var(--btn-gap-6);
+}
+
+.btn-gap-7 {
+  gap: var(--btn-gap-7);
+}
+
+.btn-gap-8 {
+  gap: var(--btn-gap-8);
+}
+
+.btn-gap-9 {
+  gap: var(--btn-gap-9);
+}
+
+.btn-gap-10 {
+  gap: var(--btn-gap-10);
+}
+
+/* ====================================================================
+   BUTTON PADDINGS
+   Controle do espaçamento interno — níveis 1 a 20
+
+   HOW TO USE:
+   <div class="btn-inline btn-p-6">
+==================================================================== */
+
+.btn-p-1 {
+  padding: var(--btn-padding-1);
+}
+
+.btn-p-2 {
+  padding: var(--btn-padding-2);
+}
+
+.btn-p-3 {
+  padding: var(--btn-padding-3);
+}
+
+.btn-p-4 {
+  padding: var(--btn-padding-4);
+}
+
+.btn-p-5 {
+  padding: var(--btn-padding-5);
+}
+
+.btn-p-6 {
+  padding: var(--btn-padding-6);
+}
+
+.btn-p-7 {
+  padding: var(--btn-padding-7);
+}
+
+.btn-p-8 {
+  padding: var(--btn-padding-8);
+}
+
+.btn-p-9 {
+  padding: var(--btn-padding-9);
+}
+
+.btn-p-10 {
+  padding: var(--btn-padding-10);
+}
+
+.btn-p-11 {
+  padding: var(--btn-padding-11);
+}
+
+.btn-p-12 {
+  padding: var(--btn-padding-12);
+}
+
+.btn-p-13 {
+  padding: var(--btn-padding-13);
+}
+
+.btn-p-14 {
+  padding: var(--btn-padding-14);
+}
+
+.btn-p-15 {
+  padding: var(--btn-padding-15);
+}
+
+.btn-p-16 {
+  padding: var(--btn-padding-16);
+}
+
+.btn-p-17 {
+  padding: var(--btn-padding-17);
+}
+
+.btn-p-18 {
+  padding: var(--btn-padding-18);
+}
+
+.btn-p-19 {
+  padding: var(--btn-padding-19);
+}
+
+.btn-p-20 {
+  padding: var(--btn-padding-20);
+}
+
+/* ====================================================================
+   BUTTON WIDTHS
+   Width control from level 1 to 10
+==================================================================== */
+
+.btn.btn-w-1 {
+  width: var(--btn-width-1);
+}
+
+.btn.btn-w-2 {
+  width: var(--btn-width-2);
+}
+
+.btn.btn-w-3 {
+  width: var(--btn-width-3);
+}
+
+.btn.btn-w-4 {
+  width: var(--btn-width-4);
+}
+
+.btn.btn-w-5 {
+  width: var(--btn-width-5);
+}
+
+.btn.btn-w-6 {
+  width: var(--btn-width-6);
+}
+
+.btn.btn-w-7 {
+  width: var(--btn-width-7);
+}
+
+.btn.btn-w-8 {
+  width: var(--btn-width-8);
+}
+
+.btn.btn-w-9 {
+  width: var(--btn-width-9);
+}
+
+.btn.btn-w-10 {
+  width: var(--btn-width-10);
+}
+
+/* ====================================================================
+   RESPONSIVE
+==================================================================== */
+
+@media (max-width: 768px) {
+  .btn-inline {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .btn-md,
+  .btn-lg {
+    width: auto;
+  }
+}
+
+/* Button width utilities */
+
+.btn-w-1 {
+  width: var(--btn-width-1);
+}
+
+.btn-w-2 {
+  width: var(--btn-width-2);
+}
+
+.btn-w-3 {
+  width: var(--btn-width-3);
+}
+
+.btn-w-4 {
+  width: var(--btn-width-4);
+}
+
+.btn-w-5 {
+  width: var(--btn-width-5);
+}
+
+.btn-w-6 {
+  width: var(--btn-width-6);
+}
+
+.btn-w-7 {
+  width: var(--btn-width-7);
+}
+
+.btn-w-8 {
+  width: var(--btn-width-8);
+}
+
+.btn-w-9 {
+  width: var(--btn-width-9);
+}
+
+.btn-w-10 {
+  width: var(--btn-width-10);
+}
+
+/* Button height utilities */
+
+.btn-h-1 {
+  height: var(--btn-height-1);
+}
+
+.btn-h-2 {
+  height: var(--btn-height-2);
+}
+
+.btn-h-3 {
+  height: var(--btn-height-3);
+}
+
+.btn-h-4 {
+  height: var(--btn-height-4);
+}
+
+.btn-h-5 {
+  height: var(--btn-height-5);
+}
+
+.btn-h-6 {
+  height: var(--btn-height-6);
+}
+
+.btn-h-7 {
+  height: var(--btn-height-7);
+}
+
+.btn-h-8 {
+  height: var(--btn-height-8);
+}
+
+.btn-h-9 {
+  height: var(--btn-height-9);
+}
+
+.btn-h-10 {
+  height: var(--btn-height-10);
+}
+
+/* ====================================================================
+   BUTTON POSITION
+==================================================================== */
+
+.btn-position-left {
+  margin-right: auto;
+}
+
+.btn-position-right {
+  margin-left: auto;
+}
+
+/* ====================================================================
+   BUTTON IMAGEM
+==================================================================== */
+.btn-image-pdf {
+  width: 40;
+  height: 40px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.btn-image-excel {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* Full-width inline group */
+.btn-inline-full {
+  display: flex;
+  width: 100%;
+}
+
+/* ====================================================================
+   ICON-ONLY ACTIONS
+   Clickable icons without visible button boxes
+==================================================================== */
+
+.btn-icon-clean {
+  appearance: none;
+  -webkit-appearance: none;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+
+  width: auto;
+  min-width: 0;
+  height: auto;
+  min-height: 0;
+
+  margin: 0;
+  padding: 0;
+
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+
+  color: inherit;
+  font: inherit;
+  line-height: 1;
+
+  cursor: pointer;
+  user-select: none;
+
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+
+.btn-icon-clean:hover {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+
+  opacity: 0.8;
+  transform: scale(1.1);
+}
+
+.btn-icon-clean:active {
+  background: transparent !important;
+  box-shadow: none !important;
+
+  transform: scale(0.96);
+}
+
+.btn-icon-clean:focus-visible {
+  outline: 1px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* Group of action icons */
+.btn-icon-group {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+
+  width: fit-content;
+  gap: var(--btn-gap-2);
+
+  margin: 0;
+  padding: 0;
+
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+/* ====================================================================
+   DOCUMENT ACTION IMAGES — NO VISIBLE BUTTON
+==================================================================== */
+
+.document-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-icon-clean.document-action {
+  width: 34px;
+  height: 34px;
+}
+
+.document-action-image {
+  display: block;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.btn-icon-clean.document-action:hover {
+  opacity: 0.8;
+  transform: scale(1.1);
+}
+
+.btn-icon-clean.document-action:active {
+  transform: scale(0.96);
+}
+
+.btn-icon-clean.document-action[disabled],
+.btn-icon-clean.document-action[aria-disabled="true"] {
+  opacity: 0.35;
+  pointer-events: none;
+}

@@ -1,0 +1,198 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ productsLocations.css — Localização de Produtos (PRODNEX ERP)        ║
+   ║ Layout: ABA Lista ↔ ABA Cadastro/Edição                              ║
+   ║ ✅ Tabela/filtro/campos vêm do Design System (style.css)             ║
+   ║    Aqui ficam só abas, card do editor e ajustes do módulo            ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+:root{
+  --pl-gap: 12px;
+  --pl-text: rgba(17, 24, 39, 1);
+  --pl-muted: rgba(107, 114, 128, 1);
+
+  /* ✅ mesmas cores/bordas da tabela integrada (lista) */
+  --pl-line: var(--table-border-color, #02080f);
+  --pl-line-w: var(--table-border-width, 1px);
+  --pl-panel-bg: var(--table-filter-bg, #f3f4f6);
+  --pl-radius-ds: var(--table-radius-top, 10px);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   TABS
+   ───────────────────────────────────────────────────────────── */
+.pl-tabs{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+  margin-bottom: var(--pl-gap);
+}
+
+.pl-tabs .btn.is-active{
+  background: rgba(59,130,246,.12);
+  border-color: rgba(59,130,246,.45);
+  font-weight: 800;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   VIEW SWITCH (JS alterna .is-active em [data-panel])
+   ───────────────────────────────────────────────────────────── */
+.page-locations .pl-panel:not(.is-active){ display:none; }
+
+/* ─────────────────────────────────────────────────────────────
+   FILTRO — alinha botões com a base dos campos
+   ───────────────────────────────────────────────────────────── */
+.pl-filter,
+.pl-align-end{ align-items: flex-end; }
+
+/* ─────────────────────────────────────────────────────────────
+   TABELA (colunas + ações)
+   ───────────────────────────────────────────────────────────── */
+.pl-col-sku{ width: 90px; }
+.pl-col-desc{ width: 32%; }
+.pl-col-local{ width: 130px; }
+.pl-col-corr{ width: 180px; }
+.pl-col-small{ width: 80px; }
+.pl-col-notes{ width: auto; }
+.pl-col-actions{ width: 170px; text-align:right; }
+
+#tblLocalizacoes td{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#tblLocalizacoes td:nth-child(2),
+#tblLocalizacoes td:nth-child(8){ text-align: left; }
+
+.page-locations__row-actions{
+  display:flex;
+  gap: 4px;
+  justify-content:flex-end;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   CARD (Editor)
+   ───────────────────────────────────────────────────────────── */
+.pl-card{
+  background: var(--pl-panel-bg);
+  border: var(--pl-line-w) solid var(--pl-line);
+  border-radius: var(--pl-radius-ds);
+  overflow: hidden;
+}
+
+.pl-card__header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap: 14px;
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid var(--pl-line);
+}
+
+.pl-card__title{
+  margin: 0;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--pl-text);
+}
+
+.pl-card__subtitle{
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: var(--pl-muted);
+}
+
+.pl-card__header-actions{
+  display:flex;
+  gap: 8px;
+  align-items:center;
+  flex-wrap: wrap;
+  justify-content:flex-end;
+}
+
+.pl-card__body{
+  display: grid;
+  gap: var(--pl-gap);
+  padding: 12px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   SEÇÕES
+   ───────────────────────────────────────────────────────────── */
+.pl-section{
+  min-width: 0;
+  background: #fff;
+  border: var(--pl-line-w) solid var(--pl-line);
+  border-radius: var(--pl-radius-ds);
+  padding: 10px 12px 12px;
+}
+
+.pl-section__title{
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--pl-text);
+  margin: -10px -12px 10px;
+  padding: 7px 12px;
+  background: var(--pl-panel-bg);
+  border-bottom: 1px solid var(--pl-line);
+  border-radius: var(--pl-radius-ds) var(--pl-radius-ds) 0 0;
+}
+
+/* Hierarquia: 5 colunas, quebra automaticamente */
+.pl-hierarchy{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 8px 12px;
+  align-items: end;
+}
+
+.pl-hierarchy > .fields{ width: auto; }
+
+/* Select + botão "＋" lado a lado */
+.pl-select-add{
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px;
+  align-items: center;
+}
+
+.pl-select-add .btn{
+  min-width: 32px;
+  justify-content: center;
+}
+
+.pl-notes textarea{
+  height: auto;
+  min-height: 70px;
+  padding: 6px;
+  resize: vertical;
+}
+
+.pl-mini-hint{
+  margin: 8px 0 0;
+  font-size: 11px;
+  color: var(--pl-muted);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   RESPONSIVO
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 900px){
+  .pl-card__header{ flex-direction: column; }
+  .pl-card__header-actions{ justify-content: flex-start; }
+}
+
+/* Coluna "Principal" (localização principal do produto) */
+.pl-col-primary{ width: 150px; text-align: center; white-space: nowrap; }
+
+.pl-primary-badge{
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid #93c5fd;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 700;
+}

@@ -1,0 +1,233 @@
+/* =====================================================================
+   actionIcons.css — Botões de ação discretos (ícones de linha)
+   PRODNEX ERP | importado pelo style.css
+
+   1) Componente novo (SVG): use includes/js/actionIcons.js
+        <div class="action-icons">
+          <button class="action-icon action-icon--edit">…svg…</button>
+        </div>
+      Cinza em repouso; a cor aparece só no hover.
+
+   2) Botões antigos em tabelas (emoji ✏️ 🗑️ 👁️ …) ficam com o mesmo
+      visual automaticamente pelo bloco "LEGADO" no fim deste arquivo.
+      Para um botão de tabela NÃO receber o estilo, adicione a classe
+      .action-keep.
+===================================================================== */
+
+:root {
+  --action-icon-color: #94a3b8;
+  --action-icon-hover-bg: rgba(148, 163, 184, 0.15);
+  --action-icon-size: 16px;
+  --action-icon-gap: 10px;
+
+  --action-icon-edit: #2563eb;
+  --action-icon-view: #0891b2;
+  --action-icon-success: #16a34a;
+  --action-icon-warning: #d97706;
+  --action-icon-danger: #dc2626;
+}
+
+.action-icons {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: var(--action-icon-gap);
+  white-space: nowrap;
+}
+
+.action-icon {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 4px;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  box-shadow: none;
+  color: var(--action-icon-color);
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.action-icon svg {
+  width: var(--action-icon-size);
+  height: var(--action-icon-size);
+  display: block;
+}
+
+.action-icon:hover {
+  background: var(--action-icon-hover-bg);
+}
+
+.action-icon:focus-visible {
+  outline: 1px solid var(--action-icon-edit);
+  outline-offset: 2px;
+}
+
+.action-icon[disabled],
+.action-icon[aria-disabled="true"] {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* Cor no hover, por tipo de ação */
+.action-icon--edit:hover { color: var(--action-icon-edit); }
+.action-icon--view:hover,
+.action-icon--search:hover,
+.action-icon--document:hover,
+.action-icon--copy:hover { color: var(--action-icon-view); }
+.action-icon--pause:hover { color: var(--action-icon-warning); }
+.action-icon--confirm:hover,
+.action-icon--payment:hover { color: var(--action-icon-success); }
+.action-icon--delete:hover,
+.action-icon--cancel:hover { color: var(--action-icon-danger); }
+
+/* "Ativar" fica verde mesmo em repouso: destaca itens inativos */
+.action-icon--play { color: var(--action-icon-success); }
+
+/* =====================================================================
+   LEGADO — botões de ação antigos dentro de tabelas
+   (.btn-toolbar / .btn-edit / .btn-delete com emoji)
+===================================================================== */
+.table td .btn.btn-sm.btn-toolbar:not(.action-keep),
+.table td .btn.btn-sm.btn-edit:not(.action-keep),
+.table td .btn.btn-sm.btn-delete:not(.action-keep) {
+  height: auto;
+  min-width: 0;
+  padding: 4px 6px;
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  color: var(--action-icon-color);
+  filter: grayscale(1);
+  opacity: 0.6;
+  transition: opacity 0.15s ease, filter 0.15s ease, background-color 0.15s ease;
+}
+
+.table td .btn.btn-sm.btn-toolbar:not(.action-keep):hover,
+.table td .btn.btn-sm.btn-edit:not(.action-keep):hover,
+.table td .btn.btn-sm.btn-delete:not(.action-keep):hover {
+  background: var(--action-icon-hover-bg);
+  border-color: transparent;
+  box-shadow: none;
+  filter: none;
+  opacity: 1;
+}
+
+/* =====================================================================
+   RODAPÉ DAS TABELAS — contador, paginação e "Mostrar"
+   Visual próprio, discreto: contornos suaves, cantos arredondados,
+   leve tom de fundo. Vale para todas as telas com .table-footer.
+===================================================================== */
+:root {
+  --footer-soft-border: #e2e8f0;
+  --footer-soft-bg: #ffffff;
+  --footer-soft-text: #475569;
+  --footer-soft-muted: #94a3b8;
+  --footer-soft-hover-bg: #f1f5f9;
+  --footer-soft-accent: #2563eb;
+  --footer-soft-accent-bg: #eff6ff;
+}
+
+/* Contador: mesmo contorno fino da paginação e do "Mostrar" */
+.table-footer .table-footer__info .summary-pill {
+  width: auto;
+  min-width: 0;
+  height: 30px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  background: var(--footer-soft-bg);
+  border: 1px solid var(--footer-soft-border);
+  border-radius: 8px;
+  box-shadow: none;
+  color: var(--footer-soft-text);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Paginação: grupo único (Anterior | Página x de y | Próxima) */
+.table-footer .table-footer__pagination {
+  gap: 0;
+  height: 30px;
+  background: var(--footer-soft-bg);
+  border: 1px solid var(--footer-soft-border);
+  border-radius: 8px;
+  overflow: hidden;
+  color: var(--footer-soft-text);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.table-footer .table-footer__pagination > span {
+  padding: 0 12px;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  border-left: 1px solid var(--footer-soft-border);
+  border-right: 1px solid var(--footer-soft-border);
+  color: var(--footer-soft-muted);
+}
+
+.table-footer .table-footer__pagination .btn {
+  height: 100%;
+  min-width: 0;
+  padding: 0 12px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  color: var(--footer-soft-text);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.table-footer .table-footer__pagination .btn:hover:not(:disabled) {
+  background: var(--footer-soft-accent-bg);
+  box-shadow: none;
+  color: var(--footer-soft-accent);
+}
+
+.table-footer .table-footer__pagination .btn:disabled {
+  background: transparent;
+  color: var(--footer-soft-muted);
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* "Mostrar": select com contorno fino e cantos arredondados */
+.table-footer .table-footer__page-size {
+  color: var(--footer-soft-muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.table-footer .table-footer__page-size select {
+  height: 30px;
+  padding: 0 8px;
+  background-color: var(--footer-soft-bg);
+  border: 1px solid var(--footer-soft-border);
+  border-radius: 8px;
+  box-shadow: none;
+  color: var(--footer-soft-text);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.table-footer .table-footer__page-size select:hover {
+  border-color: #cbd5e1;
+  background-color: var(--footer-soft-hover-bg);
+}
+
+.table-footer .table-footer__page-size select:focus {
+  border-color: var(--footer-soft-accent);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}

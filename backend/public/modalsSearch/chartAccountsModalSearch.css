@@ -1,0 +1,350 @@
+/* ╔════════════════════════════════════════════════════════════════════╗
+   ║ chartAccountsModalSearch.css — Modal Busca Plano de Contas        ║
+   ║ PRODNEX ERP                                                      ║
+   ╚════════════════════════════════════════════════════════════════════╝ */
+
+#chartAccountsModalSearch[hidden] {
+  display: none !important;
+}
+
+/* ===================================================================
+   OVERLAY / MODAL
+=================================================================== */
+
+#chartAccountsModalSearch {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+#chartAccountsModalSearch .ca-modal {
+  width: min(1180px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+/* ===================================================================
+   HEADER
+=================================================================== */
+
+#chartAccountsModalSearch .ca-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f8fafc;
+}
+
+#chartAccountsModalSearch .ca-modal__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* ===================================================================
+   BODY
+=================================================================== */
+
+#chartAccountsModalSearch .ca-modal__body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 18px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ===================================================================
+   TOOLBAR
+=================================================================== */
+
+#chartAccountsModalSearch .ca-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+#chartAccountsModalSearch .ca-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+#chartAccountsModalSearch .ca-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+}
+
+#chartAccountsModalSearch .ca-field input[type="text"] {
+  min-width: 320px;
+  max-width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  outline: none;
+  font-size: 14px;
+  background: #fff;
+  color: #0f172a;
+}
+
+#chartAccountsModalSearch .ca-field input[type="text"]:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+#chartAccountsModalSearch .ca-checks {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-left: auto;
+}
+
+#chartAccountsModalSearch .ca-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #334155;
+  white-space: nowrap;
+}
+
+#chartAccountsModalSearch .ca-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ===================================================================
+   BUTTONS
+=================================================================== */
+
+#chartAccountsModalSearch .ca-btn {
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #0f172a;
+  border-radius: 10px;
+  padding: 9px 12px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background .15s ease, border-color .15s ease, color .15s ease;
+}
+
+#chartAccountsModalSearch .ca-btn:hover {
+  background: #f8fafc;
+}
+
+#chartAccountsModalSearch .ca-btn--primary {
+  background: #0f172a;
+  color: #fff;
+  border-color: #0f172a;
+}
+
+#chartAccountsModalSearch .ca-btn--primary:hover {
+  background: #111827;
+  border-color: #111827;
+}
+
+#chartAccountsModalSearch .ca-btn--ghost {
+  background: transparent;
+}
+
+/* ===================================================================
+   TABLE WRAP
+=================================================================== */
+
+#chartAccountsModalSearch .ca-tableWrap {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: auto;
+  min-height: 280px;
+  max-height: calc(100vh - 280px);
+  background: #fff;
+}
+
+/* ===================================================================
+   TABLE
+=================================================================== */
+
+#chartAccountsModalSearch table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 980px;
+}
+
+#chartAccountsModalSearch thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #f8fafc;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 10px 12px;
+  text-align: left;
+  font-size: 12px;
+  color: #475569;
+  white-space: nowrap;
+}
+
+#chartAccountsModalSearch tbody td {
+  border-bottom: 1px solid #f1f5f9;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: #0f172a;
+  vertical-align: top;
+}
+
+#chartAccountsModalSearch tbody tr {
+  cursor: pointer;
+  transition: background .12s ease;
+}
+
+#chartAccountsModalSearch tbody tr:hover {
+  background: #f8fafc;
+}
+
+#chartAccountsModalSearch tbody tr.is-selected {
+  background: #eff6ff;
+  outline: 1px solid #bfdbfe;
+}
+
+#chartAccountsModalSearch .ca-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: #0f172a;
+  white-space: nowrap;
+}
+
+#chartAccountsModalSearch .ca-desc {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+#chartAccountsModalSearch .ca-sub {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* ===================================================================
+   BADGES
+=================================================================== */
+
+#chartAccountsModalSearch .ca-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+#chartAccountsModalSearch .ca-badge--ok {
+  background: #ecfdf5;
+  color: #065f46;
+  border-color: #a7f3d0;
+}
+
+#chartAccountsModalSearch .ca-badge--off {
+  background: #fff7ed;
+  color: #9a3412;
+  border-color: #fdba74;
+}
+
+#chartAccountsModalSearch .ca-badge--muted {
+  background: #f8fafc;
+  color: #475569;
+  border-color: #cbd5e1;
+}
+
+/* ===================================================================
+   EMPTY / INFO
+=================================================================== */
+
+#chartAccountsModalSearch .ca-empty {
+  padding: 24px;
+  text-align: center;
+  color: #64748b;
+  font-size: 14px;
+}
+
+#chartAccountsModalSearch .ca-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 18px;
+  border-top: 1px solid #e5e7eb;
+  background: #f8fafc;
+}
+
+#chartAccountsModalSearch .ca-info {
+  font-size: 12px;
+  color: #64748b;
+}
+
+#chartAccountsModalSearch .ca-hint {
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* ===================================================================
+   RESPONSIVE
+=================================================================== */
+
+@media (max-width: 980px) {
+  #chartAccountsModalSearch {
+    padding: 12px;
+  }
+
+  #chartAccountsModalSearch .ca-modal {
+    width: min(100vw - 12px, 100%);
+    max-height: calc(100vh - 12px);
+    border-radius: 12px;
+  }
+
+  #chartAccountsModalSearch .ca-modal__body {
+    padding: 12px;
+  }
+
+  #chartAccountsModalSearch .ca-modal__header,
+  #chartAccountsModalSearch .ca-modal__footer {
+    padding: 12px;
+  }
+
+  #chartAccountsModalSearch .ca-field input[type="text"] {
+    min-width: 220px;
+  }
+
+  #chartAccountsModalSearch .ca-checks {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  #chartAccountsModalSearch .ca-actions {
+    width: 100%;
+  }
+}

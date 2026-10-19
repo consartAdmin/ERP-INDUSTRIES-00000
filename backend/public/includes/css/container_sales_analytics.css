@@ -1,0 +1,362 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ container_sales_analytics.css — Sales Analytics Container          ║
+   ║ PRODNEX ERP                                                        ║
+   ║                                                                      ║
+   ║ Controls ONLY the .sales-analytics container and its utility        ║
+   ║ classes. Internal charts/KPIs/filters remain in their own CSS.      ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+
+/* ======================================================================
+   BASE CONTAINER
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics {
+    box-sizing: border-box;
+    position: relative;
+
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+
+    height: auto;
+    min-height: 0;
+    max-height: none;
+}
+
+
+/* ======================================================================
+   WIDTH — sales-analytics-w-1 ... sales-analytics-w-20
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics-w-1  { width: 5% !important; }
+#includeDashBoard .sales-analytics-w-2  { width: 10% !important; }
+#includeDashBoard .sales-analytics-w-3  { width: 15% !important; }
+#includeDashBoard .sales-analytics-w-4  { width: 20% !important; }
+#includeDashBoard .sales-analytics-w-5  { width: 25% !important; }
+#includeDashBoard .sales-analytics-w-6  { width: 30% !important; }
+#includeDashBoard .sales-analytics-w-7  { width: 35% !important; }
+#includeDashBoard .sales-analytics-w-8  { width: 40% !important; }
+#includeDashBoard .sales-analytics-w-9  { width: 45% !important; }
+#includeDashBoard .sales-analytics-w-10 { width: 50% !important; }
+#includeDashBoard .sales-analytics-w-11 { width: 55% !important; }
+#includeDashBoard .sales-analytics-w-12 { width: 60% !important; }
+#includeDashBoard .sales-analytics-w-13 { width: 65% !important; }
+#includeDashBoard .sales-analytics-w-14 { width: 70% !important; }
+#includeDashBoard .sales-analytics-w-15 { width: 75% !important; }
+#includeDashBoard .sales-analytics-w-16 { width: 80% !important; }
+#includeDashBoard .sales-analytics-w-17 { width: 85% !important; }
+#includeDashBoard .sales-analytics-w-18 { width: 90% !important; }
+#includeDashBoard .sales-analytics-w-19 { width: 95% !important; }
+#includeDashBoard .sales-analytics-w-20 { width: 100% !important; }
+
+
+/* ======================================================================
+   HEIGHT — sales-analytics-h-1 ... sales-analytics-h-20
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics-h-1  { height: 100px !important; }
+#includeDashBoard .sales-analytics-h-2  { height: 150px !important; }
+#includeDashBoard .sales-analytics-h-3  { height: 200px !important; }
+#includeDashBoard .sales-analytics-h-4  { height: 250px !important; }
+#includeDashBoard .sales-analytics-h-5  { height: 300px !important; }
+#includeDashBoard .sales-analytics-h-6  { height: 350px !important; }
+#includeDashBoard .sales-analytics-h-7  { height: 400px !important; }
+#includeDashBoard .sales-analytics-h-8  { height: 450px !important; }
+#includeDashBoard .sales-analytics-h-9  { height: 500px !important; }
+#includeDashBoard .sales-analytics-h-10 { height: 550px !important; }
+#includeDashBoard .sales-analytics-h-11 { height: 600px !important; }
+#includeDashBoard .sales-analytics-h-12 { height: 650px !important; }
+#includeDashBoard .sales-analytics-h-13 { height: 700px !important; }
+#includeDashBoard .sales-analytics-h-14 { height: 750px !important; }
+#includeDashBoard .sales-analytics-h-15 { height: 800px !important; }
+#includeDashBoard .sales-analytics-h-16 { height: 850px !important; }
+#includeDashBoard .sales-analytics-h-17 { height: 900px !important; }
+#includeDashBoard .sales-analytics-h-18 { height: 1000px !important; }
+#includeDashBoard .sales-analytics-h-19 { height: 1100px !important; }
+#includeDashBoard .sales-analytics-h-20 { height: 1200px !important; }
+
+
+/* ======================================================================
+   MIN WIDTH — sales-analytics-min-w-1 ... sales-analytics-min-w-20
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics-min-w-1  { min-width: 100px !important; }
+#includeDashBoard .sales-analytics-min-w-2  { min-width: 150px !important; }
+#includeDashBoard .sales-analytics-min-w-3  { min-width: 200px !important; }
+#includeDashBoard .sales-analytics-min-w-4  { min-width: 250px !important; }
+#includeDashBoard .sales-analytics-min-w-5  { min-width: 300px !important; }
+#includeDashBoard .sales-analytics-min-w-6  { min-width: 350px !important; }
+#includeDashBoard .sales-analytics-min-w-7  { min-width: 400px !important; }
+#includeDashBoard .sales-analytics-min-w-8  { min-width: 450px !important; }
+#includeDashBoard .sales-analytics-min-w-9  { min-width: 500px !important; }
+#includeDashBoard .sales-analytics-min-w-10 { min-width: 600px !important; }
+#includeDashBoard .sales-analytics-min-w-11 { min-width: 700px !important; }
+#includeDashBoard .sales-analytics-min-w-12 { min-width: 800px !important; }
+#includeDashBoard .sales-analytics-min-w-13 { min-width: 900px !important; }
+#includeDashBoard .sales-analytics-min-w-14 { min-width: 1000px !important; }
+#includeDashBoard .sales-analytics-min-w-15 { min-width: 1100px !important; }
+#includeDashBoard .sales-analytics-min-w-16 { min-width: 1200px !important; }
+#includeDashBoard .sales-analytics-min-w-17 { min-width: 1300px !important; }
+#includeDashBoard .sales-analytics-min-w-18 { min-width: 1400px !important; }
+#includeDashBoard .sales-analytics-min-w-19 { min-width: 1500px !important; }
+#includeDashBoard .sales-analytics-min-w-20 { min-width: 1600px !important; }
+
+
+/* ======================================================================
+   MAX WIDTH — sales-analytics-max-w-1 ... sales-analytics-max-w-20
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics-max-w-none { max-width: none !important; }
+
+#includeDashBoard .sales-analytics-max-w-1  { max-width: 500px !important; }
+#includeDashBoard .sales-analytics-max-w-2  { max-width: 600px !important; }
+#includeDashBoard .sales-analytics-max-w-3  { max-width: 700px !important; }
+#includeDashBoard .sales-analytics-max-w-4  { max-width: 800px !important; }
+#includeDashBoard .sales-analytics-max-w-5  { max-width: 900px !important; }
+#includeDashBoard .sales-analytics-max-w-6  { max-width: 1000px !important; }
+#includeDashBoard .sales-analytics-max-w-7  { max-width: 1100px !important; }
+#includeDashBoard .sales-analytics-max-w-8  { max-width: 1200px !important; }
+#includeDashBoard .sales-analytics-max-w-9  { max-width: 1300px !important; }
+#includeDashBoard .sales-analytics-max-w-10 { max-width: 1400px !important; }
+#includeDashBoard .sales-analytics-max-w-11 { max-width: 1500px !important; }
+#includeDashBoard .sales-analytics-max-w-12 { max-width: 1600px !important; }
+#includeDashBoard .sales-analytics-max-w-13 { max-width: 1700px !important; }
+#includeDashBoard .sales-analytics-max-w-14 { max-width: 1800px !important; }
+#includeDashBoard .sales-analytics-max-w-15 { max-width: 1900px !important; }
+#includeDashBoard .sales-analytics-max-w-16 { max-width: 2000px !important; }
+#includeDashBoard .sales-analytics-max-w-17 { max-width: 2100px !important; }
+#includeDashBoard .sales-analytics-max-w-18 { max-width: 2200px !important; }
+#includeDashBoard .sales-analytics-max-w-19 { max-width: 2400px !important; }
+#includeDashBoard .sales-analytics-max-w-20 { max-width: 2600px !important; }
+
+
+/* ======================================================================
+   PADDING — sales-analytics-p-1 ... sales-analytics-p-20
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics-p-1  { padding: 0 !important; }
+#includeDashBoard .sales-analytics-p-2  { padding: 2px !important; }
+#includeDashBoard .sales-analytics-p-3  { padding: 4px !important; }
+#includeDashBoard .sales-analytics-p-4  { padding: 6px !important; }
+#includeDashBoard .sales-analytics-p-5  { padding: 8px !important; }
+#includeDashBoard .sales-analytics-p-6  { padding: 10px !important; }
+#includeDashBoard .sales-analytics-p-7  { padding: 12px !important; }
+#includeDashBoard .sales-analytics-p-8  { padding: 14px !important; }
+#includeDashBoard .sales-analytics-p-9  { padding: 16px !important; }
+#includeDashBoard .sales-analytics-p-10 { padding: 18px !important; }
+#includeDashBoard .sales-analytics-p-11 { padding: 20px !important; }
+#includeDashBoard .sales-analytics-p-12 { padding: 22px !important; }
+#includeDashBoard .sales-analytics-p-13 { padding: 24px !important; }
+#includeDashBoard .sales-analytics-p-14 { padding: 26px !important; }
+#includeDashBoard .sales-analytics-p-15 { padding: 28px !important; }
+#includeDashBoard .sales-analytics-p-16 { padding: 30px !important; }
+#includeDashBoard .sales-analytics-p-17 { padding: 32px !important; }
+#includeDashBoard .sales-analytics-p-18 { padding: 36px !important; }
+#includeDashBoard .sales-analytics-p-19 { padding: 40px !important; }
+#includeDashBoard .sales-analytics-p-20 { padding: 48px !important; }
+
+
+/* ======================================================================
+   HORIZONTAL PADDING — sales-analytics-px-1 ... sales-analytics-px-20
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics-px-1  { padding-left: 0 !important; padding-right: 0 !important; }
+#includeDashBoard .sales-analytics-px-2  { padding-left: 2px !important; padding-right: 2px !important; }
+#includeDashBoard .sales-analytics-px-3  { padding-left: 4px !important; padding-right: 4px !important; }
+#includeDashBoard .sales-analytics-px-4  { padding-left: 6px !important; padding-right: 6px !important; }
+#includeDashBoard .sales-analytics-px-5  { padding-left: 8px !important; padding-right: 8px !important; }
+#includeDashBoard .sales-analytics-px-6  { padding-left: 10px !important; padding-right: 10px !important; }
+#includeDashBoard .sales-analytics-px-7  { padding-left: 12px !important; padding-right: 12px !important; }
+#includeDashBoard .sales-analytics-px-8  { padding-left: 14px !important; padding-right: 14px !important; }
+#includeDashBoard .sales-analytics-px-9  { padding-left: 16px !important; padding-right: 16px !important; }
+#includeDashBoard .sales-analytics-px-10 { padding-left: 18px !important; padding-right: 18px !important; }
+#includeDashBoard .sales-analytics-px-11 { padding-left: 20px !important; padding-right: 20px !important; }
+#includeDashBoard .sales-analytics-px-12 { padding-left: 22px !important; padding-right: 22px !important; }
+#includeDashBoard .sales-analytics-px-13 { padding-left: 24px !important; padding-right: 24px !important; }
+#includeDashBoard .sales-analytics-px-14 { padding-left: 26px !important; padding-right: 26px !important; }
+#includeDashBoard .sales-analytics-px-15 { padding-left: 28px !important; padding-right: 28px !important; }
+#includeDashBoard .sales-analytics-px-16 { padding-left: 30px !important; padding-right: 30px !important; }
+#includeDashBoard .sales-analytics-px-17 { padding-left: 32px !important; padding-right: 32px !important; }
+#includeDashBoard .sales-analytics-px-18 { padding-left: 36px !important; padding-right: 36px !important; }
+#includeDashBoard .sales-analytics-px-19 { padding-left: 40px !important; padding-right: 40px !important; }
+#includeDashBoard .sales-analytics-px-20 { padding-left: 48px !important; padding-right: 48px !important; }
+
+
+/* ======================================================================
+   VERTICAL PADDING — sales-analytics-py-1 ... sales-analytics-py-20
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics-py-1  { padding-top: 0 !important; padding-bottom: 0 !important; }
+#includeDashBoard .sales-analytics-py-2  { padding-top: 2px !important; padding-bottom: 2px !important; }
+#includeDashBoard .sales-analytics-py-3  { padding-top: 4px !important; padding-bottom: 4px !important; }
+#includeDashBoard .sales-analytics-py-4  { padding-top: 6px !important; padding-bottom: 6px !important; }
+#includeDashBoard .sales-analytics-py-5  { padding-top: 8px !important; padding-bottom: 8px !important; }
+#includeDashBoard .sales-analytics-py-6  { padding-top: 10px !important; padding-bottom: 10px !important; }
+#includeDashBoard .sales-analytics-py-7  { padding-top: 12px !important; padding-bottom: 12px !important; }
+#includeDashBoard .sales-analytics-py-8  { padding-top: 14px !important; padding-bottom: 14px !important; }
+#includeDashBoard .sales-analytics-py-9  { padding-top: 16px !important; padding-bottom: 16px !important; }
+#includeDashBoard .sales-analytics-py-10 { padding-top: 18px !important; padding-bottom: 18px !important; }
+#includeDashBoard .sales-analytics-py-11 { padding-top: 20px !important; padding-bottom: 20px !important; }
+#includeDashBoard .sales-analytics-py-12 { padding-top: 22px !important; padding-bottom: 22px !important; }
+#includeDashBoard .sales-analytics-py-13 { padding-top: 24px !important; padding-bottom: 24px !important; }
+#includeDashBoard .sales-analytics-py-14 { padding-top: 26px !important; padding-bottom: 26px !important; }
+#includeDashBoard .sales-analytics-py-15 { padding-top: 28px !important; padding-bottom: 28px !important; }
+#includeDashBoard .sales-analytics-py-16 { padding-top: 30px !important; padding-bottom: 30px !important; }
+#includeDashBoard .sales-analytics-py-17 { padding-top: 32px !important; padding-bottom: 32px !important; }
+#includeDashBoard .sales-analytics-py-18 { padding-top: 36px !important; padding-bottom: 36px !important; }
+#includeDashBoard .sales-analytics-py-19 { padding-top: 40px !important; padding-bottom: 40px !important; }
+#includeDashBoard .sales-analytics-py-20 { padding-top: 48px !important; padding-bottom: 48px !important; }
+
+
+/* ======================================================================
+   GAP — sales-analytics-gap-1 ... sales-analytics-gap-20
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics-gap-1  { gap: 0 !important; }
+#includeDashBoard .sales-analytics-gap-2  { gap: 2px !important; }
+#includeDashBoard .sales-analytics-gap-3  { gap: 4px !important; }
+#includeDashBoard .sales-analytics-gap-4  { gap: 6px !important; }
+#includeDashBoard .sales-analytics-gap-5  { gap: 8px !important; }
+#includeDashBoard .sales-analytics-gap-6  { gap: 10px !important; }
+#includeDashBoard .sales-analytics-gap-7  { gap: 12px !important; }
+#includeDashBoard .sales-analytics-gap-8  { gap: 14px !important; }
+#includeDashBoard .sales-analytics-gap-9  { gap: 16px !important; }
+#includeDashBoard .sales-analytics-gap-10 { gap: 18px !important; }
+#includeDashBoard .sales-analytics-gap-11 { gap: 20px !important; }
+#includeDashBoard .sales-analytics-gap-12 { gap: 22px !important; }
+#includeDashBoard .sales-analytics-gap-13 { gap: 24px !important; }
+#includeDashBoard .sales-analytics-gap-14 { gap: 26px !important; }
+#includeDashBoard .sales-analytics-gap-15 { gap: 28px !important; }
+#includeDashBoard .sales-analytics-gap-16 { gap: 30px !important; }
+#includeDashBoard .sales-analytics-gap-17 { gap: 32px !important; }
+#includeDashBoard .sales-analytics-gap-18 { gap: 36px !important; }
+#includeDashBoard .sales-analytics-gap-19 { gap: 40px !important; }
+#includeDashBoard .sales-analytics-gap-20 { gap: 48px !important; }
+
+
+/* ======================================================================
+   BORDER RADIUS — sales-analytics-radius-1 ... sales-analytics-radius-20
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics-radius-1  { border-radius: 0 !important; }
+#includeDashBoard .sales-analytics-radius-2  { border-radius: 2px !important; }
+#includeDashBoard .sales-analytics-radius-3  { border-radius: 4px !important; }
+#includeDashBoard .sales-analytics-radius-4  { border-radius: 6px !important; }
+#includeDashBoard .sales-analytics-radius-5  { border-radius: 8px !important; }
+#includeDashBoard .sales-analytics-radius-6  { border-radius: 10px !important; }
+#includeDashBoard .sales-analytics-radius-7  { border-radius: 12px !important; }
+#includeDashBoard .sales-analytics-radius-8  { border-radius: 14px !important; }
+#includeDashBoard .sales-analytics-radius-9  { border-radius: 16px !important; }
+#includeDashBoard .sales-analytics-radius-10 { border-radius: 18px !important; }
+#includeDashBoard .sales-analytics-radius-11 { border-radius: 20px !important; }
+#includeDashBoard .sales-analytics-radius-12 { border-radius: 22px !important; }
+#includeDashBoard .sales-analytics-radius-13 { border-radius: 24px !important; }
+#includeDashBoard .sales-analytics-radius-14 { border-radius: 26px !important; }
+#includeDashBoard .sales-analytics-radius-15 { border-radius: 28px !important; }
+#includeDashBoard .sales-analytics-radius-16 { border-radius: 30px !important; }
+#includeDashBoard .sales-analytics-radius-17 { border-radius: 32px !important; }
+#includeDashBoard .sales-analytics-radius-18 { border-radius: 36px !important; }
+#includeDashBoard .sales-analytics-radius-19 { border-radius: 40px !important; }
+#includeDashBoard .sales-analytics-radius-20 { border-radius: 999px !important; }
+
+
+/* ======================================================================
+   POSITION / ALIGNMENT HELPERS
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics-mx-auto {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+#includeDashBoard .sales-analytics-ml-auto {
+    margin-left: auto !important;
+}
+
+#includeDashBoard .sales-analytics-mr-auto {
+    margin-right: auto !important;
+}
+
+#includeDashBoard .sales-analytics-self-start {
+    align-self: flex-start !important;
+}
+
+#includeDashBoard .sales-analytics-self-center {
+    align-self: center !important;
+}
+
+#includeDashBoard .sales-analytics-self-end {
+    align-self: flex-end !important;
+}
+
+#includeDashBoard .sales-analytics-self-stretch {
+    align-self: stretch !important;
+}
+
+
+/* ======================================================================
+   OVERFLOW HELPERS
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics-overflow-visible {
+    overflow: visible !important;
+}
+
+#includeDashBoard .sales-analytics-overflow-hidden {
+    overflow: hidden !important;
+}
+
+#includeDashBoard .sales-analytics-overflow-auto {
+    overflow: auto !important;
+}
+
+#includeDashBoard .sales-analytics-overflow-x-auto {
+    overflow-x: auto !important;
+}
+
+#includeDashBoard .sales-analytics-overflow-y-auto {
+    overflow-y: auto !important;
+}
+
+
+/* ======================================================================
+   AUTO SIZE HELPERS
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics-w-auto {
+    width: auto !important;
+}
+
+#includeDashBoard .sales-analytics-h-auto {
+    height: auto !important;
+}
+
+#includeDashBoard .sales-analytics-min-w-0 {
+    min-width: 0 !important;
+}
+
+#includeDashBoard .sales-analytics-min-h-0 {
+    min-height: 0 !important;
+}
+
+#includeDashBoard .sales-analytics-max-w-none {
+    max-width: none !important;
+}
+
+#includeDashBoard .sales-analytics-max-h-none {
+    max-height: none !important;
+}
+
+
+/* ======================================================================
+   RECOMMENDED RESPONSIVE SAFETY
+   ====================================================================== */
+
+@media (max-width: 900px) {
+
+    #includeDashBoard .sales-analytics {
+        max-width: 100%;
+    }
+
+}

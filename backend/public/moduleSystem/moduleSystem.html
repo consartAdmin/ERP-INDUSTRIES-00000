@@ -1,0 +1,241 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ moduleSystem.html — Cadastro de Módulos do Sistema (PRODNEX ERP)   ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>CRIAÇÃO DE MÓDULOS | PRODNEX ERP</title>
+
+  <!-- 🎨 CSS — Design System CONSART -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- Estilo específico da página -->
+  <link rel="stylesheet" href="moduleSystem.css" />
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <div class="consart-layout-col">
+
+      <!-- Card de formulário -->
+      <div class="header">
+        <div class="fields-inline fields-gap-3">
+          <div class="fields fields-h-6 fields-w-full fields-font-3">
+            <h3 id="ms-form-title">➕ Novo Módulo</h3>
+            <p class="ms-card-help">
+              Cada módulo é um item do menu principal: escolha o tipo, o menu pai e a ordem. Após salvar, recarregue a
+              página para ver o menu atualizado.
+            </p>
+          </div>
+        </div>
+
+
+        <form id="moduleForm" class="ms-form">
+          <input type="hidden" id="moduleId" />
+
+          <div class="fields-inline fields-gap-3">
+            <div class="fields fields-h-6 fields-w-20 fields-font-3">
+              <label for="name">Nome do Módulo (texto no menu)</label>
+              <input type="text" id="name" placeholder="Ex.: 📋 Cadastro de Clientes" autocomplete="off" required />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-12 fields-font-3">
+              <label for="path">Caminho (HTML / rota)</label>
+              <input type="text" id="path" placeholder="../clientes/clientes.html  (# para dropdown/submenu)"
+                autocomplete="off" required />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-10 fields-font-3">
+              <label for="menuType">Tipo no menu</label>
+              <select id="menuType">
+                <option value="link">🔗 Link (página)</option>
+                <option value="submenu">📂 Submenu</option>
+                <option value="dropdown">🗂️ Dropdown (topo)</option>
+                <option value="">🚫 Fora do menu</option>
+              </select>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-20 fields-font-3">
+              <label for="parentId">Menu pai</label>
+              <select id="parentId">
+                <option value="">(Topo do menu)</option>
+              </select>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-5 fields-font-3">
+              <label for="sortOrder">Ordem</label>
+              <input type="number" id="sortOrder" step="1" placeholder="auto" />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-10 fields-font-3">
+              <label for="htmlId">HTML id (dropdown)</label>
+              <input type="text" id="htmlId" placeholder="Ex.: gestao-erp" autocomplete="off" />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-10 fields-font-3">
+              <label for="cssClass">Classe CSS</label>
+              <input type="text" id="cssClass" placeholder="Ex.: link-inicio" autocomplete="off" />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-10 fields-font-3">
+              <label for="feature">Feature</label>
+              <input type="text" id="feature" placeholder="Ex.: PRODUCT_LOCATIONS" autocomplete="off" />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-5 fields-font-3 ms-check">
+              <label><input type="checkbox" id="isActive" checked /> <span>Ativo</span></label>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-5 fields-font-3 ms-check">
+              <label title="Abre em nova aba"><input type="checkbox" id="isExternal" /> <span>Nova aba</span></label>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-5 fields-font-3 ms-check" hidden>
+              <label title="Aparece para todos os usuários, sem depender de Módulos Por Usuários">
+                <input type="checkbox" id="isPublic" /> <span>Visível para todos</span>
+              </label>
+            </div>
+
+            <div class="btn-inline">
+              <button type="submit" id="btnSave" class="btn btn-new btn-sm">💾 Salvar</button>
+              <button type="button" id="btnClear" class="btn btn-new btn-sm">↺ Limpar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter">
+
+        <!-- Card de listagem -->
+        <div class="fields-inline fields-gap-3">
+          <div class="fields fields-h-6 fields-w-40 fields-font-3">
+            <div>
+              <h3>📋 Módulos Cadastrados</h3>
+              <p>
+                Utilize a busca para localizar rapidamente pelo nome ou caminho.
+              </p>
+            </div>
+            <div class="fields fields-h-6 fields-w-40 fields-font-3">
+              <input type="text" id="searchInput" placeholder="🔍 Buscar por nome ou caminho..." autocomplete="off" />
+            </div>
+          </div>
+
+          <div class="fields fields-h-6 fields-w-10 fields-font-3">
+            <label for="filterStatus">Ativo / Inativo</label>
+            <select id="filterStatus">
+              <option value="">Todos</option>
+              <option value="active">Ativos</option>
+              <option value="inactive">Inativos</option>
+            </select>
+          </div>
+
+          <div class="fields fields-h-6 fields-w-10 fields-font-3">
+            <label for="filterType">Tipo</label>
+            <select id="filterType">
+              <option value="">Todos</option>
+              <option value="dropdown">🗂️ Dropdown</option>
+              <option value="submenu">📂 Submenu</option>
+              <option value="link">🔗 Link</option>
+              <option value="none">🚫 Fora do menu</option>
+            </select>
+          </div>
+
+          <div class="fields fields-h-6 fields-w-25 fields-font-3">
+            <label for="filterParent">Menu pai</label>
+            <select id="filterParent">
+              <option value="">Todos</option>
+            </select>
+          </div>
+
+          <div class="fields fields-h-6 fields-w-10 fields-font-3">
+            <label for="filterVisibility">Visibilidade</label>
+            <select id="filterVisibility">
+              <option value="">Todas</option>
+              <option value="restricted">Por usuário</option>
+              <option value="public">Visível para todos</option>
+            </select>
+          </div>
+
+          <div class="btn-inline">
+            <button type="button" id="btnClearFilters" class="btn btn-clean btn-sm">↺ Limpar filtros</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-scroll table-height-500 table-row-h-20" data-table-settings="modulesystem.modulestablebody">
+        <table class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Caminho</th>
+              <th>Tipo</th>
+              <th>Menu pai</th>
+              <th>Ordem</th>
+              <th>Ativo</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="modulesTableBody">
+            <!-- linhas preenchidas via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <footer class="table-footer">
+
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+            <span id="apTableInfo">0 Registros </span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button type="button" id="btnPreviousPage" class="btn btn-clean btn-sm">
+            Anterior
+          </button>
+
+          <span id="apPageInfo">Página 1 de 1</span>
+
+          <button type="button" id="btnNextPage" class="btn btn-new btn-sm">
+            Próxima
+          </button>
+        </div>
+
+        <div class="table-footer__page-size">
+          <label for="apRowsPerPage">Mostrar</label>
+
+          <select id="apRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+            <option value="10">10 linhas</option>
+            <option value="20">20 linhas</option>
+            <option value="30">30 linhas</option>
+            <option value="50" selected>50 linhas</option>
+            <option value="100">100 linhas</option>
+          </select>
+        </div>
+
+      </footer>
+    </section>
+  </main>
+
+  <!-- Scripts globais -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <!-- Script da página -->
+  <script type="module" src="/public/moduleSystem/js/moduleSystem.init.js"></script>
+
+</body>
+
+</html>

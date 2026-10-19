@@ -1,0 +1,716 @@
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║ emailInbox.css — E-mail Inbox — PRODNEX ERP                 ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+.page-email-inbox__content {
+  padding: var(--gap-lg) 0 var(--gap-xl);
+}
+
+/* ✅ Agora não tem sidebar — só o grid list+detail */
+.email-page-layout{
+  display: block;
+  height: calc(100vh - 250px);   /* ⬅ adjust this number once */
+  max-height: calc(100vh - 250px);
+  overflow: hidden;              /* 🔴 critical: stop the card from growing */
+}
+
+/* Layout: list + detail ------------------------------------------ */
+
+/* ✅ Grid must have height to allow children to scroll */
+.email-layout{
+  height: 100%;
+  display: grid;
+  grid-template-columns: 420px minmax(0, 1fr);
+  gap: var(--gap-lg);
+  overflow: hidden;              /* 🔴 critical */
+}
+
+/* List panel ------------------------------------------------------ */
+
+/* Left list panel must not expand the grid */
+.email-list-panel{
+  border-right: 1px solid var(--line);
+  padding-right: var(--gap-lg);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;     /* 🔴 critical: allow inner scroll */
+  overflow: hidden;  /* 🔴 critical */
+}
+
+/* ✅ NEW: Manage block (top of list panel) ------------------------ */
+
+.email-manage-block{
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--card) 92%, #e5edff 8%);
+  padding: 12px 12px;
+  margin-bottom: 12px;
+}
+
+.email-manage-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.email-manage-title{
+  margin: 0;
+  font-size: var(--fs-16);
+  font-weight: 600;
+}
+
+.email-manage-new{
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+/* ✅ Folder buttons (below Manage) */
+.email-folder-nav{
+  display:flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.email-folder-item{
+  width: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--card);
+  padding: 6px 10px;
+  text-align: left;
+  font-size: var(--fs-14);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text);
+  transition: background var(--t-fast), border-color var(--t-fast), transform var(--t-fast);
+}
+
+.email-folder-item:hover {
+  background: #f3f4ff;
+  transform: translateY(-1px);
+}
+
+.email-folder-item.is-active {
+  background: #f0f6ff;
+  border-color: #a8c6ff;
+  color: #146ef5;
+}
+
+/* Header (Messages + Search) -------------------------------------- */
+
+.email-list-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-xs);
+  margin-bottom: var(--gap-sm);
+}
+
+.email-list-title {
+  margin: 0;
+  font-size: var(--fs-16);
+  font-weight: 600;
+}
+
+.email-search-input {
+  width: 100%;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  padding: 6px 10px;
+  font-size: var(--fs-14);
+  background: #f9fafb;
+}
+
+.email-search-input:focus {
+  outline: none;
+  border-color: var(--primary-400);
+  background: #ffffff;
+}
+
+.email-list-status {
+  font-size: var(--fs-12);
+  color: var(--muted);
+  margin: 2px 0 6px;
+}
+
+/* List container */
+
+.email-list{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  flex: 1 1 auto;      /* ✅ fill remaining space */
+  min-height: 0;       /* 🔴 critical */
+  overflow-y: auto;
+
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--card);
+}
+
+/* List item base */
+
+.email-list-item {
+  padding: 6px 10px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: background var(--t-fast);
+}
+
+/* Zebra (subtle) */
+
+.email-list-item:nth-child(odd) {
+  background: #f9fafb;
+}
+
+.email-list-item:nth-child(even) {
+  background: #f3f4f6;
+}
+
+/* Hover overrides zebra */
+
+.email-list-item:hover {
+  background: #e8f0ff;
+}
+
+/* Selected overrides everything */
+
+.email-list-item.is-active {
+  background: #dde8ff;
+  border-left: 3px solid var(--primary);
+  padding-left: 8px;
+}
+
+/* Top row: from + date */
+
+.email-item-row-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.email-item-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.email-item-from-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.email-item-from {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.email-item-icon-reply {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+/* Subject + unread dot */
+
+.email-item-subject-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.email-item-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid transparent;
+  flex-shrink: 0;
+}
+
+.email-list-item.is-unread .email-item-dot {
+  background: var(--primary);
+}
+
+.email-item-subject {
+  font-size: 12px;
+  color: #4b5563;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.email-item-date {
+  font-size: 11px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+/* Preview line */
+
+.email-item-preview {
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Detail panel ---------------------------------------------------- */
+
+.email-detail-panel{
+  padding-left: var(--gap-lg);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;     /* 🔴 critical */
+  overflow: hidden;  /* 🔴 critical */
+}
+
+.email-detail-placeholder {
+  margin: auto;
+  text-align: center;
+  color: var(--muted);
+  font-size: var(--fs-14);
+}
+
+.email-detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.email-detail.is-hidden {
+  display: none;
+}
+
+.email-detail-header {
+  border-bottom: 1px solid var(--line);
+  padding: 8px 16px;
+  margin-bottom: 6px;
+}
+
+.email-subject {
+  margin: 0 0 var(--gap-xs);
+  font-size: var(--fs-18);
+}
+
+.email-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  font-size: var(--fs-12);
+  color: var(--muted);
+}
+
+.email-meta .label {
+  font-weight: 600;
+}
+
+/* Body fills remaining vertical space */
+
+.email-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 0;
+  padding: 0 16px 16px;
+  font-size: var(--fs-14);
+  display: flex;
+  flex-direction: column;
+}
+
+.email-body-html {
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  padding: var(--gap);
+  background: #ffffff;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.email-body-text {
+  display: none;
+}
+
+/* Compose panel --------------------------------------------------- */
+
+.email-compose {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.email-compose.is-hidden {
+  display: none;
+}
+
+.email-compose-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  padding: 0 16px 16px;
+}
+
+.email-compose-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: var(--fs-13);
+}
+
+.email-compose-field .label {
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.email-compose-input {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  padding: 6px 10px;
+  font-size: var(--fs-14);
+  background: #f9fafb;
+}
+
+.email-compose-input:focus,
+.email-compose-body:focus {
+  outline: none;
+  border-color: var(--primary-400);
+  background: #ffffff;
+}
+
+.email-compose-body {
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  padding: 8px 10px;
+  font-size: var(--fs-14);
+  background: #f9fafb;
+  resize: vertical;
+  min-height: 180px;
+}
+
+.email-compose-actions {
+  display: flex;
+  gap: var(--gap-sm);
+  margin-top: var(--gap-sm);
+}
+
+/* ✅ Attachments (compose) ---------------------------------------- */
+
+.email-attach-row{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.email-attach-input{
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  padding: 8px 10px;
+  background: #f9fafb;
+  font-size: var(--fs-13);
+}
+
+.email-attach-hint{
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.email-attach-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top: 8px;
+}
+
+.email-attach-chip{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+.email-attach-chip strong{
+  font-weight: 600;
+}
+
+.email-attach-remove{
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  opacity: .75;
+}
+.email-attach-remove:hover{ opacity: 1; }
+
+/* ✅ Attachments (DETAIL / READ MODE) ----------------------------- */
+
+.email-attachments{
+  margin: 12px 16px 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.email-attachments.is-hidden{
+  display: none;
+}
+
+.email-attachments-title{
+  font-size: var(--fs-13);
+  font-weight: 700;
+  color: #374151;
+  margin-bottom: 10px;
+}
+
+.email-attachments-list{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.email-attach-item{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+}
+
+.email-attach-left{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
+
+.email-attach-name{
+  font-weight: 600;
+  font-size: 13px;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 520px;
+}
+
+.email-attach-meta{
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.email-attach-actions{
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.email-attach-actions .btn{
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+/* ✅ TOP ACCOUNTS BAR --------------------------------------------- */
+
+.email-accounts-bar{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-sm);
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--card) 92%, #e5edff 8%);
+  margin-bottom: var(--gap-lg);
+}
+
+.email-accounts-buttons{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.email-accounts-buttons .btn{
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.email-accounts-buttons .btn.is-active{
+  background: #f0f6ff;
+  border-color: #a8c6ff;
+  color: #146ef5;
+}
+
+.email-accounts-buttons .btn:hover{
+  transform: translateY(-1px);
+}
+
+/* ✅ Detail header actions (Reply) -------------------------------- */
+
+.email-detail-headrow{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap: 12px;
+}
+
+.email-detail-actions{
+  display:flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content:flex-end;
+}
+
+.email-detail-actions .btn{
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 10px;
+}
+
+.btn.is-hidden{
+  display:none !important;
+}
+
+/* Responsive ------------------------------------------------------ */
+
+@media (max-width: 980px) {
+  .email-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .email-list-panel {
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+    padding-right: 0;
+    padding-bottom: var(--gap-lg);
+    margin-bottom: var(--gap-lg);
+  }
+
+  .email-detail-panel {
+    padding-left: 0;
+  }
+
+  .email-list {
+    max-height: 360px;
+  }
+
+  .email-manage-head{
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .email-manage-new{
+    width: 100%;
+  }
+}
+
+@media (max-width: 980px){
+  .email-accounts-bar{
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .email-accounts-buttons{
+    justify-content: flex-start;
+  }
+}
+
+/* ===========================================================
+   Compact outer container (Accounts bar wrapper)
+   Image 2 fix — reduce border size & padding
+   =========================================================== */
+
+.page-email-inbox .section-card:has(.email-accounts-bar){
+  padding: 4px 4px;           /* ⬅ reduce inner space */
+  border-radius: 5px;        /* ⬅ less “pill” effect */
+  border-width: 0px;          /* keep thin border */
+  margin-bottom: 10px;        /* tighter spacing below */
+}
+
+/* Optional: even lighter look */
+.page-email-inbox .section-card:has(.email-accounts-bar){
+  background: #ffffff;        /* cleaner background */
+}
+
+.page-email-inbox__content{
+  overflow: hidden;
+}
+
+/* ===========================================================
+   FIX PAGE: no body scroll, only inner panels scroll
+   =========================================================== */
+
+html, body{
+  height: 100%;
+  overflow: hidden; /* ✅ stops page scrolling */
+}
+
+.page-email-inbox{
+  height: 100%;
+  overflow: hidden;
+}
+
+/* main wrapper must also not scroll */
+.page-email-inbox__content{
+  height: 100%;
+  overflow: hidden;
+  padding: 10px 0 10px; /* optional: reduce vertical space */
+}
+
+/* ===========================================================
+   Manage e-mails — single line buttons (New + Inbox + Sent)
+   =========================================================== */
+
+.email-manage-block{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Remove column behavior */
+.email-manage-head{
+  margin: 0;
+}
+
+/* Folder buttons inline with New e-mail */
+.email-folder-nav{
+  display: flex;
+  gap: 8px;
+  flex-wrap: nowrap;      /* all on same line */
+}
+
+/* Optional: align all buttons visually */
+.email-manage-new,
+.email-folder-item{
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+}

@@ -1,0 +1,117 @@
+/* ╔══════════════════════════════════════════════════════════════════╗
+   ║ page.css — Page Width / Height Helpers | PRODNEX ERP            ║
+   ╚══════════════════════════════════════════════════════════════════╝ */
+
+/* ==================================================================
+   Variables
+================================================================== */
+
+:root {
+
+  /* Page Width */
+  --page-xs: 480px;
+  --page-sm: 640px;
+  --page-md: 900px;
+  --page-lg: 1200px;
+  --page-xl: 1440px;
+  --page-2xl: 1600px;
+  --page-3xl: 1800px;
+
+  /* Page Height */
+  --page-h-xs: 240px;
+  --page-h-sm: 400px;
+  --page-h-md: 600px;
+  --page-h-lg: 750px;
+  --page-h-xl: 850px;
+  --page-h-2xl: 950px;
+  --page-h-3xl: 1100px;
+}
+
+/* ==================================================================
+   Page Base
+================================================================== */
+
+.p-page {
+
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+
+  min-width: 0;
+  min-height: 0;
+
+  box-sizing: border-box;
+}
+
+/* ==================================================================
+   Width Helpers
+================================================================== */
+
+.pw-page {
+
+  width: 100%;
+  min-width: 0;
+
+  margin-inline: auto;
+}
+
+.pw-page--xs { max-width: var(--page-xs); }
+.pw-page--sm { max-width: var(--page-sm); }
+.pw-page--md { max-width: var(--page-md); }
+.pw-page--lg { max-width: var(--page-lg); }
+.pw-page--xl { max-width: var(--page-xl); }
+.pw-page--2xl { max-width: var(--page-2xl); }
+.pw-page--3xl { max-width: var(--page-3xl); }
+
+.pw-page--full {
+  max-width: none;
+}
+
+/* ==================================================================
+   Height Helpers
+================================================================== */
+
+.ph-page {
+
+  min-height: 0;
+}
+
+.ph-page--auto {
+
+  height: auto;
+  max-height: none;
+
+  overflow: visible;
+}
+
+.ph-page--xs  { height: var(--page-h-xs);  max-height: var(--page-h-xs); }
+.ph-page--sm  { height: var(--page-h-sm);  max-height: var(--page-h-sm); }
+.ph-page--md  { height: var(--page-h-md);  max-height: var(--page-h-md); }
+.ph-page--lg  { height: var(--page-h-lg);  max-height: var(--page-h-lg); }
+.ph-page--xl  { height: var(--page-h-xl);  max-height: var(--page-h-xl); }
+.ph-page--2xl { height: var(--page-h-2xl); max-height: var(--page-h-2xl); }
+.ph-page--3xl { height: var(--page-h-3xl); max-height: var(--page-h-3xl); }
+
+.ph-page--full {
+
+  height: 100%;
+  max-height: 100%;
+}
+
+.ph-page--screen {
+
+  height: 100vh;
+  max-height: 100vh;
+}
+
+.ph-page--locked {
+
+  overflow: hidden;
+}
+
+.ph-page--scroll {
+
+  overflow: auto;
+}
+

@@ -1,0 +1,616 @@
+/* ╔══════════════════════════════════════════════════════════════════╗
+   ║ inventory.css — Inventory module styles — PRODNEX ERP           ║
+   ║ ✅ Compatível com containerConsart.css (inputs/scroll/sticky)     ║
+   ╚══════════════════════════════════════════════════════════════════╝ */
+
+/* =========================================================
+   Base / Card
+========================================================= */
+.page-inventory .section-card {
+  background: var(--card, #ffffff);
+  border-radius: var(--radius, 12px);
+  border: 1px solid var(--line, #e5e7eb);
+  box-shadow: var(--shadow, 0 4px 12px rgba(15, 23, 42, 0.06));
+  padding: var(--gap-lg, 20px);
+
+  /* 🔥 necessário p/ scroll interno em tabelas */
+  min-height: 0;
+}
+
+/* =========================================================
+   Tabs / Panels
+========================================================= */
+.page-inventory .tab-panel {
+  display: none;
+}
+
+.page-inventory .tab-panel.is-active {
+  display: block;
+}
+
+/* =========================================================
+   Fields
+   (inputs/select/textarea são do containerConsart.css)
+========================================================= */
+.page-inventory .field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.page-inventory .field-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.page-inventory .field-help {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+/* textarea (somente dimensões; estilo é do containerConsart) */
+.page-inventory textarea {
+  min-height: 44px;
+}
+
+/* =========================================================
+   List — filtros
+========================================================= */
+.page-inventory .inventory-list__filters {
+  display: grid;
+  grid-template-columns: 1.2fr 0.9fr auto;
+  gap: 10px;
+  margin-bottom: 12px;
+  align-items: end;
+}
+
+/* =========================================================
+   Tables
+========================================================= */
+.page-inventory table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+}
+
+.page-inventory th,
+.page-inventory td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.page-inventory th {
+  text-align: left;
+  font-weight: 600;
+  color: #475569;
+}
+
+.page-inventory tbody tr:hover {
+  background: #f1f5f9;
+  cursor: pointer;
+}
+
+.page-inventory tbody tr.is-selected {
+  background: #e0f2fe;
+}
+
+.page-inventory .col-number {
+  text-align: right;
+}
+
+.page-inventory .col-actions {
+  width: 120px;
+}
+
+/* wrapper visual */
+.page-inventory .table-wrapper {
+  border: 1px solid rgba(148, 163, 184, 0.20);
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+/* =========================================================
+   Details / Header form
+========================================================= */
+.page-inventory .inventory-details {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+}
+
+.page-inventory .inventory-header {
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  padding: 12px 14px;
+  background: #f8fafc;
+}
+
+.page-inventory .form-grid {
+  display: grid;
+  gap: 10px;
+  align-items: end;
+}
+
+.page-inventory .form-grid--3col {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.page-inventory .form-grid--4col {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.page-inventory .field--full {
+  grid-column: 1 / -1;
+}
+
+/* fallback actions (mantido no HTML) */
+.page-inventory .inventory-header__actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+/* =========================================================
+   INVENTORY — Header em 1 linha (Descrição/Tipo/Status/Data + ações)
+========================================================= */
+.page-inventory .form-grid--inv-header {
+  grid-template-columns: 1.25fr 1fr 1fr 1fr auto;
+}
+
+/* Botões inline ao lado da data */
+.page-inventory .field--inv-actions-inline {
+  display: flex;
+  align-items: flex-end;
+}
+
+.page-inventory .inv-actions-inline {
+  display: flex;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.page-inventory .inv-actions-inline .btn {
+  height: var(--consart-input-h, 42px);
+  padding: 0 14px;
+}
+
+/* Desktop: esconde o bloco antigo */
+@media (min-width: 1101px) {
+  .page-inventory .inventory-header__actions {
+    display: none;
+  }
+}
+
+/* Telas médias: mostra fallback e reordena */
+@media (max-width: 1100px) {
+  .page-inventory .form-grid--inv-header {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .page-inventory .field--inv-actions-inline {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+  }
+
+  .page-inventory .inv-actions-inline {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .page-inventory .inventory-header__actions {
+    display: flex;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .page-inventory .form-grid--inv-header {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   Items block
+========================================================= */
+.page-inventory .inventory-items {
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  padding: 10px 12px 12px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  min-height: 0;
+}
+
+.page-inventory .inventory-items__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.page-inventory .inventory-items__header h2 {
+  font-size: 1rem;
+  margin: 0;
+  color: #0f172a;
+}
+
+.page-inventory .inventory-items__form {
+  border-radius: 8px;
+  border: 1px dashed #cbd5e1;
+  padding: 10px;
+  background: #f9fafb;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.page-inventory .field-with-button {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.page-inventory .btn-icon {
+  padding-inline: 10px;
+  font-size: 1rem;
+}
+
+/* =========================================================
+   INVENTORY — Botão "Salvar item" ao lado da Qtd. contada
+========================================================= */
+.page-inventory .form-grid--items-inline-save {
+  display: grid;
+
+  /* Produto | Unidade | Localização | Lote | Qtde | Botão */
+  grid-template-columns:
+    minmax(280px, 2fr) minmax(120px, .8fr) minmax(180px, 1fr) minmax(180px, 1fr) minmax(120px, .7fr) auto;
+
+  gap: 10px;
+  align-items: end;
+}
+
+.page-inventory .field--save-inline {
+  display: flex;
+  align-items: flex-end;
+}
+
+.page-inventory .btn-save-item {
+  height: var(--consart-input-h, 42px);
+  padding: 0 18px;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .page-inventory .form-grid--items-inline-save {
+    grid-template-columns: 1fr;
+  }
+
+  .page-inventory .btn-save-item {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   Logs / auditoria
+========================================================= */
+.page-inventory .inventory-logs {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+
+.page-inventory .inventory-logs__header h2 {
+  font-size: 1rem;
+  margin: 0;
+  color: #0f172a;
+}
+
+.page-inventory .inventory-logs__subtitle {
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.page-inventory .inventory-logs__filters {
+  border-radius: 8px;
+  border: 1px dashed #cbd5e1;
+  padding: 10px;
+  background: #f9fafb;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.page-inventory .inventory-logs__filters-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* =========================================================
+   TOPBAR dentro do card
+========================================================= */
+.page-inventory .inventory-topbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+  margin-bottom: 14px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 2px;
+}
+
+.page-inventory .inventory-topbar .page-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+  margin: 0 !important;
+}
+
+.page-inventory .inventory-topbar .page-header__actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+.page-inventory .inventory-topbar .tabs-wrapper--inventory {
+  display: flex;
+  gap: 8px;
+  flex-wrap: nowrap;
+  margin: 0 !important;
+  flex: 1 1 auto;
+}
+
+.page-inventory .inventory-topbar .btn {
+  white-space: nowrap;
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+  .page-inventory .inventory-topbar {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+
+  .page-inventory .inventory-topbar .tabs-wrapper--inventory {
+    flex-wrap: wrap;
+  }
+}
+
+/* =========================================================
+   Responsive geral
+========================================================= */
+@media (max-width: 1100px) {
+
+  .page-inventory .form-grid--3col,
+  .page-inventory .form-grid--4col {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .page-inventory .inventory-list__filters {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-inventory .inventory-list__filters {
+    grid-template-columns: 1fr;
+  }
+
+  .page-inventory .form-grid--3col,
+  .page-inventory .form-grid--4col {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║ INVENTORY — Altura maior das linhas da LISTAGEM (tabela)      ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+/* ✅ Controle rápido (ajuste como quiser) */
+:root {
+  --inv-row-pad-y: 10px;
+  /* 6 → 10/12 deixa bem mais alto */
+  --inv-row-pad-x: 10px;
+  --inv-row-line: 18px;
+  /* 16 → 18/20 aumenta a altura visual */
+}
+
+/* Aplica na tabela de listagem (aba "Relação de inventários") */
+.page-inventory #tab-list .table-wrapper table th,
+.page-inventory #tab-list .table-wrapper table td {
+  padding: var(--inv-row-pad-y) var(--inv-row-pad-x) !important;
+  line-height: var(--inv-row-line) !important;
+}
+
+/* (Opcional) aumenta também o header da tabela */
+.page-inventory #tab-list .table-wrapper table thead th {
+  padding: calc(var(--inv-row-pad-y) + 2px) var(--inv-row-pad-x) !important;
+}
+
+/* transforma tudo em 1 único item visual dentro do botão */
+.btn-label {
+  display: inline;
+}
+
+/* linha elegante abaixo do "Sa" */
+.kbd-hotkey {
+  display: inline-block;
+  border-bottom: 2px solid currentColor;
+  padding-bottom: 1px;
+  line-height: 1;
+}
+
+/* =========================================================
+   ✅ FIX DEFINITIVO: scroll interno e sem “explodir”
+========================================================= */
+
+/* Card principal precisa ser flex e cortar vazamento */
+.page-inventory .section-card.section-inventory {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* 🔥 Aba ativa tem que ser flex (não block) */
+.page-inventory .tab-panel {
+  display: none;
+}
+
+.page-inventory .tab-panel.is-active {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Conteúdo interno das abas vira coluna flex */
+.page-inventory .inventory-list,
+.page-inventory .inventory-details,
+.page-inventory .inventory-logs {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+}
+
+/* Itens: form em cima + tabela com scroll embaixo */
+.page-inventory .inventory-items {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+}
+
+/* garante que blocos de topo não “empurrem” horizontal */
+.page-inventory .inventory-topbar,
+.page-inventory .inventory-list__filters,
+.page-inventory .inventory-items__form {
+  min-width: 0;
+}
+
+/* Área de scroll ocupa o resto da altura e dá scroll */
+.page-inventory .consart-scroll-area {
+  flex: 1;
+  min-height: 0;
+  /* 🔥 substitui o min-height:240px do containerConsart só aqui */
+  overflow: auto;
+  max-width: 100%;
+}
+
+/* Wrapper da tabela com scroll (não use overflow:hidden aqui) */
+.page-inventory .table-wrapper {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  border: 1px solid rgba(148, 163, 184, 0.20);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.95);
+
+  overflow: auto;
+}
+
+/* Tabela não pode estourar o wrapper */
+.page-inventory table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* evita células gigantes esticarem layout */
+.page-inventory td,
+.page-inventory th {
+  max-width: 520px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.page-inventory .form-grid--inv-header {
+  grid-template-columns: 1.25fr auto 1fr 1fr 1fr auto;
+}
+
+.page-inventory .field--obs-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.page-inventory .field--obs-button .btn {
+  height: var(--consart-input-h, 30px);
+  min-width: 58px;
+}
+
+/* =========================================================
+   INVENTORY — Action Icons
+========================================================= */
+
+.inventory-actions-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.inventory-edit-icon,
+.inventory-delete-icon {
+  cursor: pointer;
+  font-size: 18px;
+  user-select: none;
+  transition: transform .15s ease;
+}
+
+.inventory-edit-icon:hover,
+.inventory-delete-icon:hover {
+  transform: scale(1.15);
+}
+
+.inventory-edit-icon:active,
+.inventory-delete-icon:active {
+  transform: scale(.95);
+}
+
+/* =========================================================
+   INVENTORY — Slightly taller rows
+========================================================= */
+
+:root {
+  --inv-items-row-pad-y: 9px;
+  --inv-items-row-pad-x: 10px;
+  --inv-items-row-line: 18px;
+}
+
+.page-inventory .inventory-items .table-wrapper table th,
+.page-inventory .inventory-items .table-wrapper table td {
+  padding: var(--inv-items-row-pad-y) var(--inv-items-row-pad-x) !important;
+  line-height: var(--inv-items-row-line) !important;
+  vertical-align: middle;
+}
+
+/* Cabeçalho um pouco mais alto */
+.page-inventory .inventory-items .table-wrapper table thead th {
+  padding-top: 14px !important;
+  padding-bottom: 14px !important;
+}
+
+/* Ícones centralizados na nova altura */
+.page-inventory .inventory-actions-icons {
+  min-height: 28px;
+}

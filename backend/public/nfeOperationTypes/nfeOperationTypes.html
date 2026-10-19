@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+
+    <!-- 🟦 Favicons CONSART -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+    <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+    <title>OPERAÇÕES FISCAIS | PRODNEX ERP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- 🎨 Design System CONSART -->
+    <link rel="stylesheet" href="/public/includes/css/style.css">
+
+    <link rel="stylesheet" href="./css/nfeOperationTypes.css">
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+    <main class="consart-container consart-container--full consart-container--ultraslim">
+
+        <div class="header">
+            <div>
+                <h1>Operações fiscais da NF-e</h1>
+                <p>Configura natureza, CFOP e comportamento financeiro/estoque.</p>
+            </div>
+            <button id="opNew" class="btn btn-toolbar btn-sm" type="button">Nova operação</button>
+        </div>
+
+        <section class="table-layout-integrated table-max-height-600">
+            <!-- Container for all vertical lines -->
+            <div class="table-layout-integrated__filter">
+
+                <div class="fields-inline fields-gap-3">
+                    <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                        <form id="opFilter">
+
+                            Buscar<input id="opSearch" type="search">
+                    </div>
+
+                    <div class="fields fields-h-6 fields-w-10 fields-font-3">
+                        Status<select id="opActive">
+                            <option value="">Todas</option>
+                            <option value="true">Ativas</option>
+                            <option value="false">Inativas</option>
+                        </select>
+                    </div>
+
+                    <div class="btn-inline btn-gap-3">
+                        <button class="btn btn-toolbar btn-sm">Aplicar</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 📄 Tabela -->
+            <div class="table-scroll table-height-flex table-row-h-20" data-table-settings="nfeoperationtypes.opbody">
+                <table class="table table-zebra table-zebra-hover table-sticky-head">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Código</th>
+                            <th>Nome</th>
+                            <th>Natureza</th>
+                            <th>CFOP interno</th>
+                            <th>CFOP interestadual</th>
+                            <th>Receber</th>
+                            <th>Estoque</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="opBody"></tbody>
+                </table>
+            </div>
+
+            <footer class="table-footer">
+
+                <div class="table-footer__info">
+                    <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+                        <span id="apTableInfo">0 registros encontrados</span>
+                    </div>
+                </div>
+
+                <div class="table-footer__pagination">
+
+                    <button type="button" id="pagAnterior" class="btn btn-clean btn-sm">
+                        Anterior
+                    </button>
+
+                    <span id="infoPagina">Página 1 de 1</span>
+
+                    <button type="button" id="pagProxima" class="btn btn-new btn-sm">
+                        Próxima
+                    </button>
+
+                </div>
+
+                <div class="table-footer__page-size">
+                    <label for="apRowsPerPage">Mostrar</label>
+
+                    <select id="apRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+                        <option value="10">10 linhas</option>
+                        <option value="20">20 linhas</option>
+                        <option value="30">30 linhas</option>
+                        <option value="50" selected>50 linhas</option>
+                        <option value="100">100 linhas</option>
+                    </select>
+                </div>
+
+            </footer>
+        </section>
+
+        </div>
+    </main>
+
+    <div id="opModal" class="modal" hidden>
+        <div class="modal__backdrop" data-op-close></div>
+        <div class="modal__dialog modal-width-7 modal-height-7">
+            <section class="modal__panel">
+                <header class="modal__header modal-header-color-3">
+                    <h2 id="opTitle">Nova operação</h2><button type="button" class="modal__close"
+                        data-op-close>×</button>
+                </header>
+                <div class="modal__body">
+                    <form id="opForm" class="op-form"><input id="opId" type="hidden"><label>Código<input id="opCode"
+                                maxlength="30" required></label><label>Nome<input id="opName" maxlength="100"
+                                required></label><label class="op-span">Natureza da operação<input id="opNature"
+                                maxlength="120" required></label><label>CFOP interno<input id="opCfopInternal"
+                                inputmode="numeric" maxlength="4" pattern="[0-9]{4}"></label><label>CFOP
+                            interestadual<input id="opCfopInterstate" inputmode="numeric" maxlength="4"
+                                pattern="[0-9]{4}"></label><label class="op-check"><input id="opReceivable"
+                                type="checkbox"> Gera contas a receber</label><label class="op-check"><input
+                                id="opStock" type="checkbox" checked> Movimenta estoque</label><label
+                            class="op-check"><input id="opEnabled" type="checkbox" checked> Operação ativa</label>
+                    </form>
+                </div>
+                <footer class="modal__footer"><button type="button" class="btn btn-secondary"
+                        data-op-close>Fechar</button><button class="btn btn-primary" type="submit"
+                        form="opForm">Salvar</button></footer>
+            </section>
+        </div>
+    </div>
+
+    <script type="module" src="/public/includes/js/core.js"></script>
+
+    <script type="module" src="./js/nfeOperationTypes.init.js"></script>
+</body>
+
+</html>

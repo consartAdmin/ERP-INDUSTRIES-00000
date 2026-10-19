@@ -1,0 +1,166 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════════╗
+     ║ customersSegmentsBatch.html — Segmentos de Clientes em Lote | PRODNEX ERP ║
+     ║ - Lista clientes com paginação + busca + filtro                           ║
+     ║ - Seleção múltipla e aplicação de Segmento em lote                         ║
+     ║ - Desvincular segmento por cliente                                         ║
+     ╚══════════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>SEGMENTOS EM LOTE | PRODNEX ERP</title>
+
+  <!-- 🎨 Design System CONSART -->
+  <link rel="stylesheet" href="/public/includes/css/style.css"/>
+
+  <!-- CSS específico desta página -->
+  <link rel="stylesheet" href="./customersSegmentsBatch.css" />
+</head>
+
+<body class="consart-theme c-page page" style="--consart-input-h: 30px;">
+
+  <main class="consart-container consart-container--fixed consart-container--full consart-container--vh-92 consart-lr">
+
+    <!-- 🔍 LEFT -->
+    <section class="csb-panel csb-left consart-lr-panel">
+
+      <div class="csb-panel-header">
+        <div class="csb-title-row">
+          <h2>Clientes</h2>
+
+          <div class="csb-header-actions">
+            <button id="csb-prev-page" type="button" class="btn btn-toolbar btn-sm" title="Página anterior">
+              &laquo; Anterior
+            </button>
+
+            <span id="csb-page-info" class="csb-page-pill">Página 1</span>
+
+            <button id="csb-next-page" type="button" class="btn btn-toolbar btn-sm" title="Próxima página">
+              Próxima &raquo;
+            </button>
+          </div>
+        </div>
+
+        <div class="csb-search-box">
+          <label for="csb-search-input">Buscar clientes</label>
+
+          <div class="csb-search-input-wrapper">
+            <input
+              id="csb-search-input"
+              type="text"
+              placeholder="Digite nome, documento, e-mail, telefone..."
+              autocomplete="off"
+            />
+
+            <button id="csb-search-btn" type="button" class="btn btn-toolbar btn-sm">
+              Buscar
+            </button>
+          </div>
+
+          <small class="csb-help">
+            Dica: mínimo 3 caracteres para buscar. Você pode marcar vários clientes e aplicar o segmento de uma vez.
+          </small>
+        </div>
+      </div>
+
+      <div class="csb-filter-row">
+        <label for="csb-segment-filter">Filtro de Segmento</label>
+        <select id="csb-segment-filter">
+          <option value="all">Todos os clientes</option>
+          <option value="linked">Somente com Segmento</option>
+          <option value="unlinked">Somente sem Segmento</option>
+        </select>
+      </div>
+
+      <div class="consart-lr-scroll">
+        <div class="csb-table-wrapper">
+          <table class="csb-table consart-table-sticky">
+            <thead>
+              <tr>
+                <th><input type="checkbox" id="csb-select-all" /></th>
+                <th>Cliente ID</th>
+                <th>Nome</th>
+                <th>Documento</th>
+                <th>E-mail</th>
+                <th>Telefone</th>
+                <th>Segmento</th>
+                <th>Vinculado?</th>
+                <th>Desvincular</th>
+              </tr>
+            </thead>
+            <tbody id="csb-customers-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="csb-footer">
+        <div class="csb-selection-info">
+          <strong id="csb-selected-count">0</strong> clientes selecionados
+        </div>
+
+        <div class="csb-footer-hint">
+          Selecione clientes e aplique o segmento no painel à direita.
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ⚙️ RIGHT -->
+    <section class="csb-panel csb-right consart-lr-panel">
+
+      <div class="csb-card">
+        <h2>Configuração de Segmento (Lote)</h2>
+
+        <div class="csb-field-group">
+          <label>Segmento do Cliente</label>
+          <div class="csb-inline">
+            <select id="csb-segment-select">
+              <option value="">Selecione um segmento...</option>
+            </select>
+          </div>
+
+          <small class="csb-help">
+            Segmentos cadastrados em <strong>customerSegments</strong>.
+          </small>
+        </div>
+
+        <div class="csb-alert-box">
+          <p>
+            <strong>Atenção:</strong> o segmento será aplicado
+            <strong>a todos os clientes selecionados</strong>.
+            Caso o cliente já tenha segmento, ele será atualizado.
+          </p>
+        </div>
+
+        <button id="csb-apply-batch" type="button" class="btn btn-toolbar btn-md csb-btn-full">
+          Aplicar segmento para selecionados
+        </button>
+
+        <button id="csb-clear-selection" type="button" class="btn btn-toolbar btn-sm csb-btn-full csb-muted-btn">
+          Limpar seleção
+        </button>
+      </div>
+
+      <div class="csb-card csb-summary-card">
+        <h3>Resumo rápido</h3>
+        <ul>
+          <li><strong>Clientes selecionados:</strong> <span id="csb-summary-selected">0</span></li>
+          <li><strong>Segmento:</strong> <span id="csb-summary-segment">-</span></li>
+        </ul>
+      </div>
+
+    </section>
+
+  </main>
+
+<script src="/public/includes/js/apiBase.js"></script>
+<script type="module" src="/public/includes/js/core.js"></script>
+<script type="module" src="./customersSegmentsBatch.js"></script>
+</body>
+</html>

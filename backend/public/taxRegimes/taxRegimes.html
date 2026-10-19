@@ -1,0 +1,320 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ FILE: taxRegimes.html                                              ║
+     ║ MODULE: Regime Tributário                                          ║
+     ║ PRODNEX ERP                                                        ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png" />
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png" />
+
+  <title>REGIME TRIBUTÁRIO | PRODNEX ERP</title>
+
+  <!-- 🎨 Design System CONSART -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- CSS específico da página -->
+  <link rel="stylesheet" href="./taxRegimes.css?v=1" />
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr page-tax-regimes">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <!-- ===================================================== -->
+    <!-- PAGE HEADER                                           -->
+    <!-- ===================================================== -->
+
+    <header class="header header-h-9">
+      <div class="fields-lines fields-gap-3">
+        <div class="fields-inline fields-gap-3">
+          <div>
+            <h1>Regime Tributário</h1>
+            <p>Regime da empresa por período (Simples, Presumido, Real) e as alíquotas usadas para estimar
+              DAS, IRPJ, CSLL, PIS e COFINS no painel de Impostos.</p>
+          </div>
+
+          <div class="btn-position-right">
+            <button id="btnNovo" type="button" class="btn btn-secondary btn-sm" aria-controls="painel-form">
+              + Novo Regime
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===================================================== -->
+    <!-- LIST                                                  -->
+    <!-- ===================================================== -->
+
+    <section id="painel-lista" class="table-layout-integrated table-max-height-600" data-panel="list">
+      <div class="table-layout-integrated__filter">
+        <div class="fields-inline fields-gap-3">
+          <label class="checkbox" for="mostrarInativos">
+            <input id="mostrarInativos" type="checkbox" />
+            <span>Mostrar inativos</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="table-scroll table-height-flex table-row-h-28">
+        <table class="table table-zebra table-zebra-hover table-sticky-head tr-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Regime</th>
+              <th>CRT</th>
+              <th>Vigência</th>
+              <th>Parâmetros</th>
+              <th>Ativo</th>
+              <th style="width: 150px;">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+
+      <footer class="table-footer">
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill-success summary-width-5 summary-left-space-3">
+            <span id="tableInfo">0 Registros</span>
+          </div>
+        </div>
+      </footer>
+    </section>
+
+    <!-- ===================================================== -->
+    <!-- FORM                                                  -->
+    <!-- ===================================================== -->
+
+    <section id="painel-form" class="tr-panel" data-panel="form" hidden>
+      <section class="consart-panel tr-form-wrapper">
+
+        <div class="header header-h-6">
+          <div class="fields-lines fields-gap-2">
+            <h2 id="formTitulo">Novo Regime Tributário</h2>
+            <span id="formSubtitulo">Escolha o regime e o início da vigência. As alíquotas vêm preenchidas com os
+              valores padrão da legislação e podem ser ajustadas.</span>
+          </div>
+        </div>
+
+        <form id="formTaxRegime" class="fields-lines fields-gap-4" autocomplete="off">
+          <input id="tax_regime_id" type="hidden" />
+
+          <!-- ================================================= -->
+          <!-- REGIME + VIGÊNCIA                                 -->
+          <!-- ================================================= -->
+
+          <fieldset class="fieldset tr-fieldset">
+            <legend>Regime e vigência</legend>
+
+            <div class="fields-lines fields-gap-3">
+              <div class="fields-inline fields-gap-3">
+                <div class="fields fields-h-6 fields-w-30 fields-font-3">
+                  <label for="regime">Regime tributário *</label>
+                  <select id="regime" name="regime" required></select>
+                </div>
+
+                <div class="fields fields-h-6 fields-w-10 fields-font-3">
+                  <label for="crt">CRT (NF-e)</label>
+                  <input id="crt" type="text" readonly tabindex="-1" />
+                </div>
+
+                <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                  <label for="valid_from">Início da vigência *</label>
+                  <input id="valid_from" name="valid_from" type="date" required />
+                </div>
+
+                <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                  <label for="valid_to">Fim da vigência</label>
+                  <input id="valid_to" name="valid_to" type="date" />
+                </div>
+              </div>
+
+              <div class="fields fields-w-100 fields-font-3">
+                <label for="description">Observação</label>
+                <textarea id="description" name="description" class="textarea" rows="2"
+                  placeholder="Ex.: Opção pelo Simples a partir de janeiro."></textarea>
+              </div>
+
+              <p class="tr-hint">O CRT usado na emissão da NF-e continua vindo do cadastro da Empresa. Mantenha os dois
+                iguais.</p>
+            </div>
+          </fieldset>
+
+          <!-- ================================================= -->
+          <!-- SIMPLES NACIONAL                                  -->
+          <!-- ================================================= -->
+
+          <fieldset class="fieldset tr-fieldset" data-regime-group="SIMPLES SIMPLES_EXCESSO">
+            <legend>Simples Nacional</legend>
+
+            <div class="fields-lines fields-gap-3">
+              <div class="fields-inline fields-gap-3">
+                <div class="fields fields-h-6 fields-w-30 fields-font-3">
+                  <label for="simples_annex">Anexo *</label>
+                  <select id="simples_annex" name="simples_annex"></select>
+                </div>
+
+                <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                  <label for="rbt12">RBT12 fixo (R$)</label>
+                  <input id="rbt12" name="rbt12" type="number" min="0" step="0.01"
+                    placeholder="Vazio = calcula pelas notas" />
+                </div>
+              </div>
+
+              <p class="tr-hint">RBT12 é a receita bruta dos 12 meses anteriores. Deixe vazio para o sistema somar as
+                notas emitidas; preencha se houver faturamento fora do ERP.</p>
+
+              <div class="table-scroll">
+                <table class="table table-zebra tr-brackets">
+                  <thead>
+                    <tr>
+                      <th>Faixa</th>
+                      <th>RBT12 até</th>
+                      <th>Alíquota nominal</th>
+                      <th>Parcela a deduzir</th>
+                      <th>Efetiva no teto</th>
+                    </tr>
+                  </thead>
+                  <tbody id="bracketsBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- ================================================= -->
+          <!-- MEI                                               -->
+          <!-- ================================================= -->
+
+          <fieldset class="fieldset tr-fieldset" data-regime-group="MEI">
+            <legend>MEI</legend>
+
+            <div class="fields-inline fields-gap-3">
+              <div class="fields fields-h-6 fields-w-15 fields-font-3">
+                <label for="mei_monthly_das">DAS mensal (R$)</label>
+                <input id="mei_monthly_das" name="mei_monthly_das" type="number" min="0" step="0.01" />
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- ================================================= -->
+          <!-- IRPJ / CSLL                                       -->
+          <!-- ================================================= -->
+
+          <fieldset class="fieldset tr-fieldset" data-regime-group="PRESUMIDO REAL">
+            <legend>IRPJ / CSLL</legend>
+
+            <div class="fields-lines fields-gap-3">
+              <div class="fields-inline fields-gap-3">
+                <div class="fields fields-h-6 fields-w-12 fields-font-3" data-regime-group="PRESUMIDO">
+                  <label for="irpj_presumption_pct">Presunção IRPJ (%)</label>
+                  <input id="irpj_presumption_pct" name="irpj_presumption_pct" type="number" min="0" max="100" step="0.0001" />
+                </div>
+
+                <div class="fields fields-h-6 fields-w-12 fields-font-3" data-regime-group="PRESUMIDO">
+                  <label for="csll_presumption_pct">Presunção CSLL (%)</label>
+                  <input id="csll_presumption_pct" name="csll_presumption_pct" type="number" min="0" max="100" step="0.0001" />
+                </div>
+
+                <div class="fields fields-h-6 fields-w-12 fields-font-3" data-regime-group="REAL">
+                  <label for="estimated_profit_margin_pct">Margem de lucro estimada (%)</label>
+                  <input id="estimated_profit_margin_pct" name="estimated_profit_margin_pct" type="number" min="0" max="100" step="0.0001"
+                    placeholder="Vazio = não estima" />
+                </div>
+              </div>
+
+              <div class="fields-inline fields-gap-3">
+                <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                  <label for="irpj_rate">Alíquota IRPJ (%)</label>
+                  <input id="irpj_rate" name="irpj_rate" type="number" min="0" max="100" step="0.0001" />
+                </div>
+
+                <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                  <label for="irpj_additional_rate">Adicional IRPJ (%)</label>
+                  <input id="irpj_additional_rate" name="irpj_additional_rate" type="number" min="0" max="100" step="0.0001" />
+                </div>
+
+                <div class="fields fields-h-6 fields-w-15 fields-font-3">
+                  <label for="irpj_additional_monthly_threshold">Limite do adicional / mês (R$)</label>
+                  <input id="irpj_additional_monthly_threshold" name="irpj_additional_monthly_threshold" type="number" min="0" step="0.01" />
+                </div>
+
+                <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                  <label for="csll_rate">Alíquota CSLL (%)</label>
+                  <input id="csll_rate" name="csll_rate" type="number" min="0" max="100" step="0.0001" />
+                </div>
+              </div>
+
+              <p class="tr-hint" data-regime-group="REAL">No Lucro Real o IRPJ/CSLL depende do lucro contábil. Informe uma
+                margem estimada para o painel mostrar uma estimativa; deixe vazio para não estimar.</p>
+            </div>
+          </fieldset>
+
+          <!-- ================================================= -->
+          <!-- PIS / COFINS                                      -->
+          <!-- ================================================= -->
+
+          <fieldset class="fieldset tr-fieldset" data-regime-group="PRESUMIDO REAL">
+            <legend>PIS / COFINS</legend>
+
+            <div class="fields-lines fields-gap-3">
+              <div class="fields-inline fields-gap-3">
+                <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                  <label for="pis_rate">Alíquota PIS (%)</label>
+                  <input id="pis_rate" name="pis_rate" type="number" min="0" max="100" step="0.0001" />
+                </div>
+
+                <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                  <label for="cofins_rate">Alíquota COFINS (%)</label>
+                  <input id="cofins_rate" name="cofins_rate" type="number" min="0" max="100" step="0.0001" />
+                </div>
+              </div>
+
+              <p class="tr-hint">Usadas só quando os itens das notas não trazem PIS/COFINS, para não contar duas vezes.</p>
+            </div>
+          </fieldset>
+
+          <!-- ================================================= -->
+          <!-- STATUS                                            -->
+          <!-- ================================================= -->
+
+          <fieldset class="fieldset tr-fieldset">
+            <legend>Status</legend>
+
+            <div class="fields-inline">
+              <label class="checkbox" for="is_active">
+                <input id="is_active" name="is_active" type="checkbox" checked />
+                <span>Regime ativo</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <footer class="form-footer tr-form-actions">
+            <div class="btn-inline fields-gap-3">
+              <button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+              <button id="btnPadrao" type="button" class="btn btn-toolbar btn-sm">Restaurar alíquotas padrão</button>
+              <button id="btnVoltarLista" type="button" class="btn btn-toolbar btn-sm" aria-controls="painel-lista">
+                Voltar para a lista
+              </button>
+            </div>
+          </footer>
+
+        </form>
+      </section>
+    </section>
+
+  </main>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="./js/taxRegimes.init.js?v=1"></script>
+</body>
+
+</html>

@@ -1,0 +1,413 @@
+/* /public/labels/labels.css */
+
+/* =========================================================
+   PAGE
+========================================================= */
+.labels-page-shell {
+  padding-top: 10px;
+}
+
+.labels-layout--fullscreen {
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.labels-main-panel {
+  flex: 1;
+  min-height: 0;
+  gap: 14px;
+  padding: 14px;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+.labels-page-header {
+  border-bottom: 1px solid rgba(20, 24, 40, 0.08);
+  padding-bottom: 10px;
+}
+
+.labels-page-header__content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.labels-page-title {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.15;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.labels-page-subtitle {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* =========================================================
+   MAIN GRID
+========================================================= */
+.labels-content-grid {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+
+  display: grid;
+  grid-template-columns: minmax(760px, 1fr) 420px;
+  gap: 14px;
+  align-items: stretch;
+}
+
+.labels-form-panel,
+.labels-result-panel {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.labels-form-scroll,
+.labels-result-scroll {
+  min-width: 0;
+  min-height: 0;
+}
+
+/* =========================================================
+   PANEL HEADERS
+========================================================= */
+.labels-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(20, 24, 40, 0.08);
+}
+
+.labels-panel-title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+.labels-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.labels-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  padding: 12px;
+  border: 1px solid rgba(20, 24, 40, 0.08);
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.98) 100%);
+}
+
+.labels-block--table {
+  min-height: 320px;
+}
+
+.labels-block__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.labels-section-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.labels-hint {
+  display: block;
+  margin-top: 6px;
+  color: #6b7280;
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+/* =========================================================
+   SEARCH PICKER / MANUAL ADD
+========================================================= */
+.labels-search-picker {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.labels-search-picker__input {
+  min-width: 0;
+}
+
+
+.labels-manual-add {
+  margin-top: 4px;
+}
+
+.labels-manual-add__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 180px auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.labels-manual-add__field {
+  min-width: 0;
+}
+
+.labels-manual-add__field--qty {
+  width: 100%;
+}
+
+.labels-manual-add__actions {
+  display: flex;
+  align-items: end;
+  justify-content: flex-start;
+}
+
+/* =========================================================
+   GRIDS
+========================================================= */
+.labels-config-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(140px, 1fr));
+  gap: 14px;
+  min-width: 0;
+}
+
+.labels-config-grid--top {
+  align-items: start;
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
+.labels-table-wrapper {
+  margin-top: 4px;
+  flex: 1;
+  min-height: 220px;
+
+  overflow: auto;
+  border: 1px solid rgba(20, 24, 40, 0.08);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.labels-table {
+  width: 100%;
+  min-width: 920px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+
+
+.labels-table tbody td {
+  padding: 10px 12px;
+  border-top: 1px solid rgba(20, 24, 40, 0.06);
+  vertical-align: middle;
+  color: #0f172a;
+  font-size: 13px;
+}
+
+.labels-table tbody tr:nth-child(even) {
+  background: rgba(15, 23, 42, 0.025);
+}
+
+.labels-table tbody tr:hover {
+  background: rgba(59, 130, 246, 0.045);
+}
+
+.labels-table__empty td {
+  text-align: center;
+  color: #6b7280;
+  padding: 22px 16px;
+  font-style: italic;
+}
+
+.labels-table__qty-input {
+  width: 86px;
+  min-width: 86px;
+}
+
+.labels-table__unit-select {
+  min-width: 170px;
+}
+
+.labels-row-remove {
+  border: 1px solid #f3c2c2;
+  color: #c43d3d;
+  background: #fff;
+  border-radius: 10px;
+  padding: 7px 12px;
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease, transform .15s ease;
+}
+
+.labels-row-remove:hover {
+  background: #fff5f5;
+  border-color: #e9a7a7;
+}
+
+.labels-row-remove:active {
+  transform: translateY(1px);
+}
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+.labels-actions {
+  margin-top: 2px;
+}
+
+.labels-actions--footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-top: 2px;
+}
+
+/* =========================================================
+   RESULT PANEL
+========================================================= */
+.labels-result__panel {
+  min-height: 140px;
+  border: 1px solid rgba(20, 24, 40, 0.08);
+  border-radius: 12px;
+  padding: 16px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(248, 250, 252, 1) 100%);
+}
+
+.labels-result__title {
+  margin: 0 0 14px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.labels-result__placeholder {
+  margin: 0;
+  color: #6b7280;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.labels-result__content {
+  display: grid;
+  gap: 10px;
+}
+
+.labels-result__row {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed rgba(20, 24, 40, 0.08);
+}
+
+.labels-result__label {
+  font-weight: 700;
+  color: #334155;
+}
+
+.labels-result__value {
+  color: #0f172a;
+  word-break: break-word;
+}
+
+/* =========================================================
+   MODE VISIBILITY
+========================================================= */
+.labels-mode-ALL [data-mode-field="SEARCH"],
+.labels-mode-ALL [data-mode-field="SKU"],
+.labels-mode-ALL [data-scope-only="SKU"] {
+  display: none !important;
+}
+
+.labels-mode-SEARCH [data-mode-field="SKU"],
+.labels-mode-SEARCH [data-scope-only="SKU"] {
+  display: none !important;
+}
+
+.labels-mode-SKU [data-mode-field="SEARCH"] {
+  display: none !important;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media (max-width: 1500px) {
+  .labels-content-grid {
+    grid-template-columns: minmax(0, 1fr) 380px;
+  }
+}
+
+@media (max-width: 1280px) {
+  .labels-content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .labels-result-panel {
+    min-height: 260px;
+  }
+}
+
+@media (max-width: 920px) {
+  .labels-config-grid {
+    grid-template-columns: repeat(2, minmax(140px, 1fr));
+  }
+
+  .labels-manual-add__row,
+  .labels-search-picker {
+    grid-template-columns: 1fr;
+  }
+
+  .labels-actions--footer {
+    justify-content: stretch;
+  }
+}
+
+@media (max-width: 640px) {
+  .labels-main-panel {
+    padding: 10px;
+  }
+
+  .labels-block {
+    padding: 10px;
+  }
+
+  .labels-page-title {
+    font-size: 18px;
+  }
+
+  .labels-page-subtitle {
+    font-size: 13px;
+  }
+
+  .labels-config-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .labels-result__row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}

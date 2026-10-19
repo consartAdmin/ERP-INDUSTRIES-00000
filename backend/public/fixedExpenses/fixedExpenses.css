@@ -1,0 +1,282 @@
+/* fixedExpenses.css — mantém compatibilidade com seu style.css global */
+
+/* ---------- Helpers ---------- */
+.stack { display: grid; gap: 14px; }
+.row { display: flex; gap: 12px; align-items: center; }
+.row.between { justify-content: space-between; }
+.row.end { justify-content: flex-end; }
+.row.gap-8 { gap: 8px; }
+
+.muted { color: color-mix(in srgb, var(--text, #111) 45%, transparent); }
+.req { color: #ef4444; }
+
+kbd {
+  font: 600 12px/1.2 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  border: 1px solid color-mix(in srgb, var(--border, #d1d5db) 80%, transparent);
+  border-bottom-width: 2px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface, #fff) 90%, #000 10%);
+}
+
+/* ---------- Header ---------- */
+.fx-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--border, #e5e7eb);
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--surface, #fff) 92%, #000 8%),
+    var(--surface, #fff)
+  );
+  border-radius: 14px;
+}
+
+.fx-title{ display:flex; gap:12px; align-items:flex-start; }
+.fx-title__icon{
+  width: 40px; height: 40px;
+  display:grid; place-items:center;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--primary, #3b82f6) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary, #3b82f6) 25%, transparent);
+}
+.fx-title__h1{ margin:0; font-size: 20px; letter-spacing: .2px; }
+.fx-title__sub{ margin: 3px 0 0; }
+
+.fx-btn-primary{
+  display:flex; align-items:center; gap: 8px;
+  padding-inline: 14px;
+  border-radius: 12px;
+}
+
+/* ---------- Cards ---------- */
+.fx-card{
+  background: var(--surface, #fff);
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 14px;
+  padding: 14px 14px 12px;
+  box-shadow: var(--shadow-sm, 0 2px 14px rgba(0,0,0,.04));
+}
+
+.fx-card__top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap: 12px;
+  padding-bottom: 10px;
+}
+
+.fx-card__title{
+  display:flex;
+  align-items:baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.fx-dot{
+  width: 10px; height: 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--primary, #3b82f6) 55%, #10b981 45%);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary, #3b82f6) 12%, transparent);
+}
+
+.fx-actions, .fx-pager{ display:flex; gap: 8px; align-items:center; }
+
+/* ---------- Forms ---------- */
+.form-field{ display:grid; gap: 6px; }
+.form-field label{ font-weight: 600; font-size: 12.5px; color: color-mix(in srgb, var(--text, #111) 75%, transparent); }
+
+.form-field input,
+.form-field select,
+.form-field textarea{
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--border, #e5e7eb);
+  background: color-mix(in srgb, var(--surface, #fff) 96%, #000 4%);
+  color: var(--text, #111);
+  padding: 10px 12px;
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease, transform .02s ease;
+}
+
+.form-field textarea{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus{
+  border-color: color-mix(in srgb, var(--primary, #3b82f6) 55%, var(--border, #e5e7eb));
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary, #3b82f6) 18%, transparent);
+}
+
+.fx-hint{ padding-top: 2px; }
+
+/* Filters grid: more natural breakpoints */
+.filters-grid{
+  display:grid;
+  grid-template-columns: 1.5fr 1.1fr .8fr .8fr 1fr .7fr;
+  gap: 12px;
+}
+@media (max-width: 1200px){
+  .filters-grid{ grid-template-columns: 1fr 1fr 1fr; }
+}
+@media (max-width: 860px){
+  .fx-header{ flex-direction: column; align-items: stretch; }
+  .fx-header__right{ display:flex; justify-content:flex-end; }
+  .filters-grid{ grid-template-columns: 1fr; }
+}
+
+/* ---------- Table ---------- */
+.table-wrapper{ overflow:auto; border-radius: 12px; border: 1px solid var(--border, #e5e7eb); }
+.fx-table{ width: 100%; border-collapse: separate; border-spacing: 0; background: var(--surface, #fff); }
+
+.fx-table thead th{
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  text-align: left;
+  font-size: 12.5px;
+  letter-spacing: .2px;
+  background: color-mix(in srgb, var(--surface, #fff) 92%, #000 8%);
+  border-bottom: 1px solid var(--border, #e5e7eb);
+  padding: 12px 12px;
+}
+
+.fx-table tbody td{
+  padding: 12px 12px;
+  border-bottom: 1px solid color-mix(in srgb, var(--border, #e5e7eb) 70%, transparent);
+  vertical-align: middle;
+}
+
+.fx-table tbody tr:hover{
+  background: color-mix(in srgb, var(--primary, #3b82f6) 6%, transparent);
+}
+
+.fx-col-id{ width: 260px; }
+.fx-col-date{ width: 190px; }
+.fx-col-actions{ width: 150px; }
+
+.fx-table td:first-child{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 12px;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Make action buttons nicer (works with your existing btn classes) */
+.fx-table td .btn{
+  border-radius: 10px;
+}
+
+/* ---------- Dialog / Modal ---------- */
+.c-dialog.fx-dialog{
+  border: 0;
+  padding: 0;
+  width: min(920px, 94vw);
+  background: var(--surface, #fff);
+  color: var(--text, #111);
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg, 0 18px 60px rgba(0,0,0,.25));
+}
+.c-dialog.fx-dialog::backdrop{ background: rgb(0 0 0 / .45); }
+
+.fx-modal{ padding: 16px; }
+.fx-modal__head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid color-mix(in srgb, var(--border, #e5e7eb) 70%, transparent);
+}
+.fx-modal__title{ margin: 0; font-size: 18px; }
+.fx-modal__sub{ margin: 4px 0 0; }
+.fx-close{ padding: 8px 10px; border-radius: 12px; }
+.fx-modal__foot{ padding-top: 6px; }
+
+/* Danger button (you already had it) */
+.btn--danger { background: #dc2626; color: #fff; border: 1px solid #b91c1c; }
+.btn--danger:hover { filter: brightness(.96); }
+
+.fx-actions-cell{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  justify-content:flex-start;
+}
+
+.fx-hidden{ display:none; }
+
+.fx-payload{
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 12px;
+  padding: 10px;
+  background: color-mix(in srgb, var(--surface, #fff) 96%, #000 4%);
+}
+
+.fx-payload__toolbar{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap: wrap;
+  padding-bottom: 10px;
+}
+
+.fx-payload__tablewrap{
+  overflow:auto;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--border, #e5e7eb) 75%, transparent);
+  background: var(--surface, #fff);
+}
+
+.fx-payload__table{
+  width:100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.fx-payload__table th{
+  text-align:left;
+  font-size: 12px;
+  padding: 10px;
+  background: color-mix(in srgb, var(--surface, #fff) 92%, #000 8%);
+  border-bottom: 1px solid var(--border, #e5e7eb);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.fx-payload__table td{
+  padding: 10px;
+  border-bottom: 1px solid color-mix(in srgb, var(--border, #e5e7eb) 65%, transparent);
+  vertical-align: middle;
+}
+
+.fx-payload__table input,
+.fx-payload__table select{
+  width:100%;
+  border-radius: 10px;
+  border: 1px solid var(--border, #e5e7eb);
+  padding: 9px 10px;
+  background: color-mix(in srgb, var(--surface, #fff) 96%, #000 4%);
+}
+
+.fx-payload__remove{
+  width: 38px;
+  height: 36px;
+  display:grid;
+  place-items:center;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--border, #e5e7eb) 75%, transparent);
+  background: transparent;
+  cursor: pointer;
+}
+.fx-payload__remove:hover{ background: color-mix(in srgb, #ef4444 10%, transparent); }
+#payloadError{ display:block; padding-top: 8px; color:#ef4444; }

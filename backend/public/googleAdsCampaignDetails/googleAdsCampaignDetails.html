@@ -1,0 +1,296 @@
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ googleAdsCampaignDetails.html — Campaign Details (PRODNEX ERP)   ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <title>GOOGLE ADS | CAMPANHA (DETALHES)</title>
+
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/googleAdsCampaignDetails/googleAdsCampaignDetails.css" />
+</head>
+
+<body class="body-default">
+  <main class="cgd-wrap">
+
+    <!-- Header -->
+    <section class="cgd-header">
+      <div class="cgd-header__bar">
+
+        <div class="cgd-header__left">
+          <button id="btnBack" class="btn-soft">← Voltar</button>
+
+          <div class="cgd-titlebox">
+            <div class="cgd-title">Campanha</div>
+            <div class="cgd-subtitle">
+              <span class="cgd-badge" id="badgeId">ID: —</span>
+              <span class="cgd-badge cgd-badge--muted" id="badgeStatus">Status: —</span>
+              <span class="cgd-badge cgd-badge--muted" id="badgeChannel">Canal: —</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cgd-header__right">
+
+          <div class="cgd-filter">
+            <label for="campaignSelect">Campanha</label>
+            <select id="campaignSelect" class="cgd-input">
+              <option value="">Selecione...</option>
+            </select>
+          </div>
+
+          <div class="cgd-filter">
+            <label for="periodMode">Período</label>
+            <select id="periodMode" class="cgd-input">
+              <option value="LAST_7_DAYS">Últimos 7 dias</option>
+              <option value="LAST_14_DAYS">Últimos 14 dias</option>
+              <option value="LAST_30_DAYS" selected>Últimos 30 dias</option>
+              <option value="LAST_90_DAYS">Últimos 90 dias</option>
+              <option value="CUSTOM">Intervalo personalizado…</option>
+            </select>
+          </div>
+
+          <div class="cgd-filter cgd-filter--inline">
+            <label>Datas</label>
+            <div class="cgd-date-inputs__row">
+              <input type="date" id="dateFrom" class="cgd-input" />
+              <span class="cgd-date-separator">até</span>
+              <input type="date" id="dateTo" class="cgd-input" />
+            </div>
+          </div>
+
+          <button id="btnRefresh" class="btn-primary">🔄 Atualizar</button>
+          <button id="btnPdf" class="btn-soft" title="Em breve">📄 PDF</button>
+          <button id="btnDebug" class="btn-soft">🧪 Debug (raw)</button>
+        </div>
+
+      </div>
+
+      <div class="cgd-header__meta">
+        <div class="cgd-meta-card">
+          <div class="cgd-meta-label">Estratégia</div>
+          <div class="cgd-meta-value" id="metaStrategy">—</div>
+        </div>
+
+        <div class="cgd-meta-card">
+          <div class="cgd-meta-label">Orçamento diário</div>
+          <div class="cgd-meta-value" id="metaBudget">—</div>
+        </div>
+
+        <div class="cgd-meta-card">
+          <div class="cgd-meta-label">Período aplicado</div>
+          <div class="cgd-meta-value" id="metaRange">—</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KPIs -->
+    <section class="cgd-kpis">
+      <article class="cgd-card">
+        <div class="cgd-meta-label">Investimento</div>
+        <div class="cgd-meta-value" id="kpiCost">R$ 0,00</div>
+        <div class="cgd-meta" id="kpiCpc">CPC médio —</div>
+      </article>
+
+      <article class="cgd-card">
+        <div class="cgd-meta-label">Cliques</div>
+        <div class="cgd-meta-value" id="kpiClicks">0</div>
+        <div class="cgd-meta" id="kpiCtr">CTR —</div>
+      </article>
+
+      <article class="cgd-card">
+        <div class="cgd-meta-label">Impressões</div>
+        <div class="cgd-meta-value" id="kpiImpr">0</div>
+        <div class="cgd-meta">Interações <span id="kpiInter">0</span></div>
+      </article>
+
+      <article class="cgd-card">
+        <div class="cgd-meta-label">Conversões</div>
+        <div class="cgd-meta-value" id="kpiConv">0</div>
+        <div class="cgd-meta" id="kpiCpa">Custo/Conv —</div>
+      </article>
+
+      <article class="cgd-card">
+        <div class="cgd-meta-label">Valor Conversão</div>
+        <div class="cgd-meta-value" id="kpiConvValue">R$ 0,00</div>
+        <div class="cgd-meta" id="kpiRoas">ROAS —</div>
+      </article>
+    </section>
+
+    <!-- Tabs -->
+    <section class="cgd-tabs">
+      <div class="cgd-tabbar" id="tabbar">
+        <button class="cgd-tab is-active" data-tab="overview">Visão Geral</button>
+        <button class="cgd-tab" data-tab="devices">Dispositivos</button>
+        <button class="cgd-tab" data-tab="demographics">Demografia</button>
+        <button class="cgd-tab" data-tab="weekday">Dia e hora</button>
+        <button class="cgd-tab" data-tab="keywords">Palavras-chave</button>
+        <button class="cgd-tab" data-tab="terms">Pesquisas</button>
+        <button class="cgd-tab" data-tab="ads">Anúncios</button>
+        <button class="cgd-tab" data-tab="geo">Locais</button>
+        <button class="cgd-tab" data-tab="changes">Alterações</button>
+
+        <!-- ✅ NEW TAB -->
+        <button class="cgd-tab" data-tab="events">Eventos</button>
+      </div>
+
+      <!-- Overview -->
+      <div class="cgd-panel is-active" id="tab-overview">
+        <div class="cgd-grid-2">
+          <div class="cgd-card">
+            <div class="cgd-card__header">
+              <h2>Resumo</h2>
+              <span class="cgd-meta">Série temporal (opcional)</span>
+            </div>
+            <div class="cgd-kv" id="kvOverview"></div>
+          </div>
+
+          <div class="cgd-card">
+            <div class="cgd-card__header">
+              <h2>Série temporal</h2>
+              <span class="cgd-meta">Últimos pontos</span>
+            </div>
+            <div class="cgd-table-tools cgd-meta">Data · Impressões · Cliques · Custo · Conv. · Valor</div>
+            <ul class="cgd-list" id="listTimeseries"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Devices -->
+      <div class="cgd-panel" id="tab-devices">
+        <div class="cgd-card">
+          <div class="cgd-card__header"><h2>Dispositivos</h2><span class="cgd-meta">Resumo</span></div>
+          <ul class="cgd-list" id="listDevices"></ul>
+        </div>
+      </div>
+
+      <!-- Demographics -->
+      <div class="cgd-panel" id="tab-demographics">
+        <div class="cgd-card">
+          <div class="cgd-card__header"><h2>Demografia</h2><span class="cgd-meta">Impressões</span></div>
+          <ul class="cgd-list" id="listDemographics"></ul>
+        </div>
+      </div>
+
+      <!-- Weekday/hour -->
+      <div class="cgd-panel" id="tab-weekday">
+        <div class="cgd-card">
+          <div class="cgd-card__header"><h2>Dia e hora</h2><span class="cgd-meta">Heatmap simplificado</span></div>
+          <ul class="cgd-list" id="listWeekdayHour"></ul>
+        </div>
+      </div>
+
+      <!-- Keywords -->
+      <div class="cgd-panel" id="tab-keywords">
+        <div class="cgd-card">
+          <div class="cgd-card__header"><h2>Palavras-chave</h2><span class="cgd-meta">Top por custo</span></div>
+          <ul class="cgd-list" id="listKeywords"></ul>
+        </div>
+      </div>
+
+      <!-- Search Terms -->
+      <div class="cgd-panel" id="tab-terms">
+        <div class="cgd-card">
+          <div class="cgd-card__header"><h2>Pesquisas</h2><span class="cgd-meta">Termos que ativaram o anúncio</span></div>
+          <ul class="cgd-list" id="listTerms"></ul>
+        </div>
+      </div>
+
+      <!-- Ads -->
+      <div class="cgd-panel" id="tab-ads">
+        <div class="cgd-card">
+          <div class="cgd-card__header"><h2>Anúncios</h2><span class="cgd-meta">Top por impressões</span></div>
+          <ul class="cgd-list" id="listAds"></ul>
+        </div>
+      </div>
+
+      <!-- Geo -->
+      <div class="cgd-panel" id="tab-geo">
+        <div class="cgd-card">
+          <div class="cgd-card__header"><h2>Locais</h2><span class="cgd-meta">Resumo por critério</span></div>
+          <ul class="cgd-list" id="listGeo"></ul>
+        </div>
+      </div>
+
+      <!-- Changes -->
+      <div class="cgd-panel" id="tab-changes">
+        <div class="cgd-card">
+          <div class="cgd-card__header"><h2>Histórico de alterações</h2><span class="cgd-meta">Change Event</span></div>
+          <ul class="cgd-list" id="listChanges"></ul>
+        </div>
+      </div>
+
+      <!-- ✅ EVENTS (FINAL) -->
+      <div class="cgd-panel" id="tab-events">
+        <div class="cgd-card">
+          <div class="cgd-card__header">
+            <h2>Últimos eventos (Realtime)</h2>
+            <span class="cgd-meta">
+              <span
+                id="eventsDot"
+                style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#2ecc71;margin-right:6px;vertical-align:middle;"></span>
+              Live · Atualizado: <span id="eventsUpdatedAt">—</span>
+
+              <button id="btnEventsOlder" class="btn-soft" style="margin-left:10px;">⬅ Carregar anteriores</button>
+              
+            </span>
+          </div>
+
+          <div style="overflow:auto;border-radius:12px;">
+            <table class="cgd-table" style="width:100%;border-collapse:separate;border-spacing:0;min-width:1200px;">
+              <thead>
+                <tr>
+                  <th style="text-align:left;padding:12px;white-space:nowrap;">Hora</th>
+                  <th style="text-align:left;padding:12px;white-space:nowrap;">Evento</th>
+                  <th style="text-align:left;padding:12px;">Página</th>
+                  <th style="text-align:left;padding:12px;">Produto</th>
+                  <th style="text-align:left;padding:12px;white-space:nowrap;">SKU</th>
+                  <th style="text-align:right;padding:12px;white-space:nowrap;">Qtd</th>
+                  <th style="text-align:right;padding:12px;white-space:nowrap;">Valor</th>
+                  <th style="text-align:left;padding:12px;white-space:nowrap;">Session</th>
+                </tr>
+              </thead>
+
+              <tbody id="eventsTbody">
+                <tr>
+                  <td colspan="8" style="padding:14px;color:#6b7280;">Carregando eventos…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="cgd-meta" style="margin-top:10px;">
+            Dica: estes eventos podem vir do GA4 ou do tracking próprio do ERP (recomendado).
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Debug -->
+    <section class="cgd-card" id="debugCard" hidden>
+      <div class="cgd-card__header">
+        <h2>Payload (raw)</h2>
+        <button id="btnDebugClose" class="btn-soft">Fechar</button>
+      </div>
+      <pre id="debugPre" style="white-space:pre-wrap;margin:0;font-size:12px;"></pre>
+    </section>
+
+    <footer class="cgd-footer">
+      <small class="cgd-footer-note">
+        Os valores exibidos são retornados diretamente pela API do Google Ads.
+        Em etapas futuras, você pode unificar com os pedidos / faturamento do ERP.
+      </small>
+    </footer>
+
+  </main>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="/public/googleAdsCampaignDetails/googleAdsCampaignDetails.js"></script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+/* ╔══════════════════════════════════════════════════════════════════╗
+   ║ inboundInvoicesEditModal.css — Modal de edição da NF-e de entrada      ║
+   ║ PRODNEX ERP                                                    ║
+   ╚══════════════════════════════════════════════════════════════════╝ */
+
+body.inbound-modal-open {
+  overflow: hidden;
+}
+
+.inbound-edit-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 950;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  background: rgba(8, 15, 28, 0.58);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.inbound-edit-modal[hidden] {
+  display: none !important;
+}
+
+.inbound-edit-dialog {
+  width: min(1540px, calc(100vw - 28px));
+  max-width: none;
+  height: min(900px, calc(100vh - 28px));
+  max-height: calc(100vh - 28px);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 28px 90px rgba(2, 8, 23, 0.34);
+  animation: inboundEditModalEnter 180ms ease-out;
+}
+
+.inbound-edit-header {
+  flex: 0 0 auto;
+  min-height: 62px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.22);
+  background:
+    radial-gradient(circle at 5% 0%, rgba(59, 130, 246, 0.12), transparent 38%),
+    linear-gradient(135deg, #f8fafc 0%, #ffffff 62%, #f1f5f9 100%);
+}
+
+.inbound-edit-header h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.inbound-edit-header p {
+  margin: 3px 0 0;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.inbound-edit-close {
+  flex: 0 0 auto;
+  width: 34px;
+  min-width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 10px;
+}
+
+.inbound-edit-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 12px;
+  overscroll-behavior: contain;
+}
+
+.inbound-edit-body > form,
+.inbound-edit-body .inbound-form-section {
+  min-height: 100%;
+}
+
+.inbound-edit-body::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+.inbound-edit-body::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: rgba(100, 116, 139, 0.5);
+  background-clip: padding-box;
+}
+
+.inbound-edit-modal.is-loading .inbound-edit-dialog {
+  cursor: progress;
+}
+
+.inbound-edit-modal.is-loading .inbound-edit-body {
+  opacity: 0.56;
+  pointer-events: none;
+}
+
+@keyframes inboundEditModalEnter {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 900px) {
+  .inbound-edit-modal {
+    padding: 6px;
+  }
+
+  .inbound-edit-dialog {
+    width: calc(100vw - 12px);
+    height: calc(100vh - 12px);
+    max-height: calc(100vh - 12px);
+    border-radius: 12px;
+  }
+
+  .inbound-edit-header {
+    padding: 10px 12px;
+  }
+
+  .inbound-edit-body {
+    padding: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inbound-edit-dialog {
+    animation: none;
+  }
+}

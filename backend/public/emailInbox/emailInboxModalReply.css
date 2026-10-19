@@ -1,0 +1,119 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ emailInboxModalReply.css — Modal Reply (PRODNEX ERP)                 ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+body.modal-open {
+  overflow: hidden;
+}
+
+/* Wrapper do modal */
+.consart-modal[hidden] { display: none !important; }
+
+.consart-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+}
+
+.consart-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.35);
+  backdrop-filter: blur(2px);
+}
+
+.consart-modal-content {
+  position: relative;
+  width: min(980px, calc(100vw - 24px));
+  max-height: calc(100vh - 24px);
+  margin: 12px auto;
+  background: var(--card, #fff);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 14px;
+  box-shadow: 0 18px 60px rgba(2, 6, 23, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.consart-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.9), rgba(255,255,255,1));
+}
+
+.consart-modal-header h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.consart-modal-close {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: #fff;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.consart-modal-body {
+  padding: 14px;
+  overflow: auto;
+}
+
+/* Ajustes para formulário no modal */
+.email-reply-modal .email-compose-form {
+  display: grid;
+  gap: 10px;
+}
+
+.email-reply-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding-top: 6px;
+}
+
+/* Chips de anexos */
+.email-reply-attach-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.email-reply-attach-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: rgba(248, 250, 252, 0.9);
+  font-size: 12px;
+}
+
+.email-reply-attach-remove {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0 2px;
+}
+
+/* Mobile */
+@media (max-width: 720px) {
+  .consart-modal-content {
+    width: calc(100vw - 16px);
+    margin: 8px auto;
+    border-radius: 12px;
+  }
+}

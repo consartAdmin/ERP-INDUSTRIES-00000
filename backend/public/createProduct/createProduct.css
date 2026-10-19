@@ -1,0 +1,78 @@
+/* ==========================================================
+   Product Header (SKU + Product Name)
+========================================================== */
+
+.page-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.page-product-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.page-product-info__code {
+    min-width: 120px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 14px;
+
+    background: #ffffff;
+    border: 1px solid #d9dee8;
+    border-radius: 8px;
+
+    font-size: 13px;
+    font-weight: 700;
+    color: #1f2937;
+
+    white-space: nowrap;
+}
+
+.page-product-info__name {
+    min-width: 350px;
+    max-width: 600px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 14px;
+
+    background: #ffffff;
+    border: 1px solid #d9dee8;
+    border-radius: 8px;
+
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.page-product-info__active {
+    flex-shrink: 0;
+    min-height: 36px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 0 12px;
+
+    background: #ffffff;
+    border: 1px solid #d9dee8;
+    border-radius: 8px;
+
+    white-space: nowrap;
+}

@@ -1,0 +1,331 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ expenses.html — Despesas (Expenses)                                ║
+     ║ Path: public/expenses/expenses.html                                ║
+     ║ PRODNEX ERP | Frontend (ESM)                                       ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Expenses • PRODNEX ERP</title>
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <link rel="stylesheet" href="/public/modalsSearch/suppliersModalSearch.css">
+
+  <!-- CSS global do sistema -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- CSS do modal -->
+  <link rel="stylesheet" href="./expenseCreateModal.css" />
+
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr page-fiscal-profile">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter table-max-height-500">
+
+        <!-- Filters -->
+        <div class="fields-inline fields-gap-3">
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <span class="dot"></span>
+            Filtros
+          </div>
+
+          <div class="btn-inline bnt-gap-3 btn-position-right">
+
+            <button id="btnNew" class="btn btn-new btn-sm">
+              <span class="btn-ico">＋</span>Novo</button>
+
+            <button id="btnFilter" class="btn btn-new btn-sm">Filtrar</button>
+
+            <button id="btnClear" class="btn btn-new btn-sm">Limpar</button>
+
+            <button id="btnPdfGenrate" class="btn btn-new btn-sm">PDF</button>
+
+          </div>
+        </div>
+        <!----------------------
+                   --------------------------------------------------
+                              --------------------------------------------------------------------------------->
+        <div class="fields-inline fields-gap-3">
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <label>Busca</label>
+            <input id="fQ" class="input" placeholder="Procurar em Nome, Descrição, Fornecedor, Categoria..." />
+          </div>
+
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <label>Nome</label>
+            <input id="fName" class="input" placeholder="ex: Aluguel, CEMIG..." />
+          </div>
+
+          <div class="fields fields-h-6 fields-w-10 fields-font-3">
+            <label>Status</label>
+            <select id="fStatus" class="select">
+              <option value="">Todos</option>
+              <option value="PENDING">Pendente</option>
+              <option value="PAID">Pago</option>
+              <option value="CANCELLED">Cancelado</option>
+            </select>
+          </div>
+
+          <div class="fields fields-h-6 fields-w-10 fields-font-3">
+            <label>Categoria</label>
+            <input id="fCategory" class="input" placeholder="ex: Aluguel, Energia..." />
+          </div>
+
+          <!-- Fornecedor -->
+          <div class="fields fields-h-6 fields-w-12 fields-font-3">
+            <label for="fornBusca">Fornecedor</label>
+            <input id="fornBusca" type="search" placeholder="Buscar..." autocomplete="off" />
+          </div>
+
+          <div class="btn-inline">
+            <button id="btnFornBusca" class="btn btn-new btn-sm">
+              <i>🔎</i>
+            </button>
+          </div>
+
+          <div class="fields fields-h-6 fields-w-10 fields-font-3">
+            <label>De</label>
+            <input id="fFrom" type="date" class="input" />
+          </div>
+
+          <div class="fields fields-h-6 fields-w-10 fields-font-3">
+            <label>Até</label>
+            <input id="fTo" type="date" class="input" />
+          </div>
+
+          <div class="fields fields-h-6 fields-w-10 fields-font-3">
+            <label>Ordenar por</label>
+            <select id="fOrderBy" class="select">
+              <option value="created_at_desc">Criado ↓</option>
+              <option value="created_at_asc">Criado ↑</option>
+              <option value="due_date_asc">Vencimento ↑</option>
+              <option value="due_date_desc">Vencimento ↓</option>
+              <option value="value_desc">Valor ↓</option>
+              <option value="value_asc">Valor ↑</option>
+              <option value="name_asc">Nome A→Z</option>
+              <option value="name_desc">Nome Z→A</option>
+              <option value="update_at_desc">Atualizado ↓</option>
+              <option value="update_at_asc">Atualizado ↑</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ✅ Internal scroll area (only here) -->
+      <div class="table-scroll table-height-flex table-row-h-20" data-table-settings="expenses.tbbody">
+        <table class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th class="col-id">ID</th>
+              <th>Nome</th>
+              <th>Categoria</th>
+              <th>Fornecedor</th>
+              <th class="col-money">Valor</th>
+              <th class="col-date">Venc.</th>
+              <th class="col-status">Status</th>
+              <th class="col-date">Criado em</th>
+              <th class="col-date">Atualizado em</th>
+              <th class="col-actions">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbBody">
+            <tr>
+              <td colspan="10" class="muted center">Carregando…</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- =================================================== -->
+      <!-- TABLE FOOTER                                        -->
+      <!-- =================================================== -->
+
+      <footer class="table-footer">
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill-success summary-width-5 summary-left-space-3">
+            <span id="apTableInfo">
+              0 Registros
+            </span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button id="btnPrevious" type="button" class="btn btn-toolbar btn-sm">
+            Anterior
+          </button>
+
+          <span id="pageInfo">
+            Página 1 de 1
+          </span>
+
+          <button id="btnNext" type="button" class="btn btn-toolbar btn-sm">
+            Próxima
+          </button>
+        </div>
+        <div class="table-footer__page-size">
+          <label for="pageSize">
+            Mostrar
+          </label>
+          <div class="fields fields-h-6 fields-w-3 fields-font-3">
+            <select id="pageSize" class="table-footer__page-size-select">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50" selected>50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
+      </footer>
+    </section>
+
+    <!-- Modal (Create/Edit) -->
+    <div id="modalLayer" class="modal-layer hidden" role="dialog" aria-modal="true">
+      <div class="modal">
+        <div class="modal-h">
+          <div>
+            <div id="modalTitle" class="modal-title">Nova Despesa</div>
+            <div class="muted" id="modalSub">Preencha os campos e salve.</div>
+          </div>
+          <button id="btnClose" class="btn btn-toolbar btn-sm" title="Fechar">✕</button>
+        </div>
+
+        <form id="formExpense" class="modal-b">
+          <input type="hidden" id="id" />
+
+          <div class="grid">
+            <div class="field">
+              <label>Expense ID (automático)</label>
+              <input id="expense_id" class="input" placeholder="Gerado automaticamente ao salvar" readonly />
+              <small class="hint">O sistema gera este código automaticamente.</small>
+            </div>
+
+            <div class="field">
+              <label>Nome *</label>
+              <input id="name" class="input" required placeholder="ex: Aluguel" />
+            </div>
+
+            <div class="field col-span-2">
+              <label>Descrição</label>
+              <input id="description" class="input" placeholder="ex: Galpão BH3..." />
+            </div>
+
+            <div class="field">
+              <label>Valor *</label>
+              <input id="value" class="input" required inputmode="decimal" placeholder="ex: 5500,00" />
+            </div>
+
+            <div class="field">
+              <label>Vencimento *</label>
+              <input id="due_date" type="date" class="input" required />
+            </div>
+
+            <div class="field">
+              <label>Competência (mês)</label>
+              <input id="competence_month" class="input" inputmode="numeric" placeholder="1..12" />
+            </div>
+
+            <div class="field">
+              <label>Competência (ano)</label>
+              <input id="competence_year" class="input" inputmode="numeric" placeholder="ex: 2026" />
+            </div>
+
+            <div class="field">
+              <label>Categoria</label>
+              <input id="category" class="input" placeholder="ex: Energia" />
+            </div>
+
+            <div class="field">
+              <label>Centro de custo</label>
+              <input id="cost_center" class="input" placeholder="ex: ADM" />
+            </div>
+
+            <!-- Fornecedor -->
+            <div class="field field--fornecedor field-group">
+              <label for="fornBusca">Fornecedor</label>
+              <div class="input-with-button">
+                <input id="fornBusca" type="search" class="field-input" placeholder="Buscar..." autocomplete="off" />
+
+                <button id="btnFornBusca" type="button" class="btn btn-toolbar btn-sm">
+                  <i>🔎</i>
+                </button>
+              </div>
+            </div>
+
+
+            <div class="field">
+              <label>Recorrência</label>
+              <select id="recurrence_type" class="select">
+                <option value="MONTHLY">Mensal</option>
+                <option value="WEEKLY">Semanal</option>
+                <option value="YEARLY">Anual</option>
+                <option value="NONE">Sem recorrência</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Status</label>
+              <select id="status" class="select">
+                <option value="PENDING">Pendente</option>
+                <option value="PAID">Pago</option>
+                <option value="CANCELLED">Cancelado</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Pago em</label>
+              <input id="paid_date" type="date" class="input" />
+            </div>
+
+            <div class="field">
+              <label>Método de pagamento</label>
+              <input id="payment_method" class="input" placeholder="ex: PIX, Boleto, Dinheiro" />
+            </div>
+
+            <div class="field">
+              <label>Conta a pagar (ID)</label>
+              <input id="account_payable_id" class="input" inputmode="numeric" placeholder="opcional" />
+            </div>
+
+            <div class="field">
+              <label>Ativo</label>
+              <select id="is_active" class="select">
+                <option value="true">Sim</option>
+                <option value="false">Não</option>
+              </select>
+            </div>
+
+            <div class="field col-span-2">
+              <label>Payload (JSON opcional)</label>
+              <textarea id="payload" class="textarea" rows="6" placeholder='{"any":"extra"}'></textarea>
+            </div>
+          </div>
+
+          <div class="modal-f">
+            <button id="btnDelete" type="button" class="btn btn-toolbar btn-sm">Excluir</button>
+
+            <div class="right">
+              <button type="button" id="btnCancel" class="btn btn-toolbar btn-sm">Cancelar</button>
+              <button id="btnSave" class="btn btn-toolbar btn-sm" type="submit">Salvar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script type="module" src="/public/includes/js/core.js"></script>
+    <script type="module" src="./expenses.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,320 @@
+/* ╔══════════════════════════════════════════════════════════════════════════╗
+   ║ 🎨 reportsProductsStock.css — Relatórios | Posição de Estoque           ║
+   ║ PRODNEX ERP · Filtros avançados em barra única                          ║
+   ║ ✅ Layout de filtros refinado                                           ║
+   ║ ✅ Melhor alinhamento visual                                             ║
+   ║ ✅ Ações organizadas à direita                                            ║
+   ║ ✅ Responsivo e consistente com o design system CONSART                  ║
+   ╚══════════════════════════════════════════════════════════════════════════╝ */
+
+:root{
+  --rps-gap-1: 8px;
+  --rps-gap-2: 12px;
+  --rps-gap-3: 16px;
+  --rps-gap-4: 18px;
+
+  --rps-radius-sm: 10px;
+  --rps-radius-md: 14px;
+  --rps-radius-lg: 16px;
+
+  --rps-border: rgba(15, 23, 42, .10);
+  --rps-border-strong: rgba(15, 23, 42, .16);
+  --rps-shadow: 0 18px 44px rgba(2, 6, 23, .10);
+
+  --rps-filter-bg: rgba(255,255,255,.50);
+  --rps-text: #0f172a;
+  --rps-muted: #475569;
+}
+
+/* ====== TOPO ====== */
+.module-top{
+  padding: 14px 16px 0 16px;
+}
+
+.module-title h1{
+  margin: 0;
+  font-size: 20px;
+  letter-spacing: .2px;
+}
+
+.module-title p{
+  margin: 6px 0 0 0;
+  font-size: 12.5px;
+  opacity: .82;
+}
+
+/* ====== FILTER BAR ====== */
+.module-filters{
+  padding: 10px 16px 10px 16px;
+}
+
+.filters-grid{
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 14px 12px;
+  align-items: end;
+}
+
+.fg{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.fg label{
+  margin: 0;
+  font-size: 12.75px;
+  line-height: 1.2;
+  color: var(--rps-text);
+  opacity: .96;
+}
+
+.fg label b{
+  font-weight: 700;
+}
+
+.fg input,
+.fg select{
+  width: 100%;
+  min-width: 0;
+  min-height: 36px;
+  box-sizing: border-box;
+}
+
+.fg input[type="text"],
+.fg input[type="number"],
+.fg select{
+  border-radius: 12px;
+}
+
+/* ====== POSICIONAMENTO DESKTOP ====== */
+/* 1ª linha */
+.filters-grid .fg:nth-child(1){ grid-column: 1 / span 3; }   /* Buscar */
+.filters-grid .fg:nth-child(2){ grid-column: 4 / span 3; }   /* Fornecedor */
+.filters-grid .fg:nth-child(3){ grid-column: 7 / span 2; }   /* Grupo */
+.filters-grid .fg:nth-child(4){ grid-column: 9 / span 2; }   /* Subgrupo */
+.filters-grid .fg:nth-child(5){ grid-column: 11 / span 2; }  /* Marca */
+
+/* 2ª linha */
+.filters-grid .fg:nth-child(6){ grid-column: 1 / span 2; }   /* Estoque */
+.filters-grid .fg:nth-child(7){ grid-column: 3 / span 2; }   /* Ativo */
+.filters-grid .fg:nth-child(8){ grid-column: 5 / span 1; }   /* Custo mín. */
+.filters-grid .fg:nth-child(9){ grid-column: 6 / span 1; }   /* Custo máx. */
+.filters-grid .fg:nth-child(10){ grid-column: 7 / span 2; }  /* Ordenar */
+.filters-grid .fg:nth-child(11){ grid-column: 9 / span 1; }  /* Limite */
+.filters-grid .fg:nth-child(12){ grid-column: 10 / span 3; } /* Ações */
+
+/* ====== CHECKBOX / ESTOQUE ====== */
+.fg-switch{
+  padding-left: 2px;
+}
+
+.inline-check{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+  padding: 0;
+  margin: 0;
+  user-select: none;
+  font-size: 12.75px;
+  color: var(--rps-muted);
+  opacity: .98;
+}
+
+.inline-check input[type="checkbox"]{
+  width: 16px;
+  height: 16px;
+  min-height: auto;
+  margin: 0;
+  flex: 0 0 auto;
+}
+
+.inline-check span{
+  line-height: 1.15;
+}
+
+/* ====== AÇÕES ====== */
+.fg-actions{
+  align-self: end;
+}
+
+.fg-actions > label{
+  margin-bottom: 6px;
+}
+
+.actions-row{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--rps-gap-1);
+  flex-wrap: nowrap;
+}
+
+.actions-row .btn{
+  min-height: 36px;
+  padding-inline: 14px;
+  border-radius: var(--rps-radius-sm);
+  white-space: nowrap;
+}
+
+.actions-row .btn-ico{
+  margin-right: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.actions-row .btn-label{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ====== STATUS ====== */
+.module-status{
+  padding: 4px 16px 0 16px;
+  min-height: 22px;
+  font-size: 12.5px;
+}
+
+.module-status[data-type="error"]{
+  color: #b91c1c;
+}
+
+.module-status[data-type="success"]{
+  color: #15803d;
+}
+
+.module-status[data-type="info"]{
+  color: inherit;
+}
+
+/* ====== TABLE ====== */
+.table-box{
+  padding: 10px 16px 10px 16px;
+}
+
+#tblStock th,
+#tblStock td{
+  white-space: nowrap;
+}
+
+#tblStock .col-id{
+  width: 70px;
+}
+
+#tblStock .col-code{
+  width: 120px;
+}
+
+#tblStock .col-desc{
+  white-space: normal;
+  width: 100%;
+  min-width: 420px;
+}
+
+#tblStock .col-num{
+  width: 90px;
+}
+
+#tblStock .col-money{
+  width: 120px;
+}
+
+.text-right{
+  text-align: right;
+}
+
+/* ====== FOOTER ====== */
+.module-footer{
+  position: sticky;
+  bottom: 0;
+  background: rgba(255,255,255,.86);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--rps-border);
+  padding: 10px 16px;
+  display: grid;
+  gap: 10px;
+  z-index: 2;
+}
+
+.footer-info-line{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 12.5px;
+}
+
+.footer-info-line .sep{
+  opacity: .45;
+}
+
+.footer-center{
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.empty{
+  text-align: center;
+  padding: 18px 10px;
+  opacity: .75;
+}
+
+/* ====== RESPONSIVO ====== */
+@media (max-width: 1280px){
+  .filters-grid{
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .filters-grid .fg:nth-child(1){ grid-column: span 3; } /* Buscar */
+  .filters-grid .fg:nth-child(2){ grid-column: span 3; } /* Fornecedor */
+  .filters-grid .fg:nth-child(3){ grid-column: span 2; } /* Grupo */
+  .filters-grid .fg:nth-child(4){ grid-column: span 2; } /* Subgrupo */
+  .filters-grid .fg:nth-child(5){ grid-column: span 2; } /* Marca */
+
+  .filters-grid .fg:nth-child(6){ grid-column: span 2; } /* Estoque */
+  .filters-grid .fg:nth-child(7){ grid-column: span 2; } /* Ativo */
+  .filters-grid .fg:nth-child(8){ grid-column: span 1; } /* Custo mín. */
+  .filters-grid .fg:nth-child(9){ grid-column: span 1; } /* Custo máx. */
+  .filters-grid .fg:nth-child(10){ grid-column: span 2; } /* Ordenar */
+  .filters-grid .fg:nth-child(11){ grid-column: span 1; } /* Limite */
+  .filters-grid .fg:nth-child(12){ grid-column: span 6; } /* Ações */
+
+  .actions-row{
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 760px){
+  .module-filters{
+    padding: 10px 14px 10px 14px;
+  }
+
+  .filters-grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .filters-grid .fg{
+    grid-column: span 2 !important;
+  }
+
+  .actions-row{
+    justify-content: flex-start;
+  }
+
+  .footer-info-line{
+    gap: 8px;
+  }
+
+  #tblStock .col-desc{
+    min-width: 280px;
+  }
+}

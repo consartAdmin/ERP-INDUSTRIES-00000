@@ -1,0 +1,219 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ ordersKanbanModalPendencia.css — Modal Pendências (LIGHT / CLEAN)   ║
+   ║ Path: /public/modalsSearch/ordersKanbanModalPendencia.css           ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.ok-modal.ok-kb-pend-modal {
+  display: none;
+}
+
+.ok-modal.ok-kb-pend-modal.is-open {
+  display: block;
+}
+
+/* Backdrop mais claro (nada “dark”) */
+.ok-kb-pend-modal .ok-modal__backdrop {
+  position: fixed;
+  inset: 0;
+  /* bem suave */
+  background: rgba(15, 23, 42, 0.18);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 9998;
+}
+
+/* Busca de produtos aberta a partir do modal de pendências fica por cima */
+body:has(.ok-kb-pend-modal.is-open) #productsSearchOverlay {
+  z-index: 10000;
+}
+
+/* Dialog LIGHT */
+.ok-kb-pend-modal .ok-modal__dialog {
+  position: fixed;
+  z-index: 9999;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: min(980px, calc(100vw - 28px));
+  max-height: calc(100vh - 28px);
+  overflow: auto;
+
+  /* ✅ CLEAN */
+  background: #ffffff;
+  color: #0f172a;
+
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  border-radius: 16px;
+
+  /* sombra leve, elegante */
+  box-shadow:
+    0 18px 55px rgba(15, 23, 42, 0.18),
+    0 2px 10px rgba(15, 23, 42, 0.08);
+}
+
+/* Header clean */
+.ok-kb-pend-modal .ok-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 14px 16px;
+
+  background: linear-gradient(to bottom, rgba(15,23,42,.03), rgba(15,23,42,0));
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.ok-kb-pend-modal .ok-modal__header h3 {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.2;
+  letter-spacing: 0.2px;
+}
+
+.ok-kb-pend-modal .ok-modal__close {
+  border-radius: 10px;
+}
+
+/* Body */
+.ok-kb-pend-modal .ok-modal__body {
+  padding: 14px 16px 16px;
+}
+
+/* Form — duas linhas fields-inline (fields.css): campos + observação.
+   display explícito porque ordersKanban.css define .ok-pend-form como grid */
+.ok-kb-pend-modal .ok-pend-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+
+  padding: 12px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.02);
+}
+
+/* Inputs dentro do modal — remove aparência dark herdada */
+.ok-kb-pend-modal .ok-input,
+.ok-kb-pend-modal .ok-textarea,
+.ok-kb-pend-modal input[type="text"],
+.ok-kb-pend-modal input[type="number"],
+.ok-kb-pend-modal select {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid rgba(15, 23, 42, 0.14) !important;
+}
+
+.ok-kb-pend-modal .ok-input::placeholder,
+.ok-kb-pend-modal input::placeholder {
+  color: rgba(15, 23, 42, 0.50) !important;
+}
+
+.ok-kb-pend-modal select:disabled {
+  opacity: 0.6;
+}
+
+/* Labels e textos auxiliares */
+.ok-kb-pend-modal .ok-label,
+.ok-kb-pend-modal .fields > label {
+  color: rgba(15, 23, 42, 0.85);
+}
+
+.ok-kb-pend-modal .ok-text-muted {
+  color: rgba(15, 23, 42, 0.60);
+}
+
+/* Lists */
+.ok-kb-pend-modal .ok-pend-lists {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.ok-kb-pend-modal .ok-pend-group {
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: #ffffff;
+}
+
+.ok-kb-pend-modal .ok-pend-group h4 {
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: rgba(15, 23, 42, 0.85);
+}
+
+.ok-kb-pend-modal .ok-pend-list {
+  display: grid;
+  gap: 10px;
+}
+
+/* Cards de pendência */
+.ok-kb-pend-modal .ok-pend-item {
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  background: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+
+  box-shadow: 0 1px 8px rgba(15,23,42,.06);
+}
+
+/* Pendência carregada no formulário para edição */
+.ok-kb-pend-modal .ok-pend-item--editing {
+  border-color: rgba(37, 99, 235, 0.55);
+  background: rgba(37, 99, 235, 0.05);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+.ok-kb-pend-modal .ok-pend-item--done {
+  background: rgba(15, 23, 42, 0.02);
+}
+
+/* esmaece só o texto; o botão Reabrir continua nítido */
+.ok-kb-pend-modal .ok-pend-item--done .ok-pend-main {
+  opacity: 0.72;
+}
+
+.ok-kb-pend-modal .ok-pend-main {
+  display: grid;
+  gap: 4px;
+}
+
+/* Botões — garante contraste em light */
+.ok-kb-pend-modal .btn {
+  filter: none;
+}
+
+/* Modal Editar Card (ordersKanbanModalEditCard.js) — mesmo visual, mais estreito */
+.ok-kb-edit-card-modal .ok-modal__dialog {
+  width: min(720px, calc(100vw - 28px));
+}
+
+.ok-kb-pend-modal textarea {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid rgba(15, 23, 42, 0.14) !important;
+  height: auto;
+  resize: vertical;
+}
+
+.ok-kb-edit-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* Mobile */
+@media (max-width: 860px) {
+  .ok-kb-pend-modal .ok-pend-form > .fields-inline {
+    flex-wrap: wrap;
+  }
+  .ok-kb-pend-modal .ok-pend-lists {
+    grid-template-columns: 1fr;
+  }
+}

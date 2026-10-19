@@ -1,0 +1,80 @@
+/* =================================================================
+   style.css — Orquestrador (importa todos os CSS do design system)
+   Use apenas ESTE arquivo no <head>.
+   ================================================================= */
+
+@import url("./base.css");
+@import url("./page.css");
+/*using*/
+@import url("./pagination.css");
+/*using*/
+@import url("./wrapper.css");
+/*using*/
+@import url("./table.css");
+/*using*/
+@import url("./containerConsart.css");
+/*using*/
+@import url("./tab.css");
+/*using*/
+@import url("./panel.css");
+/*using*/
+@import url("./gapBetweenFields.css");
+/*using*/
+@import url("./fields.css");
+/*using*/
+@import url("./button.css");
+@import url("./actionIcons.css");
+/*using*/
+@import url("./grids.css");
+/*using*/
+@import url("./entityHeader.css");
+/*using Only on the "editProducts.html"*/
+@import url("./checkBox.css");
+/*using*/
+@import url("./modals.css");
+/*using*/
+@import url("./summary.css");
+/*using*/
+@import url("./kanban.css");
+/*using*/
+@import url("./section.css");
+/*using*/
+@import url("./hoverMouseShows.css");
+/*using*/
+@import url("./img.css");
+
+/*using*/
+@import url("./readOnlyText.css");
+/*using*/
+
+@import url("./sortableTable.css");
+
+@import url("./tableSettings.css");
+
+@import url("./date-range-field.css");
+
+
+/* =================================================================
+                          HEADERS
+ ================================================================= */
+@import url("./headers.css");
+
+@import url("./menuConsart.css");
+@import url("./menuConsartMobile.css");
+@import url("./statusUsuario.css");
+@import url("./centerAlertModal.css");
+@import url("./topGradientBar.css");
+@import url("./containerLeftAndRightConsart.css");
+
+/* 🔹 NEW: Symbols / icons system */
+@import url("./symbols.css");
+
+/* 👇 DEIXAR POR ÚLTIMO, PRA GANHAR DAQUELES DE CIMA */
+@import url("./components.css");
+
+/*using*/
+@import url("./textArea.css");
+
+/* Dica:
+   Se precisar de temas/overrides específicos do cliente/instância,
+   crie um novo arquivo e importe aqui após os demais para sobrepor. */

@@ -1,0 +1,161 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+ * ║ dashBoardAlerts.css — Estilos dos Alertas (E-mail / NF-e)           ║
+ * ║ PRODNEX ERP                                                         ║
+ * ║                                                                      ║
+ * ║ Aplica estilos de cards, badges, animações e estados ativos.         ║
+ * ╚══════════════════════════════════════════════════════════════════════╝ */
+
+
+/* ===========================================================
+   LINHA DE ALERTAS
+   =========================================================== */
+
+.dashboard-alerts-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+
+/* ===========================================================
+   CARD BASE
+   =========================================================== */
+
+.dashboard-alert-card {
+  flex: 1 1 260px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: #ffffff;
+
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.06);
+
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+.dashboard-alert-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.12);
+}
+
+
+/* ===========================================================
+   ÍCONE
+   =========================================================== */
+
+.dashboard-alert-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+
+/* ===========================================================
+   TEXTOS
+   =========================================================== */
+
+.dashboard-alert-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.dashboard-alert-label {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.dashboard-alert-status {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+
+/* ===========================================================
+   BADGE (contador)
+   =========================================================== */
+
+.dashboard-alert-badge {
+  min-width: 26px;
+  height: 26px;
+  border-radius: 999px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 8px;
+
+  background: #e5e7eb;
+  color: #111827;
+  font-size: 0.75rem;
+  font-weight: 700;
+
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+
+/* ===========================================================
+   ESTADO ATIVO — ALERTA GERAL (email)
+   =========================================================== */
+
+.dashboard-alert-card.is-active {
+  border-color: #22c55e;
+  background: #f0fdf4; /* leve verde pastel */
+  box-shadow:
+    0 0 0 1px rgba(34, 197, 94, 0.25),
+    0 0 18px rgba(34, 197, 94, 0.35);
+  animation: dashAlertPulseGreen 1.2s ease-in-out infinite;
+}
+
+.dashboard-alert-card.is-active .dashboard-alert-badge {
+  background: #22c55e;
+  color: #f9fafb;
+}
+
+
+/* ===========================================================
+   ESTADO ATIVO — ALERTA NF-e (amarelo)
+   =========================================================== */
+
+.dashboard-alert-card.nfe-active {
+  border-color: #fbbf24;
+  background: #fffbeb; /* leve amarelo pastel */
+  box-shadow:
+    0 0 0 1px rgba(251, 191, 36, 0.35),
+    0 0 20px rgba(251, 191, 36, 0.45);
+  animation: dashAlertPulseYellow 1.25s ease-in-out infinite;
+}
+
+.dashboard-alert-card.nfe-active .dashboard-alert-badge {
+  background: #fbbf24;
+  color: #78350f;
+}
+
+
+/* ===========================================================
+   ANIMAÇÕES DE PULSO
+   =========================================================== */
+
+@keyframes dashAlertPulseGreen {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-1px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes dashAlertPulseYellow {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-1px); }
+  100% { transform: translateY(0); }
+}

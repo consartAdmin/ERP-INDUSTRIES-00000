@@ -1,0 +1,25 @@
+[
+  {
+    "origin": [
+      "http://localhost:8080",
+      "http://127.0.0.1:8080",
+      "https://consart-erp.web.app",
+      "https://erp.prodnex.com.br"
+    ],
+    "method": [
+      "GET",
+      "HEAD",
+      "PUT",
+      "POST",
+      "DELETE"
+    ],
+    "responseHeader": [
+      "Content-Type",
+      "Content-Length",
+      "ETag",
+      "x-goog-generation",
+      "x-goog-resumable"
+    ],
+    "maxAgeSeconds": 3600
+  }
+]

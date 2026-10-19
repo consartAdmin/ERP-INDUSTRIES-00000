@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>COBRANÇA EXTRA JUD. | CONSART</title>
+
+  <!-- Estilos globais -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- Estilos da página -->
+  <link rel="stylesheet" href="cobrancaExtraJudicial.css" />
+</head>
+<body class="consart-theme c-page">
+  <main class="c-main">
+    <div class="c-container c-container--2xl">
+      <h1>CONSART • Central de Cobranças</h1>
+
+      <!-- Dois cards lado a lado no desktop -->
+      <div class="c-grid c-grid-2">
+        <!-- Formulário -->
+        <section class="card" aria-labelledby="titulo-form">
+          <h2 id="titulo-form">Dados para cálculo</h2>
+
+          <form id="formCobranca" autocomplete="off">
+            <!-- use grid para blocos coerentes -->
+            <div class="c-grid c-grid-2" style="gap: var(--c-space-4)">
+              <div>
+                <label for="credor">CREDOR</label>
+                <input id="credor" type="text" placeholder="Ex.: CONSART GESTÃO EMPRESARIAL LTDA" />
+              </div>
+              <div>
+                <label for="nf">NOTA FISCAL (nº)</label>
+                <input id="nf" inputmode="numeric" placeholder="Ex.: 12345" />
+              </div>
+
+              <div>
+                <label for="valorOriginal">Valor Original (R$)</label>
+                <input id="valorOriginal" inputmode="decimal" placeholder="0,00" />
+              </div>
+              <div>
+                <label for="vencimento">Vencimento</label>
+                <input id="vencimento" type="date" />
+              </div>
+
+              <div>
+                <label for="dataCalculo">Data de Cálculo</label>
+                <input id="dataCalculo" type="date" />
+              </div>
+              <div>
+                <label for="jurosMes">Juros ao mês (%)</label>
+                <input id="jurosMes" inputmode="decimal" value="1" />
+              </div>
+
+              <div>
+                <label for="jurosDia">Correção diária (% ao dia)</label>
+                <input id="jurosDia" inputmode="decimal" placeholder="0,033" />
+              </div>
+              <div>
+                <label for="multaPerc">Multa (%)</label>
+                <input id="multaPerc" inputmode="decimal" value="2" />
+                <div class="switch" style="margin-top: 6px;">
+                  <input type="checkbox" id="usarMultaFixa" />
+                  <label for="usarMultaFixa" class="muted">usar multa fixa (R$)</label>
+                </div>
+              </div>
+
+              <div>
+                <label for="multaFixa">Multa fixa (R$)</label>
+                <input id="multaFixa" inputmode="decimal" placeholder="Ex.: 20,00" />
+              </div>
+              <div>
+                <label for="taxaCobranca">Taxa de Cobrança (%)</label>
+                <input id="taxaCobranca" inputmode="decimal" value="10" />
+              </div>
+
+              <div>
+                <label for="taxasFixas">Outras Taxas Fixas (R$)</label>
+                <input id="taxasFixas" inputmode="decimal" placeholder="0,00" />
+              </div>
+            </div>
+
+            <div class="actions" style="margin-top: var(--c-space-6); display:flex; gap: var(--c-space-3); flex-wrap:wrap;">
+              <button type="button" class="btn primary" id="btnCalcular">Calcular &amp; Gerar Documento</button>
+              <button type="button" class="btn" id="btnLimpar">Limpar</button>
+              <button type="button" class="btn" id="btnCopiar">Copiar Texto</button>
+              <button type="button" class="btn" id="btnImprimir">Imprimir / PDF</button>
+            </div>
+          </form>
+
+          <div class="kpis" style="margin-top: var(--c-space-6); display:grid; gap: var(--c-space-4); grid-template-columns: repeat(3, 1fr);">
+            <div class="kpi">
+              <div class="label">Dias em atraso</div>
+              <div class="value" id="kDias">—</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Valor c/ Juros+Multa</div>
+              <div class="value" id="kAtualizado">—</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Valor Final c/ Taxas</div>
+              <div class="value ok" id="kFinal">—</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Documento -->
+        <section class="card" aria-labelledby="titulo-doc">
+          <h2 id="titulo-doc">Documento – Cobrança Extrajudicial</h2>
+
+          <div class="c-grid c-grid-2" style="gap: var(--c-space-4)">
+            <div>
+              <div class="muted">CREDOR</div>
+              <div id="outCredor" class="out">—</div>
+            </div>
+            <div>
+              <div class="muted">NOTA FISCAL</div>
+              <div id="outNF" class="out">—</div>
+            </div>
+            <div>
+              <div class="muted">VALOR ORIGINAL</div>
+              <div id="outOriginal" class="out">—</div>
+            </div>
+            <div>
+              <div class="muted">VALOR ATUALIZADO</div>
+              <div id="outAtualizado" class="out">—</div>
+            </div>
+          </div>
+
+          <div style="margin-top: var(--c-space-4)">
+            <div class="muted">VALOR FINAL COM TAXAS</div>
+            <div id="outFinal" class="out big">—</div>
+          </div>
+
+          <div style="margin-top: var(--c-space-6)">
+            <div class="muted">TEXTO</div>
+            <div id="documento" class="doc"></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- Scripts globais -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+  
+  <script src="cobrancaExtraJudicial.js"></script>
+</body>
+</html>

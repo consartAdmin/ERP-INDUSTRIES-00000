@@ -1,0 +1,183 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════════╗
+     ║ 📦 public/products/products.html — Lista de Produtos (PRODNEX ERP)     ║
+     ║ ✅ Igual Clientes: 1 card + tabela rolável + footer interno fixo        ║
+     ║ ✅ Botões Buscar + Novo + Excel + Posição Estoque no mesmo bloco        ║
+     ╚══════════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>PRODUTOS | PRODNEX ERP</title>
+
+  <!-- 🎨 CSS — Design System CONSART -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/products/css/products.camera.css" />
+  <link rel="stylesheet" href="/public/products/css/products.css?v=10" />
+</head>
+
+<body class="page consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <!-- 🔝 Menu principal (injetado dinamicamente) -->
+
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter">
+
+        <!-- Line 1: fields side by side -->
+        <div class="fields-inline fields-gap-3">
+
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <label for="txtBusca"><b>Buscar</b></label>
+            <input type="text" id="txtBusca" placeholder="Código, descrição, ref. fabricante, cód. barras…" />
+          </div>
+
+          <div class="fields fields-h-6 fields-w-7 fields-font-3">
+            <label for="txtBusca"><b>Status</b></label>
+            <select id="filterStatus" title="Filtrar por status">
+              <option value="">Todos status</option>
+              <option value="ativo">Ativo</option>
+              <option value="inativo">Inativo</option>
+            </select>
+          </div>
+
+          <div class="fields fields-h-6 fields-w-10 fields-font-3">
+            <label for="txtBusca"><b>Fabricante</b></label>
+            <select id="filterManufacturer" title="Filtrar por fabricante">
+              <option value="">Todos fabricantes</option>
+            </select>
+          </div>
+
+          <div class="fields fields-h-6 fields-w-10 fields-font-3">
+            <label for="txtBusca"><b>Fornecedores</b></label>
+            <select id="filterSupplier" title="Filtrar por fornecedor">
+              <option value="">Todos fornecedores</option>
+            </select>
+          </div>
+
+          <div class="fields fields-h-6 fields-w-10 fields-font-3">
+            <label for="txtBusca"><b>Grupos</b></label>
+            <select id="filterGroup" title="Filtrar por grupo">
+              <option value="">Todos grupos</option>
+            </select>
+          </div>
+
+          <div class="fields fields-h-6 fields-w-10 fields-font-3">
+            <label for="txtBusca"><b>Subgrupos</b></label>
+            <select id="filterSubgroup" title="Filtrar por subgrupo">
+              <option value="">Todos subgrupos</option>
+            </select>
+          </div>
+
+          <button type="button" id="btnBuscar" class="btn btn-search btn-h-5 btn-w-2" title="Buscar">
+            Buscar
+          </button>
+
+          <button id="btnClearFilters" class="btn btn-search btn-h-5 btn-w-2" type="button" title="Limpar filtros">
+            Limpar
+          </button>
+
+          <div class="btn-position-right">
+
+            <img id="btnExport" class="img img-action img-w-9 img-h-9" src="/iconsImagens/excelIcons.png"
+              alt="Exportar planilha de produtos" title="Exportar planilha de produtos" role="button" tabindex="0">
+
+            <img id="btnPosicaoEstoque" class="img img-action img-w-15 img-h-17"
+              src="/public/invoicesIssued/icons/pdf.png" alt="Gerar PDF de Posição de Estoque"
+              title="Gerar PDF de Posição de Estoque (Custo x Quantidade)" role="button" tabindex="0">
+
+            <img id="btnNovoProduto" class="img img-action img-w-10 img-h-10"
+              src="/public/invoicesIssued/icons/newProduct.png" alt="Criar novo produto" title="Criar novo produto"
+              role="button" tabindex="0" onclick="window.location.href='/public/createProduct/createProduct.html'"
+              onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); this.click(); }">
+
+            <div class="products-columns">
+              <button type="button" id="btnColumnsSettings" class="products-columns__trigger"
+                title="Configurar tabela" aria-label="Configurar tabela" aria-haspopup="dialog"
+                aria-expanded="false" aria-controls="tableSettingsModal">⚙️</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ✅ TABELA ROLÁVEL DENTRO DO CARD -->
+      <div class="table-scroll table-height-600 table-row-h-20" data-table-settings-manual>
+        <table class="table table-zebra table-zebra-hover table-sticky-head table-freeze-left-3 table-freeze-right-1">
+          <thead>
+            <tr id="productsTableHeader">
+              <th class="col-id">ID</th>
+              <th class="col-code">Código</th>
+              <th class="col-descricao">Descrição</th>
+              <th class="col-codbarras">Cód. Barras</th>
+              <th class="col-ref">Ref. Fab.</th>
+              <th class="text-right col-preco-custo">Preço de Custo</th>
+              <th class="text-right col-preco-varejo">Preço Varejo</th>
+              <!-- Outros preços retornados pela API são inseridos aqui. -->
+              <th class="text-right col-estoque">Estoque</th>
+              <th class="col-local" data-feature="PRODUCT_LOCATIONS">Localização</th>
+              <th class="col-ativo">Status</th>
+              <th class="col-fiscal">Prod. Fiscal</th>
+              <!-- Imagem: inserida via JS conforme a appFeature PRODUCT_SEARCH_IMAGE_MODE -->
+              <th class="text-center col-actions">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- ✅ FOOTER INTERNO -->
+      <footer class="table-footer">
+
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+            <span id="apTableInfo">0 registros encontrados</span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+
+          <button type="button" id="pagAnterior" class="btn btn-clean btn-sm">
+            Anterior
+          </button>
+
+          <span id="infoPagina">Página 1 de 1</span>
+
+          <button type="button" id="pagProxima" class="btn btn-new btn-sm">
+            Próxima
+          </button>
+
+        </div>
+
+        <div class="table-footer__page-size">
+          <label for="apRowsPerPage">Mostrar</label>
+
+          <select id="apRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+            <option value="10">10 linhas</option>
+            <option value="20">20 linhas</option>
+            <option value="30">30 linhas</option>
+            <option value="50" selected>50 linhas</option>
+            <option value="100">100 linhas</option>
+          </select>
+        </div>
+
+      </footer>
+
+    </section>
+  </main>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+
+  <script type="module" src="/public/products/js/products.init.js"></script>
+
+</body>
+
+</html>

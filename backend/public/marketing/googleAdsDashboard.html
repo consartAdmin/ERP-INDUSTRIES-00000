@@ -1,0 +1,321 @@
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ googleAdsDashboard.html — Dashboard Tráfego Pago (Manual)       ║
+     ║ PRODNEX ERP                                                     ║
+     ║                                                                 ║
+     ║ - Cadastro manual de campanhas/resultados                       ║
+     ║ - Consome API local: /api/marketing/google-ads                  ║
+     ║ - Layout: cards + tabela + filtros + modal CRUD                 ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <title>TRÁFEGO PAGO | PRODNEX ERP</title>
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/marketing/googleAdsDashboard.css" />
+</head>
+
+<body class="body-default">
+  <main class="gad-page">
+
+    <!-- HEADER / FILTROS + AÇÕES -->
+    <section class="gad-header">
+      <div class="gad-header__bar">
+
+        <div class="gad-header__filters">
+          <div class="gad-filter">
+            <label for="gad-filter-mode">Período</label>
+            <select id="gad-filter-mode">
+              <option value="LAST_7_DAYS">Últimos 7 dias</option>
+              <option value="LAST_14_DAYS">Últimos 14 dias</option>
+              <option value="LAST_30_DAYS" selected>Últimos 30 dias</option>
+              <option value="LAST_90_DAYS">Últimos 90 dias</option>
+              <option value="TODAY">Hoje</option>
+              <option value="YESTERDAY">Ontem</option>
+              <option value="SPECIFIC_DAY">Data específica…</option>
+              <option value="MONTH">Mês específico…</option>
+              <option value="CUSTOM_RANGE">Intervalo personalizado…</option>
+              <option value="ALL">Todos</option>
+            </select>
+          </div>
+
+          <div class="gad-filter">
+            <label for="gad-campaign-filter">Campanha</label>
+            <select id="gad-campaign-filter">
+              <option value="">Todas as campanhas</option>
+            </select>
+          </div>
+
+          <div class="gad-filter">
+            <label for="gad-channel-filter">Canal</label>
+            <select id="gad-channel-filter">
+              <option value="">Todos</option>
+              <option value="SEARCH">Pesquisa</option>
+              <option value="DISPLAY">Display</option>
+              <option value="VIDEO">Vídeo</option>
+              <option value="SHOPPING">Shopping</option>
+              <option value="PERFORMANCE_MAX">Performance Max</option>
+              <option value="DISCOVERY">Discovery</option>
+              <option value="OTHER">Outro</option>
+            </select>
+          </div>
+
+          <div class="gad-filter">
+            <label for="gad-status-filter">Status</label>
+            <select id="gad-status-filter">
+              <option value="">Todos</option>
+              <option value="ENABLED">Ativa</option>
+              <option value="PAUSED">Pausada</option>
+              <option value="REMOVED">Removida</option>
+            </select>
+          </div>
+
+          <div class="gad-filter">
+            <label for="gad-sort-by">Ordenar por</label>
+            <select id="gad-sort-by">
+              <option value="cost" selected>Custo</option>
+              <option value="clicks">Cliques</option>
+              <option value="impressions">Impressões</option>
+              <option value="ctr">CTR</option>
+              <option value="conversions">Conversões</option>
+              <option value="convValue">Valor Conv.</option>
+              <option value="roas">ROAS</option>
+              <option value="date">Data</option>
+              <option value="campaignName">Campanha</option>
+            </select>
+          </div>
+
+          <div class="gad-filter gad-filter--inline" id="gad-date-inputs" hidden>
+            <label id="gad-date-inputs-label">Datas</label>
+            <div class="gad-date-inputs__row">
+              <input type="date" id="gad-date-single" class="gad-input" />
+
+              <input type="date" id="gad-date-from" class="gad-input" />
+              <span class="gad-date-separator" id="gad-date-separator">até</span>
+              <input type="date" id="gad-date-to" class="gad-input" />
+
+              <select id="gad-year" class="gad-input" aria-label="Ano"></select>
+
+              <select id="gad-month-select" class="gad-input" aria-label="Mês">
+                <option value="1">Janeiro</option>
+                <option value="2">Fevereiro</option>
+                <option value="3">Março</option>
+                <option value="4">Abril</option>
+                <option value="5">Maio</option>
+                <option value="6">Junho</option>
+                <option value="7">Julho</option>
+                <option value="8">Agosto</option>
+                <option value="9">Setembro</option>
+                <option value="10">Outubro</option>
+                <option value="11">Novembro</option>
+                <option value="12">Dezembro</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="gad-header__actions">
+          <button id="gad-sort-dir" class="btn-soft" title="Alternar ordem">
+            ⬇️ Maior → Menor
+          </button>
+
+          <button id="gad-new-btn" class="btn-primary">
+            ➕ Novo lançamento
+          </button>
+
+          <button id="gad-refresh-btn" class="btn-soft">
+            🔄 Atualizar
+          </button>
+
+          <button id="gad-debug-btn" class="btn-soft">
+            🧪 Debug
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- KPIs -->
+    <section class="gad-kpis">
+      <article class="gad-kpi-card">
+        <div class="gad-kpi-label">Investimento total</div>
+        <div class="gad-kpi-value" id="gad-kpi-cost">R$ 0,00</div>
+        <div class="gad-kpi-sub" id="gad-kpi-cost-per-day">— / dia</div>
+      </article>
+
+      <article class="gad-kpi-card">
+        <div class="gad-kpi-label">Cliques</div>
+        <div class="gad-kpi-value" id="gad-kpi-clicks">0</div>
+        <div class="gad-kpi-sub" id="gad-kpi-cpc">CPC médio —</div>
+      </article>
+
+      <article class="gad-kpi-card">
+        <div class="gad-kpi-label">Conversões</div>
+        <div class="gad-kpi-value" id="gad-kpi-conversions">0</div>
+        <div class="gad-kpi-sub" id="gad-kpi-conv-rate">Taxa conv. —</div>
+      </article>
+
+      <article class="gad-kpi-card gad-kpi-card--highlight">
+        <div class="gad-kpi-label">Receita informada</div>
+        <div class="gad-kpi-value" id="gad-kpi-revenue">R$ 0,00</div>
+        <div class="gad-kpi-sub" id="gad-kpi-roas">ROAS —</div>
+      </article>
+    </section>
+
+    <!-- Tabela -->
+    <section class="gad-table-card">
+      <div class="gad-table-card__header">
+        <h2>Campanhas · Lançamentos</h2>
+        <span class="gad-table-card__meta" id="gad-table-meta">0 registros</span>
+      </div>
+
+      <div class="gad-table-wrapper">
+        <table class="gad-table" id="gad-table">
+          <thead>
+            <tr>
+              <th>Campanha</th>
+              <th>Canal</th>
+              <th>Status</th>
+              <th>Data</th>
+              <th>Impressões</th>
+              <th>Cliques</th>
+              <th>CTR</th>
+              <th>Custo</th>
+              <th>Conv.</th>
+              <th>Valor Conv.</th>
+              <th>ROAS</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="gad-table-body">
+            <tr class="gad-table-empty">
+              <td colspan="12">
+                Nenhum lançamento encontrado.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <footer class="gad-table-footer">
+        <div class="gad-legend">
+          <span class="gad-status-pill gad-status-pill--enabled">Ativa</span>
+          <span class="gad-status-pill gad-status-pill--paused">Pausada</span>
+          <span class="gad-status-pill gad-status-pill--removed">Removida</span>
+        </div>
+        <small class="gad-footer-note">
+          Os dados exibidos nesta tela são cadastrados manualmente no ERP e não dependem da integração com o Google Ads.
+        </small>
+      </footer>
+    </section>
+
+    <!-- Debug -->
+    <section class="gad-debug-card" id="gad-debug-card" hidden>
+      <header class="gad-debug-card__header">
+        <h2>Payload local (registros filtrados)</h2>
+        <button id="gad-debug-close-btn" class="btn-soft btn-soft--small">Fechar</button>
+      </header>
+      <pre class="gad-debug-pre" id="gad-debug-pre"></pre>
+    </section>
+
+  </main>
+
+  <!-- Modal -->
+  <div class="gad-modal" id="gad-modal" hidden>
+    <div class="gad-modal__backdrop" id="gad-modal-backdrop"></div>
+
+    <div class="gad-modal__dialog">
+      <div class="gad-modal__header">
+        <div>
+          <h2 id="gad-modal-title">Novo lançamento</h2>
+          <p class="gad-modal__subtitle">Informe manualmente os dados da campanha.</p>
+        </div>
+        <button type="button" class="btn-soft btn-soft--small" id="gad-modal-close-btn">Fechar</button>
+      </div>
+
+      <form id="gad-form" class="gad-form">
+        <input type="hidden" id="gad-id" />
+
+        <div class="gad-form-grid">
+          <div class="gad-form-field gad-form-field--full">
+            <label for="gad-form-campaign-name">Campanha</label>
+            <input type="text" id="gad-form-campaign-name" class="gad-input gad-input--block" required />
+          </div>
+
+          <div class="gad-form-field">
+            <label for="gad-form-channel">Canal</label>
+            <select id="gad-form-channel" class="gad-input gad-input--block" required>
+              <option value="SEARCH">Pesquisa</option>
+              <option value="DISPLAY">Display</option>
+              <option value="VIDEO">Vídeo</option>
+              <option value="SHOPPING">Shopping</option>
+              <option value="PERFORMANCE_MAX">Performance Max</option>
+              <option value="DISCOVERY">Discovery</option>
+              <option value="OTHER">Outro</option>
+            </select>
+          </div>
+
+          <div class="gad-form-field">
+            <label for="gad-form-status">Status</label>
+            <select id="gad-form-status" class="gad-input gad-input--block" required>
+              <option value="ENABLED">Ativa</option>
+              <option value="PAUSED">Pausada</option>
+              <option value="REMOVED">Removida</option>
+            </select>
+          </div>
+
+          <div class="gad-form-field">
+            <label for="gad-form-date">Data</label>
+            <input type="date" id="gad-form-date" class="gad-input gad-input--block" required />
+          </div>
+
+          <div class="gad-form-field">
+            <label for="gad-form-impressions">Impressões</label>
+            <input type="number" min="0" step="1" id="gad-form-impressions" class="gad-input gad-input--block" value="0" />
+          </div>
+
+          <div class="gad-form-field">
+            <label for="gad-form-clicks">Cliques</label>
+            <input type="number" min="0" step="1" id="gad-form-clicks" class="gad-input gad-input--block" value="0" />
+          </div>
+
+          <div class="gad-form-field">
+            <label for="gad-form-cost">Custo</label>
+            <input type="number" min="0" step="0.01" id="gad-form-cost" class="gad-input gad-input--block" value="0" />
+          </div>
+
+          <div class="gad-form-field">
+            <label for="gad-form-conversions">Conversões</label>
+            <input type="number" min="0" step="0.01" id="gad-form-conversions" class="gad-input gad-input--block" value="0" />
+          </div>
+
+          <div class="gad-form-field">
+            <label for="gad-form-conv-value">Valor de conversão</label>
+            <input type="number" min="0" step="0.01" id="gad-form-conv-value" class="gad-input gad-input--block" value="0" />
+          </div>
+
+          <div class="gad-form-field gad-form-field--full">
+            <label for="gad-form-notes">Observações</label>
+            <textarea id="gad-form-notes" class="gad-input gad-input--block gad-textarea" rows="4"></textarea>
+          </div>
+        </div>
+
+        <div class="gad-form-actions">
+          <button type="button" class="btn-soft" id="gad-form-cancel-btn">Cancelar</button>
+          <button type="submit" class="btn-primary" id="gad-form-save-btn">Salvar lançamento</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="/public/marketing/googleAdsDashboard.js"></script>
+</body>
+</html>

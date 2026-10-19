@@ -1,0 +1,373 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ FILE: salesTaxCalculation.css                                       ║
+   ║ MODULE: SALES TAX CALCULATION                                       ║
+   ║ PRODNEX ERP                                                         ║
+   ║ FRONTEND STYLE                                                      ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+:root{
+  --tax-bg: #f5f7fb;
+  --tax-panel: #ffffff;
+  --tax-border: #e5e7eb;
+  --tax-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  --tax-text: #0f172a;
+  --tax-muted: #64748b;
+  --tax-primary: #1d4ed8;
+  --tax-success: #15803d;
+  --tax-warning: #b45309;
+  --tax-danger: #b91c1c;
+  --tax-radius: 18px;
+  --tax-radius-sm: 12px;
+}
+
+*{
+  box-sizing: border-box;
+}
+
+html, body{
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: var(--tax-bg);
+  color: var(--tax-text);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.tax-page{
+  width: min(1800px, calc(100% - 32px));
+  margin: 20px auto 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.tax-topbar{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  background: linear-gradient(135deg, #ffffff 0%, #eef4ff 100%);
+  border: 1px solid var(--tax-border);
+  border-radius: var(--tax-radius);
+  padding: 20px 24px;
+  box-shadow: var(--tax-shadow);
+}
+
+.tax-topbar__left h1{
+  margin: 0 0 6px;
+  font-size: 28px;
+  line-height: 1.1;
+}
+
+.tax-topbar__left p{
+  margin: 0;
+  color: var(--tax-muted);
+  font-size: 14px;
+}
+
+.tax-panel{
+  background: var(--tax-panel);
+  border: 1px solid var(--tax-border);
+  border-radius: var(--tax-radius);
+  box-shadow: var(--tax-shadow);
+  padding: 18px;
+}
+
+.tax-panel__header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.tax-panel__header h2{
+  margin: 0;
+  font-size: 18px;
+}
+
+.tax-grid{
+  display: grid;
+  gap: 14px;
+}
+
+.tax-grid--filters{
+  grid-template-columns: minmax(180px, 220px) minmax(180px, 220px) 220px;
+  align-items: end;
+}
+
+.tax-field{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tax-field label{
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--tax-muted);
+}
+
+.tax-field input{
+  width: 100%;
+  height: 42px;
+  border: 1px solid var(--tax-border);
+  border-radius: 12px;
+  padding: 0 12px;
+  background: #fff;
+  outline: none;
+  font-size: 14px;
+}
+
+.tax-field input:focus{
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+
+.tax-field--actions{
+  justify-content: flex-end;
+}
+
+.tax-actions-row{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+.tax-actions-row .btn{
+  white-space: nowrap;
+  min-width: 120px;
+  flex: 0 0 auto;
+}
+
+.tax-feedback{
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.tax-feedback--success{
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
+}
+
+.tax-feedback--error{
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+.tax-cards{
+  display: grid;
+  grid-template-columns: repeat(7, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.tax-card{
+  background: var(--tax-panel);
+  border: 1px solid var(--tax-border);
+  border-radius: var(--tax-radius);
+  box-shadow: var(--tax-shadow);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tax-card__label{
+  font-size: 12px;
+  color: var(--tax-muted);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  font-weight: 700;
+}
+
+.tax-card strong{
+  font-size: 22px;
+  line-height: 1.1;
+}
+
+.tax-layout{
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(340px, 0.85fr);
+  gap: 18px;
+}
+
+.tax-column{
+  min-width: 0;
+}
+
+.tax-summary-grid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.tax-summary-item{
+  background: #f8fafc;
+  border: 1px solid var(--tax-border);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tax-summary-item span{
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--tax-muted);
+  text-transform: uppercase;
+}
+
+.tax-summary-item strong{
+  font-size: 15px;
+  color: var(--tax-text);
+  word-break: break-word;
+}
+
+.tax-table-wrap{
+  width: 100%;
+  overflow: auto;
+  border: 1px solid var(--tax-border);
+  border-radius: 14px;
+}
+
+.tax-table{
+  width: 100%;
+  min-width: 980px;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.tax-table--dense{
+  min-width: 1450px;
+}
+
+.tax-table thead th{
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #eff6ff;
+  color: #1e3a8a;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  padding: 11px 10px;
+  border-bottom: 1px solid var(--tax-border);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.tax-table tbody td{
+  padding: 10px;
+  font-size: 13px;
+  border-bottom: 1px solid #eef2f7;
+  vertical-align: top;
+}
+
+.tax-table tbody tr:nth-child(odd){
+  background: #ffffff;
+}
+
+.tax-table tbody tr:nth-child(even){
+  background: #f8fafc;
+}
+
+.tax-empty{
+  text-align: center;
+  color: var(--tax-muted);
+  padding: 18px !important;
+}
+
+.tax-badge{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 84px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+
+.tax-badge--open{
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.tax-badge--resolved{
+  background: #dcfce7;
+  color: #166534;
+}
+
+.tax-text-danger{
+  color: var(--tax-danger);
+  font-weight: 700;
+}
+
+.tax-text-success{
+  color: var(--tax-success);
+  font-weight: 700;
+}
+
+@media (max-width: 1400px){
+  .tax-cards{
+    grid-template-columns: repeat(3, minmax(180px, 1fr));
+  }
+
+  .tax-layout{
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 860px){
+  .tax-page{
+    width: calc(100% - 20px);
+    margin: 10px auto 30px;
+  }
+
+  .tax-topbar{
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+.tax-grid--filters{
+  grid-template-columns: 220px 220px minmax(640px, 1fr);
+  align-items: end;
+}
+
+  .tax-cards{
+    grid-template-columns: repeat(2, minmax(150px, 1fr));
+  }
+
+  .tax-summary-grid{
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px){
+  .tax-cards{
+    grid-template-columns: 1fr;
+  }
+
+  .tax-topbar__left h1{
+    font-size: 22px;
+  }
+}
+
+.tax-field--actions{
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.tax-actions-row .btn{
+  min-width: 100px;
+}

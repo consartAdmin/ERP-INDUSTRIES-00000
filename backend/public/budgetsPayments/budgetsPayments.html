@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Pagamentos do Orçamento</title>
+
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="./budgetsPayments.css" />
+</head>
+
+<body>
+  <main class="bp-page">
+    <section class="bp-hero">
+      <div>
+        <span class="bp-eyebrow">PRODNEX ERP</span>
+        <h1>Pagamentos do Orçamento</h1>
+        <p>Cadastre, substitua, valide e gere parcelas das formas de pagamento vinculadas ao orçamento.</p>
+      </div>
+    </section>
+
+    <section class="bp-card">
+      <div class="bp-card-head">
+        <div>
+          <h2>Localizar orçamento</h2>
+          <p>Informe o ID do orçamento para carregar pagamentos e parcelas.</p>
+        </div>
+
+        <button id="btnReload" class="bp-btn-secondary" type="button">Atualizar</button>
+      </div>
+
+      <div class="bp-budget-search">
+        <label>
+          ID do Orçamento
+          <input id="budgetId" type="number" placeholder="Ex: 1025" />
+        </label>
+
+        <button id="btnLoadBudget" class="bp-btn-primary" type="button">Carregar</button>
+      </div>
+
+      <div id="validationBox" class="bp-validation hidden">
+        <div>
+          <small>Total Itens</small>
+          <strong id="itemsTotal">R$ 0,00</strong>
+        </div>
+
+        <div>
+          <small>Frete</small>
+          <strong id="freightValue">R$ 0,00</strong>
+        </div>
+
+        <div>
+          <small>Total Esperado</small>
+          <strong id="expectedTotal">R$ 0,00</strong>
+        </div>
+
+        <div>
+          <small>Total Pagamentos</small>
+          <strong id="paymentsTotal">R$ 0,00</strong>
+        </div>
+
+        <div>
+          <small>Diferença</small>
+          <strong id="differenceTotal">R$ 0,00</strong>
+        </div>
+
+        <div>
+          <small>Status</small>
+          <strong id="balancedStatus">-</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="bp-card">
+      <div class="bp-card-head">
+        <div>
+          <h2>Adicionar pagamento</h2>
+          <p>Escolha a forma, valor, vencimento manual e observações.</p>
+        </div>
+      </div>
+
+      <form id="paymentForm" class="bp-form">
+        <input id="budgetPaymentId" type="hidden" />
+
+        <label>
+          Forma de Pagamento
+          <select id="paymentMethodId">
+            <option value="">Carregando...</option>
+          </select>
+        </label>
+
+        <label>
+          Valor
+          <input id="amount" type="number" step="0.01" min="0" placeholder="0,00" />
+        </label>
+
+        <label>
+          Vencimento Manual
+          <input id="manualDueDate" type="date" />
+        </label>
+
+        <label class="bp-check">
+          <input id="autoGenerateInstallments" type="checkbox" checked />
+          Gerar/regenerar parcelas automaticamente
+        </label>
+
+        <label class="bp-full">
+          Observações
+          <textarea id="notes" rows="3" placeholder="Ex: Uso e Consumo / Retirada interna / condição especial..."></textarea>
+        </label>
+
+        <div class="bp-actions bp-full">
+          <button id="btnSavePayment" class="bp-btn-primary" type="submit">Salvar pagamento</button>
+          <button id="btnCancelEdit" class="bp-btn-secondary hidden" type="button">Cancelar edição</button>
+          <button id="btnClearForm" class="bp-btn-light" type="button">Limpar</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="bp-card">
+      <div class="bp-list-head">
+        <div>
+          <h2>Pagamentos cadastrados</h2>
+          <p>Linhas de pagamento vinculadas ao orçamento selecionado.</p>
+        </div>
+
+        <div class="bp-actions">
+          <button id="btnRegenerateBudgetInstallments" class="bp-btn-secondary" type="button">
+            Regenerar Parcelas
+          </button>
+
+          <button id="btnDeleteAllPayments" class="bp-btn-danger" type="button">
+            Remover Todos
+          </button>
+        </div>
+      </div>
+
+      <div class="bp-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Forma</th>
+              <th>Tipo</th>
+              <th>Valor</th>
+              <th>Venc. Manual</th>
+              <th>Parcelas</th>
+              <th>Observações</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+
+          <tbody id="paymentsRows">
+            <tr>
+              <td colspan="8">Informe um orçamento para carregar.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="bp-card">
+      <div class="bp-list-head">
+        <div>
+          <h2>Parcelas geradas</h2>
+          <p>Parcelas calculadas com base na forma de pagamento.</p>
+        </div>
+      </div>
+
+      <div class="bp-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Pagamento</th>
+              <th>Nº Parcela</th>
+              <th>Vencimento</th>
+              <th>Valor</th>
+              <th>Status</th>
+              <th>Pago</th>
+              <th>Pago em</th>
+              <th>Observações</th>
+            </tr>
+          </thead>
+
+          <tbody id="installmentsRows">
+            <tr>
+              <td colspan="9">Informe um orçamento para carregar.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="./budgetsPayments.js"></script>
+</body>
+</html>

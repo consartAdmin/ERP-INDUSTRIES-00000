@@ -1,0 +1,262 @@
+<!-- ╔════════════════════════════════════════════════════════════════════╗
+     ║ FILE: salesTaxCalculation.html                                    ║
+     ║ MODULE: SALES TAX CALCULATION                                     ║
+     ║ PRODNEX ERP                                                       ║
+     ║ FRONTEND PAGE                                                     ║
+     ╚════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SALES TAX CALCULATION | PRODNEX ERP</title>
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <link rel="stylesheet" href="/public/includes/css/style.css">
+  <link rel="stylesheet" href="./salesTaxCalculation.css">
+</head>
+<body class="consart-theme c-page">
+
+  <main class="tax-page">
+    </header>
+
+    <section class="tax-panel tax-panel--filters">
+      <div class="tax-grid tax-grid--filters">
+        <div class="tax-field">
+          <label for="dateFromInput">Data Inicial</label>
+          <input id="dateFromInput" type="date">
+        </div>
+
+        <div class="tax-field">
+          <label for="dateToInput">Data Final</label>
+          <input id="dateToInput" type="date">
+        </div>
+
+        <div class="tax-field tax-field--actions">
+            <label>&nbsp;</label>
+
+            <div class="tax-actions-row">
+                <button id="btnCalculatePeriod" class="btn btn-toolbar btn-sm" type="button">
+                    Calcular Período
+                </button>
+
+                <button id="btnRefreshList" class="btn btn-toolbar btn-sm" type="button">
+                    Atualizar Lista
+                </button>
+
+                <button id="btnGeneratePdf" class="btn btn-toolbar btn-sm" type="button">
+                    PDF
+                </button>
+
+                <button id="btnGenerateExcel" class="btn btn-toolbar btn-sm" type="button">
+                    EXCEL
+                </button>
+            </div>
+        </div>
+
+        <div id="feedbackBox" class="tax-feedback" hidden></div>
+    </section>
+
+    <section class="tax-cards">
+      <article class="tax-card">
+        <span class="tax-card__label">Venda Bruta</span>
+        <strong id="cardGrossTotal">R$ 0,00</strong>
+      </article>
+
+      <article class="tax-card">
+        <span class="tax-card__label">Desconto</span>
+        <strong id="cardDiscountTotal">R$ 0,00</strong>
+      </article>
+
+      <article class="tax-card">
+        <span class="tax-card__label">Venda Líquida</span>
+        <strong id="cardNetTotal">R$ 0,00</strong>
+      </article>
+
+      <article class="tax-card">
+        <span class="tax-card__label">Carga Tributária</span>
+        <strong id="cardTaxBurdenTotal">R$ 0,00</strong>
+      </article>
+
+      <article class="tax-card">
+        <span class="tax-card__label">Custo Total</span>
+        <strong id="cardCostTotal">R$ 0,00</strong>
+      </article>
+
+      <article class="tax-card">
+        <span class="tax-card__label">Lucro Bruto</span>
+        <strong id="cardGrossProfitTotal">R$ 0,00</strong>
+      </article>
+
+      <article class="tax-card">
+        <span class="tax-card__label">Margem (%)</span>
+        <strong id="cardMarginPercent">0,0000%</strong>
+      </article>
+    </section>
+
+    <section class="tax-layout">
+      <div class="tax-column tax-column--left">
+        <section class="tax-panel">
+          <div class="tax-panel__header">
+            <h2>Cálculos Recentes</h2>
+          </div>
+
+          <div class="tax-table-wrap">
+            <table class="tax-table" id="tableCalculations">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Pedido</th>
+                  <th>Data</th>
+                  <th>Cliente</th>
+                  <th>Venda Líquida</th>
+                  <th>Carga Trib.</th>
+                  <th>Lucro Bruto</th>
+                  <th>Margem</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyCalculations">
+                <tr>
+                  <td colspan="9" class="tax-empty">Nenhum cálculo carregado.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <div class="tax-column tax-column--right">
+        <section class="tax-panel">
+          <div class="tax-panel__header">
+            <h2>Resumo do Período</h2>
+          </div>
+
+          <div class="tax-summary-grid">
+            <div class="tax-summary-item">
+              <span>Data Inicial</span>
+              <strong id="detailDateFrom">-</strong>
+            </div>
+
+            <div class="tax-summary-item">
+              <span>Data Final</span>
+              <strong id="detailDateTo">-</strong>
+            </div>
+
+            <div class="tax-summary-item">
+              <span>Pedidos Calculados</span>
+              <strong id="detailCalculationsCount">0</strong>
+            </div>
+
+            <div class="tax-summary-item">
+              <span>Período</span>
+              <strong id="detailPeriodLabel">-</strong>
+            </div>
+
+            <div class="tax-summary-item">
+              <span>ICMS</span>
+              <strong id="detailIcmsTotal">R$ 0,00</strong>
+            </div>
+
+            <div class="tax-summary-item">
+              <span>PIS</span>
+              <strong id="detailPisTotal">R$ 0,00</strong>
+            </div>
+
+            <div class="tax-summary-item">
+              <span>COFINS</span>
+              <strong id="detailCofinsTotal">R$ 0,00</strong>
+            </div>
+
+            <div class="tax-summary-item">
+              <span>IPI</span>
+              <strong id="detailIpiTotal">R$ 0,00</strong>
+            </div>
+
+            <div class="tax-summary-item">
+              <span>FCP</span>
+              <strong id="detailFcpTotal">R$ 0,00</strong>
+            </div>
+
+            <div class="tax-summary-item">
+              <span>Frete</span>
+              <strong id="detailFreightTotal">R$ 0,00</strong>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="tax-panel">
+      <div class="tax-panel__header">
+        <h2>Itens da Apuração</h2>
+      </div>
+
+      <div class="tax-table-wrap">
+        <table class="tax-table tax-table--dense" id="tableItems">
+          <thead>
+            <tr>
+              <th>SKU</th>
+              <th>Descrição</th>
+              <th>Qtd</th>
+              <th>Un</th>
+              <th>Unitário</th>
+              <th>Líquido</th>
+              <th>Custo</th>
+              <th>ICMS</th>
+              <th>PIS</th>
+              <th>COFINS</th>
+              <th>IPI</th>
+              <th>FCP</th>
+              <th>Carga Est.</th>
+              <th>Lucro Bruto</th>
+              <th>Margem</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyItems">
+            <tr>
+              <td colspan="15" class="tax-empty">Nenhum item carregado.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="tax-panel">
+      <div class="tax-panel__header">
+        <h2>Reconciliação Fiscal</h2>
+      </div>
+
+      <div class="tax-table-wrap">
+        <table class="tax-table tax-table--dense" id="tableReconciliation">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Order</th>
+              <th>Item</th>
+              <th>SKU</th>
+              <th>Tipo Divergência</th>
+              <th>Esperado</th>
+              <th>Atual</th>
+              <th>Diferença</th>
+              <th>Status</th>
+              <th>Detalhes</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyReconciliation">
+            <tr>
+              <td colspan="10" class="tax-empty">Nenhuma divergência carregada.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="./salesTaxCalculation.js"></script>
+</body>
+</html>

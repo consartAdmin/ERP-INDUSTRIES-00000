@@ -1,0 +1,387 @@
+<!-- ╔════════════════════════════════════════════════════════════════════╗ -->
+<!-- ║ enterprise.html                                                   ║ -->
+<!-- ║ Módulo: Empresas                                                  ║ -->
+<!-- ║ Projeto: PRODNEX ERP                                              ║ -->
+<!-- ╚════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Empresas | PRODNEX ERP</title>
+
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png" />
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/includes/css/modals.css" />
+  <link rel="stylesheet" href="/public/enterprise/enterprise.css" />
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <div class="header">
+      <div>
+        <h1>Empresas cadastradas</h1>
+        <p>Consulte as empresas do ERP e edite os dados diretamente pela listagem.</p>
+      </div>
+    </div>
+
+    <section class="table-layout-integrated table-max-height-700">
+
+      <!-- FILTER AREA -->
+      <div class="table-layout-integrated__filter">
+
+        <div class="fields-inline fields-gap-3">
+          <div class="fields fields-w-30 fields-h-6">
+            <label for="searchInput">Pesquisar</label>
+            <input id="searchInput" type="search" autocomplete="off"
+              placeholder="Razão social, fantasia, CNPJ, cidade..." />
+          </div>
+
+          <div class="fields fields-w-15 fields-h-6">
+            <label for="filterActive">Status</label>
+            <select id="filterActive">
+              <option value="">Todos</option>
+              <option value="true">Ativos</option>
+              <option value="false">Inativos</option>
+            </select>
+          </div>
+
+          <div class="enterprise-field button-field">
+            <label aria-hidden="true">&nbsp;</label>
+            <button id="btnSearch" class="btn btn-toolbar btn-sm" type="button">Filtrar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-scroll table-height-flex table-row-h-20" data-table-settings="enterprise.enterprisetablebody">
+        <table class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Razão Social</th>
+              <th>Fantasia</th>
+              <th>CNPJ</th>
+              <th>Cidade</th>
+              <th>UF</th>
+              <th>Status</th>
+              <th class="enterprise-col-actions">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="enterpriseTableBody">
+            <tr>
+              <td colspan="8" class="enterprise-empty">Carregando empresas...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <footer class="table-footer">
+
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+            <span id="apTableInfo">0 Registros </span>
+          </div>
+
+          <div class="table-footer__pagination">
+            <button type="button" id="btnPreviousPage" class="btn btn-clean btn-sm">
+              Anterior
+            </button>
+
+            <span id="apPageInfo">Página 1 de 1</span>
+
+            <button type="button" id="btnNextPage" class="btn btn-new btn-sm">
+              Próxima
+            </button>
+          </div>
+
+          <div class="table-footer__page-size">
+            <label for="apRowsPerPage">Mostrar</label>
+
+            <select id="apRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+              <option value="10">10 linhas</option>
+              <option value="20">20 linhas</option>
+              <option value="30">30 linhas</option>
+              <option value="50" selected>50 linhas</option>
+              <option value="100">100 linhas</option>
+            </select>
+          </div>
+
+
+      </footer>
+
+    </section>
+  </main>
+
+  <div id="enterpriseModal" class="modal enterprise-modal" aria-hidden="true">
+    <div class="modal__backdrop" data-modal-close></div>
+
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="enterpriseModalTitle">
+      <div class="modal__panel modal-width-10 modal-height-9">
+        <header class="modal__header">
+          <div>
+            <h2 id="enterpriseModalTitle" class="modal__title">Editar empresa</h2>
+            <p id="enterpriseModalSubtitle" class="modal__subtitle">Atualize os dados cadastrais da empresa.</p>
+          </div>
+          <button id="btnCloseModal" class="modal__close" type="button" aria-label="Fechar modal" title="Fechar"
+            data-modal-close>×</button>
+        </header>
+
+        <form id="enterpriseForm" class="enterprise-modal-form" novalidate>
+          <div class="modal__body enterprise-modal__body">
+            <input id="enterpriseId" name="enterpriseId" type="hidden" />
+
+            <section class="enterprise-modal-section" aria-labelledby="enterpriseSectionCompany">
+              <div class="enterprise-modal-section__heading">
+                <h3 id="enterpriseSectionCompany" class="enterprise-modal-section__title">Dados da Empresa</h3>
+                <span class="enterprise-modal-section__line" aria-hidden="true"></span>
+              </div>
+
+              <div class="fields-inline fields-gap-3">
+                <div class="fields fields-w-30 fields-h-6">
+                  <label for="corporate_name">Razão Social *</label>
+                  <input id="corporate_name" name="corporate_name" type="text" maxlength="255" required />
+                </div>
+
+                <div class="fields fields-w-20 fields-h-6">
+                  <label for="trade_name">Nome Fantasia</label>
+                  <input id="trade_name" name="trade_name" type="text" maxlength="255" />
+                </div>
+
+                <div class="fields fields-w-10 fields-h-6">
+                  <label for="cnpj">CNPJ *</label>
+                  <input id="cnpj" name="cnpj" type="text" inputmode="numeric" maxlength="18" required />
+                </div>
+
+                <div class="fields fields-w-10 fields-h-6">
+                  <label for="state_registration">Inscrição Estadual</label>
+                  <input id="state_registration" name="state_registration" type="text" />
+                </div>
+
+                <div class="fields fields-w-10 fields-h-6">
+                  <label for="municipal_registration">Inscrição Municipal</label>
+                  <input id="municipal_registration" name="municipal_registration" type="text" />
+                </div>
+              </div>
+
+              <div class="fields-inline fields-gap-3">
+                <div class="fields fields-w-8 fields-h-6">
+                  <label for="tax_regime_code">CRT</label>
+                  <select id="tax_regime_code" name="tax_regime_code">
+                    <option value="">Selecione</option>
+                    <option value="1">1 - Simples Nacional</option>
+                    <option value="2">2 - Simples Excesso Sublimite</option>
+                    <option value="3">3 - Regime Normal</option>
+                  </select>
+                </div>
+
+                <div class="fields fields-w-8 fields-h-6">
+                  <label for="status">Situação</label>
+                  <select id="status" name="status">
+                    <option value="ACTIVE">ATIVA</option>
+                    <option value="INACTIVE">INATIVA</option>
+                  </select>
+                </div>
+
+                <div class="fields fields-w-8 fields-h-6">
+                  <label for="opening_date">Abertura</label>
+                  <input id="opening_date" name="opening_date" type="date" />
+                </div>
+
+                <div class="fields fields-w-8 fields-h-6">
+                  <label for="cnae">CNAE</label>
+                  <input id="cnae" name="cnae" type="text" />
+                </div>
+              </div>
+            </section>
+
+            <section class="enterprise-modal-section" aria-labelledby="enterpriseSectionAddress">
+              <div class="enterprise-modal-section__heading">
+                <h3 id="enterpriseSectionAddress" class="enterprise-modal-section__title">Endereço</h3>
+                <span class="enterprise-modal-section__line" aria-hidden="true"></span>
+              </div>
+
+              <div class="fields-inline fields-gap-3">
+                <div class="fields fields-w-8 fields-h-6">
+                  <label for="zip_code">CEP</label>
+                  <input id="zip_code" name="zip_code" type="text" inputmode="numeric" maxlength="9" />
+                </div>
+
+                <div class="fields fields-w-20 fields-h-6">
+                  <label for="address">Endereço</label>
+                  <input id="address" name="address" type="text" />
+                </div>
+
+                <div class="fields fields-w-5 fields-h-6">
+                  <label for="address_number">Número</label>
+                  <input id="address_number" name="address_number" type="text" />
+                </div>
+
+                <div class="fields fields-w-8 fields-h-6">
+                  <label for="address_complement">Complemento</label>
+                  <input id="address_complement" name="address_complement" type="text" />
+                </div>
+
+                <div class="fields fields-w-12 fields-h-6">
+                  <label for="district">Bairro</label>
+                  <input id="district" name="district" type="text" />
+                </div>
+
+                <div class="fields fields-w-15 fields-h-6">
+                  <label for="city">Cidade</label>
+                  <input id="city" name="city" type="text" />
+                </div>
+
+                <div class="fields fields-w-5 fields-h-6">
+                  <label for="state">UF</label>
+                  <input id="state" name="state" type="text" maxlength="2" />
+                </div>
+              </div>
+
+              <div class="fields-inline fields-gap-3">
+                <div class="fields fields-w-12 fields-h-6">
+                  <label for="city_ibge_code">Cód. Município IBGE</label>
+                  <input id="city_ibge_code" name="city_ibge_code" type="text" />
+                </div>
+              </div>
+            </section>
+
+            <section class="enterprise-modal-section" aria-labelledby="enterpriseSectionContact">
+              <div class="enterprise-modal-section__heading">
+                <h3 id="enterpriseSectionContact" class="enterprise-modal-section__title">Contato</h3>
+                <span class="enterprise-modal-section__line" aria-hidden="true"></span>
+              </div>
+
+              <div class="fields-inline fields-gap-3">
+                <div class="fields fields-w-12 fields-h-6">
+                  <label for="phone">Telefone</label>
+                  <input id="phone" name="phone" type="text" inputmode="tel" maxlength="15" />
+                </div>
+
+                <div class="fields fields-w-12 fields-h-6">
+                  <label for="whatsapp">WhatsApp</label>
+                  <input id="whatsapp" name="whatsapp" type="text" inputmode="tel" maxlength="15" />
+                </div>
+
+                <div class="fields fields-w-20 fields-h-6">
+                  <label for="email">E-mail</label>
+                  <input id="email" name="email" type="email" />
+                </div>
+
+                <div class="fields fields-w-20 fields-h-6">
+                  <label for="website">Site</label>
+                  <input id="website" name="website" type="text" />
+                </div>
+              </div>
+            </section>
+
+            <section class="enterprise-modal-section" aria-labelledby="enterpriseSectionFiscal">
+              <div class="enterprise-modal-section__heading">
+                <h3 id="enterpriseSectionFiscal" class="enterprise-modal-section__title">Configuração Fiscal e Identidade</h3>
+                <span class="enterprise-modal-section__line" aria-hidden="true"></span>
+              </div>
+
+              <div class="fields-inline fields-gap-3">
+                <div class="fields fields-w-8 fields-h-6">
+                  <label for="nfe_environment">Ambiente NF-e</label>
+                  <select id="nfe_environment" name="nfe_environment">
+                    <option value="homologation">Homologação</option>
+                    <option value="production">Produção</option>
+                  </select>
+                </div>
+
+                <div class="fields fields-w-8 fields-h-6">
+                  <label for="nfe_series">Série NF-e</label>
+                  <input id="nfe_series" name="nfe_series" type="text" />
+                </div>
+
+                <div class="fields fields-w-10 fields-h-6">
+                  <label for="next_nfe_number">Próx. Número NF-e</label>
+                  <input id="next_nfe_number" name="next_nfe_number" type="number" min="1" step="1" />
+                </div>
+
+                <div class="fields fields-w-20 fields-h-6 enterprise-logo-field">
+                  <label for="enterpriseLogoFile">Logo da empresa</label>
+
+                  <input id="logo_url" name="logo_url" type="hidden" />
+                  <input
+                    id="enterpriseLogoFile"
+                    name="enterpriseLogoFile"
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp"
+                    hidden
+                  />
+
+                  <div id="enterpriseLogoControl" class="enterprise-logo-control">
+                    <button
+                      id="btnSelectEnterpriseLogo"
+                      class="btn btn-toolbar btn-sm enterprise-logo-select"
+                      type="button"
+                    >
+                      Selecionar logo
+                    </button>
+
+                    <button
+                      id="btnRemoveEnterpriseLogo"
+                      class="btn btn-cancel btn-sm enterprise-logo-remove"
+                      type="button"
+                      hidden
+                    >
+                      Limpar
+                    </button>
+
+                    <span id="enterpriseLogoStatus" class="enterprise-logo-status">Nenhum arquivo selecionado.</span>
+                  </div>
+
+                  <div id="enterpriseLogoPreviewBox" class="enterprise-logo-preview" hidden>
+                    <img id="enterpriseLogoPreview" alt="Pré-visualização da logo da empresa" />
+                  </div>
+                </div>
+
+                <div class="fields fields-w-20 fields-h-6">
+                  <label for="slogan">Slogan</label>
+                  <input id="slogan" name="slogan" type="text" />
+                </div>
+              </div>
+            </section>
+
+            <section class="enterprise-modal-section enterprise-modal-section--last" aria-labelledby="enterpriseSectionNotes">
+              <div class="enterprise-modal-section__heading">
+                <h3 id="enterpriseSectionNotes" class="enterprise-modal-section__title">Observações e Status</h3>
+                <span class="enterprise-modal-section__line" aria-hidden="true"></span>
+              </div>
+
+              <div class="fields-inline fields-gap-3 enterprise-modal-notes-row">
+                <div class="fields fields-w-30 fields-h-6 enterprise-modal-notes">
+                  <label for="document_notes">Observações</label>
+                  <textarea id="document_notes" name="document_notes" rows="4"></textarea>
+                </div>
+
+                <div class="fields fields-w-8 fields-h-6">
+                  <label for="is_active">Ativo</label>
+                  <select id="is_active" name="is_active">
+                    <option value="true">Sim</option>
+                    <option value="false">Não</option>
+                  </select>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <footer class="modal__footer">
+            <button id="btnCancelModal" class="btn btn-cancel btn-sm" type="button" data-modal-close>Cancelar</button>
+            <button id="btnSaveEnterprise" class="btn btn-save btn-sm" type="submit">Salvar alterações</button>
+          </footer>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+
+  <script type="module" src="/public/enterprise/js/enterprise.init.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,294 @@
+<!-- /public/emailInbox/emailInbox.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>E-MAIL BH3 | PRODNEX ERP</title>
+
+  <!-- ✅ Design System -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- ✅ Page CSS -->
+  <link rel="stylesheet" href="/public/emailInbox/emailInbox.css?v=5" />
+
+  <!-- ✅ Reply Modal CSS (por último para sobrescrever) -->
+  <link rel="stylesheet" href="/public/emailInbox/emailInboxModalReply.css?v=1" />
+</head>
+
+<body class="consart-theme c-page page-email-inbox">
+  <main class="c-main page-email-inbox__content">
+    <section class="c-container c-container--2xl">
+
+      <!-- ✅ TOP ACCOUNTS BAR -->
+      <section class="section-card" style="margin-bottom: 14px;">
+        <div class="email-accounts-bar" id="emailAccountsBar" aria-label="Contas de e-mail">
+          <div class="email-accounts-bar__left">
+            <strong style="font-size: 13px;">Contas:</strong>
+            <span id="emailAccountsBarStatus" style="font-size: 12px; color: var(--muted); margin-left: 8px;">
+              Carregando...
+            </span>
+          </div>
+
+          <div class="email-accounts-bar__right">
+            <div class="email-accounts-buttons" id="emailAccountsButtons"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card email-page-layout">
+
+        <!-- List + detail -->
+        <section class="email-layout">
+          <!-- List panel -->
+          <aside class="email-list-panel">
+
+            <!-- ✅ NEW: Manage e-mails ABOVE Messages -->
+            <div class="email-manage-block">
+              <div class="email-manage-head">
+                <button id="btnNewEmail" type="button" class="btn btn-primary email-manage-new">
+                  ✉️ New e-mail
+                </button>
+              </div>
+
+              <!-- ✅ Folders BELOW Manage e-mails -->
+              <nav class="email-folder-nav" aria-label="Folders">
+                <button class="email-folder-item is-active" type="button" data-folder="inbox">
+                  📥 <span>Inbox</span>
+                </button>
+
+                <button class="email-folder-item" type="button" data-folder="sent">
+                  📤 <span>Sent</span>
+                </button>
+              </nav>
+            </div>
+
+            <!-- Messages header -->
+            <div class="email-list-header">
+              <h2 class="email-list-title">Messages</h2>
+
+              <div class="email-list-tools">
+                <input
+                  id="emailSearch"
+                  type="text"
+                  class="email-search-input"
+                  placeholder="Filter by sender or subject..."
+                />
+              </div>
+            </div>
+
+            <div id="emailListStatus" class="email-list-status">
+              Loading e-mails...
+            </div>
+
+            <ul id="emailList" class="email-list"></ul>
+          </aside>
+
+          <!-- Detail / Compose panel -->
+          <section class="email-detail-panel">
+
+            <div id="emailDetailPlaceholder" class="email-detail-placeholder">
+              <p>Select an e-mail from the list to see the content, or create a new one.</p>
+            </div>
+
+            <!-- Read-only detail -->
+            <article id="emailDetail" class="email-detail is-hidden">
+              <header class="email-detail-header">
+                <div class="email-detail-headrow">
+                  <h2 id="emailSubject" class="email-subject">Subject</h2>
+
+                  <div class="email-detail-actions">
+                    <button id="btnReplyEmail" type="button" class="btn btn-primary is-hidden">
+                      ↩ Reply
+                    </button>
+                    <button id="btnReplyAllEmail" type="button" class="btn btn-flat is-hidden">
+                      ↩ Reply all
+                    </button>
+                  </div>
+                </div>
+
+                <div class="email-meta">
+                  <div><span class="label">From:</span> <span id="emailFrom"></span></div>
+                  <div><span class="label">To:</span> <span id="emailTo"></span></div>
+                  <div><span class="label">Received:</span> <span id="emailDate"></span></div>
+                </div>
+              </header>
+
+              <section class="email-body">
+                <div id="emailBodyHtml" class="email-body-html"></div>
+                <pre id="emailBodyText" class="email-body-text"></pre>
+              </section>
+
+              <section id="emailAttachmentsWrap" class="email-attachments is-hidden">
+                <div class="email-attachments-title">Attachments</div>
+                <div id="emailAttachments" class="email-attachments-list"></div>
+              </section>
+            </article>
+
+            <!-- Compose -->
+            <article id="composePanel" class="email-compose is-hidden">
+              <header class="email-detail-header">
+                <h2 class="email-subject">New e-mail</h2>
+              </header>
+
+              <form id="emailComposeForm" class="email-compose-form" autocomplete="off">
+
+                <label class="email-compose-field">
+                  <span class="label">From (Account)</span>
+                  <select id="composeAccountId" name="account_id" class="email-compose-input" required>
+                    <option value="">Loading accounts...</option>
+                  </select>
+                </label>
+
+                <label class="email-compose-field">
+                  <span class="label">To</span>
+                  <input
+                    id="composeTo"
+                    name="to"
+                    type="email"
+                    class="email-compose-input"
+                    placeholder="someone@example.com"
+                    required
+                  />
+                </label>
+
+                <label class="email-compose-field">
+                  <span class="label">Subject</span>
+                  <input
+                    id="composeSubject"
+                    name="subject"
+                    type="text"
+                    class="email-compose-input"
+                    placeholder="Subject"
+                    required
+                  />
+                </label>
+
+                <label class="email-compose-field">
+                  <span class="label">Message</span>
+                  <textarea
+                    id="composeBody"
+                    name="body"
+                    class="email-compose-body"
+                    rows="10"
+                    placeholder="Write your message..."
+                  ></textarea>
+                </label>
+
+                <div class="email-compose-field">
+                  <span class="label">Attachments</span>
+
+                  <div class="email-attach-row">
+                    <input
+                      id="composeAttachments"
+                      name="attachments"
+                      type="file"
+                      class="email-attach-input"
+                      multiple
+                    />
+                    <small class="email-attach-hint">Max 10 files • 10MB each (configurable)</small>
+                  </div>
+
+                  <div id="attachmentsList" class="email-attach-list"></div>
+                </div>
+
+                <div class="email-compose-actions">
+                  <button id="btnSendEmail" type="button" class="btn btn-primary">Send</button>
+                  <button id="btnCancelCompose" type="button" class="btn btn-flat">Cancel</button>
+                </div>
+              </form>
+            </article>
+
+          </section>
+        </section>
+      </section>
+    </section>
+  </main>
+
+  <!-- ✅ REPLY MODAL (OBRIGATÓRIO PARA FUNCIONAR) -->
+  <div id="replyModal" class="consart-modal" hidden>
+    <div class="consart-modal-backdrop" data-reply-close></div>
+
+    <div class="consart-modal-content email-reply-modal" role="dialog" aria-modal="true" aria-labelledby="replyModalTitle">
+      <header class="consart-modal-header">
+        <h2 id="replyModalTitle">Reply</h2>
+        <button type="button" class="consart-modal-close" data-reply-close aria-label="Fechar">&times;</button>
+      </header>
+
+      <section class="consart-modal-body">
+        <form id="replyComposeForm" class="email-compose-form" autocomplete="off">
+
+          <label class="email-compose-field">
+            <span class="label">From (Account)</span>
+            <select id="replyAccountId" name="account_id" class="email-compose-input" required>
+              <option value="">Loading accounts...</option>
+            </select>
+          </label>
+
+          <label class="email-compose-field">
+            <span class="label">To</span>
+            <input id="replyTo" name="to" type="text" class="email-compose-input" required />
+          </label>
+
+          <label class="email-compose-field">
+            <span class="label">Subject</span>
+            <input id="replySubject" name="subject" type="text" class="email-compose-input" required />
+          </label>
+
+          <!-- ✅ FIX: textarea não renderiza HTML → troca por editor visual -->
+          <label class="email-compose-field">
+            <span class="label">Message</span>
+
+            <!-- Editor visual (renderiza HTML do quote) -->
+            <div
+              id="replyBodyEditor"
+              class="email-reply-editor"
+              contenteditable="true"
+              spellcheck="true"
+              aria-label="Reply message editor"
+            ></div>
+
+            <!-- HTML real (hidden) enviado ao backend -->
+            <textarea
+              id="replyBody"
+              name="body"
+              class="is-hidden"
+              aria-hidden="true"
+              tabindex="-1"
+            ></textarea>
+          </label>
+
+          <div class="email-compose-field">
+            <span class="label">Attachments</span>
+            <div class="email-attach-row">
+              <input id="replyAttachments" type="file" multiple class="email-attach-input" />
+              <small class="email-attach-hint">Max 10 files • 10MB each (configurable)</small>
+            </div>
+            <div id="replyAttachmentsList" class="email-reply-attach-list"></div>
+          </div>
+
+          <div class="email-reply-actions">
+            <button id="btnReplyCancel" type="button" class="btn btn-flat">Cancel</button>
+            <button id="btnReplySend" type="button" class="btn btn-primary">Send</button>
+          </div>
+
+        </form>
+      </section>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="/public/includes/js/apiBase.js"></script>
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <!-- ✅ Reply modal JS (separado) -->
+  <script type="module" src="/public/emailInbox/emailInboxModalReply.js?v=1"></script>
+
+  <!-- ✅ Inbox main -->
+  <script type="module" src="/public/emailInbox/emailInbox.js?v=4"></script>
+</body>
+</html>

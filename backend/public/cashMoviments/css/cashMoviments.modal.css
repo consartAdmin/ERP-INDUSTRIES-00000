@@ -1,0 +1,144 @@
+/* ==========================================
+ MODAL OVERLAY 
+ backend\public\caixa\css\caixa.modal.css
+============================================= */
+.modal[hidden] { display: none !important; }
+.modal{
+  position:fixed !important;
+  inset:0 !important;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.35);
+  z-index:1000;
+}
+.modal:not([hidden]){ display:flex !important; }
+.modal .modal-content{
+  background:#fff;
+  width:min(1000px,95vw);
+  max-height:90vh;
+  overflow:auto;
+  border-radius:12px;
+  box-shadow:0 12px 32px rgba(0,0,0,.25);
+}
+body.modal-open{ overflow:hidden; }
+
+/* ===========================================================
+   Modal Editar Movimentação — layout em grid
+   =========================================================== */
+#modalEditar .cx-modal {
+  width: min(900px, 96vw);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#modalEditar .cx-modal__header {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+#modalEditar .cx-modal__header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+#modalEditar .cx-modal__body {
+  padding: 12px 16px 14px;
+}
+
+#modalEditar #formEditarMovimentacao {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Grid interno */
+#modalEditar .cx-edit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 10px 14px;
+}
+
+#modalEditar .cx-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+#modalEditar .cx-field label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+#modalEditar .cx-field input,
+#modalEditar .cx-field select,
+#modalEditar .cx-field textarea {
+  font-size: 0.84rem;
+  padding: 4px 7px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+}
+
+/* campos que ocupam linha inteira */
+#modalEditar .cx-field--full {
+  grid-column: 1 / -1;
+}
+
+/* fornecedor um pouco mais largo quando possível */
+#modalEditar .cx-field--wide {
+  min-width: 260px;
+}
+
+/* Observação */
+#modalEditar textarea#edit_observacao {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* Anexos */
+#modalEditar .cx-field--attachments {
+  margin-top: 4px;
+}
+
+#modalEditar .cx-attach-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+#modalEditar .cx-attach-progress {
+  width: 100%;
+  height: 6px;
+  margin-top: 6px;
+  display: none;
+}
+
+#modalEditar .cx-attach-list {
+  margin-top: 6px;
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+/* Footer */
+#modalEditar .cx-modal__footer {
+  border-top: 1px solid #e5e7eb;
+  padding: 10px 16px 12px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* Responsivo */
+@media (max-width: 640px) {
+  #modalEditar .cx-modal {
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+}

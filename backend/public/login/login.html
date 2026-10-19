@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="/public/includes/imagens/prodnex-icon.png">
+  <title>LOGIN | PRODNEX ERP</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/public/login/login.css">
+</head>
+<body>
+
+  <main class="login-shell">
+
+    <!-- Lado esquerdo: marca -->
+    <section class="brand-side" aria-label="PRODNEX">
+      <img src="/public/includes/imagens/prodnex-horizontal-white.png" alt="PRODNEX ERP Industrial" class="brand-logo">
+
+      <div class="brand-copy">
+        <h1>Planeje, produza<br>e entregue no prazo.</h1>
+        <p>PCP, estoque, compras, vendas, financeiro e fiscal da sua indústria em um só lugar.</p>
+      </div>
+
+      <ul class="brand-modules">
+        <li>PCP</li><li>Estoque</li><li>Compras</li><li>Vendas</li><li>Financeiro</li><li>Fiscal</li>
+      </ul>
+    </section>
+
+    <!-- Lado direito: formulário -->
+    <section class="form-side">
+      <div class="form-card">
+        <img src="/public/includes/imagens/prodnex-horizontal.png" alt="PRODNEX" class="form-logo">
+
+        <h2>Acesse sua conta</h2>
+        <p class="login-subtitle">Entre com seu usuário ou e-mail e senha.</p>
+
+        <form id="formLogin" novalidate autocomplete="on">
+          <div class="form-row">
+            <label for="usuario">Usuário ou e-mail</label>
+            <input id="usuario" name="nome" type="text" class="input"
+                   placeholder="Digite seu usuário" autocomplete="username" required autofocus>
+          </div>
+
+          <div class="form-row">
+            <label for="senha">Senha</label>
+            <div class="input-wrap">
+              <input id="senha" name="senha" type="password" class="input"
+                     placeholder="Sua senha" autocomplete="current-password" required>
+              <button type="button" class="input-action" id="toggleSenha" aria-label="Mostrar senha">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary">Entrar</button>
+
+          <p id="mensagemErro" class="erro" role="alert" aria-live="polite"></p>
+        </form>
+
+        <p class="login-note">Versão 0.1 • Acesso autorizado apenas a usuários cadastrados.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <script type="module" src="/public/login/login.js"></script>
+</body>
+</html>

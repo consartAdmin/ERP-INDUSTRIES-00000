@@ -1,0 +1,112 @@
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ ordersLogisticsSignature.html — Assinatura de Entrega           ║
+     ║ PRODNEX ERP · Logística / Conferência Cega                      ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <title>Assinatura de Entrega | PRODNEX ERP</title>
+
+  <!-- Design System global -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- CSS específico desta tela -->
+  <link rel="stylesheet" href="/public/ordersLogisticsSignature/ordersLogisticsSignature.css" />
+</head>
+
+<body class="signature-page">
+  <main class="sig-wrapper">
+    <!-- Cabeçalho / título -->
+    <header class="sig-header">
+      <h1>Assinatura de Entrega</h1>
+      <p>Confirme o recebimento das mercadorias assinando abaixo.</p>
+    </header>
+
+    <!-- Bloco com dados do pedido / NF-e -->
+    <section class="sig-info-card">
+      <div class="sig-info-row">
+        <span class="sig-label">Pedido:</span>
+        <span class="sig-value" id="orderIdDisplay">#—</span>
+      </div>
+      <div class="sig-info-row">
+        <span class="sig-label">Chave NF-e:</span>
+        <span class="sig-value sig-nfe" id="nfeKeyDisplay">—</span>
+      </div>
+
+      <div class="sig-nfe-input-block">
+        <label for="nfeKeyInput">
+          Informe ou leia a chave de acesso da NF-e para liberar a assinatura
+        </label>
+        <div class="sig-nfe-input-row">
+          <input
+            id="nfeKeyInput"
+            type="text"
+            inputmode="numeric"
+            maxlength="60"
+            placeholder="Cole ou digite a chave NF-e (44 dígitos)"
+          />
+          <button type="button" class="btn-mini-primary" id="btnUseNfeKey">
+            Usar chave
+          </button>
+        </div>
+        <p class="sig-nfe-help">
+          Você pode colar a chave lida pelo leitor de código de barras / câmera.
+        </p>
+      </div>
+    </section>
+
+    <!-- Área de assinatura (inicia travada até validar NF-e) -->
+    <section class="sig-section sig-section--locked" id="sigSection">
+      <div class="sig-lock-banner" id="sigLockBanner">
+        <span>Leitura da chave NF-e pendente</span>
+        <small>Informe ou leia a chave da NF-e para liberar a assinatura.</small>
+      </div>
+
+      <h2>Assine no espaço abaixo</h2>
+      <p class="sig-hint">
+        Use o dedo ou a caneta para assinar. Se precisar, toque em <strong>Limpar</strong>.
+      </p>
+
+      <div class="sig-canvas-container">
+        <canvas id="signatureCanvas"></canvas>
+      </div>
+
+      <div class="sig-name-field">
+        <label for="signedName">Nome legível de quem recebeu</label>
+        <input
+          type="text"
+          id="signedName"
+          autocomplete="name"
+          placeholder="Ex.: João da Silva"
+        />
+      </div>
+
+      <div class="sig-buttons-row">
+        <button type="button" class="btn-secondary" id="btnClearSignature">
+          Limpar
+        </button>
+        <button type="button" class="btn-primary" id="btnSaveSignature">
+          Salvar Assinatura
+        </button>
+      </div>
+
+      <button type="button" class="btn-ghost" id="btnBack">
+        Voltar
+      </button>
+
+      <p class="sig-disclaimer">
+        Ao assinar, você declara que conferiu e recebeu as mercadorias descritas na nota fiscal.
+      </p>
+    </section>
+  </main>
+
+  <!-- Modal de alerta central -->
+  <script type="module" src="/public/includes/js/centerAlertModal.js"></script>
+
+  <!-- Script específico -->
+  <script type="module" src="/public/ordersLogisticsSignature/ordersLogisticsSignature.js"></script>
+</body>
+</html>

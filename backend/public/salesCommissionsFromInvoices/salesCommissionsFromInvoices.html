@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>COMISSÕES POR NF-E | PRODNEX ERP</title>
+
+  <link rel="icon" type="image/png" href="/public/imagens/brasaoConsartInfinity.png" />
+
+  <link rel="stylesheet" href="/public/modalsSearch/sellersModalSearch.css" />
+  <link rel="stylesheet" href="/public/modalsSearch/pricesModalSearch.css" />
+
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/salesCommissionsFromInvoices/salesCommissionsFromInvoices.css?v=9" />
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <!-- =================================================== -->
+    <!-- HEADER: TITLE + BUTTONS (separate block)             -->
+    <!-- =================================================== -->
+
+    <div class="sci-page-header fields-inline fields-gap-3">
+
+      <div>
+        <h1 class="page-header__title sci-title">
+          <img src="/iconsImagens/commissions.svg" alt="" width="28" height="28" aria-hidden="true" />
+          <span>Comissões por NF-e</span>
+        </h1>
+
+        <p class="page-header__subtitle">
+          Comissões reais geradas a partir das notas fiscais emitidas.
+        </p>
+      </div>
+
+      <div class="btn-inline sci-header-actions">
+        <button id="btnRefresh" class="btn btn-new btn-sm" type="button">
+          Atualizar
+        </button>
+
+        <button id="btnPdf" class="btn btn-toolbar btn-sm" type="button" title="Exportar PDF">
+          <img src="/iconsImagens/pdf.png" alt="" width="20" height="20" aria-hidden="true" />
+          <span>Exportar PDF</span>
+        </button>
+
+        <button id="btnExcel" class="btn btn-toolbar btn-sm" type="button" title="Exportar Excel">
+          <img src="/iconsImagens/excelIcons.png" alt="" width="20" height="20" aria-hidden="true" />
+          <span>Exportar Excel</span>
+        </button>
+      </div>
+
+    </div>
+
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter">
+
+        <!-- =================================================== -->
+        <!-- FILTERS                                             -->
+        <!-- =================================================== -->
+
+        <form id="filtersForm">
+          <div class="fields-inline fields-gap-3">
+
+            <div class="fields fields-h-6 fields-w-16 fields-font-3">
+              <date-range-field id="dateRange" class="drf-width-3 drf-height-3" label="Período"
+                locale="pt-BR"></date-range-field>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-20 fields-font-3">
+              <label for="salesperson">Vendedor</label>
+              <input id="salesperson" type="text" placeholder="Selecione um vendedor" readonly />
+              <input id="sellerId" type="hidden" />
+            </div>
+
+            <div class="sci-field-search">
+              <button id="btnSellerSearch" class="action-icon action-icon--search" type="button" title="Buscar vendedor"
+                aria-label="Buscar vendedor">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="m21 21-4.3-4.3" />
+                </svg>
+              </button>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-12 fields-font-3">
+              <label for="priceName">Tabela de preço</label>
+              <input id="priceName" type="text" placeholder="Todas as tabelas" readonly />
+              <input id="priceId" type="hidden" />
+            </div>
+
+            <div class="sci-field-search">
+              <button id="btnPriceSearch" class="action-icon action-icon--search" type="button"
+                title="Buscar tabela de preço" aria-label="Buscar tabela de preço">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="m21 21-4.3-4.3" />
+                </svg>
+              </button>
+            </div>
+
+            <div class="btn-inline btn-gap-3">
+              <button class="btn btn-new btn-sm" type="button" id="btnClear">
+                Limpar
+              </button>
+
+              <button class="btn btn-new btn-sm" type="submit" id="btnSearch">
+                Pesquisar
+              </button>
+            </div>
+
+            <div class="btn-inline btn-gap-3 sci-filter-actions">
+              <button id="btnGenerate" class="btn btn-toolbar btn-sm" type="button" title="Gerar Comissões">
+                <img src="/iconsImagens/generateCommissions.svg" alt="" width="20" height="20" aria-hidden="true" />
+                <span>Gerar Comissões</span>
+              </button>
+
+              <button id="btnRecalc" class="btn btn-toolbar btn-sm" type="button" title="Recalcular">
+                <img src="/iconsImagens/recalcCommissions.svg" alt="" width="20" height="20" aria-hidden="true" />
+                <span>Recalcular</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="table-scroll sci-table-scroll table-height-500 table-row-h-20"
+        data-table-settings="salescommissionsfrominvoices.tablebody">
+        <table class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>NF-e</th>
+              <th>Pedido</th>
+              <th>Cliente</th>
+              <th>Vendedor</th>
+              <th>SKU</th>
+              <th>Produto</th>
+              <th>Tabela</th>
+              <th>Qtd</th>
+              <th>Total Item</th>
+              <th>Tipo</th>
+              <th>%</th>
+              <th>Fixo</th>
+              <th>Comissão</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- =================================================== -->
+      <!-- TABLE FOOTER                                        -->
+      <!-- =================================================== -->
+
+      <footer class="table-footer">
+        <div class="table-footer__info sci-footer-info">
+          <div class="summary-pill summary-pill-success summary-width-5 summary-left-space-3">
+            <span id="statusText">
+              Carregando...
+            </span>
+          </div>
+
+          <div class="summary-pill sci-footer-pill">
+            <span>Faturado:</span>
+            <strong id="kpiRevenue">R$ 0,00</strong>
+          </div>
+
+          <div class="summary-pill sci-footer-pill">
+            <span>Comissão:</span>
+            <strong id="kpiCommission">R$ 0,00</strong>
+          </div>
+
+          <div class="summary-pill sci-footer-pill">
+            <span>Sem regra:</span>
+            <strong id="kpiMissingRule">0</strong>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button id="btnPrev" type="button" class="btn btn-toolbar btn-sm">
+            Anterior
+          </button>
+
+          <span id="pageInfo">
+            Página 1 de 1
+          </span>
+
+          <button id="btnNext" type="button" class="btn btn-toolbar btn-sm">
+            Próxima
+          </button>
+        </div>
+
+        <div class="table-footer__page-size">
+          <label for="pageSize">
+            Mostrar
+          </label>
+          <div class="fields fields-h-6 fields-w-4 fields-font-3">
+            <select id="pageSize" class="table-footer__page-size-select">
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="100" selected>100</option>
+              <option value="200">200</option>
+            </select>
+          </div>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="/public/salesCommissionsFromInvoices/salesCommissionsFromInvoices.js?v=7"></script>
+</body>
+
+</html>

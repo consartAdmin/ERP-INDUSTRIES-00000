@@ -1,0 +1,189 @@
+<!-- ╔═══════════════════════════════════════════════════════════════════════╗ -->
+<!-- ║ 🧾 entradasFiscais.html – Importação de Notas Fiscais XML – CONSART ║ -->
+<!-- ╚═══════════════════════════════════════════════════════════════════════╝ -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Importar Nota Fiscal Eletrônica</title>
+
+  <!-- Estilos globais -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <link rel="stylesheet" href="entradasFiscais.css" />
+
+</head>
+  <!-- ✅ Menu será carregado dinamicamente -->
+  <script>
+    fetch('/public/home/home.html')
+      .then(res => res.text())
+      .then(html => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const menu = doc.querySelector('.menu-principal');
+        if (menu) {
+          document.body.prepend(menu);
+          requestAnimationFrame(() => {
+            document.body.style.paddingTop = menu.offsetHeight + 'px';
+          });
+
+          const link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = '/public/includes/menu.css';
+          document.head.appendChild(link);
+        } else {
+          console.warn('[MENU] Menu não encontrado.');
+        }
+      })
+      .catch(erro => console.error('[MENU] Erro ao carregar menu:', erro));
+  </script>
+
+<body class="consart-theme c-page">
+  <main class="c-main">
+    <div class="c-container c-container--2xl">
+    <h1>📥 Importação de NF-e XML</h1>
+
+    <!-- 📂 Upload do XML -->
+    <div class="upload-section">
+      <label for="xmlInput">Selecione o arquivo XML da nota fiscal:</label>
+      <input type="file" id="xmlInput" accept=".xml" />
+    </div>
+
+    <!-- 🔀 Abas -->
+    <div class="abas-menu">
+      <button class="aba-btn ativa" data-aba="abaCabecalho">📄 Cabeçalho</button>
+      <button class="aba-btn" data-aba="abaProdutos">📦 Produtos</button>
+      <button class="aba-btn" data-aba="abaFiscais">💰 Fiscais & Pagamento</button>
+    </div>
+
+    <div class="abas-conteudo">
+      <!-- 📄 Aba 1: Cabeçalho -->
+      <div id="abaCabecalho" class="aba-conteudo ativa">
+        <div class="linha-dados-tres-colunas">
+          <div class="bloco-coluna">
+            <h4>Dados da Nota</h4>
+            <p><strong>Número:</strong> <span id="nNF"></span></p>
+            <p><strong>Série:</strong> <span id="serie"></span></p>
+            <p><strong>Chave de Acesso:</strong> <span id="chaveAcesso"></span></p>
+            <p><strong>Data de Emissão:</strong> <span id="dataEmissao"></span></p>
+            <p><strong>Valor Total (NF):</strong> R$ <span id="valorNF"></span></p>
+          </div>
+
+          <div class="bloco-coluna">
+            <h4>Emitente</h4>
+            <p><strong>Nome:</strong> <span id="emitenteNome"></span></p>
+            <p><strong>Nome Fantasia:</strong> <span id="emitenteFantasia"></span></p>
+            <p><strong>CNPJ:</strong> <span id="emitenteCNPJ"></span></p>
+            <p><strong>IE:</strong> <span id="emitenteIE"></span></p>
+            <p><strong>Regime Tributário:</strong> <span id="emitenteCRT"></span></p>
+            <p><strong>Endereço:</strong> <span id="emitenteEndereco"></span></p>
+            <p><strong>Bairro:</strong> <span id="emitenteBairro"></span></p>
+            <p><strong>Cidade:</strong> <span id="emitenteMunicipio"></span></p>
+            <p><strong>UF:</strong> <span id="emitenteUF"></span></p>
+            <p><strong>CEP:</strong> <span id="emitenteCEP"></span></p>
+            <p><strong>Fone:</strong> <span id="emitenteFone"></span></p>
+          </div>
+
+          <div class="bloco-coluna">
+            <h4>Destinatário</h4>
+            <p><strong>Nome:</strong> <span id="destinatarioNome"></span></p>
+            <p><strong>CNPJ:</strong> <span id="destinatarioCNPJ"></span></p>
+            <p><strong>IE:</strong> <span id="destinatarioIE"></span></p>
+            <p><strong>Endereço:</strong> <span id="destinatarioEndereco"></span></p>
+            <p><strong>Bairro:</strong> <span id="destinatarioBairro"></span></p>
+            <p><strong>Cidade:</strong> <span id="destinatarioMunicipio"></span></p>
+            <p><strong>UF:</strong> <span id="destinatarioUF"></span></p>
+            <p><strong>CEP:</strong> <span id="destinatarioCEP"></span></p>
+            <p><strong>Fone:</strong> <span id="destinatarioFone"></span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 📦 Aba 2: Produtos -->
+      <div id="abaProdutos" class="aba-conteudo hidden">
+        <h2>Itens da Nota</h2>
+        <table id="tabelaItens">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>SKU</th>
+              <th>Descrição</th>
+              <th>NCM</th>
+              <th>CFOP</th>
+              <th>U.M</th>
+              <th>Qtd</th>
+              <th>Unitário</th>
+              <th>Total</th>
+              <th>IPI</th>
+              <th>ICMS</th>
+              <th>Produto no Sistema</th>
+            </tr>
+          </thead>
+          <tbody id="corpoTabelaItens"></tbody>
+        </table>
+      </div>
+
+<!-- 💰 Aba 3: Fiscais & Pagamento -->
+<div id="abaFiscais" class="aba-conteudo hidden">
+  <h2>Duplicatas</h2>
+  <table id="tabelaDuplicatas">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Vencimento</th>
+        <th>Valor</th>
+      </tr>
+    </thead>
+    <tbody id="corpoTabelaDuplicatas"></tbody>
+  </table>
+
+  <!-- ✅ Botão de salvamento (agora somente nesta aba) -->
+  <div class="salvar" style="margin-top: 20px;">
+    <button id="btnSalvarNota">💾 Salvar Nota no Sistema</button>
+  </div>
+</div>
+
+  <!-- 🪟 Modal Seleção Produto -->
+  <div id="modalProduto" class="modal hidden">
+    <div class="modal-content">
+      <span id="fecharModalProduto" class="fechar">&times;</span>
+      <h3>Selecionar Produto do Sistema</h3>
+      <input type="text" id="buscaProduto" placeholder="🔍 Buscar por SKU, nome ou código de barras..." />
+      <table id="tabelaProdutosModal">
+        <thead>
+          <tr>
+            <th>SKU</th>
+            <th>Descrição</th>
+            <th>Ação</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 📦 Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  
+  <!-- Scripts globais -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <script src="entradasFiscais.js"></script>
+
+  <!-- 🔁 Troca de Abas -->
+  <script>
+    const botoes = document.querySelectorAll('.aba-btn');
+    const abas = document.querySelectorAll('.aba-conteudo');
+
+    botoes.forEach(botao => {
+      botao.addEventListener('click', () => {
+        botoes.forEach(b => b.classList.remove('ativa'));
+        abas.forEach(a => a.classList.remove('ativa'));
+        botao.classList.add('ativa');
+        document.getElementById(botao.dataset.aba).classList.add('ativa');
+      });
+    });
+  </script>
+</body>
+</html>

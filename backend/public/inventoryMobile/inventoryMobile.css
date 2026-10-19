@@ -1,0 +1,293 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ FILE: inventoryMobile.css                                          ║
+   ║ MODULE: Inventory Mobile                                           ║
+   ║ PRODNEX ERP                                                        ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #eef3f8;
+  color: #1f2937;
+}
+
+.app {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 14px;
+}
+
+.header {
+  background: linear-gradient(135deg, #0f4c81, #6b7280);
+  color: white;
+  border-radius: 18px;
+  padding: 22px 18px;
+  margin-bottom: 14px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.header p {
+  margin: 6px 0 0;
+  opacity: 0.9;
+}
+
+.card,
+.product-card,
+.message {
+  background: white;
+  border-radius: 16px;
+  padding: 15px;
+  margin-bottom: 14px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+}
+
+label,
+.info span,
+.info-grid span {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+}
+
+select,
+input,
+textarea {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 13px;
+  font-size: 16px;
+  outline: none;
+  background: white;
+}
+
+select:focus,
+input:focus,
+textarea:focus {
+  border-color: #0f4c81;
+  box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.14);
+}
+
+textarea {
+  min-height: 70px;
+  resize: vertical;
+}
+
+.btn {
+  border: 0;
+  border-radius: 12px;
+  padding: 13px 16px;
+  font-weight: 800;
+  cursor: pointer;
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn.primary {
+  width: 100%;
+  background: #0f4c81;
+  color: white;
+  font-size: 17px;
+}
+
+.btn.secondary {
+  width: 100%;
+  margin-top: 10px;
+  background: #334155;
+  color: white;
+}
+
+.btn.small {
+  width: 52px;
+  padding: 0;
+}
+
+.manual-search {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.manual-search .btn {
+  min-width: 90px;
+}
+
+.product-card h2 {
+  margin: 0 0 14px;
+  color: #0f4c81;
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.info-grid div,
+.info {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.info-grid strong,
+.info strong {
+  font-size: 17px;
+  line-height: 1.35;
+}
+
+.message {
+  font-weight: 800;
+  text-align: center;
+}
+
+.message.error {
+  color: #991b1b;
+  background: #fee2e2;
+}
+
+.message.success {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.message.warning {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Scanner estilo app */
+.scanner-modal {
+  position: fixed;
+  inset: 0;
+  background: #555;
+  color: white;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.scanner-top {
+  height: 72px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 50px 1fr 50px;
+  align-items: center;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.scanner-top button {
+  background: transparent;
+  color: white;
+  border: 0;
+  font-size: 32px;
+  cursor: pointer;
+}
+
+.scanner-instruction {
+  text-align: center;
+  padding: 20px 14px;
+  font-size: 17px;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.reader {
+  width: 100vw;
+  height: 62vh;
+  overflow: hidden;
+}
+
+.reader video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+.scan-line {
+  position: fixed;
+  top: 45%;
+  left: 50%;
+  width: 250px;
+  height: 5px;
+  border-radius: 999px;
+  background: white;
+  transform: translateX(-50%);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
+}
+
+.scanner-bottom {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 36px;
+  padding: 0 24px;
+  text-align: center;
+}
+
+.gallery-btn {
+  width: 100%;
+  border: 0;
+  border-radius: 14px;
+  padding: 15px;
+  font-size: 17px;
+  font-weight: 800;
+  background: white;
+  color: #111827;
+  cursor: pointer;
+}
+
+@media (max-width: 380px) {
+  .app {
+    padding: 10px;
+  }
+
+  .header h1 {
+    font-size: 21px;
+  }
+
+  .manual-search {
+    flex-direction: column;
+  }
+
+  .manual-search .btn {
+    width: 100%;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.btn.compact {
+  width: 100%;
+  margin-top: 10px;
+  padding: 11px 14px;
+  font-size: 14px;
+}

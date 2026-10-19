@@ -1,0 +1,110 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ salesCommissionsFromInvoices.css — ajustes locais                    ║
+   ║ O layout vem do padrão global (style.css); aqui só o que é da tela.  ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+/* Botão de busca do vendedor: mesma altura dos campos (fields-h-6) */
+.sci-field-search {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  align-self: flex-end;
+  height: var(--fields-height-6, 30px);
+  /* pull the icon next to its field (cancels the row gap) */
+  margin-left: calc(-1 * var(--fields-gap, 12px) + 2px);
+}
+
+.sci-field-search > .action-icon {
+  height: var(--fields-height-6, 30px);
+  width: 24px;
+  padding: 0;
+}
+
+#salesperson {
+  cursor: pointer;
+}
+
+/* Números alinhados à direita */
+#tableBody td.text-right {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Tipo da comissão */
+.sci-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+#tableBody td.empty-row {
+  padding: 24px;
+  text-align: center;
+  color: #94a3b8;
+}
+
+#priceName {
+  cursor: pointer;
+}
+
+/* Totais no rodapé, no mesmo estilo do contador de registros */
+.sci-footer-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.table-footer .table-footer__info .sci-footer-pill {
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.sci-footer-pill strong {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+/* Botões do cabeçalho à direita (sem os totais no meio) */
+.sci-header-actions {
+  margin-left: auto;
+}
+
+/* Header separated from the table card */
+.sci-page-header {
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 10px 12px;
+  border: var(--table-border-width, 1px) solid var(--table-border-color, #cbd5e1);
+  border-radius: var(--table-radius-top, 8px);
+  background-color: var(--table-filter-bg, #f3f4f6);
+  box-sizing: border-box;
+}
+
+/* Table edge-to-edge inside the card (no inner margins) */
+.table-layout-integrated > .sci-table-scroll {
+  flex: 1 1 auto;
+  border: 0;
+  border-radius: 0;
+}
+
+/* Gerar Comissões / Recalcular pushed to the far right of the filter row */
+#filtersForm > .fields-inline {
+  width: 100%;
+}
+
+.sci-filter-actions {
+  margin-left: auto;
+  align-self: flex-end;
+}
+
+/* Title with commissions icon */
+.sci-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

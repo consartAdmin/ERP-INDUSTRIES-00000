@@ -1,0 +1,225 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ labelPrintConfig.css — Label Print Configuration                    ║
+   ║ PRODNEX ERP                                                         ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.preview-column {
+  min-width: 0;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #d8dde3;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+}
+
+.card.sticky {
+  position: sticky;
+  top: 18px;
+}
+
+.card-header {
+  padding: 12px 16px;
+  background: #f2f2f2;
+  border-bottom: 1px solid #111827;
+}
+
+.card-header h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.card-body {
+  padding: 16px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.form-row label,
+.checkbox-row label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #374151;
+}
+
+input,
+select {
+  width: 100%;
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #111827;
+  outline: none;
+}
+
+input:focus,
+select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.checkbox-row input {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+#labelPreview {
+  width: 100%;
+  min-height: 260px;
+  margin: 0 auto;
+  padding: 12px;
+  background: #ffffff;
+  border: 1px dashed #111827;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  transition: 0.2s ease;
+}
+
+#previewBarcode {
+  width: 90%;
+  text-align: center;
+  font-family: "Courier New", monospace;
+  font-weight: 900;
+  letter-spacing: -2px;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+#previewName {
+  text-align: center;
+  font-weight: 800;
+  color: #111827;
+}
+
+#previewLocation {
+  text-align: center;
+  color: #374151;
+}
+
+#previewId {
+  text-align: center;
+  color: #64748b;
+  font-size: 12px;
+}
+
+#toastContainer {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 9999;
+  display: grid;
+  gap: 10px;
+}
+
+.toast {
+  min-width: 260px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.15);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.toast.success {
+  border-color: #86efac;
+  background: #dcfce7;
+  color: #166534;
+}
+
+.toast.error {
+  border-color: #fecaca;
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.toast.warning {
+  border-color: #fde68a;
+  background: #fef3c7;
+  color: #92400e;
+}
+
+#loadingOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.25);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9998;
+}
+
+#loadingOverlay.hidden {
+  display: none;
+}
+
+.spinner {
+  width: 44px;
+  height: 44px;
+  border: 5px solid #e5e7eb;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 980px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card.sticky {
+    position: static;
+  }
+}
+
+@media (max-width: 680px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-actions {
+    width: 100%;
+  }
+
+  .header-actions .btn {
+    flex: 1;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}

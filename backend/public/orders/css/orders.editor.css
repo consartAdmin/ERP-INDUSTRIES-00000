@@ -1,0 +1,99 @@
+/* ================= EDITOR ================= */
+
+.page-orders__editor {
+  margin-top: var(--gap-lg);
+  padding-bottom: 120px;
+}
+
+.page-orders__editor-header {
+  margin-bottom: var(--gap);
+}
+
+.page-orders__editor-title {
+  margin: 0;
+  font-size: var(--fs-18);
+}
+
+.page-orders__editor-subtitle {
+  margin: 0;
+  font-size: var(--fs-12);
+  color: var(--muted);
+}
+
+.page-orders__editor-body {
+  gap: var(--gap-lg);
+}
+
+.page-orders__section {
+  padding: var(--gap);
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: #f9fbff;
+}
+
+.page-orders__section .section-title {
+  font-size: var(--fs-14);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin-bottom: var(--gap-sm);
+}
+
+.page-orders__row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--gap);
+}
+
+.page-orders__field-full {
+  grid-column: 1 / -1;
+}
+
+.page-orders .field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: var(--fs-13);
+}
+
+.page-orders .field label {
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.page-orders .field input,
+.page-orders .field select,
+.page-orders .field textarea {
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  padding: 6px 10px;
+  font-size: var(--fs-13);
+  background: #ffffff;
+}
+
+.page-orders .field-grow {
+  grid-column: span 2;
+}
+
+.page-orders__row-nfe-singleline {
+  display: flex;
+  gap: var(--gap);
+  align-items: flex-start;
+}
+
+.page-orders__row-nfe-singleline .field {
+  flex: 1 1 0;
+}
+
+.page-orders__row-nfe-singleline .field-big {
+  flex: 2.5 1 0;
+}
+
+.page-orders .section-card {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.page-orders table {
+  width: 100% !important;
+}

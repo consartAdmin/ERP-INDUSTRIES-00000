@@ -1,0 +1,281 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ FILE: backend/public/database/database.html                        ║
+     ║ MODULE: Database Viewer / Editor                                   ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>PRODNEX ERP | Banco de Dados</title>
+
+    <!-- style.css já importa table.css, fields.css e modals.css -->
+    <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+    <link rel="stylesheet" href="/public/database/database.css" />
+</head>
+
+<body>
+    <main class="db-page">
+        <aside class="db-sidebar">
+            <div class="brand">
+                <h1>Database</h1>
+                <span>PRODNEX ERP</span>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-full fields-font-3 sidebar-search">
+                <input id="tableSearch" type="text" placeholder="Buscar tabela..." autocomplete="off" />
+            </div>
+
+            <div id="tablesList" class="tables-list"></div>
+        </aside>
+
+        <section class="db-content">
+            <header class="db-header">
+                <div>
+                    <h2 id="currentTableTitle">Selecione uma tabela</h2>
+                    <p id="currentTableSubtitle">Visualize colunas, dados e registros do banco.</p>
+                </div>
+
+                <div class="btn-position-right">
+                    <button id="btnReload" type="button" class="btn btn-new btn-sm">⟳ Atualizar</button>
+                    <button id="btnNewRow" type="button" class="btn btn-new btn-sm" disabled>➕ Novo Registro</button>
+                </div>
+            </header>
+
+            <!-- ===================================================== -->
+            <!-- TABS                                                  -->
+            <!-- ===================================================== -->
+            <nav id="dbTabs" class="tab-list db-tabs" role="tablist" aria-label="Visões da tabela">
+                <button type="button" class="tab is-active" role="tab" data-tab="rows" aria-selected="true">📄 Registros</button>
+                <button type="button" class="tab" role="tab" data-tab="structure" aria-selected="false">🧱 Estrutura</button>
+            </nav>
+
+            <!-- ===================================================== -->
+            <!-- INTEGRATED TABLE (Registros)                          -->
+            <!-- ===================================================== -->
+            <section id="rowsPanel" class="table-layout-integrated">
+                <div class="table-layout-integrated__filter">
+                    <div class="fields fields-inline fields-gap-3">
+                        <div class="fields fields-h-6 fields-w-40 fields-font-3">
+                            <label for="rowSearch">🔎 Pesquisar</label>
+                            <input id="rowSearch" type="text" placeholder="Pesquisar nos registros..." autocomplete="off" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-scroll table-scroll--flex table-row-h-28" data-table-settings="database.datatable">
+                    <table id="dataTable" class="table table-zebra table-zebra-hover table-sticky-head">
+                        <thead id="tableHead"></thead>
+                        <tbody id="tableBody">
+                            <tr>
+                                <td class="empty">Selecione uma tabela para começar.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- =================================================== -->
+                <!-- TABLE FOOTER                                        -->
+                <!-- =================================================== -->
+                <footer class="table-footer">
+                    <div class="table-footer__info">
+                        <div class="summary-pill summary-pill--success">
+                            <span>Total: <strong id="totalRows">0</strong></span>
+                        </div>
+                        <div class="summary-pill summary-pill--info">
+                            <span>PK: <strong id="primaryKeyInfo">-</strong></span>
+                        </div>
+                    </div>
+
+                    <div class="table-footer__pagination">
+                        <button id="btnPrev" type="button" class="btn btn-secondary btn-sm">Anterior</button>
+                        <span id="paginationLabel">Página 1</span>
+                        <button id="btnNext" type="button" class="btn btn-secondary btn-sm">Próxima</button>
+                    </div>
+
+                    <div class="table-footer__page-size">
+                        <label for="limitSelect">Mostrar</label>
+                        <div class="fields fields-h-6 fields-w-3 fields-font-3">
+                            <select id="limitSelect" class="table-footer__page-size-select">
+                                <option value="25">25</option>
+                                <option value="50" selected>50</option>
+                                <option value="100">100</option>
+                                <option value="200">200</option>
+                            </select>
+                        </div>
+                    </div>
+                </footer>
+            </section>
+
+            <!-- ===================================================== -->
+            <!-- ESTRUTURA (colunas, PK, FKs, índices)                 -->
+            <!-- ===================================================== -->
+            <section id="structurePanel" class="db-structure hidden">
+                <div class="db-structure__section">
+                    <div class="db-structure__header">
+                        <h3>Colunas</h3>
+                        <button type="button" class="btn btn-new btn-sm" data-struct-op="column.add">➕ Nova coluna</button>
+                    </div>
+                    <div class="table-scroll table-row-h-28" data-table-settings="database.structcolumnsbody">
+                        <table class="table table-zebra table-zebra-hover table-sticky-head db-struct-table">
+                            <thead>
+                                <tr>
+                                    <th>Coluna</th>
+                                    <th>Tipo</th>
+                                    <th>Nulo</th>
+                                    <th>Default</th>
+                                    <th>Chaves</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="structColumnsBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="db-structure__section">
+                    <div class="db-structure__header">
+                        <h3>🔑 Chave primária</h3>
+                        <div class="row-actions">
+                            <button type="button" class="btn btn-edit btn-sm" data-struct-op="pk.set">Definir / alterar PK</button>
+                            <button type="button" class="btn btn-delete btn-sm" data-struct-op="pk.drop">Remover PK</button>
+                        </div>
+                    </div>
+                    <p id="structPkInfo" class="db-structure__info"></p>
+                </div>
+
+                <div class="db-structure__section">
+                    <div class="db-structure__header">
+                        <h3>🔗 Chaves estrangeiras</h3>
+                        <button type="button" class="btn btn-new btn-sm" data-struct-op="fk.add">➕ Nova FK</button>
+                    </div>
+                    <div class="table-scroll table-row-h-28" data-table-settings="database.structfksbody">
+                        <table class="table table-zebra table-zebra-hover table-sticky-head db-struct-table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Colunas</th>
+                                    <th>Referência</th>
+                                    <th>ON UPDATE</th>
+                                    <th>ON DELETE</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="structFksBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="db-structure__section">
+                    <div class="db-structure__header">
+                        <h3>Índices / UNIQUE / CHECK</h3>
+                        <div class="row-actions">
+                            <button type="button" class="btn btn-new btn-sm" data-struct-op="unique.add">➕ Nova UNIQUE</button>
+                            <button type="button" class="btn btn-new btn-sm" data-struct-op="index.create">➕ Novo índice</button>
+                        </div>
+                    </div>
+                    <div class="table-scroll table-row-h-28" data-table-settings="database.structindexesbody">
+                        <table class="table table-zebra table-zebra-hover table-sticky-head db-struct-table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Tipo</th>
+                                    <th>Definição</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="structIndexesBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="db-structure__section">
+                    <div class="db-structure__header">
+                        <h3>Referenciada por (FKs de outras tabelas)</h3>
+                    </div>
+                    <div class="table-scroll table-row-h-28" data-table-settings="database.structrefsbody">
+                        <table class="table table-zebra table-zebra-hover table-sticky-head db-struct-table">
+                            <thead>
+                                <tr>
+                                    <th>Tabela</th>
+                                    <th>Constraint</th>
+                                    <th>Definição</th>
+                                </tr>
+                            </thead>
+                            <tbody id="structRefsBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <!-- ===================================================== -->
+    <!-- STRUCTURE MODAL — DDL com pré-visualização do SQL     -->
+    <!-- ===================================================== -->
+    <div id="structModal" class="modal" aria-hidden="true">
+        <div id="structModalBackdrop" class="modal__backdrop"></div>
+
+        <div class="modal__dialog">
+            <div class="modal__panel modal__panel--lg modal-header-color-2 modal-footer-color-1" role="dialog"
+                aria-modal="true" aria-labelledby="structModalTitle">
+                <header class="modal__header">
+                    <h3 id="structModalTitle" class="modal__title">Estrutura</h3>
+                    <button id="btnCloseStructModal" type="button" class="modal__close" aria-label="Fechar modal"
+                        title="Fechar">×</button>
+                </header>
+
+                <div class="modal__body">
+                    <div id="structFields" class="modal-form-grid modal-form-grid--2"></div>
+                    <pre id="structSqlPreview" class="db-sql-preview hidden"></pre>
+                </div>
+
+                <footer class="modal__footer">
+                    <div class="modal-spacer"></div>
+                    <button id="btnCancelStructModal" type="button" class="btn btn-secondary btn-sm">Cancelar</button>
+                    <button id="btnStructPreview" type="button" class="btn btn-edit btn-sm">👁 Visualizar SQL</button>
+                    <button id="btnStructApply" type="button" class="btn btn-save btn-sm hidden">▶ Executar</button>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- ROW MODAL — padrão global modals.css                  -->
+    <!-- ===================================================== -->
+    <div id="rowModal" class="modal" aria-hidden="true">
+        <div id="modalBackdrop" class="modal__backdrop"></div>
+
+        <div class="modal__dialog">
+            <div class="modal__panel modal__panel--lg modal-header-color-2 modal-footer-color-1" role="dialog"
+                aria-modal="true" aria-labelledby="modalTitle">
+                <header class="modal__header">
+                    <h3 id="modalTitle" class="modal__title">Registro</h3>
+                    <button id="btnCloseModal" type="button" class="modal__close" aria-label="Fechar modal"
+                        title="Fechar">×</button>
+                </header>
+
+                <div class="modal__body">
+                    <div id="modalFields" class="modal-form-grid modal-form-grid--2"></div>
+                </div>
+
+                <footer class="modal__footer">
+                    <button id="btnDeleteRow" type="button" class="btn btn-delete btn-sm hidden">Excluir</button>
+                    <div class="modal-spacer"></div>
+                    <button id="btnCancelModal" type="button" class="btn btn-secondary btn-sm">Cancelar</button>
+                    <button id="btnSaveRow" type="button" class="btn btn-save btn-sm">Salvar</button>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/public/includes/js/core.js"></script>
+
+    <script type="module" src="/public/database/js/database.init.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,258 @@
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ trackingManager.html — Gerenciador de Trackeamento (Frontend)   ║
+     ║ PRODNEX ERP                                                     ║
+     ║                                                                  ║
+     ║ - Centraliza chaves de GA4, GTM, Google Ads e Meta Pixel        ║
+     ║ - Consome APIs:                                                 ║
+     ║     GET  /api/tracking/config                                   ║
+     ║     PUT  /api/tracking/config                                   ║
+     ║     POST /api/tracking/test                                     ║
+     ║ - Layout: cards de status + formulário + área de testes         ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <title>TRACKEAMENTO | PRODNEX ERP</title>
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <!-- 🎨 Design System base -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- 🎨 CSS específico deste módulo -->
+  <link rel="stylesheet" href="/public/trackingManager/trackingManager.css" />
+</head>
+<body class="body-default page-tracking-manager">
+
+  <!-- ░░░ CONTEÚDO PRINCIPAL ░░░ -->
+  <main class="trk-page">
+    <!-- Topo / Título + Ações -->
+    <section class="trk-header">
+      <div class="trk-header__title">
+        <h1>Gerenciador de Trackeamento</h1>
+        <p>
+          Configure Google Tag Manager, GA4, conversões do Google Ads e Meta Pixel
+          para o e-commerce BH3 e demais sites integrados.
+        </p>
+      </div>
+
+      <div class="trk-header__actions">
+        <button id="trk-reload-btn" class="btn-soft">
+          🔄 Recarregar
+        </button>
+        <button id="trk-save-btn" class="btn-primary">
+          💾 Salvar configurações
+        </button>
+      </div>
+    </section>
+
+    <!-- STATUS GERAL -->
+    <section class="trk-card trk-status">
+      <h2 class="trk-section-title">Status de Trackeamento</h2>
+      <p class="trk-section-subtitle">
+        Visão rápida se cada ferramenta essencial de trackeamento está ativa e configurada.
+      </p>
+
+      <div class="trk-status-grid">
+        <article class="trk-status-card">
+          <h3>Google Tag Manager</h3>
+          <p class="trk-status-value" id="trk-status-gtm">—</p>
+          <p class="trk-status-hint">
+            Container ID (ex: <code>GTM-XXXXXXX</code>)
+          </p>
+        </article>
+
+        <article class="trk-status-card">
+          <h3>Google Analytics 4</h3>
+          <p class="trk-status-value" id="trk-status-ga4">—</p>
+          <p class="trk-status-hint">
+            Measurement ID (ex: <code>G-XXXXXXX</code>)
+          </p>
+        </article>
+
+        <article class="trk-status-card">
+          <h3>Google Ads (Conversões)</h3>
+          <p class="trk-status-value" id="trk-status-ads">—</p>
+          <p class="trk-status-hint">
+            Conversion ID / Label para conversões de compra
+          </p>
+        </article>
+
+        <article class="trk-status-card">
+          <h3>Meta Pixel</h3>
+          <p class="trk-status-value" id="trk-status-meta">—</p>
+          <p class="trk-status-hint">
+            Pixel ID (Facebook / Instagram)
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- FORM PRINCIPAL -->
+    <section class="trk-card trk-form-card">
+      <h2 class="trk-section-title">Parâmetros de Trackeamento</h2>
+      <p class="trk-section-subtitle">
+        Preencha as chaves fornecidas pelo Google/Meta para que o e-commerce consiga enviar
+        os eventos de navegação, carrinho e compra corretamente.
+      </p>
+
+      <form id="trk-form" class="trk-form" autocomplete="off">
+        <!-- COLUNA ESQ: Google -->
+        <div class="trk-form-column">
+          <fieldset class="trk-fieldset">
+            <legend>Google Tag Manager</legend>
+
+            <label class="trk-field">
+              <span>Container ID (GTM-ID)</span>
+              <input
+                type="text"
+                id="gtmContainerId"
+                name="gtmContainerId"
+                placeholder="GTM-XXXXXXX"
+              />
+            </label>
+
+            <label class="trk-field trk-field--inline">
+              <span>Ativo?</span>
+              <input type="checkbox" id="gtmEnabled" name="gtmEnabled" />
+            </label>
+          </fieldset>
+
+          <fieldset class="trk-fieldset">
+            <legend>Google Analytics 4</legend>
+
+            <label class="trk-field">
+              <span>Measurement ID (G-ID)</span>
+              <input
+                type="text"
+                id="ga4MeasurementId"
+                name="ga4MeasurementId"
+                placeholder="G-XXXXXXX"
+              />
+            </label>
+
+            <label class="trk-field">
+              <span>API Secret (opcional – para Measurement Protocol)</span>
+              <input
+                type="password"
+                id="ga4ApiSecret"
+                name="ga4ApiSecret"
+                placeholder="••••••••••••"
+              />
+            </label>
+
+            <label class="trk-field trk-field--inline">
+              <span>Ativo?</span>
+              <input type="checkbox" id="ga4Enabled" name="ga4Enabled" />
+            </label>
+          </fieldset>
+        </div>
+
+        <!-- COLUNA DIR: Ads / Meta -->
+        <div class="trk-form-column">
+          <fieldset class="trk-fieldset">
+            <legend>Google Ads · Conversões</legend>
+
+            <label class="trk-field">
+              <span>Conversion ID</span>
+              <input
+                type="text"
+                id="adsConversionId"
+                name="adsConversionId"
+                placeholder="AW-XXXXXXX"
+              />
+            </label>
+
+            <label class="trk-field">
+              <span>Conversion Label (compra / lead)</span>
+              <input
+                type="text"
+                id="adsConversionLabel"
+                name="adsConversionLabel"
+                placeholder="XXXXXXXXXXXXXX"
+              />
+            </label>
+
+            <label class="trk-field trk-field--inline">
+              <span>Ativo?</span>
+              <input type="checkbox" id="adsEnabled" name="adsEnabled" />
+            </label>
+          </fieldset>
+
+          <fieldset class="trk-fieldset">
+            <legend>Meta Pixel (Facebook / Instagram)</legend>
+
+            <label class="trk-field">
+              <span>Pixel ID</span>
+              <input
+                type="text"
+                id="metaPixelId"
+                name="metaPixelId"
+                placeholder="123456789012345"
+              />
+            </label>
+
+            <label class="trk-field trk-field--inline">
+              <span>Ativo?</span>
+              <input type="checkbox" id="metaEnabled" name="metaEnabled" />
+            </label>
+          </fieldset>
+        </div>
+      </form>
+    </section>
+
+    <!-- TESTES / DEBUG -->
+    <section class="trk-card trk-tests-card">
+      <div class="trk-tests-header">
+        <div>
+          <h2 class="trk-section-title">Testes de Trackeamento</h2>
+          <p class="trk-section-subtitle">
+            Execute um teste simples para validar se as chaves configuradas estão
+            sendo aceitas e se a comunicação com as APIs está funcional.
+          </p>
+        </div>
+
+        <button id="trk-run-tests-btn" class="btn-soft">
+          🧪 Executar testes
+        </button>
+      </div>
+
+      <div class="trk-tests-grid">
+        <article class="trk-test-card">
+          <h3>Resultado dos testes</h3>
+          <p class="trk-test-hint">
+            Aqui aparecerão mensagens de sucesso ou erro retornadas pela API de teste.
+          </p>
+          <pre id="trk-tests-output" class="trk-tests-output">
+Nenhum teste executado ainda.
+          </pre>
+        </article>
+
+        <article class="trk-test-card">
+          <h3>Configuração atual (somente leitura)</h3>
+          <p class="trk-test-hint">
+            Visualize rapidamente o payload salvo no backend para auditoria.
+          </p>
+          <pre id="trk-config-preview" class="trk-tests-output">
+Carregando…
+          </pre>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- ░░░ SCRIPTS ░░░ -->
+  <!-- Core / Menu global CONSART -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <!-- JS específico deste módulo -->
+  <script type="module" src="/public/trackingManager/trackingManager.js"></script>
+</body>
+</html>

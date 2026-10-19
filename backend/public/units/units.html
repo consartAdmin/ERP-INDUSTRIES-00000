@@ -1,0 +1,169 @@
+<!-- ╔════════════════════════════════════════════════════════════╗
+     ║ units.html — Cadastro de Unidades — PRODNEX ERP            ║
+     ╚════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>UNIDADES | PRODNEX ERP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/units/units.css" />
+</head>
+
+<body class="page consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <div class="header units-page-header">
+      <div>
+        <h2 class="units-card-title">Unidades de Produtos</h2>
+        <p class="units-card-caption">
+          Cadastre e mantenha as unidades utilizadas em produtos e movimentações de estoque.
+        </p>
+      </div>
+
+      <button id="btnNewUnit" type="button" class="btn btn-toolbar btn-sm">
+        + Nova unidade
+      </button>
+    </div>
+
+    <section class="table-layout-integrated">
+
+      <div class="table-layout-integrated__filter units-filter-bar">
+        <div class="fields-inline fields-gap3 units-filter-row">
+
+          <div class="fields fields-inline fields-w-20 fields-h-6 units-search-field">
+            <input id="searchUnit" type="text" class="units-search-input"
+              placeholder="Buscar unidade por nome ou descrição..." autocomplete="off" />
+            <span class="units-search-icon" aria-hidden="true">🔍</span>
+          </div>
+
+          <div class="fields fields-inline fields-w-10 fields-h-6 units-filter-option">
+            <label class="units-checkbox-inline">
+              <input id="filterIncludeInactive" type="checkbox" />
+              <span>Incluir inativos</span>
+            </label>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="table-scroll table-height-flex table-row-h-20" data-table-settings="units.unitstablebody">
+        <table class="table table-zebra table-zebra-hover table-sticky-head units-table">
+          <thead>
+            <tr>
+              <th class="col-id">ID</th>
+              <th class="col-unit">Unidade</th>
+              <th class="col-description">Descrição</th>
+              <th class="col-factor">Fator</th>
+              <th class="col-status">Status</th>
+              <th class="col-actions">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="unitsTableBody"></tbody>
+        </table>
+      </div>
+
+      <footer class="table-footer units-table-footer">
+
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+            <span id="unitsTableInfo">0 registros</span>
+          </div>
+
+        </div>
+
+        <div class="table-footer__pagination">
+          <button type="button" id="btnPreviousPage" class="btn btn-clean btn-sm">
+            Anterior
+          </button>
+
+          <span id="unitsPageInfo">Página 1 de 1</span>
+
+          <button type="button" id="btnNextPage" class="btn btn-new btn-sm">
+            Próxima
+          </button>
+        </div>
+
+        <div class="table-footer__page-size">
+          <label for="unitsRowsPerPage">Mostrar</label>
+
+          <select id="unitsRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+            <option value="10">10 linhas</option>
+            <option value="20">20 linhas</option>
+            <option value="30">30 linhas</option>
+            <option value="50" selected>50 linhas</option>
+            <option value="100">100 linhas</option>
+          </select>
+        </div>
+
+      </footer>
+    </section>
+  </main>
+
+  <dialog id="unitModal" class="units-modal">
+    <div class="units-modal__header">
+      <div>
+        <h3 id="unitModalTitle">Nova unidade</h3>
+        <p id="unitModalCaption">Cadastre uma unidade para uso no catálogo de produtos.</p>
+      </div>
+
+      <button id="btnCloseUnitModal" type="button" class="units-modal__close" aria-label="Fechar">
+        ×
+      </button>
+    </div>
+
+    <form id="unitForm" class="units-modal__body">
+      <input id="unitId" type="hidden" />
+
+      <div class="units-form-grid">
+        <div class="units-form-field units-form-field--unit">
+          <label for="unit" class="units-label">Sigla / Unidade *</label>
+          <input id="unit" name="unit" type="text" maxlength="50" class="units-input" placeholder="Ex.: UN, CX, FD, PAC"
+            required autocomplete="off" />
+        </div>
+
+        <div class="units-form-field units-form-field--description">
+          <label for="description" class="units-label">Descrição</label>
+          <input id="description" name="description" type="text" maxlength="100" class="units-input"
+            placeholder="Ex.: Unidade, Caixa, Fardo, Pacote" autocomplete="off" />
+        </div>
+
+        <div class="units-form-field units-form-field--factor">
+          <label for="fator" class="units-label">Fator (multiplicador)</label>
+          <input id="fator" name="fator" type="number" step="0.01" min="0.01" value="1" class="units-input"
+            placeholder="1,00" inputmode="decimal" />
+        </div>
+
+        <div class="units-form-field units-form-field--status">
+          <span class="units-label">Status</span>
+          <label class="units-switch">
+            <input id="is_active" name="is_active" type="checkbox" checked />
+            <span class="units-switch-slider"></span>
+            <span class="units-switch-label">Ativo</span>
+          </label>
+        </div>
+      </div>
+
+      <div id="unitFormMessage" class="units-form-message" role="alert" hidden></div>
+
+      <div class="units-modal__footer">
+        <button id="btnCancelUnit" type="button" class="btn btn-clean btn-sm">
+          Cancelar
+        </button>
+        <button id="btnSaveUnit" type="submit" class="btn btn-toolbar btn-sm">
+          Salvar
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Scripts globais -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="/public/units/js/units.init.js"></script>
+</body>
+
+</html>

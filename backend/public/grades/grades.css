@@ -1,0 +1,100 @@
+/* =========================================================
+   Grades table column widths
+========================================================= */
+
+.grades-table {
+    --grades-col-id-width: 70px;
+    --grades-col-name-width: 180px;
+    --grades-col-description-width: 420px;
+    --grades-col-status-width: 120px;
+    --grades-col-actions-width: 110px;
+
+    /*
+   * These variables are required because the first three
+   * columns use table-freeze-left-3.
+   */
+    --table-freeze-col-1-width: var(--grades-col-id-width);
+    --table-freeze-col-2-width: var(--grades-col-name-width);
+    --table-freeze-col-3-width: var(--grades-col-description-width);
+
+    width: 100%;
+    min-width: calc(var(--grades-col-id-width) + var(--grades-col-name-width) + var(--grades-col-description-width) + var(--grades-col-status-width) + var(--grades-col-actions-width));
+
+    table-layout: fixed;
+}
+
+/* Column definitions */
+
+.grades-table .grades-col-id {
+    width: var(--grades-col-id-width);
+}
+
+.grades-table .grades-col-name {
+    width: var(--grades-col-name-width);
+}
+
+.grades-table .grades-col-description {
+    width: var(--grades-col-description-width);
+}
+
+.grades-table .grades-col-status {
+    width: var(--grades-col-status-width);
+}
+
+.grades-table .grades-col-actions {
+    width: var(--grades-col-actions-width);
+}
+
+/* Reinforce widths for frozen columns */
+
+.grades-table :is(th, td):nth-child(1) {
+    width: var(--grades-col-id-width);
+    min-width: var(--grades-col-id-width);
+    max-width: var(--grades-col-id-width);
+}
+
+.grades-table :is(th, td):nth-child(2) {
+    width: var(--grades-col-name-width);
+    min-width: var(--grades-col-name-width);
+    max-width: var(--grades-col-name-width);
+}
+
+.grades-table :is(th, td):nth-child(3) {
+    width: var(--grades-col-description-width);
+    min-width: var(--grades-col-description-width);
+    max-width: var(--grades-col-description-width);
+}
+
+.grades-table :is(th, td):nth-child(4) {
+    width: var(--grades-col-status-width);
+    min-width: var(--grades-col-status-width);
+    max-width: var(--grades-col-status-width);
+}
+
+.grades-table :is(th, td):nth-child(5) {
+    width: var(--grades-col-actions-width);
+    min-width: var(--grades-col-actions-width);
+    max-width: var(--grades-col-actions-width);
+}
+
+.grades-header-actions {
+    align-items: center;
+    gap: 12px;
+}
+
+.grades-header-actions h2 {
+    margin: 0;
+}
+
+.header .fields-inline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.filter-actions {
+    display: flex;
+    align-items: flex-end;
+    align-self: stretch;
+}

@@ -1,0 +1,320 @@
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║ salesDashboard.css — Painel Dark de Vendas                  ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+:root {
+  --sd-bg: #050816;
+  --sd-bg-alt: #0b1020;
+  --sd-card: #101827;
+  --sd-card-border: rgba(148, 163, 184, 0.25);
+  --sd-primary: #22d3ee;
+  --sd-primary-soft: rgba(56, 189, 248, 0.2);
+  --sd-text: #e5e7eb;
+  --sd-muted: #9ca3af;
+  --sd-radius-lg: 18px;
+  --sd-radius-pill: 999px;
+  --sd-shadow-card: 0 22px 45px rgba(15, 23, 42, 0.7);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  background: radial-gradient(circle at top left, #1e293b 0, #020617 45%, #000 100%);
+  color: var(--sd-text);
+}
+
+/* Página */
+.sd-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 32px 16px;
+}
+
+/* Header */
+.sd-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.sd-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.sd-back-btn {
+  border-radius: var(--sd-radius-pill);
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  background: rgba(15, 23, 42, 0.9);
+  color: var(--sd-text);
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s ease, border-color 0.15s ease,
+    transform 0.12s ease;
+}
+
+.sd-back-btn:hover {
+  background: rgba(30, 64, 175, 0.9);
+  border-color: var(--sd-primary);
+  transform: translateY(-1px);
+}
+
+.sd-title-block h1 {
+  margin: 0 0 4px;
+  font-size: 1.7rem;
+  letter-spacing: 0.03em;
+}
+
+.sd-title-block p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--sd-muted);
+}
+
+.sd-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.85rem;
+}
+
+.sd-env-badge {
+  padding: 4px 10px;
+  border-radius: var(--sd-radius-pill);
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(55, 65, 81, 0.9);
+}
+
+.sd-date {
+  color: var(--sd-muted);
+}
+
+/* Main */
+.sd-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Linhas de cards = 4 colunas */
+.sd-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+}
+
+/* Card base */
+.sd-card {
+  background: radial-gradient(circle at top left, #1e293b 0, #020617 80%);
+  border-radius: var(--sd-radius-lg);
+  border: 1px solid var(--sd-card-border);
+  box-shadow: var(--sd-shadow-card);
+  padding: 20px 22px 18px;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.15s ease, box-shadow 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.sd-card-primary {
+  border-color: var(--sd-primary-soft);
+  box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.35),
+    0 25px 60px rgba(8, 47, 73, 0.9);
+}
+
+.sd-card::before {
+  content: "";
+  position: absolute;
+  inset: -40px;
+  background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.16), transparent 55%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: -1;
+}
+
+.sd-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.9);
+  border-color: rgba(148, 163, 184, 0.65);
+}
+
+.sd-card:hover::before {
+  opacity: 1;
+}
+
+.sd-card header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.sd-card h2 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #e0f2fe;
+}
+
+/* Tags */
+.sd-tag {
+  font-size: 0.75rem;
+  padding: 4px 9px;
+  border-radius: var(--sd-radius-pill);
+  background: var(--sd-primary-soft);
+  color: var(--sd-primary);
+  border: 1px solid rgba(34, 211, 238, 0.4);
+}
+
+.sd-tag-outline {
+  background: transparent;
+  color: var(--sd-muted);
+  border-color: rgba(148, 163, 184, 0.7);
+}
+
+/* Valor */
+.sd-value {
+  margin-top: 12px;
+  font-size: 2.1rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #f9fafb;
+}
+
+/* Rodapé do card */
+.sd-card footer {
+  margin-top: 10px;
+  font-size: 0.82rem;
+  color: var(--sd-muted);
+}
+
+/* ====== ÁREA DE GRÁFICOS ====== */
+
+.sd-charts-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 8px;
+}
+
+.sd-chart-card {
+  background: radial-gradient(circle at top left, #020617 0, #020617 60%);
+  border-radius: var(--sd-radius-lg);
+  border: 1px solid rgba(55, 65, 81, 0.8);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.85);
+  padding: 16px 18px 18px;
+}
+
+.sd-chart-card header h2 {
+  margin: 0;
+  font-size: 1rem;
+  color: #e0f2fe;
+}
+
+.sd-chart-card header p {
+  margin: 2px 0 8px;
+  font-size: 0.8rem;
+  color: var(--sd-muted);
+}
+
+.sd-chart-wrapper {
+  position: relative;
+  width: 100%;
+  height: 260px;
+}
+
+.sd-chart-wrapper canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Footer */
+.sd-footer {
+  padding-top: 10px;
+  text-align: right;
+  font-size: 0.8rem;
+  color: rgba(148, 163, 184, 0.7);
+}
+
+/* Responsivo */
+@media (max-width: 1200px) {
+  .sd-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sd-chart-wrapper {
+    height: 240px;
+  }
+}
+
+@media (max-width: 720px) {
+  .sd-page {
+    padding: 16px;
+  }
+
+  .sd-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .sd-header-right {
+    align-self: stretch;
+    justify-content: space-between;
+  }
+
+  .sd-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sd-charts-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sd-chart-wrapper {
+    height: 220px;
+  }
+}
+
+/* ============================================================
+   TAGS COM CORES CORRESPONDENTES AOS GRÁFICOS
+   ============================================================ */
+
+/* NF-e (Pedidos) — Azul */
+.sd-tag-nfe {
+  background: rgba(56, 189, 248, 0.18);   /* fundo */
+  color: #38bdf8;                         /* texto */
+  border: 1px solid #0ea5e9;              /* borda */
+}
+
+/* NFC-e (PDV) — Verde */
+.sd-tag-nfce {
+  background: rgba(34, 197, 94, 0.18);
+  color: #22c55e;
+  border: 1px solid #16a34a;
+}
+
+/* E-commerce — Laranja */
+.sd-tag-ecom {
+  background: rgba(249, 115, 22, 0.18);
+  color: #f97316;
+  border: 1px solid #ea580c;
+}

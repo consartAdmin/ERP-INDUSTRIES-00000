@@ -1,0 +1,287 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ productsStockLots.html — Lotes & Validade (PRODNEX ERP)             ║
+     ║ Path: backend/public/productsStockLots/productsStockLots.html       ║
+     ║ Frontend (ESM) | API: /api/productsStockLots                        ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lotes & Validade • PRODNEX ERP</title>
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <!-- Base / Design System -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- Page + Modal -->
+  <link rel="stylesheet" href="./productsStockLots.css" />
+  <link rel="stylesheet" href="./createProductsStockLotsModal.css" />
+</head>
+
+<body>
+  <div class="app">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="brand">
+          <img class="brand-logo" src="/public/imagens/brasaoConsartInfinity.png" alt="CONSART" />
+          <div class="brand-text">
+            <div class="brand-title">Lotes & Validade</div>
+            <div class="brand-sub">Controle por lote (entrada NF-e + orçamento/pedido)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <button id="btnEnsure" class="btn btn-ghost" title="Cria/garante tabela no banco (idempotente)">
+          Ensure DB
+        </button>
+        <button id="btnRefresh" class="btn btn-ghost" title="Atualizar lista">
+          Atualizar
+        </button>
+        <button id="btnNew" class="btn btn-primary" title="Criar novo lote">
+          + Novo lote
+        </button>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="content">
+      <!-- Filters -->
+      <section class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Filtros</div>
+          <div class="panel-actions">
+            <button id="btnFefo" class="btn btn-soft" title="Carrega lotes disponíveis ordenados por FEFO (validade)">
+              FEFO
+            </button>
+            <button id="btnClear" class="btn btn-ghost" title="Limpar filtros">
+              Limpar
+            </button>
+          </div>
+        </div>
+
+        <div class="filters-grid">
+          <div class="field">
+            <label for="fProductStockId">Product Stock ID</label>
+            <input id="fProductStockId" type="number" inputmode="numeric" placeholder="Ex: 123" />
+          </div>
+
+          <div class="field">
+            <label for="fQ">Buscar lote</label>
+            <input id="fQ" type="text" placeholder="Lote (ex: L2026-01)" />
+          </div>
+
+          <div class="field">
+            <label for="fOnlyAvailable">Somente disponíveis</label>
+            <select id="fOnlyAvailable">
+              <option value="false">Não</option>
+              <option value="true">Sim</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="fOrderBy">Ordenar por</label>
+            <select id="fOrderBy">
+              <option value="expires_at">Validade</option>
+              <option value="lot_code">Lote</option>
+              <option value="qty_on_hand">Qtd em mãos</option>
+              <option value="qty_reserved">Reservado</option>
+              <option value="updated_at">Atualização</option>
+              <option value="created_at">Criação</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="fDir">Direção</label>
+            <select id="fDir">
+              <option value="asc">Asc</option>
+              <option value="desc">Desc</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="fLimit">Itens por página</label>
+            <select id="fLimit">
+              <option>10</option>
+              <option selected>20</option>
+              <option>50</option>
+              <option>100</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="fPage">Página</label>
+            <input id="fPage" type="number" inputmode="numeric" min="1" value="1" />
+          </div>
+
+          <div class="field field-span-3">
+            <label>Resumo (visão rápida)</label>
+            <div class="summary">
+              <div class="chip">
+                <div class="chip-k">Total linhas</div>
+                <div id="sumTotal" class="chip-v">0</div>
+              </div>
+              <div class="chip">
+                <div class="chip-k">Disponível</div>
+                <div id="sumAvailable" class="chip-v">0,000</div>
+              </div>
+              <div class="chip">
+                <div class="chip-k">Em mãos</div>
+                <div id="sumOnHand" class="chip-v">0,000</div>
+              </div>
+              <div class="chip">
+                <div class="chip-k">Reservado</div>
+                <div id="sumReserved" class="chip-v">0,000</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="filters-footer">
+          <button id="btnSearch" class="btn btn-primary">Buscar</button>
+          <button id="btnPrev" class="btn btn-ghost">◀ Anterior</button>
+          <button id="btnNext" class="btn btn-ghost">Próxima ▶</button>
+          <div class="muted" id="pagingInfo">—</div>
+        </div>
+      </section>
+
+      <!-- Table -->
+      <section class="panel table-panel">
+        <div class="table-wrap">
+          <table class="table" aria-label="Tabela de lotes">
+            <thead>
+              <tr>
+                <th class="w-id">ID</th>
+                <th class="w-ps">Stock ID</th>
+                <th class="w-lot">Lote</th>
+                <th class="w-date">Validade</th>
+                <th class="w-num">Em mãos</th>
+                <th class="w-num">Reservado</th>
+                <th class="w-num">Disponível</th>
+                <th class="w-date">Atualizado</th>
+                <th class="w-actions">Ações</th>
+              </tr>
+            </thead>
+
+            <tbody id="tbody">
+              <tr>
+                <td colspan="9" class="empty">Carregando…</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="panel-foot">
+          <div class="muted" id="footHint">
+            Dica: use <b>FEFO</b> para listar lotes disponíveis por validade (primeiro a vencer).
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal (Create/Edit + Operations) -->
+  <div id="modalLayer" class="modal-layer hidden" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal">
+      <div class="modal-head">
+        <div class="modal-title" id="modalTitle">Novo lote</div>
+        <button id="btnCloseModal" class="icon-btn" title="Fechar">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <form id="formLot" class="form">
+          <input type="hidden" id="mLotId" />
+
+          <div class="grid-2">
+            <!-- ✅ Product Stock ID + search product -->
+            <div class="field">
+              <label for="mProductStockId">Product Stock ID *</label>
+              <div class="input-with-btn">
+                <input id="mProductStockId" type="number" inputmode="numeric" required />
+                <button id="btnPickProduct" type="button" class="icon-btn icon-btn-mini" title="Buscar produto (modal)">🔎</button>
+              </div>
+              <div class="hint muted">Dica: clique na lupa para localizar o produto e preencher o Stock ID automaticamente.</div>
+            </div>
+
+            <div class="field">
+              <label for="mLotCode">Lote *</label>
+              <input id="mLotCode" type="text" required placeholder="Ex: L2026-001" />
+            </div>
+
+            <div class="field">
+              <label for="mExpiresAt">Validade</label>
+              <input id="mExpiresAt" type="date" />
+            </div>
+
+            <div class="field">
+              <label for="mQtyOnHand">Qtd em mãos (entrada/saldo)</label>
+              <input id="mQtyOnHand" type="number" inputmode="decimal" step="0.001" value="0" />
+            </div>
+
+            <div class="field">
+              <label for="mCostUnit">Custo unitário</label>
+              <input id="mCostUnit" type="number" inputmode="decimal" step="0.000001" placeholder="Opcional" />
+            </div>
+
+            <div class="field">
+              <label for="mNfeKey">Chave NF-e</label>
+              <input id="mNfeKey" type="text" placeholder="Opcional" />
+            </div>
+
+            <div class="field">
+              <label for="mNfeItemSeq">Item NF-e</label>
+              <input id="mNfeItemSeq" type="number" inputmode="numeric" placeholder="Opcional" />
+            </div>
+
+            <div class="field">
+              <label for="mQtyReserved">Reservado (somente leitura)</label>
+              <input id="mQtyReserved" type="number" step="0.001" value="0" disabled />
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="ops">
+            <div class="ops-title">Operações rápidas</div>
+            <div class="ops-row">
+              <div class="field">
+                <label for="opQty">Quantidade</label>
+                <input id="opQty" type="number" inputmode="decimal" step="0.001" value="1" />
+              </div>
+              <button id="btnReserve" type="button" class="btn btn-soft">Reservar</button>
+              <button id="btnUnreserve" type="button" class="btn btn-soft">Desreservar</button>
+              <button id="btnConsume" type="button" class="btn btn-warning">Baixar (Consume)</button>
+            </div>
+
+            <div class="ops-hint muted" id="opsHint">
+              Reservar/desreservar é ideal para orçamentos. Baixar (consume) para saída confirmada.
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-foot">
+        <div class="left">
+          <button id="btnDelete" class="btn btn-danger hidden" type="button">Excluir</button>
+        </div>
+        <div class="right">
+          <button id="btnCancel" class="btn btn-ghost" type="button">Cancelar</button>
+          <button id="btnSave" class="btn btn-primary" type="submit" form="formLot">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+  <!-- Core + Page -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="./productsStockLots.js"></script>
+</body>
+</html>

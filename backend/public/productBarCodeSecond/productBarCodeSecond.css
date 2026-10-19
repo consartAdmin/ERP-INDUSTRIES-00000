@@ -1,0 +1,250 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ productBarCodeSecond.css — Hooks visuais da página                  ║
+   ║ Usa base.css + layout.css + components.css                          ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.page-product-barcode-second .pbs-header {
+  margin-bottom: var(--gap);
+}
+
+/* Breadcrumb */
+.page-product-barcode-second .pbs-breadcrumb {
+  font-size: var(--fs-12);
+  color: var(--muted);
+}
+
+.page-product-barcode-second .pbs-breadcrumb-pill {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--card) 80%, var(--primary-50));
+  border: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+}
+
+.page-product-barcode-second .pbs-breadcrumb-pill--active {
+  background: var(--primary-50);
+  color: var(--primary-800);
+  font-weight: 600;
+}
+
+.page-product-barcode-second .pbs-breadcrumb-sep {
+  padding-inline: 4px;
+}
+
+/* Título */
+.page-product-barcode-second .pbs-header-title h1 {
+  font-size: var(--fs-20);
+  margin-bottom: 2px;
+}
+
+.page-product-barcode-second .pbs-header-title p {
+  margin: 0;
+  font-size: var(--fs-12);
+  color: var(--muted);
+}
+
+/* Cards / seções */
+.page-product-barcode-second .pbs-card-header h2 {
+  font-size: var(--fs-16);
+}
+
+.page-product-barcode-second .pbs-card-header p {
+  font-size: var(--fs-12);
+  color: var(--muted);
+}
+
+/* Formulários */
+.page-product-barcode-second .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1 1 0;
+  min-width: 160px;
+}
+
+.page-product-barcode-second .form-group--button {
+  flex: 0 0 140px;
+  align-items: flex-end;
+}
+
+.page-product-barcode-second label {
+  font-size: var(--fs-12);
+  color: var(--muted);
+}
+
+.page-product-barcode-second .form-control {
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: #fff;
+  font-size: var(--fs-14);
+}
+
+.page-product-barcode-second .form-control:focus {
+  outline: none;
+  border-color: var(--primary-400);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--primary-200) 70%, transparent);
+}
+
+/* Hint */
+.page-product-barcode-second .pbs-form-hint {
+  font-size: var(--fs-10);
+  color: var(--muted);
+}
+
+/* Label de total */
+.page-product-barcode-second .pbs-total-label {
+  font-size: var(--fs-12);
+  color: var(--muted);
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--card) 80%, var(--primary-50));
+}
+
+/* Tabela */
+.page-product-barcode-second .pbs-table-wrapper {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  overflow: auto;
+}
+
+.page-product-barcode-second .pbs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-13, 13px);
+}
+
+.page-product-barcode-second .pbs-table thead {
+  background: linear-gradient(
+    90deg,
+    var(--primary-50),
+    color-mix(in srgb, var(--card) 70%, var(--primary-50))
+  );
+}
+
+.page-product-barcode-second .pbs-table th,
+.page-product-barcode-second .pbs-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+
+.page-product-barcode-second .pbs-table th {
+  font-size: var(--fs-12);
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.page-product-barcode-second .pbs-table tbody tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+.page-product-barcode-second .pbs-table-empty-row td {
+  text-align: center;
+  font-size: var(--fs-12);
+  color: var(--muted);
+}
+
+/* Badge de ID */
+.page-product-barcode-second .pbs-tag-id {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 46px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--card) 70%, var(--line));
+  border: 1px solid var(--line);
+  font-size: var(--fs-11, 11px);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .page-product-barcode-second .pbs-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--gap-xs);
+  }
+
+  .page-product-barcode-second .form-group--button {
+    flex: 1 1 100%;
+    align-items: stretch;
+  }
+
+  .page-product-barcode-second .pbs-table th,
+  .page-product-barcode-second .pbs-table td {
+    padding: 6px 6px;
+    font-size: 11px;
+  }
+}
+
+/* =========================================================
+   ✅ Create form in ONE LINE (Produto | Unidade | Código | Tipo | Botão)
+   ========================================================= */
+
+.page-product-barcode-second .pbs-create-row{
+  display: grid;
+  grid-template-columns: 1.2fr 1.2fr 1.4fr 0.8fr 160px; /* adjust widths */
+  gap: var(--gap-sm, 12px);
+  align-items: end;
+}
+
+/* Keep buttons aligned with input height */
+.page-product-barcode-second .pbs-col-add .pbs-btn-add{
+  width: 100%;
+}
+
+/* Remove "help" taking too much height on desktop */
+.page-product-barcode-second .pbs-create-row .help{
+  margin-top: 4px;
+  font-size: var(--fs-11, 11px);
+  color: var(--muted);
+}
+
+/* Inputs with action buttons still fit well */
+.page-product-barcode-second .pbs-create-row .input-actions{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Responsive: stack nicely on smaller screens */
+@media (max-width: 980px){
+  .page-product-barcode-second .pbs-create-row{
+    grid-template-columns: 1fr 1fr;
+  }
+  .page-product-barcode-second .pbs-col-add{
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 640px){
+  .page-product-barcode-second .pbs-create-row{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ✅ Ações do filtro (Limpar + Buscar) lado a lado */
+.page-product-barcode-second .pbs-filter-actions{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
+  /* alinha com a base dos inputs */
+  padding-top: 18px; /* ajusta conforme altura do label */
+  flex: 0 0 auto;
+}
+
+/* Em telas menores, empilha */
+@media (max-width: 768px){
+  .page-product-barcode-second .pbs-filter-actions{
+    padding-top: 0;
+    width: 100%;
+    justify-content: stretch;
+  }
+  .page-product-barcode-second .pbs-filter-actions .btn{
+    flex: 1 1 0;
+  }
+}
+

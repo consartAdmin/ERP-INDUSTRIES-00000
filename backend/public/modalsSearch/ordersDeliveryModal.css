@@ -1,0 +1,232 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ ordersDeliveryModal.css — Modal Frete/Entrega (PRODNEX ERP)          ║
+   ║ UI completa: Frete + Transportador + Veículo + Volumes + Observação  ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.odm-backdrop{
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 18, 35, .48);
+  z-index: 9998;
+}
+
+.odm-modal{
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+  padding: 18px;
+}
+
+.odm-card{
+  width: 100%;
+  max-width: 1040px;
+  max-height: calc(100vh - 36px);
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e6eaf2;
+  box-shadow: 0 14px 60px rgba(0,0,0,.18);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.odm-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #eef2f8;
+  flex: 0 0 auto;
+}
+
+.odm-title{
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.odm-subtitle{
+  font-size: 12px;
+  opacity: .72;
+  margin-top: 2px;
+}
+
+.odm-close{
+  border: 1px solid #e6eaf2;
+  background: #fff;
+  border-radius: 10px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.odm-body{
+  padding: 14px 16px;
+  display: grid;
+  gap: 14px;
+  overflow-y: auto;
+  flex: 1 1 auto;
+}
+
+.odm-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.4fr;
+  gap: 12px;
+}
+
+.odm-grid-2{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.odm-grid-carrier-main{
+  display: grid;
+  grid-template-columns: 2.2fr 1.4fr .9fr;
+  gap: 12px;
+}
+
+.odm-grid-carrier-address{
+  display: grid;
+  grid-template-columns: 2.6fr .75fr 1.35fr 1.25fr 1.45fr .5fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.odm-grid-carrier-extra{
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.odm-plate-grid{
+  display:grid;
+  grid-template-columns: 1fr 90px;
+  gap: 10px;
+}
+
+.odm-field{
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.odm-field > label{
+  font-size: 12px;
+  font-weight: 800;
+  opacity: .75;
+  white-space: nowrap;
+}
+
+.odm-field input,
+.odm-field select,
+.odm-field textarea{
+  width: 100%;
+  border: 1px solid #dfe6f2;
+  border-radius: 10px;
+  padding: 8px 12px;
+  outline: none;
+  box-sizing: border-box;
+  font: inherit;
+  background: #fff;
+  min-width: 0;
+}
+
+.odm-field textarea{
+  min-height: 70px;
+  resize: vertical;
+}
+
+.odm-field input:focus,
+.odm-field select:focus,
+.odm-field textarea:focus{
+  border-color: #1f6feb;
+  box-shadow: 0 0 0 3px rgba(31,111,235,.12);
+}
+
+.odm-section{
+  border: 1px solid #eef2f8;
+  border-radius: 14px;
+  padding: 12px;
+  background: #fbfcff;
+}
+
+.odm-section-title{
+  font-size: 12px;
+  font-weight: 900;
+  opacity: .75;
+  margin-bottom: 10px;
+}
+
+.odm-footer{
+  display:flex;
+  justify-content:flex-end;
+  gap: 10px;
+  padding: 12px 16px;
+  border-top: 1px solid #eef2f8;
+  background: #fff;
+  flex: 0 0 auto;
+}
+
+.odm-btn{
+  border: 1px solid #d7dbe3;
+  background: #ffffff;
+  color: #111111;
+  padding: 9px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 800;
+  transition: all .15s ease;
+}
+
+.odm-btn:hover{
+  background: #f5f7fb;
+  border-color: #cfd6e4;
+}
+
+.odm-btn:active{
+  transform: translateY(1px);
+}
+
+.odm-btn-primary{
+  background: #ffffff;
+  color: #111111;
+  border-color: #111111;
+}
+
+.odm-btn-primary:hover{
+  background: #f0f2f7;
+  border-color: #000000;
+}
+
+.odm-btn:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0,0,0,.15);
+}
+
+@media (max-width: 1100px){
+  .odm-card{
+    max-width: 96vw;
+  }
+
+  .odm-grid-carrier-address{
+    grid-template-columns: 2fr .8fr 1.3fr 1.2fr 1.4fr .6fr;
+  }
+}
+
+@media (max-width: 880px){
+  .odm-grid,
+  .odm-grid-2,
+  .odm-grid-carrier-main,
+  .odm-grid-carrier-address,
+  .odm-grid-carrier-extra{
+    grid-template-columns: 1fr;
+  }
+
+  .odm-plate-grid{
+    grid-template-columns: 1fr 90px;
+  }
+}

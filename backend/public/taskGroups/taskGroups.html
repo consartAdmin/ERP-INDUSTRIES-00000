@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Task Groups | PRODNEX ERP</title>
+
+  <link rel="stylesheet" href="/public/includes/css/style.css">
+  <link rel="stylesheet" href="./taskGroups.css" />
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="./taskGroups.js"></script>
+</head>
+
+<body>
+  <main class="task-groups-page">
+
+    <header class="tg-header">
+      <div>
+        <h1>🏷️ TASK GROUPS</h1>
+        <p>Cadastro de grupos/classificações para organização das tarefas</p>
+      </div>
+
+      <div class="tg-header-actions">
+        <button id="btnReload" class="btn btn-secondary" type="button">🔄 Atualizar</button>
+        <button id="btnNewGroup" class="btn btn-primary" type="button">➕ Novo Grupo</button>
+        <a class="btn btn-secondary" href="../tasks/tasks.html">⬅️ Voltar Tasks</a>
+      </div>
+    </header>
+
+    <section class="tg-filters">
+      <input id="searchGroup" type="text" placeholder="Pesquisar grupo..." />
+
+      <select id="filterActive">
+        <option value="">Todos</option>
+        <option value="true">Ativos</option>
+        <option value="false">Inativos</option>
+      </select>
+    </section>
+
+    <section class="tg-table-card">
+      <table class="tg-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Preview</th>
+            <th>Nome</th>
+            <th>Ícone</th>
+            <th>Cor</th>
+            <th>Ordem</th>
+            <th>Ativo</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+
+        <tbody id="groupsTableBody">
+          <tr>
+            <td colspan="8" class="empty-row">Nenhum grupo carregado.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <dialog id="groupModal" class="tg-modal">
+    <form id="groupForm" method="dialog">
+
+      <input type="hidden" id="groupId" />
+
+      <div class="modal-header">
+        <h2 id="modalTitle">Novo Grupo</h2>
+        <button type="button" id="btnCloseModal" class="modal-close">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <label>
+          Nome *
+          <input id="groupName" type="text" required placeholder="Ex: Programação" />
+        </label>
+
+        <div class="modal-grid">
+          <label>
+            Ícone
+            <input id="groupIcon" type="text" maxlength="10" placeholder="Ex: 💻" />
+          </label>
+
+          <label>
+            Cor
+            <input id="groupColor" type="color" value="#2563eb" />
+          </label>
+        </div>
+
+        <label>
+          Ordem de exibição
+          <input id="groupSortOrder" type="number" value="0" />
+        </label>
+
+        <label class="checkbox-line">
+          <input id="groupActive" type="checkbox" checked />
+          Grupo ativo
+        </label>
+
+        <div class="preview-box">
+          <span>Preview:</span>
+          <strong id="groupPreview" class="group-preview">💻 Programação</strong>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="btnDeleteGroup" type="button" class="btn btn-danger hidden">🗑️ Inativar</button>
+        <button id="btnRestoreGroup" type="button" class="btn btn-success hidden">♻️ Reativar</button>
+        <button type="submit" class="btn btn-primary">💾 Salvar</button>
+      </div>
+
+    </form>
+  </dialog>
+</body>
+</html>

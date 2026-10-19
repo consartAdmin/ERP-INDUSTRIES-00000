@@ -1,0 +1,45 @@
+:root {
+
+  /* ===========================
+     Form spacing
+  =========================== */
+
+  --consart-form-gap-xs: 6px;
+  --consart-form-gap-sm: 10px;
+  --consart-form-gap-md: 16px;
+  --consart-form-gap-lg: 20px;
+
+  /* ===========================
+     Field spacing
+  =========================== */
+
+  --consart-field-gap-2: 2px;
+  --consart-field-gap-4: 4px;
+  --consart-field-gap-6: 6px;
+  --consart-field-gap-8: 8px;
+  --consart-field-gap-10: 10px;
+  --consart-field-gap-12: 12px;
+
+  /* ===========================
+     Defaults used by components
+  =========================== */
+
+  --consart-form-gap: var(--consart-form-gap-sm);
+  --consart-field-gap: var(--consart-field-gap-6);
+}
+
+/* Form */
+.form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--consart-form-gap);
+  min-width: 0;
+}
+
+/* Field */
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--consart-field-gap);
+  min-width: 0;
+}

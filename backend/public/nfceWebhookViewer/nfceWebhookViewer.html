@@ -1,0 +1,149 @@
+<!-- ╔════════════════════════════════════════════════════════════════════╗
+     ║ nfceWebhookViewer.html — Painel Eventos Webhook NFC-e (CONSART)   ║
+     ║ Path: backend/nfceWebhookViewer/nfceWebhookViewer.html            ║
+     ╚════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR" class="page-nfce-webhook-viewer">
+<head>
+  <meta charset="UTF-8" />
+  <title>Eventos Webhook NFC-e | PRODNEX ERP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Favicons padrão CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <link rel="stylesheet" href="./nfceWebhookViewer.css" />
+</head>
+<body class="c-page c-page-nfce-webhook-viewer">
+  <main class="c-main">
+    <section class="nfcew-shell">
+      <!-- Header -->
+      <header class="nfcew-header">
+        <div>
+          <h1 class="nfcew-title">Eventos Webhook NFC-e (PlugNotas)</h1>
+          <p class="nfcew-subtitle">
+            Acompanhe os <strong>eventos recebidos da PlugNotas</strong> para NFC-e:
+            autorizações, rejeições, cancelamentos etc.
+          </p>
+        </div>
+      </header>
+
+      <!-- Filtros -->
+      <section class="nfcew-filters-card">
+        <form id="nfcew-filter-form" class="nfcew-filter-form">
+          <div class="nfcew-field">
+            <label for="nfcew-status" class="nfcew-label">Status</label>
+            <select id="nfcew-status" class="nfcew-select">
+              <option value="">Todos</option>
+              <option value="AUTORIZADA">AUTORIZADA</option>
+              <option value="REJEITADA">REJEITADA</option>
+              <option value="CANCELADA">CANCELADA</option>
+              <option value="PENDENTE">PENDENTE</option>
+              <option value="PROCESSANDO">PROCESSANDO</option>
+            </select>
+          </div>
+
+          <div class="nfcew-field">
+            <label for="nfcew-tipo" class="nfcew-label">Tipo de evento</label>
+            <input
+              id="nfcew-tipo"
+              type="text"
+              class="nfcew-input"
+              placeholder="Ex: NFCe.Autorizado, NFCe.Cancelado..."
+            />
+          </div>
+
+          <div class="nfcew-field">
+            <label for="nfcew-cstat" class="nfcew-label">cStat</label>
+            <input
+              id="nfcew-cstat"
+              type="number"
+              class="nfcew-input"
+              placeholder="Ex: 100, 135..."
+            />
+          </div>
+
+          <div class="nfcew-field">
+            <label for="nfcew-q" class="nfcew-label">Busca (chave, idIntegração, mensagem)</label>
+            <input
+              id="nfcew-q"
+              type="text"
+              class="nfcew-input"
+              placeholder="Chave, idIntegração ou texto da mensagem SEFAZ"
+            />
+          </div>
+
+          <div class="nfcew-field">
+            <label class="nfcew-label">Período</label>
+            <div class="nfcew-dates">
+              <input id="nfcew-date-from" type="date" class="nfcew-input" />
+              <span class="nfcew-date-sep">até</span>
+              <input id="nfcew-date-to" type="date" class="nfcew-input" />
+            </div>
+          </div>
+
+          <div class="nfcew-actions">
+            <button type="submit" class="btn btn-primary">Aplicar filtros</button>
+            <button type="button" id="nfcew-clear" class="btn btn-ghost">Limpar</button>
+          </div>
+        </form>
+
+        <!-- Barra de importação / sincronização -->
+        <div class="nfcew-import-bar">
+          <div class="nfcew-import-fields">
+            <label for="nfcew-import-id" class="nfcew-label">
+              Importar resumo NFC-e (PlugNotas)
+            </label>
+            <input
+              id="nfcew-import-id"
+              type="text"
+              class="nfcew-input"
+              placeholder="Cole a chave, ID PlugNotas ou protocolo da NFC-e"
+            />
+          </div>
+
+          <button type="button" id="nfcew-import-btn" class="btn btn-primary nfcew-import-btn">
+            Importar da PlugNotas
+          </button>
+
+          <!-- Botão de sincronização com pdvSales -->
+          <button type="button" id="nfcew-sync-pdv-btn" class="btn btn-ghost nfcew-sync-pdv-btn">
+            Sincronizar com PDV (nfce_id)
+          </button>
+        </div>
+
+        <p class="nfcew-tip">
+          Dica: use o <strong>idIntegracao</strong> da venda/PDV ou a <strong>chave NFC-e</strong> para localizar
+          rapidamente os eventos relacionados. O botão
+          <strong>Sincronizar com PDV</strong> busca as NFC-e na PlugNotas usando o
+          campo <code>nfce_id</code> da tabela <code>pdvSales</code>.
+        </p>
+      </section>
+
+      <!-- Status -->
+      <section class="nfcew-status-area">
+        <div id="nfcew-status-message" class="nfcew-status-message hidden"></div>
+      </section>
+
+      <!-- Resultados -->
+      <section id="nfcew-results" class="nfcew-results hidden">
+        <header class="nfcew-results-header">
+          <h2>Eventos</h2>
+          <span id="nfcew-results-count" class="nfcew-results-count"></span>
+        </header>
+
+        <div id="nfcew-results-list" class="nfcew-results-list">
+          <!-- Cards gerados via JS -->
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    window.apiBase = window.apiBase || window.API_BASE || window.location.origin;
+  </script>
+  <script type="module" src="./nfceWebhookViewer.js"></script>
+</body>
+</html>

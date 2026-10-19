@@ -1,0 +1,70 @@
+/* ╔════════════════════════════════════════════════════════════════════╗
+   ║ 📏 tableColumns.css — Larguras padronizadas para tabelas CONSART  ║
+   ║                                                                    ║
+   ║ COMO USAR:                                                        ║
+   ║ 1) Importe este arquivo depois do style.css:                      ║
+   ║      <link rel="stylesheet" href="/public/includes/css/tableColumns.css">  ║
+   ║                                                                    ║
+   ║ 2) Adicione classes nas <th> OU aplique no CSS da página:         ║
+   ║      <th class="col-id">ID</th>                                   ║
+   ║      <th class="col-cliente">Cliente</th>                         ║
+   ║                                                                    ║
+   ╚════════════════════════════════════════════════════════════════════╝ */
+
+
+/* ====== COLUNAS PADRÃO ====== */
+
+/* Coluna ID */
+.col-id {
+  width: 60px;
+  min-width: 60px;
+  text-align: center;
+}
+
+/* Data */
+.col-data {
+  width: 110px;
+  min-width: 110px;
+}
+
+/* Cliente */
+.col-cliente {
+  width: 280px;
+  min-width: 240px;
+  max-width: 400px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* CNPJ/CPF */
+.col-cnpj {
+  width: 160px;
+  min-width: 150px;
+  white-space: nowrap;
+}
+
+/* Total */ 
+.col-total {
+  width: 110px;
+  min-width: 110px;
+  text-align: right;
+}
+
+/* Status */
+.col-status {
+  width: 120px;
+  min-width: 120px;
+  text-align: center;
+}
+
+/* Ações */
+.col-acoes {
+  width: 120px;
+  min-width: 120px;
+  text-align: center;
+}
+
+.table-wrapper {
+  max-width: 1800px;
+}

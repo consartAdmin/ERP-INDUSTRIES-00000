@@ -1,0 +1,147 @@
+/* ===========================================================
+   ✅ MOVIMENTAÇÕES FLEX-SAFE
+   =========================================================== */
+
+/* Cadeia flex da aba */
+#tab-movs.tabpanel,
+#tab-movs .card,
+#tab-movs .card-body,
+#tab-movs .tabela-wrapper,
+.c-main,
+.c-container,
+.tabs {
+  min-width: 0 !important;
+}
+
+/* Card de Movimentações elástico */
+#tab-movs.tabpanel{
+  display:flex;
+  flex-direction:column;
+  flex:1 1 auto;
+  min-height:0 !important;
+}
+#tab-movs .movs-card{
+  display:flex;
+  flex-direction:column;
+  flex:1 1 auto;
+  min-height:0 !important;
+}
+#tab-movs .card-body{
+  display:flex;
+  flex-direction:column;
+  flex:1 1 auto;
+  min-height:0 !important;
+}
+
+/* scroll da tabela */
+#tab-movs .tabela-wrapper{
+  flex:1 1 auto;
+  min-height:0 !important;
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Toolbar com scroll horizontal */
+#tab-movs .mov-toolbar{
+  display:flex;
+  flex-wrap: nowrap !important;
+  align-items: end;
+  gap: 8px;
+  min-width: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable both-edges;
+}
+#tab-movs .mov-toolbar .campo{
+  min-width: 0 !important;
+  flex: 0 0 auto !important;
+}
+#tab-movs .mov-toolbar input,
+#tab-movs .mov-toolbar select{
+  min-width: 0 !important;
+}
+
+/* Tabela pode crescer sem cortar */
+#tab-movs .tabela{
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 1400px;
+  table-layout: fixed;
+}
+#tab-movs .tabela thead th,
+#tab-movs .tabela tbody td{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 6px 8px;
+}
+#tab-movs .tabela thead th{
+  font-size: 0.80rem;
+  font-weight: 600;
+  background: #2a457b;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+/* ===========================================================
+   ✅ FIX: preencher altura e eliminar “espaço morto”
+   =========================================================== */
+html, body { height: 100%; }
+body { margin: 0; }
+
+/* main real da página */
+.c-main{
+  min-height: calc(100dvh - var(--topbar-h, 0px));
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* seu container atual */
+.consart-container{
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* tabs precisam esticar */
+.tabs{
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 🔥 aqui está o principal: tabpanel NÃO pode ser auto */
+.tabpanel{
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  display: flex;
+  flex-direction: column;
+}
+
+/* a área de filtros não cresce */
+#tab-movs > section.mt-2{
+  flex: 0 0 auto;
+}
+
+/* card cresce para ocupar tudo */
+#tab-movs .movs-card{
+  flex: 1 1 auto;
+  min-height: 0 !important;
+}
+
+/* wrapper da tabela ocupa o resto e rola */
+#tab-movs .movs-card .tabela-wrapper{
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+
+  /* remove o limitador que cria o “buraco” */
+  max-height: none !important;
+
+  overflow: auto !important;
+}

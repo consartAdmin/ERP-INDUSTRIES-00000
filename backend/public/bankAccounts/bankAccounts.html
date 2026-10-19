@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="icon" type="image/png" href="/public/imagens/brasaoConsartInfinity.png" />
+
+  <title>CONTAS BANCÁRIAS | PRODNEX ERP</title>
+
+  <link rel="stylesheet" href="/public/includes/css/style.css">
+</head>
+
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <section class="table-layout-integrated">
+
+
+      <!-- ================================================================
+           FILTERS
+      ================================================================= -->
+
+      <div class="table-layout-integrated-filter">
+
+        <form id="bankAccountsFilterForm" class="header fields-inline fields-gap-3">
+
+
+          <!-- SEARCH -->
+
+          <div class="fields fields-w-20 fields-h-6">
+
+            <label for="bankAccountsSearch">
+              Buscar
+            </label>
+
+            <input id="bankAccountsSearch" type="search" placeholder="Conta, banco ou número">
+
+          </div>
+
+
+          <!-- PROVIDER -->
+
+          <div class="fields fields-w-10 fields-h-6">
+
+            <label for="bankAccountsProvider">
+              Provedor
+            </label>
+
+            <select id="bankAccountsProvider">
+
+              <option value="">
+                Todos
+              </option>
+
+              <option value="ASAAS">
+                Asaas
+              </option>
+
+              <option value="MANUAL">
+                Manual
+              </option>
+
+              <option value="OTHER_API">
+                Outra API
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- STATUS -->
+
+          <div class="fields fields-w-8 fields-h-6">
+
+            <label for="bankAccountsActive">
+              Status
+            </label>
+
+            <select id="bankAccountsActive">
+
+              <option value="true">
+                Ativas
+              </option>
+
+              <option value="">
+                Todas
+              </option>
+
+              <option value="false">
+                Inativas
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- FILTER BUTTONS -->
+
+          <div class="btn-inline">
+
+            <button class="btn btn-new btn-sm" type="submit">
+              Aplicar
+            </button>
+
+            <button class="btn btn-clean btn-sm" id="bankAccountsClear" type="button">
+              Limpar
+            </button>
+
+          </div>
+
+
+          <!-- NEW -->
+
+          <div class="btn-inline btn-position-right">
+
+            <button class="btn btn-new btn-sm" id="bankAccountsNew" type="button">
+              Nova Conta Bancária
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+
+      <!-- ================================================================
+           TABLE
+      ================================================================= -->
+
+      <div class="table-scroll table-height-flex" data-table-settings="bankaccounts.bankaccountstablebody">
+
+        <table class="table table-zebra table-zebra-hover table-sticky-head">
+
+          <thead>
+
+            <tr>
+              <th>ID</th>
+              <th>Conta</th>
+              <th>Banco</th>
+              <th>Agência</th>
+              <th>Nº Conta</th>
+              <th>Provedor</th>
+              <th>Boleto</th>
+              <th>Padrão</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+
+          </thead>
+
+          <tbody id="bankAccountsTableBody"></tbody>
+
+        </table>
+
+      </div>
+
+
+      <!-- ================================================================
+           FOOTER / PAGINATION
+      ================================================================= -->
+
+      <footer class="table-footer">
+
+        <div class="table-footer__info">
+
+          <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+
+            <span id="apTableInfo">
+              0 Registros
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="table-footer__pagination">
+
+          <button type="button" id="btnPreviousPage" class="btn btn-clean btn-sm">
+            Anterior
+          </button>
+
+          <span id="apPageInfo">
+            Página 1 de 1
+          </span>
+
+          <button type="button" id="btnNextPage" class="btn btn-new btn-sm">
+            Próxima
+          </button>
+
+        </div>
+
+
+        <div class="table-footer__page-size">
+
+          <label for="apRowsPerPage">
+            Mostrar
+          </label>
+
+          <select id="apRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+
+            <option value="10">
+              10 linhas
+            </option>
+
+            <option value="20">
+              20 linhas
+            </option>
+
+            <option value="30">
+              30 linhas
+            </option>
+
+            <option value="50" selected>
+              50 linhas
+            </option>
+
+            <option value="100">
+              100 linhas
+            </option>
+
+          </select>
+
+        </div>
+
+      </footer>
+
+    </section>
+
+  </main>
+
+
+  <!-- ==================================================================
+       MODAL — BANK ACCOUNT
+  =================================================================== -->
+
+  <div id="bankAccountsModal" class="modal" aria-hidden="true">
+
+    <!-- BACKDROP -->
+
+    <div class="modal__backdrop" data-modal-close></div>
+
+
+    <!-- POSITIONING CONTAINER -->
+
+    <div class="modal__dialog">
+
+
+      <!-- ACTUAL MODAL -->
+
+      <section class="modal__panel modal-width-6 modal-height-5" role="dialog" aria-modal="true"
+        aria-labelledby="bankAccountsModalTitle">
+
+
+        <!-- ============================================================
+             HEADER
+        ============================================================= -->
+
+        <header class="modal__header modal-header-color-3">
+
+          <h3 id="bankAccountsModalTitle" class="modal__title">
+            Nova Conta Bancária
+          </h3>
+
+
+          <button class="modal__close" type="button" data-modal-close aria-label="Fechar" title="Fechar">
+            ×
+          </button>
+
+        </header>
+
+
+        <!-- ============================================================
+             BODY
+        ============================================================= -->
+
+        <div class="modal__body">
+
+          <form id="bankAccountsForm">
+
+            <input id="bankAccountId" type="hidden">
+
+
+            <!-- ========================================================
+                 BANK + ACCOUNT NAME
+            ========================================================= -->
+
+            <div class="modal-form-grid modal-form-grid--2">
+
+
+              <!-- BANK -->
+
+              <div class="fields fields-h-6">
+
+                <label for="bankAccountBankId">
+                  Banco
+                </label>
+
+                <select id="bankAccountBankId" required>
+
+                  <option value="">
+                    Selecione...
+                  </option>
+
+                </select>
+
+              </div>
+
+
+              <!-- ACCOUNT NAME -->
+
+              <div class="fields fields-h-6">
+
+                <label for="bankAccountName">
+                  Nome da conta
+                </label>
+
+                <input id="bankAccountName" type="text" maxlength="150" autocomplete="off" required>
+
+              </div>
+
+            </div>
+
+
+            <!-- ========================================================
+                 AGENCY + ACCOUNT + DIGIT
+            ========================================================= -->
+
+            <div class="modal-form-grid modal-form-grid--3">
+
+
+              <!-- AGENCY -->
+
+              <div class="fields fields-h-6">
+
+                <label for="bankAccountAgency">
+                  Agência
+                </label>
+
+                <input id="bankAccountAgency" type="text" maxlength="30" autocomplete="off">
+
+              </div>
+
+
+              <!-- ACCOUNT NUMBER -->
+
+              <div class="fields fields-h-6">
+
+                <label for="bankAccountNumber">
+                  Número da conta
+                </label>
+
+                <input id="bankAccountNumber" type="text" maxlength="50" autocomplete="off">
+
+              </div>
+
+
+              <!-- DIGIT -->
+
+              <div class="fields fields-h-6">
+
+                <label for="bankAccountDigit">
+                  Dígito
+                </label>
+
+                <input id="bankAccountDigit" type="text" maxlength="10" autocomplete="off">
+
+              </div>
+
+            </div>
+
+
+            <!-- ========================================================
+                 PROVIDER + BOLETO
+            ========================================================= -->
+
+            <div class="modal-form-grid modal-form-grid--2">
+
+
+              <!-- PROVIDER -->
+
+              <div class="fields fields-h-6">
+
+                <label for="bankAccountProvider">
+                  Provedor
+                </label>
+
+                <select id="bankAccountProvider" required>
+
+                  <option value="MANUAL">
+                    Manual
+                  </option>
+
+                  <option value="ASAAS">
+                    Asaas
+                  </option>
+
+                  <option value="OTHER_API">
+                    Outra API
+                  </option>
+
+                </select>
+
+              </div>
+
+
+              <!-- BOLETO MODE -->
+
+              <div class="fields fields-h-6">
+
+                <label for="bankAccountBoletoMode">
+                  Modo do boleto
+                </label>
+
+                <select id="bankAccountBoletoMode" required>
+
+                  <option value="MANUAL">
+                    Manual
+                  </option>
+
+                  <option value="AUTOMATIC">
+                    Automático
+                  </option>
+
+                  <option value="NONE">
+                    Sem boleto
+                  </option>
+
+                </select>
+
+              </div>
+
+            </div>
+
+
+            <!-- ========================================================
+                 STATUS
+            ========================================================= -->
+
+            <div class="modal-section">
+
+              <div class="fields-inline fields-gap-3">
+
+                <label>
+
+                  <input id="bankAccountDefault" type="checkbox">
+
+                  Conta padrão
+
+                </label>
+
+
+                <label>
+
+                  <input id="bankAccountActive" type="checkbox" checked>
+
+                  Conta ativa
+
+                </label>
+
+              </div>
+
+            </div>
+
+          </form>
+
+        </div>
+
+
+        <!-- ============================================================
+             FOOTER
+        ============================================================= -->
+
+        <footer class="modal__footer modal-footer-color-3">
+
+          <button class="btn btn-cancel btn-sm" type="button" data-modal-close>
+            Cancelar
+          </button>
+
+
+          <button class="btn btn-save btn-sm" type="submit" form="bankAccountsForm">
+            Salvar
+          </button>
+
+        </footer>
+
+
+      </section>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==================================================================
+       SCRIPTS
+  =================================================================== -->
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <script type="module" src="./js/bankAccounts.init.js"></script>
+
+</body>
+
+</html>

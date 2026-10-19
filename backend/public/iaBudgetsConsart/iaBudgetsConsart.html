@@ -1,0 +1,266 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════════╗
+     ║ public/iaBudgetsConsart/iaBudgetsConsart.html — IA Budgets (Resolver+Create) ║
+     ║ PRODNEX ERP                                                               ║
+     ║                                                                          ║
+     ║ - Colar lista WhatsApp (multi-linhas)                                     ║
+     ║ - Resolver linha → produto (ProductsKey)                                  ║
+     ║ - Montar preview de itens                                                 ║
+     ║ - Gerar Orçamento                                                         ║
+     ║                                                                          ║
+     ║ APIs:                                                                     ║
+     ║  POST /api/products-key/resolve                                           ║
+     ║  GET  /api/tabela-precos        (opcional)                                ║
+     ║  POST /api/budgets/from-ia                                               ║
+     ╚══════════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR" class="page-ia-budgets">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>IA BUDGETS | PRODNEX ERP</title>
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/iaBudgetsConsart/iaBudgetsConsart.css" />
+</head>
+
+<body class="consart-theme c-page page-ia-budgets">
+
+  <div id="menuConsartMount"></div>
+
+  <header class="c-page-header">
+    <div class="c-page-header__left">
+      <h1 class="c-page-title">IA Budgets</h1>
+      <p class="c-page-subtitle">Resolver texto do cliente → montar itens → gerar orçamento</p>
+    </div>
+
+    <div class="c-page-header__right">
+      <span class="c-badge c-badge--blue">IA</span>
+      <span class="c-badge c-badge--gray">Resolver</span>
+      <span class="c-badge c-badge--green">Budgets</span>
+    </div>
+  </header>
+
+  <main class="c-container">
+
+    <!-- =========================================
+         CARD 1: RESOLVER TEXTO → PRODUTO
+    ========================================== -->
+    <section class="c-card">
+
+      <div class="c-card__header">
+        <h2 class="c-card__title">Resolver Texto → Produto</h2>
+        <p class="c-card__subtitle">
+          Cole a lista (WhatsApp). O sistema resolve linha por linha e já monta a prévia dos itens.
+        </p>
+      </div>
+
+      <div class="c-card__body">
+
+        <div class="c-form">
+
+          <div class="c-field">
+            <label for="resolveText">Texto do cliente (uma linha por item)</label>
+            <textarea
+              id="resolveText"
+              rows="6"
+              placeholder="Ex:
+Detergente Ypê 500ml 12 un
+Papel Toalha Interfolha 2x1000
+Água Sanitária 2L 6 un"
+            ></textarea>
+            <div class="ib-hint">Dica: cada linha vira um item. Você pode ajustar quantidade/valor depois no preview.</div>
+          </div>
+
+          <div class="c-grid c-grid--2">
+            <div class="c-field">
+              <label for="resolveProductCode">Filtrar por Product Code (opcional)</label>
+              <input id="resolveProductCode" type="text" placeholder="Ex: SKU123" />
+            </div>
+
+            <div class="c-field">
+              <label for="resolveLimit">Limite de candidatos</label>
+              <input id="resolveLimit" type="number" min="1" max="50" value="10" />
+            </div>
+          </div>
+
+          <div class="c-actions">
+            <button id="btnResolve" class="c-btn c-btn--primary" type="button">🧠 Resolver Tudo</button>
+            <button id="btnClearResolve" class="c-btn c-btn--ghost" type="button">Limpar</button>
+
+            <div class="ib-progress">
+              <span class="c-pill">Progresso</span>
+              <span id="resolveProgress" class="c-mono c-muted">—</span>
+            </div>
+          </div>
+
+        </div>
+
+        <hr class="c-divider" />
+
+        <div class="c-result">
+          <div class="c-result__row">
+            <span class="c-pill">Normalized (última linha)</span>
+            <code id="resolveNorm" class="c-mono c-muted">—</code>
+          </div>
+
+          <div class="c-grid c-grid--2">
+            <div class="c-result__box">
+              <h4>Match exato (última linha)</h4>
+              <div id="resolveExact" class="c-muted">—</div>
+            </div>
+
+            <div class="c-result__box">
+              <h4>Candidatos (última linha)</h4>
+              <div id="resolveCandidates" class="c-muted">—</div>
+            </div>
+          </div>
+
+          <div class="c-result__box" style="margin-top:10px;">
+            <h4>Linhas resolvidas</h4>
+            <div id="resolvedLines" class="c-muted">—</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="c-card__footer">
+        Próximo passo: revisar o preview e gerar o orçamento.
+      </div>
+
+    </section>
+
+    <!-- =========================================
+         CARD 2: PREVIEW + GERAR ORÇAMENTO
+    ========================================== -->
+    <section class="c-card ib-mt">
+
+      <div class="c-card__header">
+        <h2 class="c-card__title">Montar Orçamento</h2>
+        <p class="c-card__subtitle">
+          Selecione o cliente, ajuste itens e clique em <b>Gerar Orçamento</b>.
+        </p>
+      </div>
+
+      <div class="c-card__body">
+
+        <div class="ib-budget-top">
+
+          <div class="ib-box">
+            <div class="ib-box__head">
+              <h3>Cliente</h3>
+              <div class="ib-box__actions">
+                <button id="btnPickCustomer" class="c-btn c-btn--primary" type="button">👤 Buscar Cliente</button>
+                <button id="btnClearCustomer" class="c-btn c-btn--ghost" type="button">Limpar</button>
+              </div>
+            </div>
+
+            <div class="ib-customer-grid">
+              <div class="c-field">
+                <label>Nome</label>
+                <input id="customerName" type="text" readonly placeholder="—" />
+              </div>
+              <div class="c-field">
+                <label>CNPJ/CPF</label>
+                <input id="customerDoc" type="text" readonly placeholder="—" />
+              </div>
+              <div class="c-field">
+                <label>Telefone</label>
+                <input id="customerPhone" type="text" readonly placeholder="—" />
+              </div>
+              <div class="c-field">
+                <label>E-mail</label>
+                <input id="customerEmail" type="text" readonly placeholder="—" />
+              </div>
+            </div>
+          </div>
+
+          <div class="ib-box">
+            <div class="ib-box__head">
+              <h3>Configurações</h3>
+            </div>
+
+            <div class="c-grid c-grid--2 ib-grid-2wide">
+              <div class="c-field">
+                <label for="priceTableId">Tabela de Preço (opcional)</label>
+                <select id="priceTableId">
+                  <option value="">— Não usar —</option>
+                </select>
+              </div>
+
+              <div class="c-field">
+                <label for="sellerId">Vendedor (opcional)</label>
+                <input id="sellerId" type="number" min="1" placeholder="Ex: 1" />
+              </div>
+            </div>
+
+            <div class="c-field">
+              <label for="budgetNotes">Observação</label>
+              <textarea id="budgetNotes" rows="3" placeholder="Gerado via IA Budgets…"></textarea>
+            </div>
+          </div>
+
+        </div>
+
+        <hr class="c-divider" />
+
+        <div class="ib-items">
+          <div class="ib-items__head">
+            <h3>Itens do orçamento (preview)</h3>
+            <div class="ib-items__right">
+              <span class="c-pill">Itens</span>
+              <span id="itemsCount" class="c-mono c-muted">0</span>
+            </div>
+          </div>
+
+          <div class="ib-table-wrap">
+            <table class="ib-table">
+              <thead>
+                <tr>
+                  <th style="width:140px;">SKU</th>
+                  <th>Descrição</th>
+                  <th style="width:90px;">Qtd</th>
+                  <th style="width:110px;">Unid.</th>
+                  <th style="width:130px;">Unitário</th>
+                  <th style="width:130px;">Desc. (R$)</th>
+                  <th style="width:140px;">Total</th>
+                  <th style="width:86px;">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="itemsTbody">
+                <tr>
+                  <td colspan="8" class="ib-empty">Nenhum item ainda. Resolva o texto acima para montar a lista.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="ib-totalbar">
+            <div class="ib-totalbar__left">
+              <span class="c-pill">Total</span>
+              <span id="budgetTotal" class="ib-total">R$ 0,00</span>
+            </div>
+
+            <div class="ib-totalbar__right">
+              <button id="btnClearItems" class="c-btn c-btn--ghost" type="button">🧹 Limpar Itens</button>
+              <button id="btnCreateBudget" class="c-btn c-btn--primary" type="button">✅ Gerar Orçamento</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="c-card__footer">
+        Dica: se algum item resolveu errado, você pode remover no preview e resolver novamente.
+      </div>
+
+    </section>
+
+  </main>
+
+  <script type="module" src="/public/includes/js/apiBase.js"></script>
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="/public/iaBudgetsConsart/iaBudgetsConsart.js"></script>
+</body>
+</html>

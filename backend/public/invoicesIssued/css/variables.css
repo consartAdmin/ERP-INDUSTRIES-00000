@@ -1,0 +1,24 @@
+:root {
+  --bg: #f3f6fb;
+  --panel: #ffffff;
+  --text: #172033;
+  --muted: #64748b;
+
+  --primary: #1d4ed8;
+  --primary-dark: #1e40af;
+  --dark: #111827;
+
+  --border: #dbe3ef;
+  --border-strong: #cbd5e1;
+
+  --success: #15803d;
+  --danger: #b91c1c;
+  --warning: #b45309;
+
+  --excel-header: #eaf1fb;
+  --excel-row: #ffffff;
+  --excel-row-alt: #f8fafc;
+  --excel-hover: #eaf2ff;
+
+  --shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+}

@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>EDIÇÃO PRODUTOS | PRODNEX ERP</title>
+
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/editProducts/css/editProducts.css" />
+
+  <link rel="stylesheet" href="/public/includes/css/productsLocationsModals.css" />
+  <!-- CSS do modal de fornecedor (suppliers.quickModal.js); o id evita que o modal injete outro -->
+  <link id="suppliers-modal-css-runtime" rel="stylesheet" href="/public/inboundInvoices/suppliersModal.css" />
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+  <style>
+    dialog#dlgCusto::backdrop {
+      background: rgba(0, 0, 0, .35);
+    }
+
+    dialog#dlgCusto {
+      padding: 0;
+      border: none;
+      border-radius: var(--radius);
+      max-width: 360px;
+      width: 90%;
+      box-shadow: var(--shadow);
+    }
+
+    dialog#dlgLot::backdrop {
+      background: rgba(0, 0, 0, .35);
+    }
+
+    dialog#dlgLot {
+      width: min(1500px, 96vw);
+      max-width: 96vw;
+      max-height: 94vh;
+      padding: 0;
+      border: none;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    #dlgLot #formDlgLot {
+      width: 100%;
+    }
+
+    #dlgLot .dlg-body {
+      padding: 14px;
+      max-height: calc(94vh - 115px);
+      overflow-x: hidden;
+      overflow-y: auto;
+      box-sizing: border-box;
+    }
+
+    #dlgLot .dlg-head {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--card);
+    }
+
+    #dlgLot .dlg-title {
+      font-weight: 800;
+    }
+
+    #dlgLot .dlg-body {
+      padding: 14px;
+    }
+
+    #dlgLot .dlg-foot {
+      padding: 12px 14px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      background: var(--card);
+    }
+
+    #dlgLot .divider {
+      height: 1px;
+      background: var(--line);
+      margin: 10px 0;
+    }
+
+    #aba-estoque .row-5>* {
+      flex: 1;
+      min-width: 180px;
+    }
+
+    #aba-estoque .row-5 {
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    #aba-estoque .tabela-lotes th,
+    #aba-estoque .tabela-lotes td {
+      white-space: nowrap;
+    }
+
+    #aba-estoque .lot-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    #aba-estoque .lot-hint {
+      padding: 10px 12px;
+      border: 1px solid rgba(255, 193, 7, .45);
+      background: rgba(255, 193, 7, .08);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .num {
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ✅ ajuste visual para campo + botão de gerar barcode */
+    .unit-barcode-group {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      min-width: 320px;
+    }
+
+    .unit-barcode-group input {
+      flex: 1;
+    }
+
+    .unit-hint {
+      font-size: .82rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .product-general-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(320px, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .product-general-fields {
+      min-width: 0;
+    }
+
+    .product-images-card {
+      min-height: 220px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: var(--card);
+    }
+
+    .product-images-card__header,
+    .product-images-card__actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .product-images-card__title {
+      font-weight: 800;
+    }
+
+    .product-images-card__hint,
+    .product-images-empty {
+      color: var(--muted);
+      font-size: .84rem;
+    }
+
+    .product-images-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+      gap: 10px;
+      min-height: 130px;
+      margin: 12px 0;
+    }
+
+    .product-images-empty {
+      grid-column: 1 / -1;
+      display: grid;
+      place-items: center;
+      min-height: 130px;
+      padding: 16px;
+      border: 1px dashed var(--line);
+      border-radius: var(--radius-sm);
+      text-align: center;
+    }
+
+    .product-images-input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+    }
+
+    .product-images-unit-picker {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: .8rem;
+    }
+
+    .product-images-unit-picker select {
+      height: 26px;
+      padding: 0 6px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--card);
+      font-size: .8rem;
+    }
+
+    .unit-image-cell {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      overflow: hidden;
+      vertical-align: middle;
+    }
+
+    .unit-image-cell img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .unit-image-cell--empty {
+      border-style: dashed;
+      color: var(--muted);
+      font-size: .75rem;
+    }
+
+    .unit-image-cell__remove {
+      position: absolute;
+      top: 1px;
+      right: 1px;
+      padding: 0 4px;
+      border: 0;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, .72);
+      color: #fff;
+      font-size: 10px;
+      line-height: 14px;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity .15s ease;
+    }
+
+    .unit-image-cell:hover .unit-image-cell__remove,
+    .unit-image-cell:focus-within .unit-image-cell__remove {
+      opacity: 1;
+    }
+
+    @media (max-width: 1100px) {
+      .product-general-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    #dlgLot .lot-nfe-grid {
+      display: grid;
+      grid-template-columns: minmax(420px, 1fr) 140px;
+      gap: 12px;
+      align-items: end;
+      margin-top: 12px;
+    }
+
+    #dlgLot .lot-nfe-key-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #dlgLot .lot-nfe-key-row input {
+      flex: 1;
+      min-width: 0;
+      font-family: monospace;
+      font-size: .9rem;
+    }
+
+    #dlgLot .lot-nfe-key-row button {
+      flex: 0 0 auto;
+    }
+
+    #dlgLot .lot-fiscal-panel {
+      margin-top: 14px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: rgba(15, 98, 254, .035);
+    }
+
+    #dlgLot .lot-fiscal-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    #dlgLot .lot-fiscal-title {
+      font-weight: 900;
+    }
+
+    #dlgLot .lot-fiscal-subtitle {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: .84rem;
+    }
+
+    #dlgLot .lot-fiscal-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(130px, 1fr));
+      gap: 10px;
+    }
+
+    #dlgLot .lot-fiscal-field {
+      min-width: 0;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: var(--card);
+    }
+
+    #dlgLot .lot-fiscal-field span {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--muted);
+      font-size: .78rem;
+    }
+
+    #dlgLot .lot-fiscal-field strong {
+      display: block;
+      overflow-wrap: anywhere;
+      font-variant-numeric: tabular-nums;
+    }
+
+    #dlgLot .fiscal-status {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font-size: .8rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    #dlgLot .fiscal-status-success {
+      color: #08783e;
+      border-color: rgba(8, 120, 62, .35);
+      background: rgba(8, 120, 62, .09);
+    }
+
+    #dlgLot .fiscal-status-warning {
+      color: #8a5a00;
+      border-color: rgba(210, 145, 0, .4);
+      background: rgba(210, 145, 0, .1);
+    }
+
+    #dlgLot .fiscal-status-error {
+      color: #b42318;
+      border-color: rgba(180, 35, 24, .35);
+      background: rgba(180, 35, 24, .08);
+    }
+
+    @media (max-width: 900px) {
+      #dlgLot .lot-nfe-grid {
+        grid-template-columns: 1fr;
+      }
+
+      #dlgLot .lot-fiscal-grid {
+        grid-template-columns: repeat(2, minmax(130px, 1fr));
+      }
+    }
+
+    @media (max-width: 560px) {
+      #dlgLot .lot-fiscal-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body class="consart-theme c-page page" style="--consart-input-h: 34px;">
+  <main class="consart-container consart-container--full">
+
+    <header class="page-toolbar">
+
+      <div class="page-product-info">
+
+        <div id="headerProductCode" class="page-product-info__code">
+          SKU —
+        </div>
+
+        <div id="headerProductName" class="page-product-info__name">
+          Carregando produto...
+        </div>
+
+        <label class="ep-toggle page-product-info__active" for="produtoAtivo">
+          <input type="checkbox" id="produtoAtivo">
+
+          <span class="ep-toggle-track">
+            <span class="ep-toggle-thumb"></span>
+          </span>
+
+          <span class="ep-toggle-text" data-off="Inativo" data-on="Ativo">
+            Produto
+          </span>
+        </label>
+
+      </div>
+
+      <div class="page-toolbar__group page-toolbar__group--fill">
+
+        <button class="btn btn-flat toolbar-btn aba-btn ativa" data-aba="aba-geral">
+          📋 Dados Gerais
+        </button>
+
+        <button type="button" class="btn btn-flat toolbar-btn aba-btn" data-aba="aba-descricao">
+          📝 Descrição
+        </button>
+
+        <button class="btn btn-flat toolbar-btn aba-btn" data-aba="aba-precos">
+          💲 Preços
+        </button>
+
+        <button class="btn btn-flat toolbar-btn aba-btn" data-aba="aba-estoque">
+          📦 Estoque
+        </button>
+
+        <button class="btn btn-flat toolbar-btn aba-btn" data-aba="aba-fiscal">
+          🧾 Fiscal
+        </button>
+
+        <button class="btn btn-flat toolbar-btn aba-btn" data-aba="aba-unidades">
+          📏 Unidades
+        </button>
+
+        <button class="btn btn-flat toolbar-btn aba-btn" data-aba="aba-grade">
+          🧩 Grade
+        </button>
+
+        <button class="btn btn-flat toolbar-btn aba-btn" data-aba="aba-registros">
+          📜 Registros
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <!-- 📋 Dados Gerais -->
+    <section id="aba-geral" class="aba ativa" role="tabpanel">
+
+      <div class="consart-panel">
+
+        <form id="formDadosGerais" data-section="general" class="form-stack" novalidate>
+
+          <header class="entity-header">
+
+            <div class="entity-header__top">
+              <div class="entity-header__title">
+                📦 Dados Gerais do Produto
+              </div>
+
+              <button type="submit" id="btnSalvarDadosGerais" class="btn btn-save btn-sm">
+                💾 Salvar Dados Gerais
+              </button>
+            </div>
+
+            <div class="product-general-layout">
+              <div class="product-general-fields">
+                <div class="fields-inline fields-gap-3">
+
+                  <div class="fields fields-h-6 fields-w-15">
+                    <span>Produto Code (SKU)</span>
+                    <input type="text" id="produtoId" name="product_code" data-field="product_code"
+                      placeholder="Ex.: 4828" readonly>
+                  </div>
+
+                  <div class="fields fields-h-6 fields-w-30">
+                    <span>Descrição</span>
+                    <input type="text" id="descricao" name="description" data-field="description"
+                      placeholder="Descrição do produto">
+                  </div>
+
+                  <div class="fields fields-h-6 fields-w-15">
+                    <span>Código de Barras</span>
+                    <input type="text" id="codigoBarras" name="barcode" data-field="barcode" placeholder="EAN/GTIN">
+                  </div>
+
+                  <div class="fields fields-h-6 fields-w-15">
+                    <span>Ref. Fabricante</span>
+                    <input type="text" id="refFabricante" name="manufacturer_ref" data-field="manufacturer_ref"
+                      placeholder="Referência do fabricante">
+                  </div>
+                </div>
+
+                <div class="fields-inline fields-gap-3">
+                  <div class="fields fields-h-6 fields-w-16">
+                    <span>Grupo
+                      <button type="button" class="quick-add-btn" data-quick-add="group"
+                        title="Cadastrar novo grupo" aria-label="Cadastrar novo grupo">+</button>
+                    </span>
+                    <select id="product_group_id" name="product_group_id"></select>
+                  </div>
+
+                  <div class="fields fields-h-6 fields-w-16">
+                    <span>Subgrupo
+                      <button type="button" class="quick-add-btn" data-quick-add="subgroup"
+                        title="Cadastrar novo subgrupo" aria-label="Cadastrar novo subgrupo">+</button>
+                    </span>
+                    <select id="product_subgroup_id" name="product_subgroup_id"></select>
+                  </div>
+
+                  <div class="fields fields-h-6 fields-w-16">
+                    <span>Fabricante
+                      <button type="button" class="quick-add-btn" data-quick-add="manufacturer"
+                        title="Cadastrar novo fabricante" aria-label="Cadastrar novo fabricante">+</button>
+                    </span>
+                    <select id="manufacturer_id" name="manufacturer_id"></select>
+                  </div>
+
+                  <div class="fields fields-h-6 fields-w-16">
+                    <span>Fornecedor
+                      <button type="button" class="quick-add-btn" data-quick-add="supplier"
+                        title="Cadastrar novo fornecedor" aria-label="Cadastrar novo fornecedor">+</button>
+                    </span>
+                    <select id="supplier_id" name="supplier_id"></select>
+                  </div>
+                </div>
+
+                <div class="fields-inline fields-gap-3" data-feature="PRODUCT_LOCATIONS">
+                  <div class="fields fields-h-6 fields-w-30">
+                    <span>Localização</span>
+                    <input type="text" id="product_location_label" placeholder="Selecione uma localização" readonly>
+                  </div>
+
+                  <button type="button" id="btnBuscarLocalizacao" class="btn btn-lookup btn-sm"
+                    title="Buscar localização">
+                    🔍 Buscar
+                  </button>
+                </div>
+
+                <select id="product_location_id" name="product_location_id" hidden></select>
+
+                <!-- Todas as localizações do SKU (Mapa de Localização); a principal é a do campo acima -->
+                <div id="productLocationsList" class="product-locations-list" data-feature="PRODUCT_LOCATIONS" hidden></div>
+              </div>
+
+              <section id="productsImagens" class="product-images-card" aria-labelledby="productsImagensTitle">
+                <div class="product-images-card__header">
+                  <div>
+                    <div id="productsImagensTitle" class="product-images-card__title">🖼️ Imagens do Produto</div>
+                    <div class="product-images-card__hint">JPG, PNG ou WebP</div>
+                  </div>
+                  <span id="productsImagensCount" class="badge">0 imagens</span>
+                </div>
+
+                <div id="productsImagensGallery" class="product-images-gallery" aria-live="polite">
+                  <div id="productsImagensEmpty" class="product-images-empty">
+                    Nenhuma imagem cadastrada para este produto.
+                  </div>
+                </div>
+
+                <div class="product-images-card__actions">
+                  <input id="productsImagensInput" class="product-images-input" type="file" name="productsImagens[]"
+                    accept="image/jpeg,image/png,image/webp" multiple>
+                  <label for="productsImagensInput" class="btn btn-primary btn-sm" role="button">
+                    📤 Selecionar imagens
+                  </label>
+                  <label class="product-images-unit-picker" title="Unidade à qual as novas imagens serão vinculadas">
+                    <span>Vincular a</span>
+                    <select id="productsImagensUploadUnit" aria-label="Unidade das novas imagens">
+                      <option value="">Geral (produto)</option>
+                    </select>
+                  </label>
+                  <button type="button" id="btnUploadProductsImagens" class="btn btn-save btn-sm" disabled>
+                    💾 Enviar imagens
+                  </button>
+                </div>
+              </section>
+            </div>
+
+          </header>
+
+        </form>
+
+      </div>
+
+    </section>
+
+    <!-- 📝 Descrição -->
+    <section id="aba-descricao" class="aba" role="tabpanel" aria-label="Descrição do produto">
+
+      <div class="consart-panel">
+
+        <form id="formDescricaoProduto" data-section="description" class="form-stack" novalidate>
+
+          <header class="entity-header">
+
+            <div class="entity-header__top">
+
+              <div>
+                <div class="entity-header__title">
+                  📝 Descrição do Produto
+                </div>
+
+                <div class="entity-header__subtitle">
+                  Descrição comercial e informações internas do produto.
+                </div>
+              </div>
+
+              <button type="submit" id="btnSalvarDescricaoProduto" class="btn btn-save btn-sm">
+                💾 Salvar Descrição
+              </button>
+
+            </div>
+
+            <div class="description-product-fields">
+
+              <label class="field-group" for="descricaoDetalhada">
+
+                <span>Descrição detalhada</span>
+
+                <textarea id="code_template"
+                  class="textarea textarea-border-1 textarea-radius-4 textarea-h-3 textarea-w-10 textarea-resize-vertical textarea-padding-5"
+                  spellcheck="false" placeholder="Digite a descrição completa do produto..."></textarea>
+
+              </label>
+            </div>
+
+            <div id="descricaoProdutoStatus" class="description-status" role="status" aria-live="polite">
+            </div>
+
+          </header>
+
+        </form>
+
+      </div>
+
+    </section>
+
+    <!-- 💲 Preços -->
+    <section id="aba-precos" class="aba" role="tabpanel">
+
+      <div class="consart-panel">
+
+        <form id="formPrecos" data-section="prices" class="form-stack" novalidate>
+
+          <header class="entity-header">
+
+            <div class="entity-header__top">
+              <div class="entity-header__title">
+                💲 Formação de Preços
+              </div>
+
+              <button type="submit" class="btn btn-save btn-sm">
+                💾 Salvar Tabela de Preços
+              </button>
+            </div>
+
+            <div class="fields-inline fields-gap-3">
+
+              <div class="fields fields-h-6 fields-w-10">
+                <span>💰 Preço Custo</span>
+                <input type="text" inputmode="decimal" id="cost_price" name="cost_price" data-field="cost_price"
+                  class="price-input" required>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-10">
+                <span>ICMS Venda (%)</span>
+                <input type="text" id="tax_icms_credit_percent" class="price-input tax-input" value="0,00">
+              </div>
+
+              <div class="fields fields-h-6 fields-w-10">
+                <span>PIS Venda (%)</span>
+                <input type="text" id="tax_pis_credit_percent" class="price-input tax-input" value="0,00">
+              </div>
+
+              <div class="fields fields-h-6 fields-w-10">
+                <span>COFINS Venda (%)</span>
+                <input type="text" id="tax_cofins_credit_percent" class="price-input tax-input" value="0,00">
+              </div>
+
+              <div class="fields fields-h-6 fields-w-10">
+                <span>ICMS-ST R$</span>
+                <input type="text" id="tax_icms_st_value" class="price-input tax-input" value="0,00">
+              </div>
+
+              <div class="fields fields-h-6 fields-w-10">
+                <span>IPI R$</span>
+                <input type="text" id="tax_ipi_value" class="price-input tax-input" value="0,00">
+              </div>
+
+              <div class="fields fields-h-6 fields-w-18">
+                <span>Custo com Impostos da Venda</span>
+                <input type="text" id="final_cost_price" class="price-input final-cost-input" readonly>
+              </div>
+
+            </div>
+
+            <section class="table-layout">
+              <div class="table-scroll--rounded table-scroll--flex  " data-table-settings="editproducts.corpotabelaprecos">
+                <table class="table table-fixed table-zebra table-zebra-hover table-sticky-head"
+                  aria-label="Tabela de preços">
+                  <thead>
+                    <tr>
+                      <th>Tabela</th>
+                      <th>Markup (%)</th>
+                      <th>Lucro Bruto (%)</th>
+                      <th>Preço Venda</th>
+                    </tr>
+                  </thead>
+                  <tbody id="corpoTabelaPrecos"></tbody>
+                </table>
+              </div>
+
+          </header>
+
+        </form>
+
+      </div>
+
+    </section>
+
+    <!-- 📦 Estoque -->
+    <section id="aba-estoque" class="aba" role="tabpanel">
+
+      <div class="consart-panel">
+
+        <form id="form-estoque" data-section="stock" class="form-stack" novalidate>
+
+          <header class="entity-header">
+
+            <div class="entity-header__top">
+              <div class="entity-header__title">
+                📦 Estoque do Produto
+              </div>
+
+              <button type="submit" class="btn btn-save btn-sm">
+                💾 Salvar Estoque
+              </button>
+            </div>
+
+            <div class="fields-inline fields-gap-3">
+
+              <div class="fields fields-h-6 fields-w-10 fields-gap-3" for="product_stock_id">
+                <span>ID Estoque</span>
+                <input type="text" id="product_stock_id" name="product_stock_id" readonly aria-readonly="true"
+                  class="is-readonly" placeholder="(será gerado ao salvar)">
+              </div>
+
+              <div class="fields fields-h-6 fields-w-10 fields-gap-3" for="stock_qty">
+                <span>Estoque Atual</span>
+                <input type="number" step="0.01" id="stock_qty" name="stock_qty" data-field="stock_qty">
+              </div>
+
+              <div class="fields fields-h-6 fields-w-10 fields-gap-3" for="stock_min">
+                <span>Estoque Mínimo</span>
+                <input type="number" step="0.01" id="stock_min" name="stock_min" data-field="stock_min">
+              </div>
+
+              <div class="fields fields-h-6 fields-w-10 fields-gap-3" for="stock_max">
+                <span>Estoque Máximo</span>
+                <input type="number" step="0.01" id="stock_max" name="stock_max" data-field="stock_max">
+              </div>
+
+            </div>
+
+          </header>
+
+        </form>
+
+        <header id="lot-wrap" class="entity-header">
+
+          <div class="entity-header__top">
+            <div class="entity-header__title">
+              📦 Lotes & Validade
+              <span class="badge">productsStockLots</span>
+            </div>
+
+            <div id="lot-toolbar" class="page-toolbar__group">
+              <button type="button" id="btn-lot-refresh" class="btn btn-toolbar btn-sm">🔄 Atualizar</button>
+              <button type="button" id="btn-lot-fefo" class="btn btn-flat btn-sm">⏳ FEFO</button>
+              <button type="button" id="btn-lot-new" class="btn btn-primary btn-sm">➕ Novo lote</button>
+            </div>
+          </div>
+
+          <div id="lot-hint" class="lot-hint hidden">
+            ⚠️ Para habilitar os lotes, primeiro clique em <b>Salvar Estoque</b> para criar o product_stock_id.
+          </div>
+
+          <div class="fields-inline fields-gap-3">
+
+            <div class="fields fields-h-6 fields-w-10" for="lot-q">
+              <span>Buscar lote</span>
+              <input id="lot-q" type="text" placeholder="Ex: L2026-001">
+            </div>
+
+            <div class="fields fields-h-6 fields-w-15" for="lot-only-available">
+              <span>Somente disponíveis</span>
+              <select id="lot-only-available">
+                <option value="false">Não</option>
+                <option value="true">Sim</option>
+              </select>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-10" for="lot-show-inactive">
+              <span>Mostrar inativos</span>
+              <select id="lot-show-inactive">
+                <option value="false" selected>Não</option>
+                <option value="true">Sim</option>
+              </select>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-10" for="lot-orderby">
+              <span>Ordenar por</span>
+              <select id="lot-orderby">
+                <option value="expires_at">Validade</option>
+                <option value="lot_code">Lote</option>
+                <option value="qty_on_hand">Qtd em mãos</option>
+                <option value="qty_reserved">Reservado</option>
+                <option value="updated_at">Atualização</option>
+                <option value="created_at">Criação</option>
+              </select>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-10" for="lot-dir">
+              <span>Direção</span>
+              <select id="lot-dir">
+                <option value="asc">Asc</option>
+                <option value="desc">Desc</option>
+              </select>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-10" for="lot-limit">
+              <span>Itens</span>
+              <select id="lot-limit">
+                <option>10</option>
+                <option selected>20</option>
+                <option>50</option>
+                <option>100</option>
+              </select>
+            </div>
+
+          </div>
+
+          <section class="table-layout">
+            <div class="table-scroll--rounded table-scroll--flex" data-table-settings="editproducts.lot-tbody">
+              <table class="table table-fixed table-zebra table-zebra-hover table-sticky-head"
+                aria-label="Tabela de lotes do produto">
+                <colgroup>
+                  <col style="width:40px">
+                  <col style="width:100px">
+                  <col style="width:90px">
+                  <col style="width:90px">
+                  <col style="width:90px">
+                  <col style="width:90px">
+                  <col style="width:100px">
+                  <col style="width:150px">
+                  <col style="width:90px">
+                  <col style="width:300px">
+                </colgroup>
+
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Grade</th>
+                    <th>Lote</th>
+                    <th>Validade</th>
+                    <th class="num">Em mãos</th>
+                    <th class="num">Reservado</th>
+                    <th class="num">Disponível</th>
+                    <th>Atualizado</th>
+                    <th>Status</th>
+                    <th class="th-actions">Ações</th>
+                  </tr>
+                </thead>
+
+                <tbody id="lot-tbody">
+                  <tr>
+                    <td colspan="10" class="muted" style="padding:12px 14px;">Carregando…</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="entity-header__footer">
+              <div class="muted">
+                Dica: use <b>FEFO</b> para sugerir o lote que vence primeiro.
+              </div>
+
+              <div id="lot-paging" class="muted">—</div>
+            </div>
+
+        </header>
+
+      </div>
+
+      <dialog id="dlgLot" aria-labelledby="dlgLotTitle">
+        <form method="dialog" id="formDlgLot">
+
+          <div class="dlg-head">
+            <div class="dlg-title" id="dlgLotTitle">Lote</div>
+            <button type="button" id="lot-modal-close" class="btn btn-flat btn-sm">✕</button>
+          </div>
+
+          <div class="dlg-body">
+
+            <input type="hidden" id="mLotId">
+
+            <div class="fields-inline fields-gap-3">
+
+              <div class="fields fields-h-6 fields-w-10">
+                <span>Grade</span>
+                <select id="mProductGradeId">
+                  <option value="">Sem grade</option>
+                </select>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-10">
+                <span>Lote *</span>
+                <input id="mLotCode" type="text" placeholder="Ex: L2026-001" required>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-10">
+                <span>Validade</span>
+                <input id="mExpiresAt" type="date">
+              </div>
+
+              <div class="fields fields-h-6 fields-w-10">
+                <span>Qtd em mãos</span>
+                <input id="mQtyOnHand" type="number" step="0.001" value="0">
+              </div>
+
+              <div class="fields fields-h-6 fields-w-10">
+                <span>Reservado</span>
+                <input id="mQtyReserved" type="number" step="0.001" value="0" disabled>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-10">
+                <span>Custo unitário</span>
+                <input id="mCostUnit" type="number" step="0.000001" placeholder="Opcional">
+              </div>
+
+            </div>
+
+            <!-- Origem da NF-e -->
+            <div class="fields-inline fields-gap-3">
+
+              <div class="fields fields-w-30 fields-h-6">
+                <span>Chave NF-e de entrada</span>
+
+                <input id="mNfeKey" type="text" maxlength="44" readonly aria-readonly="true" class="is-readonly mono"
+                  placeholder="Sem chave vinculada">
+              </div>
+
+              <button type="button" id="btnCopyLotNfeKey" class="btn btn-flat btn-sm" title="Copiar chave da NF-e">
+                📋
+              </button>
+
+              <div class="fields fields-w-20 fields-h-6">
+                <span>Item NF-e</span>
+
+                <input id="mNfeItemSeq" type="number" readonly aria-readonly="true" class="is-readonly" placeholder="—">
+              </div>
+
+            </div>
+
+            <!-- Painel fiscal do lote -->
+            <section id="mFiscalPanel" class="lot-fiscal-panel hidden" aria-labelledby="mFiscalPanelTitle">
+              <div class="lot-fiscal-header">
+                <div>
+                  <div id="mFiscalPanelTitle" class="lot-fiscal-title">
+                    🧾 Origem fiscal da entrada
+                  </div>
+
+                  <div id="mFiscalSubtitle" class="lot-fiscal-subtitle">
+                    Valores informados pelo fornecedor na NF-e de entrada.
+                  </div>
+                </div>
+
+                <div class="lot-fiscal-actions">
+                  <button type="button" id="btnApplyFiscalCostRule" class="btn btn-primary btn-sm">
+                    ⚙️ Atualizar dados fiscais
+                  </button>
+
+                  <span id="mFiscalStatus" class="fiscal-status" role="status" aria-live="polite">
+                    —
+                  </span>
+                </div>
+              </div>
+
+              <div class="lot-fiscal-grid">
+
+                <div class="lot-fiscal-field">
+                  <span>Nota de entrada</span>
+                  <strong id="mInboundInvoiceId">—</strong>
+                </div>
+
+                <div class="lot-fiscal-field">
+                  <span>Item interno</span>
+                  <strong id="mInboundItemId">—</strong>
+                </div>
+
+                <div class="lot-fiscal-field">
+                  <span>Código do fornecedor</span>
+                  <strong id="mSupplierProductCode">—</strong>
+                </div>
+
+                <div class="lot-fiscal-field">
+                  <span>CST de entrada</span>
+                  <strong id="mIcmsCst">—</strong>
+                </div>
+
+                <div class="lot-fiscal-field">
+                  <span>Base ICMS</span>
+                  <strong id="mIcmsBase">—</strong>
+                </div>
+
+                <div class="lot-fiscal-field">
+                  <span>Alíquota ICMS</span>
+                  <strong id="mIcmsRate">—</strong>
+                </div>
+
+                <div class="lot-fiscal-field">
+                  <span>Valor ICMS</span>
+                  <strong id="mIcmsValue">—</strong>
+                </div>
+
+                <div class="lot-fiscal-field">
+                  <span>Base ICMS-ST retido</span>
+                  <strong id="mIcmsStBase">—</strong>
+                </div>
+
+                <div class="lot-fiscal-field">
+                  <span>Alíquota ICMS-ST</span>
+                  <strong id="mIcmsStRate">—</strong>
+                </div>
+
+                <div class="lot-fiscal-field">
+                  <span>ICMS-ST retido</span>
+                  <strong id="mIcmsStValue">—</strong>
+                </div>
+
+              </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <div class="stack" style="gap:8px;">
+              <div style="font-weight: 900;">Operações rápidas</div>
+
+              <div class="fields-inline fields-gap-3">
+
+                <div class="fields fields-h-6 fields-w-10" style="width:220px;gap:6px;">
+                  <span>Quantidade</span>
+                  <input id="lotOpQty" type="number" step="0.001" value="1">
+                </div>
+
+                <div class="btn-inline btn-gap-3">
+                  <button type="button" id="lotOpReserve" class="btn btn-primary btn-sm">Reservar</button>
+                  <button type="button" id="lotOpUnreserve" class="btn btn-flat btn-sm">Desreservar</button>
+                  <button type="button" id="lotOpConsume" class="btn btn-danger btn-sm">Baixar</button>
+                </div>
+              </div>
+
+              <div class="muted" style="font-weight: 700;">
+                Reservar/desreservar para orçamento. Baixar para saída confirmada.
+              </div>
+            </div>
+
+          </div>
+
+          <div class="dlg-foot">
+            <div>
+              <button type="button" id="lot-modal-delete" class="btn btn-danger btn-sm hidden">Excluir</button>
+            </div>
+
+            <div class="row center" style="gap:8px;">
+              <button type="button" id="lot-modal-cancel" class="btn btn-flat btn-sm">Cancelar</button>
+              <button type="button" id="lot-modal-save" class="btn btn-primary btn-sm">Salvar</button>
+            </div>
+          </div>
+
+        </form>
+      </dialog>
+
+    </section>
+
+    <!-- 🧾 Fiscal -->
+    <section id="aba-fiscal" class="aba" role="tabpanel">
+
+      <div class="consart-panel">
+
+        <header class="entity-header">
+
+          <div class="entity-header__top">
+
+            <div>
+              <div class="entity-header__title">
+                🧾 Dados Fiscais
+              </div>
+
+              <div class="entity-header__subtitle">
+                Os dados fiscais são vinculados através da
+                <strong>Classificação Fiscal</strong> e do
+                <strong>Perfil Fiscal</strong>.
+              </div>
+            </div>
+
+            <div class="page-toolbar__group">
+
+              <button type="button" id="btnVincularClassificacaoFiscal" class="btn btn-primary btn-sm">
+                🔍 Vincular / Alterar Classificação
+              </button>
+
+              <button type="button" id="btnRemoverClassificacaoFiscal" class="btn btn-danger btn-sm">
+                ❌ Remover Vínculo Fiscal
+              </button>
+
+              <button id="btnConfirmarVinculoFiscal" type="button" class="btn btn-save btn-sm">
+                ✔️ Confirmar Vínculo Fiscal
+              </button>
+
+            </div>
+
+          </div>
+
+          <!-- ===================================================== -->
+          <!-- Classificação Fiscal                                  -->
+          <!-- ===================================================== -->
+
+          <div class="entity-header__table">
+
+            <div class="entity-header__table-title">
+              📂 Classificação Fiscal
+            </div>
+
+            <section class="table-layout">
+              <div class="table-scroll--rounded table-scroll--flex table-row-h-35" data-table-settings="editproducts.table-3">
+                <table class="table table-fixed table-zebra table-zebra-hover table-sticky-head">
+                  <thead>
+                    <tr>
+                      <th>Classificação</th>
+                      <th>NCM</th>
+                      <th>CEST</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr>
+                      <td id="classificacao_desc">—</td>
+                      <td id="ncm_texto">—</td>
+                      <td id="cest_texto">—</td>
+                    </tr>
+                  </tbody>
+
+                </table>
+
+              </div>
+
+              <!-- ===================================================== -->
+              <!-- Perfil Fiscal                                         -->
+              <!-- ===================================================== -->
+
+              <div class="entity-header__table">
+
+                <div class="entity-header__table-title">
+                  🔗 Perfil Fiscal Vinculado
+                </div>
+
+                <section class="table-layout">
+                  <div class="table-scroll--rounded table-scroll--flex " data-table-settings="editproducts.table-4">
+                    <table class="table table-fixed table-zebra table-zebra-hover table-sticky-head">
+                      <thead>
+                        <tr>
+                          <th>Nome</th>
+                          <th>CST</th>
+                          <th>ICMS</th>
+                          <th>Origem</th>
+                          <th>CFOP Entrada</th>
+                          <th>CFOP Saída</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        <tr>
+                          <td id="perfil_nome">—</td>
+                          <td id="perfil_cst">—</td>
+                          <td id="perfil_aliq">—</td>
+                          <td id="perfil_origem">—</td>
+                          <td id="perfil_cfop_entrada">—</td>
+                          <td id="perfil_cfop_saida">—</td>
+                        </tr>
+                      </tbody>
+
+                    </table>
+
+                  </div>
+
+                  <div class="entity-header__footer">
+
+                    <div class="entity-header__footnote">
+                      Ao confirmar, o produto terá o
+                      <strong>Produto Fiscal</strong>
+                      atualizado automaticamente.
+                    </div>
+
+                  </div>
+
+        </header>
+
+      </div>
+
+    </section>
+
+    <!-- 📏 Unidades -->
+    <section id="aba-unidades" class="aba" role="tabpanel">
+
+      <div class="consart-panel">
+
+        <header class="entity-header">
+
+          <form id="formUnitProduct" novalidate>
+
+            <div class="entity-header__top">
+
+              <div class="entity-header__title">
+                📏 Unidades do Produto
+              </div>
+
+              <button type="submit" class="btn btn-toolbar btn-sm">
+                ➕ Adicionar Unidade
+              </button>
+
+            </div>
+
+            <div class="fields-inline fields-gap-3">
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3" for="unidadeSelect">
+                <span>Unidade</span>
+                <select id="unidadeSelect" name="unidadeSelect"></select>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3" for="unitFactor">
+                <span>Fator</span>
+                <input type="number" step="0.01" id="unitFactor" name="unitFactor" readonly class="is-readonly">
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3" for="unitDesc">
+                <span>Descrição</span>
+                <input type="text" id="unitDesc" name="unitDesc" readonly class="is-readonly">
+              </div>
+
+              <div class="fields fields-h-6 fields-w-20 fields-font-3" for="unitBarcode">
+
+                <span>Código de Barras (Unidade)</span>
+
+                <input type="text" id="unitBarcode" name="unitBarcode" placeholder="Automático se vazio"
+                  autocomplete="off">
+              </div>
+
+              <div class="btn-inline"><button type="button" id="btnGenerateUnitBarcode" class="btn btn-new btn-sm">
+                  🎯 Gerar
+                </button>
+              </div>
+
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3" for="unitWidth">
+                <span>Largura (cm)</span>
+                <input type="number" step="0.01" id="unitWidth" placeholder="0,00">
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3" for="unitLength">
+                <span>Comprimento (cm)</span>
+                <input type="number" step="0.01" id="unitLength" placeholder="0,00">
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3" for="unitHeight">
+                <span>Altura (cm)</span>
+                <input type="number" step="0.01" id="unitHeight" placeholder="0,00">
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3" for="unitWeight">
+                <span>Peso (kg)</span>
+                <input type="number" step="0.01" id="unitWeight" placeholder="0,00">
+              </div>
+
+            </div>
+
+            <div class="entity-header__footer">
+
+              <label class="row center" style="gap:6px;">
+                <input type="checkbox" id="unitIsDefault" name="unitIsDefault">
+                Padrão
+              </label>
+
+              <label class="row center" style="gap:6px;">
+                <input type="checkbox" id="unitIsActive" name="unitIsActive" checked>
+                Ativo
+              </label>
+
+            </div>
+
+          </form>
+
+          <section class="table-layout">
+            <div class="table-scroll--rounded table-scroll--flex " data-table-settings="editproducts.unitstablebody">
+              <table class="table table-fixed table-zebra table-zebra-hover table-sticky-head"
+                aria-label="Unidades do produto">
+                <thead>
+                  <tr>
+                    <th>Imagem</th>
+                    <th>Unidade</th>
+                    <th>Descrição</th>
+                    <th>Fator</th>
+                    <th>Código de Barras</th>
+                    <th>Largura</th>
+                    <th>Comprimento</th>
+                    <th>Altura</th>
+                    <th>Peso</th>
+                    <th>Ativo</th>
+                    <th>Padrão</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+
+                <tbody id="unitsTableBody"></tbody>
+
+              </table>
+
+            </div>
+
+        </header>
+
+      </div>
+
+    </section>
+
+    <!-- 🧩 Grade -->
+    <section id="aba-grade" class="aba" role="tabpanel">
+
+      <div class="consart-panel">
+
+        <header class="entity-header">
+
+          <form id="formGradeProduct" novalidate>
+
+            <!-- ===================================================== -->
+            <!-- Header -->
+            <!-- ===================================================== -->
+
+            <div class="entity-header__top">
+
+              <div class="entity-header__title">
+                🧩 Grades do Produto
+              </div>
+
+              <button type="submit" class="btn btn-toolbar btn-sm">
+                ➕ Adicionar Grade
+              </button>
+
+            </div>
+
+            <!-- ===================================================== -->
+            <!-- Informações -->
+            <!-- ===================================================== -->
+
+            <div class="entity-header__grid">
+
+              <label class="field-group" for="gradeSelect">
+                <span>Grade</span>
+
+                <select id="gradeSelect" name="gradeSelect">
+                  <option value="">— Selecione uma grade —</option>
+                </select>
+              </label>
+
+              <label class="field-group" for="gradeStock">
+                <span>Estoque</span>
+
+                <input type="number" id="gradeStock" name="gradeStock" min="0" step="1" value="0">
+              </label>
+
+            </div>
+
+          </form>
+
+          <!-- ===================================================== -->
+          <!-- Tabela -->
+          <!-- ===================================================== -->
+
+          <div class="entity-header__table">
+
+            <section class="table-layout">
+              <div class="table-scroll table-scroll--flex" data-table-settings="editproducts.gradestablebody">
+                <table class="table table-fixed table-zebra table-zebra-hover table-sticky-head"
+                  aria-label="Grades do produto">
+
+                  <colgroup>
+                    <col style="width:200px">
+                    <col>
+                    <col style="width:200px">
+                    <col style="width:200px">
+                    <col style="width:200px">
+                  </colgroup>
+
+                  <thead>
+                    <tr>
+                      <th>Grade</th>
+                      <th>Descrição</th>
+                      <th>Estoque</th>
+                      <th>Status</th>
+                      <th>Ações</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="gradesTableBody">
+
+                    <!-- Carregado via JavaScript -->
+
+                  </tbody>
+
+                </table>
+
+              </div>
+
+        </header>
+
+      </div>
+
+    </section>
+
+    <!-- 📜 Registros -->
+    <section id="aba-registros" class="aba" role="tabpanel">
+
+      <div class="consart-panel">
+
+        <header class="entity-header">
+
+          <!-- ===================================================== -->
+          <!-- Header -->
+          <!-- ===================================================== -->
+
+          <div class="entity-header__top">
+
+            <div>
+
+              <div class="entity-header__title">
+                📜 Registros do Produto
+              </div>
+
+              <div class="entity-header__subtitle">
+                Histórico de movimentações, alterações de estoque, compras,
+                vendas, inventários e ajustes.
+              </div>
+
+            </div>
+
+            <button type="button" id="btnAtualizarRegistrosProduto" class="btn btn-toolbar btn-sm">
+              🔄 Atualizar
+            </button>
+
+          </div>
+
+          <!-- ===================================================== -->
+          <!-- Tabela -->
+          <!-- ===================================================== -->
+
+          <div class="entity-header__table">
+
+            <section class="table-layout">
+              <div class="table-scroll--rounded table-scroll--flex" data-table-settings="editproducts.registrosprodutobody">
+                <table class="table table-fixed table-zebra table-zebra-hover table-sticky-head"
+                  aria-label="Registros do Produto">
+
+                  <thead>
+                    <tr>
+                      <th>Data</th>
+                      <th>Tipo</th>
+                      <th>Origem</th>
+                      <th>Quantidade</th>
+                      <th>Estoque</th>
+                      <th>Grade</th>
+                      <th>Lote</th>
+                      <th>Usuário</th>
+                      <th>Observação</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="registrosProdutoBody">
+
+                    <tr>
+                      <td colspan="9" class="muted" style="padding:12px 14px;">
+                        Nenhum registro carregado.
+                      </td>
+                    </tr>
+
+                  </tbody>
+
+                </table>
+
+              </div>
+
+        </header>
+
+      </div>
+
+    </section>
+
+    <dialog id="dlgCusto" aria-labelledby="dlgTitle">
+      <form method="dialog" id="formDlgCusto" style="padding:16px">
+        <h3 id="dlgTitle" style="margin:0 0 8px">Alterar preço de custo</h3>
+        <p style="margin:0 0 10px;color:var(--muted)">Informe a senha de autorização:</p>
+        <input type="password" id="dlgSenhaCusto" required autocomplete="current-password"
+          style="width:100%;padding:10px;border:1px solid var(--line);border-radius:var(--radius-sm)" />
+        <div class="row" style="gap:8px;justify-content:flex-end;margin-top:12px;">
+          <button type="button" id="dlgCancelar" class="btn btn-flat">Cancelar</button>
+          <button type="submit" id="dlgOk" class="btn btn-primary">Confirmar</button>
+        </div>
+      </form>
+    </dialog>
+    </div>
+    </div>
+    </div>
+
+    <script type="module" src="/public/includes/js/core.js"></script>
+    <script type="module" src="/public/includes/js/apiBase.js"></script>
+    <script type="module" src="/public/includes/js/productsLocationsModals.js"></script>
+    <!-- appFeature PRODUCT_LOCATIONS: LOCATIONS_DISABLED → oculta [data-feature="PRODUCT_LOCATIONS"] -->
+    <script type="module">import { initProductLocationsFeature } from "/public/includes/js/productLocationsFeature.js"; initProductLocationsFeature();</script>
+    <script type="module" src="/public/editProducts/js/selectLoads.js"></script>
+    <script type="module" src="/public/editProducts/js/productsMovements.js?v=20260601-02"></script>
+    <script type="module" src="/public/editProducts/js/productImages.js?v=20260820-01">
+    </script>
+  </main>
+</body>
+
+</html>

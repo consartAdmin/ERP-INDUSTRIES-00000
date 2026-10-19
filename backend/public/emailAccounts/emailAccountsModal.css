@@ -1,0 +1,416 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ emailAccountsModal.css — Modal de contas de e-mail                 ║
+   ║ Cadastro e edição SMTP/IMAP                                        ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+:root{
+  --eam-bg: rgba(15, 23, 42, 0.44);
+  --eam-card: #ffffff;
+  --eam-line: #dbe3ee;
+  --eam-line-strong: #c5d0dd;
+  --eam-text: #17212f;
+  --eam-muted: #6b7b90;
+  --eam-primary: #2563eb;
+  --eam-primary-dark: #1d4ed8;
+  --eam-success: #15803d;
+  --eam-danger: #dc2626;
+  --eam-soft-blue: #eff6ff;
+  --eam-soft-green: #ecfdf5;
+  --eam-soft-red: #fef2f2;
+  --eam-soft-gray: #f8fafc;
+  --eam-shadow: 0 30px 80px rgba(15, 23, 42, 0.24);
+}
+
+.email-accounts-modal-layer{
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+}
+
+.email-accounts-modal-layer.is-open{
+  display: block;
+}
+
+.email-accounts-modal-backdrop{
+  position: absolute;
+  inset: 0;
+  background: var(--eam-bg);
+  backdrop-filter: blur(5px);
+}
+
+.email-accounts-modal-wrap{
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.email-accounts-modal{
+  width: min(1040px, calc(100vw - 24px));
+  max-height: calc(100vh - 24px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  border: 1px solid var(--eam-line);
+  border-radius: 22px;
+  box-shadow: var(--eam-shadow);
+}
+
+.email-accounts-modal-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--eam-line);
+  background: linear-gradient(180deg, #f8fbff 0%, #f1f6fc 100%);
+}
+
+.email-accounts-modal-titlebox{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.email-accounts-modal-kicker{
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--eam-muted);
+}
+
+.email-accounts-modal-title{
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.1;
+  color: #152235;
+}
+
+.email-accounts-modal-subtitle{
+  margin: 0;
+  font-size: 13px;
+  color: var(--eam-muted);
+}
+
+.email-accounts-modal-header-right{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.email-accounts-modal-badge{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.email-accounts-modal-badge.is-create{
+  background: var(--eam-soft-blue);
+  color: var(--eam-primary);
+  border: 1px solid #bfdbfe;
+}
+
+.email-accounts-modal-badge.is-edit{
+  background: var(--eam-soft-green);
+  color: var(--eam-success);
+  border: 1px solid #bbf7d0;
+}
+
+.email-accounts-modal-close{
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  border: 1px solid var(--eam-line);
+  border-radius: 12px;
+  background: #fff;
+  color: #0f172a;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition: .18s ease;
+}
+
+.email-accounts-modal-close:hover{
+  transform: translateY(-1px);
+  background: #f8fafc;
+}
+
+.email-accounts-modal-body{
+  padding: 16px 20px 18px;
+  overflow: auto;
+}
+
+.email-accounts-modal-feedback{
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.email-accounts-modal-feedback[hidden]{
+  display: none !important;
+}
+
+.email-accounts-modal-feedback.info{
+  background: var(--eam-soft-blue);
+  color: var(--eam-primary);
+  border-color: #bfdbfe;
+}
+
+.email-accounts-modal-feedback.success{
+  background: var(--eam-soft-green);
+  color: var(--eam-success);
+  border-color: #bbf7d0;
+}
+
+.email-accounts-modal-feedback.error{
+  background: var(--eam-soft-red);
+  color: var(--eam-danger);
+  border-color: #fecaca;
+}
+
+.email-accounts-modal-form{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.email-accounts-modal-section{
+  border: 1px solid var(--eam-line);
+  border-radius: 16px;
+  padding: 14px;
+  background: #fff;
+}
+
+.email-accounts-modal-section-title{
+  margin: 0 0 12px;
+  font-size: 14px;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+
+.email-accounts-modal-grid{
+  display: grid;
+  gap: 12px;
+}
+
+.email-accounts-modal-grid.grid-1{
+  grid-template-columns: 1fr;
+}
+
+.email-accounts-modal-grid.grid-2{
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.email-accounts-modal-grid.grid-3{
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.email-accounts-modal-grid.grid-4{
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.email-accounts-modal-field{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.email-accounts-modal-field label{
+  font-size: 12px;
+  font-weight: 800;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+}
+
+.email-accounts-modal-field input,
+.email-accounts-modal-field select{
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--eam-line-strong);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: var(--eam-text);
+  background: #fff;
+  outline: none;
+  transition: .18s ease;
+}
+
+.email-accounts-modal-field input:focus,
+.email-accounts-modal-field select:focus{
+  border-color: var(--eam-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.email-accounts-modal-checks{
+  margin-top: 10px;
+}
+
+.email-accounts-modal-check{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 10px 12px;
+  border: 1px dashed var(--eam-line-strong);
+  border-radius: 10px;
+  background: var(--eam-soft-gray);
+  cursor: pointer;
+  user-select: none;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--eam-text);
+}
+
+.email-accounts-modal-check input{
+  width: 16px;
+  height: 16px;
+  accent-color: var(--eam-primary);
+}
+
+.email-accounts-modal-hint{
+  color: var(--eam-muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.email-accounts-modal-error{
+  min-height: 14px;
+  color: var(--eam-danger);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.email-accounts-modal-footer{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px 18px;
+  border-top: 1px solid var(--eam-line);
+  background: #fff;
+}
+
+.email-accounts-modal-footer-left,
+.email-accounts-modal-footer-right{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.email-accounts-modal-footer-note{
+  color: var(--eam-muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.email-accounts-modal-btn{
+  border: 0;
+  border-radius: 10px;
+  min-height: 42px;
+  padding: 0 16px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 800;
+  transition: .18s ease;
+}
+
+.email-accounts-modal-btn:hover{
+  transform: translateY(-1px);
+}
+
+.email-accounts-modal-btn:disabled{
+  opacity: .7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.email-accounts-modal-btn.primary{
+  background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+  color: #fff;
+}
+
+.email-accounts-modal-btn.secondary{
+  background: #eef2f7;
+  color: #0f172a;
+}
+
+.email-accounts-modal-btn.ghost{
+  background: #fff;
+  color: #334155;
+  border: 1px solid var(--eam-line);
+}
+
+body.email-accounts-modal-open{
+  overflow: hidden;
+}
+
+@media (max-width: 980px){
+  .email-accounts-modal-grid.grid-4,
+  .email-accounts-modal-grid.grid-3,
+  .email-accounts-modal-grid.grid-2{
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px){
+  .email-accounts-modal-wrap{
+    padding: 10px;
+  }
+
+  .email-accounts-modal{
+    width: 100%;
+    max-height: calc(100vh - 10px);
+    border-radius: 16px;
+  }
+
+  .email-accounts-modal-header,
+  .email-accounts-modal-body,
+  .email-accounts-modal-footer{
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .email-accounts-modal-header{
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .email-accounts-modal-header-right{
+    justify-content: space-between;
+  }
+
+  .email-accounts-modal-footer{
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .email-accounts-modal-footer-left,
+  .email-accounts-modal-footer-right{
+    width: 100%;
+  }
+
+  .email-accounts-modal-footer-right .email-accounts-modal-btn,
+  .email-accounts-modal-footer-left .email-accounts-modal-btn{
+    flex: 1;
+  }
+}

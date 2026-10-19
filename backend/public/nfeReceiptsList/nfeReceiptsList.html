@@ -1,0 +1,168 @@
+<!-- ╔════════════════════════════════════════════════════════════════════╗
+     ║ FILE: nfeReceiptsList.html                                       ║
+     ║ MODULE: nfeReceiptsList (Canhotos Digitais)                      ║
+     ║ DESCRIPTION: Consulta de canhotos eletrônicos da NF-e            ║
+     ║ PRODNEX ERP                                                      ║
+     ╚════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" href="/public/imagens/brasaoConsartInfinity.png" />
+
+  <title>CANHOTOS DIGITAIS | PRODNEX ERP</title>
+
+  <!-- 🎨 Design System CONSART -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- CSS específico do módulo -->
+  <link rel="stylesheet" href="./nfeReceiptsList.css?v=3" />
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <!-- =========================================================
+         HEADER
+    ========================================================== -->
+    <header class="header">
+      <div class="fields-inline fields-h-6 fields-w-full fields-font-3">
+        <h2>Canhotos Digitais</h2>
+      </div>
+
+      <div class="fields-inline fields-h-6 fields-w-full fields-font-3">
+        <p>Consulta de comprovantes eletrônicos de recebimento da NF-e.</p>
+      </div>
+    </header>
+
+    <!-- =========================================================
+         TABLE LAYOUT
+    ========================================================== -->
+    <section class="table-layout-integrated table-max-height-700">
+
+      <!-- FILTER -->
+      <div class="table-layout-integrated__filter">
+        <div class="fields-inline fields-gap-3">
+
+          <div class="fields fields-h-6 fields-w-25 fields-font-3">
+            <label for="searchInput">Pesquisar</label>
+            <input id="searchInput" type="search" placeholder="NF-e, cliente, recebedor, documento ou chave..."
+              autocomplete="off" />
+          </div>
+
+          <div class="fields fields-h-6 fields-w-12 fields-font-3">
+            <label for="statusFilter">Status</label>
+            <select id="statusFilter">
+              <option value="">Todos</option>
+              <option value="PENDING">Pendente</option>
+              <option value="SIGNED">Assinado</option>
+              <option value="REFUSED">Recusado</option>
+              <option value="CANCELLED">Cancelado</option>
+            </select>
+          </div>
+
+          <div class="fields fields-h-6 fields-w-12 fields-font-3">
+            <label for="dateFrom">Recebido de</label>
+            <input id="dateFrom" type="date" />
+          </div>
+
+          <div class="fields fields-h-6 fields-w-12 fields-font-3">
+            <label for="dateTo">Recebido até</label>
+            <input id="dateTo" type="date" />
+          </div>
+
+          <div class="fields fields-h-6 fields-font-3">
+            <label aria-hidden="true">&nbsp;</label>
+            <div class="btn-inline">
+              <button id="btnSearch" class="btn btn-filter btn-sm" type="button">Buscar</button>
+              <button id="btnReload" class="btn btn-toolbar btn-sm" type="button">Atualizar</button>
+            </div>
+          </div>
+
+          <div class="fields fields-h-6 fields-font-3 nrl-export-actions">
+            <label aria-hidden="true">&nbsp;</label>
+            <div class="btn-inline">
+              <button id="btnExcel" class="btn btn-toolbar btn-sm" type="button" title="Exportar Excel">
+                <img src="/iconsImagens/excelIcons.png" alt="" width="20" height="20" aria-hidden="true" />
+                <span>Exportar Excel</span>
+              </button>
+
+              <button id="btnPdf" class="btn btn-toolbar btn-sm" type="button" title="Exportar PDF">
+                <img src="/iconsImagens/pdf.png" alt="" width="20" height="20" aria-hidden="true" />
+                <span>Exportar PDF</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- TABLE SCROLL -->
+      <div class="table-scroll table-height-flex table-row-h-20" data-table-settings="nfereceiptslist.tablebody">
+        <table class="table table-zebra table-zebra-hover table-sticky-head nrl-table">
+          <thead>
+            <tr>
+              <th style="width: 90px;">NF-e</th>
+              <th style="min-width: 220px;">Cliente</th>
+              <th style="min-width: 180px;">Recebedor</th>
+              <th style="width: 150px;">Documento</th>
+              <th style="width: 140px;">Telefone</th>
+              <th style="width: 150px;">Recebido em</th>
+              <th style="width: 110px;">Status</th>
+              <th style="width: 60px;">GPS</th>
+              <th style="width: 80px;">Assinatura</th>
+              <th style="width: 60px;">DANFE</th>
+              <th style="width: 60px;">XML</th>
+            </tr>
+          </thead>
+
+          <tbody id="tableBody">
+            <tr>
+              <td colspan="11" class="nrl-empty">Carregando canhotos...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- TABLE FOOTER -->
+      <footer class="table-footer">
+
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-5 summary-left-space-3">
+            <span id="tableInfo">0 registros</span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button id="btnPrevious" class="btn btn-clean btn-sm" type="button">Anterior</button>
+          <span id="pageInfo">Página 1 de 1</span>
+          <button id="btnNext" class="btn btn-new btn-sm" type="button">Próxima</button>
+        </div>
+
+        <div class="table-footer__page-size">
+          <label for="pageSize">Mostrar</label>
+          <select id="pageSize" class="table-footer__page-size-select">
+            <option value="10">10 linhas</option>
+            <option value="20">20 linhas</option>
+            <option value="30">30 linhas</option>
+            <option value="50" selected>50 linhas</option>
+            <option value="100">100 linhas</option>
+          </select>
+        </div>
+
+      </footer>
+    </section>
+  </main>
+
+  <!-- ⚙️ Scripts globais -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <!-- JS do módulo: entry point único -->
+  <script type="module" src="./js/nfeReceiptsList.init.js"></script>
+</body>
+
+</html>

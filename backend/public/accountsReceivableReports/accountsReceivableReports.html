@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- 🟦 Favicons CONSART -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+    <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+    <title>RELATÓRIO À RECEBIMENTOS | PRODNEX ERP</title>
+    <link rel="stylesheet" href="/public/includes/css/style.css">
+    <link rel="stylesheet" href="/public/accountsReceivableReports/accountsReceivableReports.css">
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+    <main class="consart-container consart-container--full consart-container--ultraslim">
+
+
+        <section id="arrSummary" class="arr-summary" aria-label="Resumo"></section>
+        <div id="arrMessage" class="arr-message" hidden></div>
+
+        <section class="table-layout-integrated table-max-height-600">
+            <div class="table-scroll table-height-flex table-row-h-20" data-table-settings="accountsreceivablereports.table-1">
+
+                <div class="header">
+                    <div class="fields-inline fields-gap-3" id="arrFilters">
+                        <div class="fields fields-h-5 fields-w-20 fields-gap-3">
+                            <date-range-field id="arrSaleDateRange" label="Data da Venda" name-start="arrFromDate"
+                                name-end="arrToDate" locale="pt-BR">
+                            </date-range-field>
+
+                            <input type="hidden" id="arrFromDate">
+                            <input type="hidden" id="arrToDate">
+                        </div>
+
+                        <div class="fields fields-w-10 fields-h-5">
+                            Status
+                            <select id="arrStatus">
+                                <option value="">Todos</option>
+                                <option value="PENDING">Pendente</option>
+                                <option value="OVERDUE">Vencida</option>
+                                <option value="PAID">Recebida</option>
+                                <option value="CANCELLED">Cancelada</option>
+                                <option value="SEM_CONTA">Sem conta</option>
+                            </select>
+                        </div>
+
+                        <div class="fields fields-w-10 fields-h-5">
+                            Buscar
+                            <input id="arrSearch" type="search" placeholder="Pedido, cliente, NF-e ou documento">
+                        </div>
+
+                        <div class="arr-check">
+                            <input id="arrOnlyDivergences" type="checkbox">
+                            Somente divergências
+                        </div>
+
+                        <button id="arrApply" type="button" class="btn btn-toolbar btn-sm">Aplicar</button>
+                        <button id="arrClear" type="button" class="btn btn-toolbar btn-sm">Limpar</button>
+
+                        <button id="arrExport" type="button" class="btn btn-toolbar btn-sm">EXCEL</button>
+
+                        <button id="arrExport" type="button" class="btn btn-toolbar btn-sm">PDF</button>
+
+
+                    </div>
+                </div>
+
+                <table class="table table-zebra table-zebra-hover table-sticky-head">
+                    <thead>
+                        <tr>
+                            <th>Pedido</th>
+                            <th>Venda</th>
+                            <th>Cliente</th>
+                            <th>NF-e</th>
+                            <th>Total venda</th>
+                            <th>Conta</th>
+                            <th>Vencimento</th>
+                            <th>A receber</th>
+                            <th>Recebido</th>
+                            <th>Saldo</th>
+                            <th>Diferença</th>
+                            <th>Conciliação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="arrTableBody"></tbody>
+                </table>
+            </div>
+
+            <footer class="table-footer">
+                <div class="table-footer__info">
+                    <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+                        <span id="apTableInfo">0 Registros</span>
+                    </div>
+                </div>
+
+                <div class="table-footer__pagination">
+                    <button type="button" id="btnPreviousPage" class="btn btn-clean btn-sm">Anterior</button>
+                    <span id="apPageInfo">Página 1 de 1</span>
+                    <button type="button" id="btnNextPage" class="btn btn-new btn-sm">Próxima</button>
+                </div>
+
+                <div class="table-footer__page-size">
+                    <label for="apRowsPerPage">Mostrar</label>
+                    <select id="apRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+                        <option value="10">10 linhas</option>
+                        <option value="20">20 linhas</option>
+                        <option value="30">30 linhas</option>
+                        <option value="50" selected>50 linhas</option>
+                        <option value="100">100 linhas</option>
+                    </select>
+                </div>
+            </footer>
+        </section>
+    </main>
+
+    <script type="module" src="/public/includes/js/core.js"></script>
+
+    <script type="module" src="/public/accountsReceivableReports/accountsReceivableReports.init.js"></script>
+</body>
+
+</html>

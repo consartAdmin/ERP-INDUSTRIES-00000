@@ -1,0 +1,378 @@
+/* ╔════════════════════════════════════════════════════════════╗
+   ║ backend/public/includes/css/centerAlertModal.css           ║
+   ║ Estilos do centerAlertModal (overlay + card)               ║
+   ╚════════════════════════════════════════════════════════════╝ */
+
+/* Layer full-screen */
+.center-modal-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* Fundo escuro atrás do card */
+.center-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(2px);
+  pointer-events: auto;
+}
+
+/* Holder central do card (centraliza o card + watermark) */
+.center-modal-holder {
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+  /* card liga pointer-events, watermark não */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+/* ────────────────────────────────────────────────────────────── */
+/* Marca d’água CONSART – CENTRALIZADA NA MESMA REFERÊNCIA DO CARD */
+/* ────────────────────────────────────────────────────────────── */
+.cm-watermark {
+  position: absolute;
+  /* relativo ao HOLDER */
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 3;
+  /* acima do card (overlay) */
+}
+
+.cm-watermark img {
+  max-width: 60px;
+  width: 4vw;
+  opacity: 0.15;
+  filter: grayscale(1);
+  transform: translate(170px, -40px);
+}
+
+/* ────────────────────────────────────────────────────────────── */
+/* Card do modal                                                 */
+/* ────────────────────────────────────────────────────────────── */
+.center-modal {
+  pointer-events: auto;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 18px 20px 14px;
+  width: min(420px, calc(100% - 32px));
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(226, 232, 240, 0.7);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transform: translateY(0) scale(1);
+  opacity: 0;
+  animation: cm-enter 0.18s ease-out forwards;
+  position: relative;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+/* ✅ VARIANTS (o JS usa card-${variant}) */
+.center-modal.card-info {
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(191, 219, 254, 0.9);
+}
+
+.center-modal.card-success {
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(134, 239, 172, 0.9);
+}
+
+.center-modal.card-warning {
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(253, 230, 138, 0.95);
+}
+
+.center-modal.card-error {
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(254, 202, 202, 0.95);
+}
+
+/* Header */
+.cm-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cm-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+/* ✅ Cor do "bolinho" do ícone por variante */
+.center-modal.card-info .cm-icon {
+  background: rgba(59, 130, 246, 0.12);
+}
+
+.center-modal.card-success .cm-icon {
+  background: rgba(34, 197, 94, 0.12);
+}
+
+.center-modal.card-warning .cm-icon {
+  background: rgba(245, 158, 11, 0.14);
+}
+
+.center-modal.card-error .cm-icon {
+  background: rgba(239, 68, 68, 0.12);
+}
+
+.cm-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* Corpo */
+.cm-body {
+  font-size: 14px;
+  color: #475569;
+  margin: 2px 0 4px;
+  line-height: 1.5;
+  white-space: normal;
+}
+
+.cm-body p {
+  margin: 0;
+}
+
+.cm-body p+p {
+  margin-top: 10px;
+}
+
+/* Rodapé (botões) */
+.cm-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+/* Botão base – estilo “pílula” */
+.cm-btn {
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  border-width: 1px;
+  border-style: solid;
+  user-select: none;
+}
+
+/* OK = estilo "Editar" (verde/água suave) */
+.cm-btn.cm-ok {
+  background: #ecfdf3;
+  border-color: #86efac;
+  color: #15803d;
+}
+
+.cm-btn.cm-ok:hover {
+  background: #bbf7d0;
+  border-color: #22c55e;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(34, 197, 94, 0.25);
+}
+
+/* ✅ CLOSE/CANCEL explícito (combina com o JS: cm-close) */
+.cm-btn.cm-close {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #b91c1c;
+}
+
+.cm-btn.cm-close:hover {
+  background: #fee2e2;
+  border-color: #f97373;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(248, 113, 113, 0.25);
+}
+
+/* fallback (se vier sem classe) */
+.cm-btn:not(.cm-ok):not(.cm-close) {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #334155;
+}
+
+.cm-btn:not(.cm-ok):not(.cm-close):hover {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(148, 163, 184, 0.25);
+}
+
+/* Active */
+.cm-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Barra de progresso inferior */
+.cm-progress {
+  position: relative;
+  width: 100%;
+  height: 3px;
+  margin-top: 6px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.3);
+  overflow: hidden;
+}
+
+.cm-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: left;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+}
+
+/* ✅ Progress por variante (opcional, mas consistente) */
+.center-modal.card-info .cm-progress span {
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
+}
+
+.center-modal.card-success .cm-progress span {
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+}
+
+.center-modal.card-warning .cm-progress span {
+  background: linear-gradient(90deg, #f59e0b, #d97706);
+}
+
+.center-modal.card-error .cm-progress span {
+  background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+/* Animações */
+@keyframes cm-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.center-modal-layer.is-leaving .center-modal {
+  animation: cm-leave 0.16s ease-in forwards;
+}
+
+@keyframes cm-leave {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+/* ────────────────────────────────────────────────────────────── */
+/* (Opcional) Logo no topo direito — se você decidir usar no JS    */
+/* ────────────────────────────────────────────────────────────── */
+.cm-logo {
+  position: absolute;
+  top: 1px;
+  right: 22px;
+  width: auto;
+  text-align: right;
+  z-index: 5;
+}
+
+.cm-logo img {
+  height: 8px;
+  object-fit: contain;
+  opacity: 0.95;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ────────────────────────────────────────────────────────────── */
+/* Tamanhos reutilizáveis do modal                               */
+/* ────────────────────────────────────────────────────────────── */
+
+/* Compacto: confirmações e mensagens curtas */
+.center-modal-layer .center-modal.center-modal-compact {
+  width: min(480px, calc(100vw - 32px));
+  height: auto;
+  min-height: 0;
+  max-height: calc(100vh - 32px);
+  padding: 18px 20px 16px;
+  gap: 12px;
+}
+
+.center-modal-layer .center-modal-compact .cm-header {
+  min-height: 32px;
+  padding: 0;
+}
+
+.center-modal-layer .center-modal-compact .cm-body {
+  width: auto;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  margin: 0;
+  padding: 4px 0;
+  overflow: visible;
+}
+
+.center-modal-layer .center-modal-compact .cm-footer {
+  width: auto;
+  height: auto;
+  min-height: 0;
+  margin-top: 2px;
+  padding: 0;
+}
+
+/* Padrão: formulários e conteúdos médios */
+.center-modal-layer .center-modal.center-modal-standard {
+  width: min(620px, calc(100vw - 32px));
+  height: auto;
+  min-height: 0;
+  max-height: calc(100vh - 32px);
+}
+
+/* Amplo: tabelas e conteúdos maiores */
+.center-modal-layer .center-modal.center-modal-wide {
+  width: min(900px, calc(100vw - 32px));
+  height: auto;
+  min-height: 0;
+  max-height: calc(100vh - 32px);
+}

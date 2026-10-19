@@ -1,0 +1,128 @@
+<!-- ╔════════════════════════════════════════════════════════════════════╗
+     ║ FILE: nfeReceipts.html                                           ║
+     ║ MODULE: nfeReceipts (Canhoto Digital da NF-e — mobile)           ║
+     ║ Abre direto por link: ?numero=8882  ou  ?key=<44 dígitos>        ║
+     ║ PRODNEX ERP                                                      ║
+     ╚════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+  <title>CANHOTO DIGITAL | PRODNEX ERP</title>
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" href="/public/imagens/brasaoConsartInfinity.png" />
+
+  <!-- 🎨 Design System global -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- CSS específico do módulo -->
+  <link rel="stylesheet" href="./nfeReceipts.css?v=2" />
+</head>
+
+<body>
+  <main class="receipt-page">
+    <section class="receipt-card">
+      <header class="receipt-header">
+        <div class="brand">BH3 DISTRIBUIDORA</div>
+        <div class="subtitle">Canhoto Digital da NF-e</div>
+      </header>
+
+      <!-- 🔎 Buscar NF-e pelo número -->
+      <section id="searchBox" class="box search">
+        <label class="nr-field" for="nfeNumberInput">
+          Número da NF-e
+          <input id="nfeNumberInput" type="text" inputmode="numeric" autocomplete="off"
+            placeholder="Digite o número da NF-e" />
+        </label>
+
+        <button id="btnSearchNfe" class="nr-btn nr-btn--primary" type="button">Buscar NF-e</button>
+      </section>
+
+      <section id="loadingBox" class="box info hidden" aria-live="polite">Carregando NF-e...</section>
+
+      <section id="errorBox" class="box error hidden" role="alert"></section>
+
+      <section id="receiptContent" class="hidden">
+        <div class="nfe-summary">
+          <div>
+            <span>NF-e</span>
+            <strong id="nfeNumero">-</strong>
+          </div>
+
+          <div>
+            <span>Série</span>
+            <strong id="nfeSerie">-</strong>
+          </div>
+
+          <div>
+            <span>Valor</span>
+            <strong id="nfeValor">-</strong>
+          </div>
+
+          <div>
+            <span>Status</span>
+            <strong id="receiptStatus" class="receipt-status">-</strong>
+          </div>
+        </div>
+
+        <form id="receiptForm" class="hidden" novalidate>
+          <label class="nr-field" for="receiverName">
+            Nome do recebedor *
+            <input id="receiverName" type="text" maxlength="180" autocomplete="name" />
+          </label>
+
+          <label class="nr-field" for="receiverDocument">
+            CPF / Documento
+            <input id="receiverDocument" type="text" inputmode="numeric" maxlength="20" autocomplete="off" />
+          </label>
+
+          <label class="nr-field" for="receiverPhone">
+            Telefone
+            <input id="receiverPhone" type="tel" maxlength="30" autocomplete="tel" />
+          </label>
+
+          <label class="nr-field" for="notes">
+            Observações
+            <textarea id="notes" rows="3"></textarea>
+          </label>
+
+          <div class="signature-title">Assinatura do recebedor *</div>
+
+          <div id="signatureWrap" class="signature-wrap">
+            <canvas id="signatureCanvas" aria-label="Área de assinatura"></canvas>
+            <span id="signatureHint" class="signature-hint" aria-hidden="true">Assine aqui com o dedo</span>
+          </div>
+
+          <button id="btnClearSignature" class="nr-btn nr-btn--secondary" type="button">Limpar assinatura</button>
+
+          <label class="nr-check" for="confirmCheck">
+            <input id="confirmCheck" type="checkbox" />
+            Declaro que recebi as mercadorias referentes a esta NF-e.
+          </label>
+
+          <button id="btnSubmit" class="nr-btn nr-btn--primary" type="submit">Confirmar Recebimento</button>
+
+          <button id="btnRefuse" class="nr-btn nr-btn--danger" type="button">Recusar Recebimento</button>
+        </form>
+
+        <section id="successBox" class="box success hidden">Recebimento confirmado com sucesso.</section>
+
+        <section id="closedBox" class="box closed hidden"></section>
+
+        <button id="btnNewSearch" class="nr-btn nr-btn--secondary hidden" type="button">Buscar outra NF-e</button>
+      </section>
+    </section>
+  </main>
+
+  <!-- ⚙️ Scripts globais -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <!-- JS do módulo: entry point único -->
+  <script type="module" src="./js/nfeReceipts.init.js"></script>
+</body>
+
+</html>

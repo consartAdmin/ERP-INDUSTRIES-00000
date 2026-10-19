@@ -1,0 +1,164 @@
+<!-- backend/public/ordersKanban/ordersKanban.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>KANBAN PEDIDOS | PRODNEX ERP</title>
+
+  <!-- 🎨 Design System CONSART (base + layout + componentes + pages) -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- 🎨 CSS específico do Kanban -->
+  <link rel="stylesheet" href="ordersKanban.css?v=kb-esm-01" />
+
+  <!-- ✅ CSS do Modal de Pendências (novo, modular) -->
+  <link rel="stylesheet" href="/public/modalsSearch/ordersKanbanModalPendencia.css?v=kb-esm-01" />
+  <link rel="stylesheet" href="/public/modalsSearch/budgetsModal.css" />
+
+
+</head>
+
+<!-- Conteúdo da página -->
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter">
+
+
+        <!-- Container for all vertical lines -->
+        <div class="fields-lines fields-gap-3">
+
+          <!-- Line 1: fields side by side -->
+          <div class="fields-inline">
+
+            <div class="fields fields-h-5 fields-w-12 fields-font-3">
+              <label for="selectColunaKanban" class="ok-label">🧭 Coluna do Kanban</label>
+              <select id="selectColunaKanban" class="ok-select"></select>
+            </div>
+
+            <div class="fields fields-h-5 fields-w-12 fields-font-3">
+              <label for="selectFiltroPendencias" class="ok-label">📌 Pendências</label>
+              <select id="selectFiltroPendencias" class="ok-select">
+                <option value="todas">Todas</option>
+                <option value="abertas">Somente abertas</option>
+                <option value="concluidas">Somente concluídas</option>
+              </select>
+            </div>
+
+            <div class="btn-inline btn-gap-3">
+              <span id="contadorFinalizados" class="ok-badge ok-badge--success">
+                Finalizados: 0
+              </span>
+
+              <button id="btnBaixarTodasPendenciasPdf" class="btn btn-secondary btn-sm">
+                📥 Baixar PDF de Pendências
+              </button>
+            </div>
+
+            <!-- Formulário de criação de card -->
+            <div class="fields fields-h-5 fields-w-20 fields-font-3">
+
+              <form id="formCriarCard" class="ok-form-grid" autocomplete="off">
+                <!-- Cliente -->
+                <div class="fields fields-h-5 fields-w-20 fields-font-3">
+                  <label for="campoCliente" class="ok-label">🔍 Cliente</label>
+                  <div class="ok-input-with-btn">
+                    <input type="text" id="campoCliente" placeholder="Selecione o cliente…" class="ok-input" readonly />
+                    <button type="button" id="btnBuscarCliente" class="btn btn-secondary btn-sm">🔎 Buscar</button>
+                  </div>
+                  <input type="hidden" id="clienteIdReal" />
+                </div>
+
+                <!-- Nº separação -->
+                <div class="fields fields-h-5 fields-w-20 fields-font-3">
+                  <label for="numeroSeparacao" class="ok-label">🔢 Nº Separação</label>
+                  <input type="text" id="numeroSeparacao" class="ok-input" placeholder="Ex: 0001" />
+                </div>
+
+                <!-- Observação -->
+                <div class="fields fields-h-5 fields-w-20 fields-font-3">
+                  <label for="observacao" class="ok-label">📝 Observações</label>
+                  <textarea id="observacao" class="ok-textarea" rows="1"
+                    placeholder="Notas internas para o operador…"></textarea>
+                </div>
+
+                <!-- Botão criar -->
+                <div class="btn btn-inline">
+                  <button type="submit" id="btnCriarCard" class="btn btn-primary btn-sm">➕ Criar Card</button>
+                  <button type="button" id="btnImportarOrcamento" class="btn btn-secondary btn-sm"
+                    title="Cria um card a partir de um orçamento">📥 Importar Orçamento</button>
+                </div>
+            </div>
+    </section>
+
+    <header class="header header-h-5">
+      <!-- Quadro Kanban -->
+      <section class="section-card" style="margin-top: 20px;">
+        <div class="ok-section-header">
+          <h2>📦 Quadro Kanban</h2>
+          <span class="ok-subtext">Arraste os cards entre as colunas para atualizar o status.</span>
+        </div>
+
+        <div id="kanbanBoard" class="ok-kanban-board"></div>
+      </section>
+      </div>
+    </header>
+  </main>
+
+</body>
+
+<!-- ✅ Modal Pendências REMOVIDO daqui: agora é injetado pelo JS do modal -->
+
+<!-- Modal: Observação do Card -->
+<div id="modalObservacao" class="ok-modal" aria-hidden="true">
+  <div class="ok-modal__backdrop" data-modal-close></div>
+  <div class="ok-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="tituloModalObs">
+    <header class="ok-modal__header">
+      <h3 id="tituloModalObs">📝 Observação do Pedido</h3>
+      <button type="button" class="ok-modal__close btn-flat btn-sm" data-modal-close>✕</button>
+    </header>
+    <section class="ok-modal__body">
+      <div id="textoObservacao" class="ok-obs-text">Nenhuma observação.</div>
+    </section>
+  </div>
+</div>
+
+<!-- Modal: Detalhes do Cliente -->
+<div id="modalDetalhesCliente" class="ok-modal" aria-hidden="true">
+  <div class="ok-modal__backdrop" data-modal-close></div>
+  <div class="ok-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="tituloModalCliente">
+    <header class="ok-modal__header">
+      <h3 id="tituloModalCliente">👤 Detalhes do Cliente</h3>
+      <button type="button" class="ok-modal__close btn-flat btn-sm" data-modal-close>✕</button>
+    </header>
+    <section class="ok-modal__body">
+      <div id="detalhesCliente" class="ok-cliente-details">Nenhuma informação carregada.</div>
+    </section>
+  </div>
+</div>
+
+<!-- Dependências -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+<!-- Core (ESM) -->
+<script type="module" src="/public/includes/js/core.js"></script>
+
+<!-- ✅ Modal Pendências (ESM) - injeta o modal quando necessário -->
+<script type="module" src="/public/modalsSearch/ordersKanbanModalPendencia.js?v=kb-esm-01"></script>
+
+<!-- Kanban (ESM) -->
+<script type="module" src="ordersKanban.js?v=kb-esm-01"></script>
+</body>
+
+</html>

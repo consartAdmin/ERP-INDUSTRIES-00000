@@ -1,0 +1,241 @@
+.bapm-body-lock {
+  overflow: hidden !important;
+}
+
+.bapm-root {
+  position: fixed;
+  inset: 0;
+  z-index: 1450;
+}
+
+.bapm-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.58);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+
+.bapm-window {
+  width: min(1280px, calc(100vw - 24px));
+  max-height: calc(100vh - 24px);
+  overflow: hidden;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.28);
+  display: flex;
+  flex-direction: column;
+}
+
+.bapm-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
+  border-bottom: 1px solid #e5e7eb;
+  background: linear-gradient(135deg, #dbeafe, #fff);
+}
+
+.bapm-badge {
+  display: inline-flex;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.1);
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.bapm-title {
+  margin: 8px 0 4px;
+  font-size: 22px;
+  color: #0f172a;
+}
+
+.bapm-subtitle {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.bapm-close {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+.bapm-form {
+  overflow: auto;
+  padding: 18px 22px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bapm-section {
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 16px;
+  background: #fff;
+}
+
+.bapm-section h3,
+.bapm-section-head h3 {
+  margin: 0 0 14px;
+  font-size: 15px;
+  color: #0f172a;
+}
+
+.bapm-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.bapm-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.bapm-grid--main {
+  grid-template-columns: minmax(300px, 2fr) repeat(5, minmax(140px, 1fr));
+}
+
+.bapm-grid--finance {
+  grid-template-columns: repeat(7, minmax(130px, 1fr));
+}
+
+.bapm-grid--details {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.bapm-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.bapm-field label {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.bapm-field input,
+.bapm-field select,
+.bapm-field textarea {
+  width: 100%;
+  min-height: 42px;
+  padding: 10px 12px;
+  border: 1px solid #dbe2ea;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.bapm-field textarea {
+  min-height: 92px;
+  resize: vertical;
+}
+
+.bapm-supplier-picker {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px;
+  gap: 8px;
+}
+
+.bapm-supplier-picker button {
+  border: 1px solid #dbe2ea;
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.bapm-summary {
+  margin-top: 14px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.bapm-summary span {
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: #f8fafc;
+  color: #475569;
+}
+
+.bapm-preview {
+  max-height: 240px;
+  overflow: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+}
+
+.bapm-preview table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.bapm-preview th,
+.bapm-preview td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+  font-size: 13px;
+}
+
+.bapm-preview th {
+  position: sticky;
+  top: 0;
+  background: #eaf2ff;
+  color: #475569;
+}
+
+.bapm-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.bapm-footer > div {
+  display: flex;
+  gap: 10px;
+}
+
+@media (max-width: 1200px) {
+  .bapm-grid--main,
+  .bapm-grid--finance {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .bapm-grid--details {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .bapm-grid--main,
+  .bapm-grid--finance {
+    grid-template-columns: 1fr;
+  }
+
+  .bapm-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .bapm-footer > div {
+    justify-content: flex-end;
+  }
+}

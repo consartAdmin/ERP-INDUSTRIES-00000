@@ -1,0 +1,231 @@
+/* ==========================================================
+   SITUAÇÃO DA ENTRADA
+   ========================================================== */
+
+.nfi-pill-entry-completed,
+.nfi-pill-entry-pending {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 125px;
+    padding: 4px 8px;
+
+    color: #ffffff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+/* Entrada concluída */
+.nfi-pill-entry-completed {
+    background-color: #b5d2f8;
+    border-color: #15803d;
+}
+
+/* Entrada pendente */
+.nfi-pill-entry-pending {
+    background-color: #dc2626;
+    border-color: #b91c1c;
+}
+
+/* Mantém o input nativo escondido */
+#nfi-file-input,
+#nfi-file-input[hidden] {
+    display: none !important;
+}
+
+/* ==========================================================
+   SELEÇÃO DAS LINHAS
+   ========================================================== */
+
+#tableBodyList tr {
+    cursor: pointer;
+    user-select: none;
+}
+
+#tableBodyList tr.nfi-row-selected>td {
+    background-color: #dbeafe !important;
+    color: #0f172a;
+}
+
+#tableBodyList tr.nfi-row-selected {
+    box-shadow: inset 4px 0 0 #2563eb;
+}
+
+#tableBodyList tr.nfi-row-selected:hover>td {
+    background-color: #bfdbfe !important;
+}
+
+/* ==========================================================
+   CAMPOS OCULTOS
+   .fields usa display:flex no design system, o que sobrescreve
+   o atributo [hidden]. Esta regra garante a ocultacao.
+   ========================================================== */
+
+.nfi-hidden-field,
+.nfi-hidden-field[hidden] {
+    display: none !important;
+}
+
+/* ==========================================================
+   CABEÇALHOS ORDENÁVEIS
+   O sticky head pinta o fundo no <th>; com padding:0 o botão
+   precisa ocupar a célula inteira para não deixar falhas.
+   ========================================================== */
+
+#nfi-table th.table-sortable {
+    background-clip: padding-box;
+}
+
+#nfi-table th.table-sortable .table-sort-button {
+    height: 100%;
+}
+
+/* Valor Total permanece alinhado à direita. */
+#nfi-table th.nfi-col-right .table-sort-button {
+    justify-content: flex-end;
+}
+
+/* ==========================================================
+   STATUS DA SINCRONIZAÇÃO DF-e
+   ========================================================== */
+
+.nfi-sync-info {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 4px 10px;
+
+    border: 1px solid #dce4f0;
+    border-radius: 999px;
+    background: #f7faff;
+
+    color: #526178;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+
+    cursor: default;
+}
+
+.nfi-sync-info::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    flex: 0 0 7px;
+    border-radius: 50%;
+    background: #94a3b8;
+}
+
+.nfi-sync-info[data-sync-status='ok']::before {
+    background: #16a34a;
+}
+
+.nfi-sync-info[data-sync-status='running']::before {
+    background: #2563eb;
+}
+
+.nfi-sync-info[data-sync-status='error']::before {
+    background: #dc2626;
+}
+
+.nfi-sync-info[data-sync-status='error'] {
+    border-color: #f3c6c2;
+    background: #fef4f3;
+    color: #b42318;
+}
+
+/* Linha do título: "Filtros" à esquerda, status da sincronização à direita. */
+.nfi-filter-header {
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.nfi-filter-header .nfi-sync-info {
+    margin-left: auto;
+    margin-right: 2px;
+    flex: 0 0 auto;
+}
+
+/* ==========================================================
+   COLUNA MANIFESTAÇÃO — OCULTA
+   Aplicada ao <th> no HTML e ao <td> em nfeInbox.render.js.
+   Os dados continuam vindo da API; só a exibição é removida.
+   ========================================================== */
+
+#nfi-table .nfi-col-manifest {
+    display: none !important;
+}
+
+/* ==========================================================
+   COLUNA Nº NF-e
+   ========================================================== */
+
+#nfi-table .nfi-col-numero {
+    width: 110px;
+    white-space: nowrap;
+}
+
+/* ==========================================================
+   PILL DE MANIFESTAÇÃO
+   A coluna está oculta hoje, mas a pill é criada em
+   nfeInbox.render.js e precisa da própria regra — sem ela
+   herdava só o layout base de .nfi-pill, sem cor.
+   ========================================================== */
+
+.nfi-pill-manifest {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 110px;
+    padding: 4px 8px;
+
+    background-color: #e0e7ff;
+    color: #3730a3;
+    border: 1px solid #c7d2fe;
+    border-radius: 4px;
+
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+/* ==========================================================
+   LISTA VAZIA
+   Exibida por nfeInbox.render.js quando o filtro não retorna
+   nenhuma NF-e; o atributo [hidden] controla a visibilidade.
+   ========================================================== */
+
+.nfi-empty-state {
+    margin: 0;
+    padding: 28px 16px;
+
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.nfi-empty-state[hidden] {
+    display: none !important;
+}
+
+/* ==========================================================
+   FOCO POR TECLADO NAS LINHAS
+   As linhas são focáveis (tabIndex=0 em nfeInbox.render.js);
+   sem contorno visível a navegação por teclado ficaria cega.
+   ========================================================== */
+
+#tableBodyList tr:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: -2px;
+}

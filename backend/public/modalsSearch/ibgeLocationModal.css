@@ -1,0 +1,291 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ ibgeStateModal.css — Modal de Busca de Estados (IBGE)               ║
+   ║ PRODNEX ERP                                                        ║
+   ║ - Janela moderna centralizada + overlay                             ║
+   ║ - Lista com scroll e botões premium                                 ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+:root{
+  --ibge-bg: #ffffff;
+  --ibge-text: #0f172a;
+  --ibge-muted: #64748b;
+  --ibge-line: rgba(148, 163, 184, .35);
+
+  --ibge-primary-1: #1f3cff;
+  --ibge-primary-2: #3b82f6;
+
+  --ibge-shadow: 0 28px 80px rgba(2, 8, 23, .35);
+  --ibge-radius: 18px;
+}
+
+/* ───────────────── Overlay ───────────────── */
+.ibge-modal-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 10, 28, .55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 18px;
+  z-index: 99999;
+}
+
+.ibge-modal-overlay[hidden]{
+  display: none !important;
+}
+
+/* ───────────────── Modal ───────────────── */
+.ibge-modal{
+  width: min(820px, 100%);
+  max-height: min(78vh, 760px);
+
+  background: var(--ibge-bg);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: var(--ibge-radius);
+  box-shadow: var(--ibge-shadow);
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  animation: ibgeModalIn .18s ease-out;
+  transform-origin: center;
+}
+
+/* ───────────────── Header ───────────────── */
+.ibge-modal-header{
+  position: sticky;
+  top: 0;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 16px 18px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--ibge-primary-1), var(--ibge-primary-2));
+  border-bottom: 1px solid rgba(255,255,255,.22);
+}
+
+.ibge-modal-header h3{
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: .2px;
+}
+
+.ibge-modal-close{
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 12px;
+  background: rgba(255,255,255,.18);
+  color: #fff;
+  font-size: 1.25rem;
+  cursor: pointer;
+  line-height: 1;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: transform .12s ease, background .12s ease;
+}
+
+.ibge-modal-close:hover{
+  background: rgba(255,255,255,.28);
+  transform: translateY(-1px);
+}
+
+.ibge-modal-close:active{
+  transform: translateY(0);
+}
+
+.ibge-modal-close:focus-visible{
+  outline: 2px solid rgba(255,255,255,.75);
+  outline-offset: 2px;
+}
+
+/* ───────────────── Body ───────────────── */
+.ibge-modal-body{
+  padding: 16px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Search (com ícone) */
+.ibge-modal-search{
+  position: sticky;
+  top: 0; /* fica logo abaixo do header */
+  z-index: 1;
+
+  background: linear-gradient(180deg, rgba(255,255,255,.98) 0%, rgba(255,255,255,.92) 70%, rgba(255,255,255,0) 100%);
+  padding: 6px 0 12px;
+}
+
+.ibge-modal-search::before{
+  content: "🔎";
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-58%);
+  font-size: 14px;
+  opacity: .75;
+  pointer-events: none;
+}
+
+.ibge-modal-search input{
+  width: 100%;
+  height: 42px;
+
+  padding: 10px 12px 10px 36px;
+  border-radius: 12px;
+
+  border: 1px solid rgba(148,163,184,.45);
+  background: rgba(248, 250, 255, .9);
+
+  font-size: .95rem;
+  color: var(--ibge-text);
+
+  transition: box-shadow .12s ease, border-color .12s ease, background .12s ease;
+}
+
+.ibge-modal-search input::placeholder{
+  color: rgba(100,116,139,.9);
+}
+
+.ibge-modal-search input:focus{
+  outline: none;
+  border-color: rgba(59, 130, 246, .75);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(59,130,246,.14);
+}
+
+/* ───────────────── List ───────────────── */
+.ibge-state-list{
+  flex: 1;
+  min-height: 220px;
+  max-height: 52vh;
+
+  overflow: auto;
+
+  border-radius: 14px;
+  border: 1px solid var(--ibge-line);
+  background: rgba(248,250,255,.6);
+  padding: 10px;
+
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+/* Item (botão) */
+.ibge-state-item{
+  width: 100%;
+  border: 1px solid rgba(148,163,184,.35);
+  border-radius: 14px;
+
+  background: rgba(255,255,255,.92);
+  cursor: pointer;
+
+  padding: 12px 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
+}
+
+.ibge-state-item:hover{
+  transform: translateY(-1px);
+  border-color: rgba(59,130,246,.35);
+  box-shadow: 0 10px 26px rgba(2, 8, 23, .10);
+  background: #fff;
+}
+
+.ibge-state-item:active{
+  transform: translateY(0);
+}
+
+.ibge-state-item:focus-visible{
+  outline: 2px solid rgba(59,130,246,.55);
+  outline-offset: 2px;
+}
+
+.ibge-state-name{
+  font-weight: 650;
+  color: var(--ibge-text);
+  font-size: .95rem;
+  line-height: 1.15;
+}
+
+.ibge-state-uf{
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .6px;
+
+  background: rgba(31,60,255,.10);
+  color: var(--ibge-primary-1);
+
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(31,60,255,.18);
+  white-space: nowrap;
+}
+
+/* Scrollbar (discreto) */
+.ibge-state-list::-webkit-scrollbar{ width: 10px; }
+.ibge-state-list::-webkit-scrollbar-thumb{
+  background: rgba(148,163,184,.55);
+  border-radius: 999px;
+  border: 2px solid rgba(248,250,255,.8);
+}
+.ibge-state-list::-webkit-scrollbar-track{
+  background: transparent;
+}
+
+/* ───────────────── Footer (se usar) ───────────────── */
+.ibge-modal-footer{
+  padding: 14px 18px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+
+  background: rgba(248,250,255,.8);
+  border-top: 1px solid var(--ibge-line);
+}
+
+/* ───────────────── Responsive ───────────────── */
+@media (max-width: 720px){
+  .ibge-modal{
+    width: 100%;
+    max-height: 86vh;
+    border-radius: 16px;
+  }
+
+  .ibge-state-list{
+    grid-template-columns: 1fr;
+    max-height: 56vh;
+  }
+}
+
+/* ───────────────── Animations ───────────────── */
+@keyframes ibgeModalIn{
+  from{
+    transform: translateY(12px) scale(.98);
+    opacity: 0;
+  }
+  to{
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}

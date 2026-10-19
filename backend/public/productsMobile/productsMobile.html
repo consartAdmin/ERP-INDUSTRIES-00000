@@ -1,0 +1,115 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ FILE: productsMobile.html                                          ║
+     ║ MODULE: Products Mobile                                            ║
+     ║ PRODNEX ERP                                                        ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Products Mobile</title>
+
+  <link rel="stylesheet" href="./productsMobile.css" />
+
+  <script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+
+<body>
+  <main class="mobile-page">
+    <header class="mobile-header">
+      <h1>📦 Products Mobile</h1>
+      <p>Consulta rápida por código de barras ou SKU</p>
+    </header>
+
+    <section class="scanner-card">
+      <button id="btnStartScanner" class="btn-primary">📷 Scan Barcode</button>
+      <button id="btnStopScanner" class="btn-secondary hidden">⛔ Stop Scanner</button>
+
+      <div id="reader" class="reader hidden"></div>
+    </section>
+
+    <section class="search-card">
+      <label for="searchInput">Barcode / SKU</label>
+
+      <div class="search-row">
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="Digite ou escaneie..."
+          autocomplete="off"
+        />
+
+        <button id="btnSearch" class="btn-search">🔍</button>
+      </div>
+    </section>
+
+    <section id="loadingBox" class="loading hidden">
+      Consultando produto...
+    </section>
+
+    <section id="messageBox" class="message hidden"></section>
+
+    <section id="productCard" class="product-card hidden">
+      <div class="product-top">
+        <img id="productImage" class="product-image hidden" alt="Product image" />
+
+        <div>
+          <span class="label">SKU</span>
+          <h2 id="productCode">-</h2>
+        </div>
+      </div>
+
+      <div class="info-block">
+        <span class="label">Description</span>
+        <p id="productDescription">-</p>
+      </div>
+
+      <div class="grid-info">
+        <div>
+          <span class="label">Stock</span>
+          <strong id="productStock">-</strong>
+        </div>
+
+        <div>
+          <span class="label">Status</span>
+          <strong id="stockStatus">-</strong>
+        </div>
+      </div>
+
+      <div class="info-block" data-feature="PRODUCT_LOCATIONS">
+        <span class="label">Location</span>
+        <p id="productLocation">-</p>
+      </div>
+
+      <div class="info-block">
+        <span class="label">Units</span>
+        <div id="productUnits" class="units-list"></div>
+      </div>
+
+      <div class="grid-info">
+        <div>
+          <span class="label">Cost</span>
+          <strong id="costPrice">-</strong>
+        </div>
+
+        <div>
+          <span class="label">Sale</span>
+          <strong id="salePrice">-</strong>
+        </div>
+      </div>
+
+      <div class="info-block">
+        <span class="label">Barcode</span>
+        <p id="productBarcode">-</p>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./productsMobile.js"></script>
+  <!-- appFeature PRODUCT_LOCATIONS: LOCATIONS_DISABLED → oculta [data-feature="PRODUCT_LOCATIONS"] -->
+  <script type="module">import { initProductLocationsFeature } from "/public/includes/js/productLocationsFeature.js"; initProductLocationsFeature();</script>
+</body>
+</html>

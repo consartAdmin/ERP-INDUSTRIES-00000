@@ -1,0 +1,169 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ FILE: inventoryMobile.html                                         ║
+     ║ MODULE: Inventory Mobile                                           ║
+     ║ PRODNEX ERP                                                        ║
+     ║ ✅ Mobile scanner                                                  ║
+     ║ ✅ Busca por barcode / SKU                                         ║
+     ║ ✅ Leitura de localização por barcode LOC-BIN                      ║
+     ║ ✅ Seleção de unidade                                              ║
+     ║ ✅ Seleção de lote                                                 ║
+     ║ ✅ Criação rápida de lote                                          ║
+     ║ ✅ Atualização rápida de localização                               ║
+     ║ ✅ Salva contagem no backend de inventário                         ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Inventário Mobile</title>
+
+  <link rel="stylesheet" href="./inventoryMobile.css" />
+  <script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+
+<body>
+  <main class="app">
+    <header class="header">
+      <h1>📦 Inventário Mobile</h1>
+      <p>Leitura por código de barras / SKU / Localização</p>
+    </header>
+
+    <section class="card">
+      <label for="inventorySelect">Inventário</label>
+
+      <div class="row">
+        <select id="inventorySelect">
+          <option value="">Carregando inventários...</option>
+        </select>
+
+        <button id="btnReloadInventories" class="btn small" type="button">↻</button>
+      </div>
+
+      <button id="btnCreateInventory" class="btn secondary" type="button">
+        + Criar inventário de hoje
+      </button>
+    </section>
+
+    <section class="card">
+      <button id="btnOpenScanner" class="btn primary" type="button">
+        📷 Ler código de barras
+      </button>
+
+      <div class="manual-search">
+        <input id="searchInput" type="text" placeholder="Digite barcode ou SKU do produto" autocomplete="off" />
+        <button id="btnSearch" class="btn" type="button">Buscar</button>
+      </div>
+    </section>
+
+    <section id="messageBox" class="message hidden"></section>
+
+    <section id="productCard" class="product-card hidden">
+      <h2 id="productDescription">Produto</h2>
+
+      <div class="info-grid">
+        <div>
+          <span>SKU</span>
+          <strong id="productCode">-</strong>
+        </div>
+
+        <div>
+          <span>Estoque</span>
+          <strong id="productStock">0</strong>
+        </div>
+      </div>
+
+      <div class="info" data-feature="PRODUCT_LOCATIONS">
+        <span>Localização atual</span>
+        <strong id="productLocation">-</strong>
+
+        <div class="location-update-box">
+          <span>Escanear localização</span>
+
+          <div class="manual-search">
+            <input
+              id="locationBarcodeInput"
+              type="text"
+              placeholder="Escaneie LOC-BIN-000343"
+              autocomplete="off"
+            />
+
+            <button id="btnReadLocationBarcode" class="btn" type="button">
+              📍 Ler
+            </button>
+          </div>
+
+          <span>Alterar localização manual</span>
+
+          <select id="locationSelect">
+            <option value="">Carregue um produto primeiro</option>
+          </select>
+
+          <button id="btnUpdateLocation" class="btn secondary compact" type="button">
+            📍 Atualizar localização
+          </button>
+        </div>
+      </div>
+
+      <div class="info">
+        <span>Unidade</span>
+        <select id="unitSelect"></select>
+      </div>
+
+      <div class="info">
+        <span>Lote</span>
+        <select id="lotSelect">
+          <option value="">Sem lote</option>
+        </select>
+
+        <button id="btnCreateLot" class="btn secondary compact hidden" type="button">
+          + Criar lote para este produto
+        </button>
+      </div>
+
+      <div class="info">
+        <span>Quantidade contada</span>
+        <input id="countedQty" type="number" step="0.001" min="0" placeholder="Ex: 10" />
+      </div>
+
+      <div class="info">
+        <span>Observação</span>
+        <textarea id="notes" placeholder="Opcional"></textarea>
+      </div>
+
+      <button id="btnSaveCount" class="btn primary" type="button">
+        ✅ Salvar contagem
+      </button>
+    </section>
+  </main>
+
+  <div id="scannerModal" class="scanner-modal hidden">
+    <div class="scanner-top">
+      <button id="btnCloseScanner" type="button">←</button>
+      <strong>Inventário Mobile</strong>
+      <span></span>
+    </div>
+
+    <div class="scanner-instruction">
+      ▌ Posicione a linha branca sobre o código de barras
+    </div>
+
+    <div id="reader" class="reader"></div>
+
+    <div class="scan-line"></div>
+
+    <div class="scanner-bottom">
+      <button id="btnManualCode" class="gallery-btn" type="button">
+        Digitar código de barras
+      </button>
+    </div>
+  </div>
+
+  <script type="module" src="./inventoryMobile.js"></script>
+  <!-- appFeature PRODUCT_LOCATIONS: LOCATIONS_DISABLED → oculta [data-feature="PRODUCT_LOCATIONS"] -->
+  <script type="module">import { initProductLocationsFeature } from "/public/includes/js/productLocationsFeature.js"; initProductLocationsFeature();</script>
+</body>
+
+</html>

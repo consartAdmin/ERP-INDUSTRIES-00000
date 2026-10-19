@@ -1,0 +1,202 @@
+<!-- /backend/public/webhookPlugNotas/webhookPlugNotas.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>WEBHOOK PLUGNOTAS | PRODNEX ERP</title>
+
+  <!-- 🎨 Design System Global -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/includes/css/topGradientBar.css" />
+
+  <!-- 📄 CSS da página -->
+  <link rel="stylesheet" href="./nfeWebhookEvents.css" />
+</head>
+
+<body class="consart-body">
+      <!-- 🔹 Barra de título (topGradientBar) – markup fixo -->
+  <header class="top-gradient-bar">
+    <div class="top-gradient-bar__inner">
+      <div class="top-gradient-bar__titles">
+        <h1 class="top-gradient-bar__title">Comissões de Vendas</h1>
+        <p class="top-gradient-bar__subtitle">
+        </p>
+      </div>
+    </div>
+  </header>
+
+
+  <main class="wh-root">
+    <!-- Empresa / filtros -->
+    <section class="wh-card">
+      <div class="wh-card__header">
+        <div class="wh-breadcrumb">
+          <span class="wh-breadcrumb__item">Home</span>
+          <span class="wh-breadcrumb__sep">/</span>
+          <span class="wh-breadcrumb__item">NF-e</span>
+          <span class="wh-breadcrumb__sep">/</span>
+          <span class="wh-breadcrumb__item wh-breadcrumb__item--active">Webhook PlugNotas</span>
+        </div>
+        <h2 class="wh-card__title">Acompanhamento de Emissão (PlugNotas)</h2>
+        <p class="wh-card__subtitle">
+          Visualize o status das notas fiscais enviadas para o PlugNotas / TecnoSpeed, erros retornados
+          pela SEFAZ e detalhes técnicos de cada integração.
+        </p>
+      </div>
+
+      <div class="wh-filters-grid">
+        <!-- Empresa (apenas leitura por enquanto) -->
+        <div class="wh-field">
+          <label for="empresa" class="wh-label">Empresa (Emitente)</label>
+          <input
+            id="empresa"
+            type="text"
+            class="wh-input"
+            value="34.363.337/0001-85 | BH3 DISTRIBUIDORA DE PRODUTOS DE LIMPEZA LTDA | BELO HORIZONTE - MG"
+            readonly
+          />
+        </div>
+
+        <!-- Período -->
+        <div class="wh-field">
+          <label for="periodo" class="wh-label">Período</label>
+          <select id="periodo" class="wh-select">
+            <option value="today">Hoje</option>
+            <option value="yesterday">Ontem</option>
+            <option value="last7">Últimos 7 dias</option>
+            <option value="last30">Últimos 30 dias</option>
+            <option value="all">Todos</option>
+          </select>
+        </div>
+
+        <!-- Status -->
+        <div class="wh-field">
+          <label for="status" class="wh-label">Status</label>
+          <select id="status" class="wh-select">
+            <option value="all">Todos</option>
+            <option value="PENDING">Pendente</option>
+            <option value="PROCESSING">Processando</option>
+            <option value="AUTHORIZED">Autorizado</option>
+            <option value="REJECTED">Rejeitado</option>
+            <option value="CANCELLED">Cancelado</option>
+            <option value="SUBSTITUTED">Substituído</option>
+          </select>
+        </div>
+
+        <!-- Buscar por chave / integração -->
+        <div class="wh-field">
+          <label for="buscar" class="wh-label">Buscar Nota / Chave / Integração</label>
+          <div class="wh-input-with-icon">
+            <input
+              id="buscar"
+              type="text"
+              class="wh-input"
+              placeholder="Digite chave, ID integração (ex: ORD-113) ou parte do erro..."
+            />
+            <button id="btnBuscar" class="wh-btn wh-btn--primary wh-input-with-icon__btn">
+              🔍
+            </button>
+          </div>
+        </div>
+
+        <!-- Botões ação -->
+        <div class="wh-field wh-field--buttons">
+          <button id="btnPesquisar" class="wh-btn wh-btn--primary">🔎 Pesquisar</button>
+          <button id="btnLimpar" class="wh-btn wh-btn--ghost">🧹 Limpar filtros</button>
+          <button id="btnSync" class="wh-btn wh-btn--secondary">
+            🔁 Reprocessar / Sincronizar
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cards resumo -->
+    <section class="wh-summary-grid">
+      <div class="wh-summary-card wh-summary-card--pending">
+        <span class="wh-summary-card__label">Qtd. Total Pendente</span>
+        <span class="wh-summary-card__value" id="totalPendente">0</span>
+      </div>
+      <div class="wh-summary-card wh-summary-card--processing">
+        <span class="wh-summary-card__label">Qtd. Processando</span>
+        <span class="wh-summary-card__value" id="totalProcessando">0</span>
+      </div>
+      <div class="wh-summary-card wh-summary-card--authorized">
+        <span class="wh-summary-card__label">Qtd. Autorizado</span>
+        <span class="wh-summary-card__value" id="totalAutorizado">0</span>
+      </div>
+      <div class="wh-summary-card wh-summary-card--rejected">
+        <span class="wh-summary-card__label">Qtd. Rejeitado</span>
+        <span class="wh-summary-card__value" id="totalRejeitado">0</span>
+      </div>
+      <div class="wh-summary-card wh-summary-card--cancelled">
+        <span class="wh-summary-card__label">Qtd. Cancelado</span>
+        <span class="wh-summary-card__value" id="totalCancelado">0</span>
+      </div>
+      <div class="wh-summary-card wh-summary-card--substituted">
+        <span class="wh-summary-card__label">Qtd. Substituído</span>
+        <span class="wh-summary-card__value" id="totalSubstituido">0</span>
+      </div>
+      <div class="wh-summary-card wh-summary-card--total">
+        <span class="wh-summary-card__label">Total de Notas</span>
+        <span class="wh-summary-card__value" id="totalNotas">0</span>
+      </div>
+    </section>
+
+    <!-- Tabela -->
+    <section class="wh-card">
+      <div class="wh-card__header wh-card__header--compact">
+        <h3 class="wh-card__title">Registros de NF-e (Webhook PlugNotas)</h3>
+        <span class="wh-card__subtitle" id="resultInfo">Exibindo 0 registros</span>
+      </div>
+
+      <div class="wh-table-wrapper">
+        <table class="wh-table">
+          <thead>
+            <tr>
+              <th class="wh-table__th wh-table__th--id">ID</th>
+              <th class="wh-table__th">Chave</th>
+              <th class="wh-table__th">ID Integração</th>
+              <th class="wh-table__th">Status</th>
+              <th class="wh-table__th">Data de Emissão</th>
+              <th class="wh-table__th wh-table__th--actions">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <!-- Populado via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Paginação -->
+      <div class="wh-pagination">
+        <button id="btnPagePrev" class="wh-btn wh-btn--ghost" disabled>&laquo;</button>
+        <span id="pageInfo" class="wh-pagination__info">Página 1 de 1</span>
+        <button id="btnPageNext" class="wh-btn wh-btn--ghost" disabled>&raquo;</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- 🔹 Top gradient bar: apenas atualiza o texto se precisar -->
+<script type="module">
+import { initTopGradientBar } from '/public/includes/js/topGradientBar.js';
+
+initTopGradientBar({
+    title: 'GESTÃO DE NOTAS FISCAIS WEBHOOK PLUGNOTAS',
+    subtitle: 'Acompanhar emissão, erros etc...',
+});
+</script>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  
+  <!-- JS da página -->
+  <script type="module" src="./nfeWebhookEvents.js"></script>
+</body>
+</html>

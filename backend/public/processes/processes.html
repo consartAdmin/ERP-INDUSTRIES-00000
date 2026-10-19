@@ -1,0 +1,207 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ public/processes/processes.html — Lista de Processos (PRODNEX ERP)   ║
+     ║ Gestão de tipos de processo + permissões por usuário                 ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR" class="page-processes">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>PROCESSOS | PRODNEX ERP</title>
+
+  <!-- 🎨 CSS — Design System CONSART -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- CSS local opcional (se quiser customizar mais) -->
+  <link rel="stylesheet" href="/public/processes/processes.css" />
+</head>
+
+<body class="consart-theme c-page page-processes">
+
+  <noscript>Ative o JavaScript para usar esta página.</noscript>
+
+  <!-- 🔝 Menu principal (injetado de home.html) -->
+  <header id="topo"></header>
+
+  <main class="c-main">
+    <div class="c-container c-container--2xl">
+
+      <!-- 🔍 Filtros / Ações -->
+      <div class="linha-filtros row center between" style="gap:10px;">
+        <div class="row center" style="flex-wrap: wrap; gap: 10px;">
+          <label for="txtBusca"><b>Buscar:</b></label>
+          <input type="text" id="txtBusca" placeholder="Buscar por código, nome ou descrição…" />
+
+          <label for="selStatus"><b>Status:</b></label>
+          <select id="selStatus">
+            <option value="">Todos</option>
+            <option value="ativo">Ativo</option>
+            <option value="inativo">Inativo</option>
+          </select>
+
+          <label for="selLimit"><b>Mostrar:</b></label>
+          <select id="selLimit">
+            <option value="10" selected>10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+          </select>
+        </div>
+
+        <!-- Botões -->
+        <div class="menu-botoes">
+          <button id="btnNovoProcesso" class="btn btn-flat" title="Criar novo processo">
+            <i>🧩</i> Novo Processo ▼
+          </button>
+        </div>
+      </div>
+
+      <!-- ℹ️ Status / mensagens -->
+      <div id="statusArea"></div>
+
+      <!-- 🧮 Tabela -->
+      <div class="section-card tabela-wrapper">
+        <table id="tblProcesses" class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Código</th>
+              <th>Nome</th>
+              <th>Descrição</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <!-- 📄 Paginação -->
+      <div id="paginacao"></div>
+
+      <!-- 🔙 Rodapé -->
+      <div class="rodape row between">
+        <span>&nbsp;</span>
+        <button class="btn btn-flat" onclick="location.href='/public/home/home.html'">
+          <i>🔙</i> Voltar ao Painel ▼
+        </button>
+      </div>
+    </div>
+
+    <!-- 🔧 Drawer simples para cadastro/edição -->
+    <aside id="editorProcesso" class="section-card" style="max-width: 520px; margin: 16px auto; display:none;">
+      <h2 id="editorTitulo">Novo Processo</h2>
+
+      <form id="formProcesso" class="col" style="gap: 8px;">
+        <input type="hidden" id="procId" />
+
+        <div class="form-row">
+          <label for="procCodigo"><b>Código interno</b></label>
+          <input type="text" id="procCodigo" maxlength="50" placeholder="Ex: PROC-COMERCIAL-01" />
+        </div>
+
+        <div class="form-row">
+          <label for="procNome"><b>Nome do processo *</b></label>
+          <input type="text" id="procNome" maxlength="200" required placeholder="Ex: Aprovação de orçamento" />
+        </div>
+
+        <div class="form-row">
+          <label for="procDescricao"><b>Descrição</b></label>
+
+          <!-- 🛠 Toolbar de formatação leve (Markdown) -->
+          <div class="process-desc-toolbar" style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+            <button type="button" class="btn btn-xs" data-md="bold" title="Negrito (**texto**)">
+              <b>B</b>
+            </button>
+            <button type="button" class="btn btn-xs" data-md="italic" title="Itálico (_texto_)">
+              <i>I</i>
+            </button>
+            <button type="button" class="btn btn-xs" data-md="bullet" title="Lista com marcadores (- item)">
+              • Lista
+            </button>
+            <span class="process-desc-hint" style="font-size:0.8rem; color:#666;">
+              Use <code>**texto**</code> p/ negrito, <code>_texto_</code> p/ itálico. Emojis são aceitos 😀
+            </span>
+          </div>
+
+          <textarea id="procDescricao" rows="6"
+            placeholder="Digite o fluxo do processo usando Markdown leve (negrito, itálico, listas)…"></textarea>
+
+          <!-- 🔎 Preview com renderização do Markdown -->
+          <div id="procDescricaoPreview" class="proc-desc-preview"
+            style="margin-top:8px; padding:8px 10px; border:1px dashed #d1d5db; border-radius:6px; background:#fafafa; font-size:0.9rem; white-space:normal;">
+            <em>Pré-visualização formatada da descrição…</em>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label for="procStatus"><b>Status</b></label>
+          <select id="procStatus">
+            <option value="ativo">Ativo</option>
+            <option value="inativo">Inativo</option>
+          </select>
+        </div>
+
+        <div class="row between" style="margin-top: 8px; gap: 8px;">
+          <button type="button" id="btnCancelarEdicao" class="btn btn-flat">
+            Cancelar
+          </button>
+          <div class="row right" style="gap: 8px;">
+            <button type="button" id="btnExcluirProcesso" class="btn btn-danger" style="display:none;">
+              🗑️ Excluir
+            </button>
+            <button type="submit" class="btn btn-primary">
+              💾 Salvar
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- 🔐 Placeholder de permissões (pode evoluir depois) -->
+      <div class="section-card" style="margin-top: 16px;">
+        <h3 style="margin-bottom: 8px;">Permissões (processesUsers)</h3>
+        <p style="font-size: 0.85rem; color: #666;">
+          Em uma próxima etapa podemos listar aqui os usuários vinculados ao processo
+          e suas permissões (<code>can_view</code>, <code>can_edit</code>, <code>can_approve</code>,
+          <code>is_owner</code>).
+        </p>
+      </div>
+    </aside>
+
+    <!-- 🔍 Modal para leitura da descrição do processo -->
+    <div id="processDescModal" class="proc-modal" aria-hidden="true">
+      <div class="proc-modal__backdrop"></div>
+      <div class="proc-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="processDescTitle">
+        <header class="proc-modal__header">
+          <h2 id="processDescTitle">Descrição do processo</h2>
+          <button type="button" class="proc-modal__close" id="closeProcessDesc" aria-label="Fechar">
+            ✕
+          </button>
+        </header>
+
+        <section class="proc-modal__body">
+          <!-- recebe HTML renderizado -->
+          <div id="processDescBody"></div>
+        </section>
+
+        <footer class="proc-modal__footer">
+          <button type="button" class="btn btn-flat" id="closeProcessDescFooter">
+            Fechar
+          </button>
+        </footer>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="/public/processes/processes.js"></script>
+</body>
+
+</html>

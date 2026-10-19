@@ -1,0 +1,241 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ FILE: tasks.html                                                   ║
+     ║ MODULE: Tasks / Tarefas                                            ║
+     ║ PRODNEX ERP                                                        ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>Tasks | PRODNEX ERP</title>
+
+  <link rel="stylesheet" href="/public/includes/css/style.css">
+
+  <link rel="stylesheet" href="./tasks.css">
+
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <div class="header">
+      <div class="page-header__actions header-btn-inline-2 header-btn-w-4">
+
+
+        <div class="btn-inline btn-gap-3"> <button id="btnReloadTasks" class="btn btn-new btn-sm">
+            🔄 Atualizar
+          </button>
+
+          <button id="btnNewTask" class="btn btn-new btn-sm">
+            ➕ Nova Tarefa
+          </button>
+        </div>
+      </div>
+
+      <div class="ap-topbar__right summary summary--right summary-gap-8">
+        <div class="summary-pill summary-pill--success">
+          <span>Total</span>
+          <strong id="kpiTotal">0</strong>
+        </div>
+
+        <div class="summary-pill summary-pill--warning">
+          <span>Abertas</span>
+          <strong id="kpiOpen">0</strong>
+        </div>
+
+        <div class="summary-pill summary-pill--danger">
+          <span>Em Andamento</span>
+          <strong id="kpiProgress">0</strong>
+        </div>
+
+        <div class="summary-pill summary-pill--info">
+          <span>Finalizadas</span>
+          <strong id="kpiFinished">0</strong>
+        </div>
+      </div>
+    </div>
+
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter">
+
+        <div class="fields-inline fields-gap-3">
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <input type="text" id="searchTask" placeholder="Pesquisar por título ou descrição..." />
+          </div>
+
+          <div class="fields fields-h-6 fields-w-12 fields-font-3">
+            <select id="filterStatus">
+              <option value="">Todos os status</option>
+              <option value="OPEN">OPEN</option>
+              <option value="IN_PROGRESS">IN_PROGRESS</option>
+              <option value="REVIEW">REVIEW</option>
+              <option value="FINISHED">FINISHED</option>
+            </select>
+          </div>
+
+          <div class="fields fields-h-6 fields-w-12 fields-font-3">
+            <select id="filterTaskGroup">
+              <option value="">Todos os grupos</option>
+            </select>
+          </div>
+
+          <div class="fields fields-h-6 fields-w-12 fields-font-3">
+            <select id="filterActive">
+              <option value="">Todos</option>
+              <option value="true">Ativos</option>
+              <option value="false">Inativos</option>
+            </select>
+          </div>
+
+          <div class="btn-inline btn-gap-3">
+            <button class="btn btn-new btn-sm" data-tab="tableTab">
+              📋 Lista
+            </button>
+
+            <button class="btn btn-new btn-sm" data-tab="kanbanTab">
+              🧩 Kanban
+            </button>
+
+            <button class="btn btn-new btn-sm" data-tab="reportsTab">
+              📊 Relatórios
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <section id="tableTab" class="tab-content active">
+        <div class="table-scroll table-height-500 table-row-h-20" data-table-settings="tasks.taskstablebody">
+          <table class="table table-zebra table-zebra-hover table-sticky-head">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Grupo</th>
+                <th>Status</th>
+                <th>Prioridade</th>
+                <th>Criado em</th>
+                <th>Finalizado em</th>
+                <th>Ativo</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+
+            <tbody id="tasksTableBody">
+              <tr>
+                <td colspan="9" class="empty-row">
+                  Nenhuma tarefa carregada.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <footer class="table-footer">
+
+          <div class="table-footer__info">
+            <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+              <span id="apTableInfo">0 Registros </span>
+            </div>
+          </div>
+
+          <div class="table-footer__pagination">
+            <button type="button" id="btnPreviousPage" class="btn btn-clean btn-sm">
+              Anterior
+            </button>
+
+            <span id="apPageInfo">Página 1 de 1</span>
+
+            <button type="button" id="btnNextPage" class="btn btn-new btn-sm">
+              Próxima
+            </button>
+          </div>
+
+          <div class="table-footer__page-size">
+            <label for="apRowsPerPage">Mostrar</label>
+
+            <select id="apRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+              <option value="10">10 linhas</option>
+              <option value="20">20 linhas</option>
+              <option value="30">30 linhas</option>
+              <option value="50" selected>50 linhas</option>
+              <option value="100">100 linhas</option>
+            </select>
+          </div>
+
+        </footer>
+      </section>
+
+      <section id="kanbanTab" class="tab-content hidden">
+        <div class="kanban-board">
+
+          <div class="kanban-column" data-status="OPEN">
+            <h3>Aberto</h3>
+            <div id="kanbanOpen" class="kanban-list"></div>
+          </div>
+
+          <div class="kanban-column" data-status="IN_PROGRESS">
+            <h3>Em Andamento</h3>
+            <div id="kanbanProgress" class="kanban-list"></div>
+          </div>
+
+          <div class="kanban-column" data-status="REVIEW">
+            <h3>Revisão</h3>
+            <div id="kanbanReview" class="kanban-list"></div>
+          </div>
+
+          <div class="kanban-column" data-status="FINISHED">
+            <h3>Finalizado</h3>
+            <div id="kanbanFinished" class="kanban-list"></div>
+          </div>
+
+        </div>
+      </section>
+
+      <section id="reportsTab" class="tab-content hidden">
+        <div class="reports-card">
+          <h2>📊 Relatório de Tarefas</h2>
+
+          <div class="reports-grid">
+            <div>
+              <span>Prioridade Alta</span>
+              <strong id="reportHigh">0</strong>
+            </div>
+
+            <div>
+              <span>Prioridade Normal</span>
+              <strong id="reportNormal">0</strong>
+            </div>
+
+            <div>
+              <span>Prioridade Baixa</span>
+              <strong id="reportLow">0</strong>
+            </div>
+
+            <div>
+              <span>Inativas</span>
+              <strong id="reportInactive">0</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div id="tasksNewModalMount"></div>
+
+  </main>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <script type="module" src="./tasks.js"></script>
+
+</body>
+
+</html>

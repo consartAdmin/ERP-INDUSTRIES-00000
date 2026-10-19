@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>GRUPOS & SUBGRUPOS LOTE | PRODNEX ERP</title>
+
+  <!-- 🎨 Design System CONSART -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- CSS específico desta página -->
+  <link rel="stylesheet" href="./groupsAndSubgroupsBatch.css?v=3" />
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+
+  <main class="consart-container consart-container--fixed consart-container--full consart-container--vh-92">
+
+    <!-- 🔍 LEFT -->
+    <section class="table-layout-integrated table-max-height-800">
+      <div class="table-layout-integrated__filter">
+
+        <!-- ✅ Toolbar topo do painel (padrão ERP) -->
+        <div class="fields-inline fields-gap-3">
+
+          <div>
+            <h2>Produtos</h2>
+          </div>
+        </div>
+
+        <div class="fields-inline fields-gap-3">
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <label for="gsb-search-input">Buscar produtos</label>
+
+            <input id="gsb-search-input" type="text" placeholder="Digite SKU, descrição ou código de barras..."
+              autocomplete="off" />
+          </div>
+
+          <div class="btn-inline">
+            <button id="gsb-search-btn" type="button" class="btn btn-new btn-sm">
+              Buscar
+            </button>
+          </div>
+
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <label for="gsb-linked-filter">Filtro de vínculo de Grupo</label>
+            <select id="gsb-linked-filter">
+              <option value="">Todos os produtos</option>
+              <option value="linked">Somente com Grupo vinculado</option>
+              <option value="unlinked">Somente sem Grupo vinculado</option>
+            </select>
+          </div>
+
+          <small class="gsb-help">
+            Dica: mínimo 3 caracteres para buscar. Você pode marcar vários produtos e aplicar Grupo/Subgrupo de uma
+            vez.
+          </small>
+        </div>
+
+
+
+        <div class="fields fields-h-6 fields-w-20 fields-font-3">
+          <label class="gsb-check">
+            <input type="checkbox" id="gsb-only-active" checked />
+            <span>Somente produtos ativos</span>
+          </label>
+        </div>
+
+        <!-- ⚙️ Configuração de Grupo/Subgrupo (aplicada aos selecionados) -->
+        <div class="gsb-config">
+          <h3 class="gsb-config__title">Configuração de Grupo/Subgrupo</h3>
+
+          <div class="fields-inline fields-inline-wrap fields-gap-3">
+            <div class="fields fields-h-6 fields-w-20 fields-font-3">
+              <label for="gsb-group-select">Novo Grupo</label>
+              <select id="gsb-group-select">
+                <option value="">Carregando grupos...</option>
+              </select>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-20 fields-font-3">
+              <label for="gsb-subgroup-select">Novo Subgrupo (opcional)</label>
+              <select id="gsb-subgroup-select" disabled>
+                <option value="">Selecione um grupo para carregar subgrupos...</option>
+              </select>
+            </div>
+
+            <div class="btn-inline">
+              <button id="gsb-apply-batch" type="button" class="btn btn-toolbar btn-sm">
+                Aplicar Grupo/Subgrupo para selecionados
+              </button>
+              <button id="gsb-clear-batch" type="button" class="btn btn-toolbar btn-sm gsb-btn-danger">
+                Limpar Grupo/Subgrupo para selecionados
+              </button>
+            </div>
+          </div>
+
+          <div class="gsb-config__info">
+            <span><strong>Selecionados:</strong> <span id="gsb-summary-selected">0</span></span>
+            <span><strong>Novo Grupo:</strong> <span id="gsb-summary-group">-</span></span>
+            <span><strong>Novo Subgrupo:</strong> <span id="gsb-summary-subgroup">-</span></span>
+            <small class="gsb-help" id="gsb-subgroup-help"></small>
+          </div>
+
+          <small class="gsb-help">
+            <strong>Atenção:</strong> o vínculo será aplicado <strong>a todos os produtos selecionados</strong>.
+            Caso o produto já tenha grupo/subgrupo, ele será atualizado.
+          </small>
+        </div>
+      </div>
+
+      <!-- ✅ Scroll interno da tabela -->
+      <div class="table-scroll--rounded table-scroll--flex" data-table-settings="groupsandsubgroupsbatch.gsb-products-body">
+        <table class="table table-fixed table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="gsb-select-all" /></th>
+              <th>Produto ID</th>
+              <th>SKU</th>
+              <th>Descrição</th>
+              <th>Grupo</th>
+              <th>Subgrupo</th>
+              <th>Vinculado?</th>
+              <th>Limpar</th>
+            </tr>
+          </thead>
+          <tbody id="gsb-products-body"></tbody>
+        </table>
+      </div>
+
+      <!-- ✅ Footer mantém contador (paginação foi para o topo) -->
+      <footer class="table-footer">
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill-success summary-width-5 summary-left-space-3">
+            <span id="apTableInfo">
+              0 Registros
+            </span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button id="btnPrevious" type="button" class="btn btn-toolbar btn-sm">
+            Anterior
+          </button>
+
+          <span id="pageInfo">
+            Página 1 de 1
+          </span>
+
+          <button id="btnNext" type="button" class="btn btn-toolbar btn-sm">
+            Próxima
+          </button>
+        </div>
+        <div class="table-footer__page-size">
+          <label for="pageSize">
+            Mostrar
+          </label>
+          <div class="fields fields-h-6 fields-w-3 fields-font-3">
+            <select id="pageSize" class="table-footer__page-size-select">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50" selected>50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
+      </footer>
+    </section>
+
+  </main>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="./groupsAndSubgroupsBatch.js?v=4"></script>
+</body>
+
+</html>

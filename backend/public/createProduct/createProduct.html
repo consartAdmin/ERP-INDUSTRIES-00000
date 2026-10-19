@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>CRIAÇÃO DE PRODUTOS | PRODNEX ERP</title>
+  <!-- 🎨 Design System CONSART (orquestrador) -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/includes/css/tabs.css" />
+
+  <!-- CSS específico desta página -->
+  <link rel="stylesheet" href="/public/createProduct/createProduct.css" />
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+  <style>
+    dialog#dlgCusto::backdrop {
+      background: rgba(0, 0, 0, .35);
+    }
+
+    dialog#dlgCusto {
+      padding: 0;
+      border: none;
+      border-radius: var(--radius);
+      max-width: 360px;
+      width: 90%;
+      box-shadow: var(--shadow);
+    }
+
+    dialog#dlgLot::backdrop {
+      background: rgba(0, 0, 0, .35);
+    }
+
+    dialog#dlgLot {
+      padding: 0;
+      border: none;
+      border-radius: var(--radius);
+      max-width: 980px;
+      width: min(980px, 96vw);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    #dlgLot .dlg-head {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--card);
+    }
+
+    #dlgLot .dlg-title {
+      font-weight: 800;
+    }
+
+    #dlgLot .dlg-body {
+      padding: 14px;
+    }
+
+    #dlgLot .dlg-foot {
+      padding: 12px 14px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      background: var(--card);
+    }
+
+    #dlgLot .divider {
+      height: 1px;
+      background: var(--line);
+      margin: 10px 0;
+    }
+
+    #aba-estoque .row-5>* {
+      flex: 1;
+      min-width: 180px;
+    }
+
+    #aba-estoque .row-5 {
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    #aba-estoque .tabela-lotes th,
+    #aba-estoque .tabela-lotes td {
+      white-space: nowrap;
+    }
+
+    #aba-estoque .lot-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    #aba-estoque .lot-hint {
+      padding: 10px 12px;
+      border: 1px solid rgba(255, 193, 7, .45);
+      background: rgba(255, 193, 7, .08);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .num {
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ✅ ajuste visual para campo + botão de gerar barcode */
+    .unit-barcode-group {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      min-width: 320px;
+    }
+
+    .unit-barcode-group input {
+      flex: 1;
+    }
+
+    .unit-hint {
+      font-size: .82rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+  </style>
+</head>
+
+<body class="consart-theme c-page page" style="--consart-input-h: 34px;">
+  <main class="consart-container consart-container--full">
+
+    <header class="page-toolbar">
+
+      <div class="page-toolbar__group page-toolbar__group--fill tab-list" role="tablist"
+        aria-label="Cadastro do produto">
+
+        <button type="button" class="tab is-active" data-tab="aba-geral" role="tab" aria-controls="aba-geral"
+          aria-selected="true">
+          📋 Dados Gerais
+        </button>
+
+        <button type="button" class="tab" data-tab="aba-descricao" role="tab" aria-controls="aba-descricao"
+          aria-selected="false">
+          📝 Descrição
+        </button>
+
+        <button type="button" class="tab" data-tab="aba-precos" role="tab" aria-controls="aba-precos"
+          aria-selected="false">
+          💲 Preços
+        </button>
+
+        <button type="button" class="tab" data-tab="aba-estoque" role="tab" aria-controls="aba-estoque"
+          aria-selected="false">
+          📦 Estoque
+        </button>
+
+        <button type="button" class="tab" data-tab="aba-fiscal" role="tab" aria-controls="aba-fiscal"
+          aria-selected="false">
+          🧾 Fiscal
+        </button>
+
+        <button type="button" class="tab" data-tab="aba-unidades" role="tab" aria-controls="aba-unidades"
+          aria-selected="false">
+          📏 Unidades
+        </button>
+
+        <button type="button" class="tab" data-tab="aba-grade" role="tab" aria-controls="aba-grade"
+          aria-selected="false">
+          🧩 Grade
+        </button>
+
+        <button type="button" class="tab" data-tab="aba-registros" role="tab" aria-controls="aba-registros"
+          aria-selected="false">
+          📜 Registros
+        </button>
+
+      </div>
+
+    </header>
+
+    <!-- 📋 Dados Gerais -->
+    <section id="aba-geral" class="tab-panel is-active" role="tabpanel" aria-hidden="false">
+
+      <div class="consart-panel">
+
+        <form id="formDadosGerais" data-section="general" class="form-stack" novalidate>
+
+          <header class="entity-header">
+
+            <div class="entity-header__top">
+              <div class="entity-header__title">
+                📦 Dados Gerais do Produto
+              </div>
+
+              <button type="button" id="btnCopiarProduto" class="btn btn-toolbar btn-sm">
+                📋 Copiar Produto
+              </button>
+
+              <button type="submit" id="btnSalvarDadosGerais" class="btn btn-save btn-sm">
+                💾 Salvar Dados Gerais
+              </button>
+
+            </div>
+
+            <div class="entity-header__grid">
+
+              <label class="field-group" for="produtoId">
+                <span>Produto Code (SKU) — opcional</span>
+                <input type="text" id="produtoId" name="product_code" data-field="product_code"
+                  placeholder="Informe o SKU ou deixe vazio para gerar automaticamente" autocomplete="off">
+              </label>
+
+              <label class="field-group" for="descricao">
+                <span>Descrição</span>
+                <input type="text" id="descricao" name="description" data-field="description"
+                  placeholder="Descrição do produto">
+              </label>
+
+              <label class="field-group" for="codigoBarras">
+                <span>Código de Barras</span>
+                <input type="text" id="codigoBarras" name="barcode" data-field="barcode" placeholder="EAN/GTIN">
+              </label>
+
+              <label class="field-group" for="refFabricante">
+                <span>Ref. Fabricante</span>
+                <input type="text" id="refFabricante" name="manufacturer_ref" data-field="manufacturer_ref"
+                  placeholder="Referência do fabricante">
+              </label>
+
+              <label class="field-group" for="product_group_id">
+                <span>Grupo</span>
+                <select id="product_group_id" name="product_group_id"></select>
+              </label>
+
+              <label class="field-group" for="product_subgroup_id">
+                <span>Subgrupo</span>
+                <select id="product_subgroup_id" name="product_subgroup_id"></select>
+              </label>
+
+              <label class="field-group" for="manufacturer_id">
+                <span>Fabricante</span>
+                <select id="manufacturer_id" name="manufacturer_id"></select>
+              </label>
+
+              <label class="field-group" for="supplier_id">
+                <span>Fornecedor</span>
+                <select id="supplier_id" name="supplier_id"></select>
+              </label>
+
+              <label class="field-group entity-header__location" for="product_location_label" data-feature="PRODUCT_LOCATIONS">
+                <span>Localização</span>
+
+                <div class="plm-field">
+                  <input type="text" id="product_location_label" placeholder="Selecione uma localização" readonly>
+
+                  <button type="button" id="btnBuscarLocalizacao" class="btn btn-lookup btn-sm"
+                    title="Buscar localização">
+                    🔍 Buscar
+                  </button>
+                </div>
+              </label>
+
+              <select id="product_location_id" name="product_location_id" hidden></select>
+
+            </div>
+
+          </header>
+
+        </form>
+
+      </div>
+
+    </section>
+
+    <!-- 📝 Descrição -->
+    <section id="aba-descricao" class="tab-panel" role="tabpanel" aria-label="Descrição do produto" aria-hidden="true">
+
+      <div class="consart-panel">
+
+        <form id="formDescricaoProduto" data-section="description" class="form-stack" novalidate>
+
+          <header class="entity-header">
+
+            <div class="entity-header__top">
+
+              <div>
+                <div class="entity-header__title">
+                  📝 Descrição do Produto
+                </div>
+
+                <div class="entity-header__subtitle">
+                  Descrição comercial e informações internas do produto.
+                </div>
+              </div>
+
+              <button type="submit" id="btnSalvarDescricaoProduto" class="btn btn-save btn-sm">
+                💾 Salvar Descrição
+              </button>
+
+            </div>
+
+            <div class="description-product-fields">
+
+              <label class="field-group" for="descricaoDetalhada">
+
+                <span>Descrição detalhada</span>
+
+                <textarea id="descricaoDetalhada" name="description" data-field="description" rows="12"
+                  maxlength="10000" placeholder="Digite a descrição completa do produto..."></textarea>
+
+                <small class="description-product-counter">
+                  <span id="descricaoDetalhadaContador">0</span>/10000 caracteres
+                </small>
+
+              </label>
+
+            </div>
+
+            <div id="descricaoProdutoStatus" class="description-status" role="status" aria-live="polite">
+            </div>
+
+          </header>
+
+        </form>
+
+      </div>
+
+    </section>
+
+    <!-- 💲 Preços -->
+    <section id="aba-precos" class="tab-panel" role="tabpanel" aria-hidden="true">
+
+      <div class="consart-panel">
+
+        <form id="formPrecos" data-section="prices" class="form-stack" novalidate>
+
+          <header class="entity-header">
+
+            <div class="entity-header__top">
+              <div class="entity-header__title">
+                💲 Formação de Preços
+              </div>
+
+              <button type="submit" class="btn btn-save btn-sm">
+                💾 Salvar Tabela de Preços
+              </button>
+            </div>
+
+            <div class="fields-inline">
+
+              <label class="field-group" for="cost_price">
+                <span>💰 Preço Custo</span>
+                <input type="text" inputmode="decimal" id="cost_price" name="cost_price" data-field="cost_price"
+                  class="price-input" required>
+              </label>
+
+              <label class="field-group" for="tax_icms_credit_percent">
+                <span>ICMS Venda (%)</span>
+                <input type="text" id="tax_icms_credit_percent" class="price-input tax-input" value="0,00">
+              </label>
+
+              <label class="field-group" for="tax_pis_credit_percent">
+                <span>PIS Venda (%)</span>
+                <input type="text" id="tax_pis_credit_percent" class="price-input tax-input" value="0,00">
+              </label>
+
+              <label class="field-group" for="tax_cofins_credit_percent">
+                <span>COFINS Venda (%)</span>
+                <input type="text" id="tax_cofins_credit_percent" class="price-input tax-input" value="0,00">
+              </label>
+
+              <label class="field-group" for="tax_icms_st_value">
+                <span>ICMS-ST R$</span>
+                <input type="text" id="tax_icms_st_value" class="price-input tax-input" value="0,00">
+              </label>
+
+              <label class="field-group" for="tax_ipi_value">
+                <span>IPI R$</span>
+                <input type="text" id="tax_ipi_value" class="price-input tax-input" value="0,00">
+              </label>
+
+              <label class="field-group entity-header__span-2" for="final_cost_price">
+                <span>Custo com Impostos da Venda</span>
+                <input type="text" id="final_cost_price" class="price-input final-cost-input" readonly>
+              </label>
+
+            </div>
+
+            <section class="table-layout">
+              <div class="table-scroll table-scroll--flex" data-table-settings="createproduct.corpotabelaprecos">
+                <table class="table table-fixed table-zebra table-zebra-hover table-sticky-head"
+                  aria-label="Tabela de preços">
+                  <thead>
+                    <tr>
+                      <th>Tabela</th>
+                      <th>Markup (%)</th>
+                      <th>Lucro Bruto (%)</th>
+                      <th>Preço Venda</th>
+                    </tr>
+                  </thead>
+                  <tbody id="corpoTabelaPrecos"></tbody>
+                </table>
+              </div>
+            </section>
+
+          </header>
+
+        </form>
+
+      </div>
+
+    </section>
+    <!-- 📦 Estoque -->
+    <section id="aba-estoque" class="tab-panel" role="tabpanel" aria-hidden="true">
+
+      <div class="consart-panel">
+
+        <form id="form-estoque" data-section="stock" class="form-stack" novalidate>
+
+          <header class="entity-header">
+
+            <div class="entity-header__top">
+              <div class="entity-header__title">
+                📦 Estoque do Produto
+              </div>
+
+              <button type="submit" class="btn btn-save btn-sm">
+                💾 Salvar Estoque
+              </button>
+            </div>
+
+            <div class="entity-header__grid">
+
+              <label class="field-group" for="product_stock_id">
+                <span>ID Estoque</span>
+                <input type="text" id="product_stock_id" name="product_stock_id" readonly aria-readonly="true"
+                  class="is-readonly" placeholder="(será gerado ao salvar)">
+              </label>
+
+              <label class="field-group" for="stock_qty">
+                <span>Estoque Atual</span>
+                <input type="number" step="0.01" id="stock_qty" name="stock_qty" data-field="stock_qty">
+              </label>
+
+              <label class="field-group" for="stock_min">
+                <span>Estoque Mínimo</span>
+                <input type="number" step="0.01" id="stock_min" name="stock_min" data-field="stock_min">
+              </label>
+
+              <label class="field-group" for="stock_max">
+                <span>Estoque Máximo</span>
+                <input type="number" step="0.01" id="stock_max" name="stock_max" data-field="stock_max">
+              </label>
+
+            </div>
+
+          </header>
+
+        </form>
+
+        <header id="lot-wrap" class="entity-header">
+
+          <div class="entity-header__top">
+            <div class="entity-header__title">
+              📦 Lotes & Validade
+              <span class="badge">productsStockLots</span>
+            </div>
+
+            <div id="lot-toolbar" class="page-toolbar__group">
+              <button type="button" id="btn-lot-refresh" class="btn btn-toolbar btn-sm">🔄 Atualizar</button>
+              <button type="button" id="btn-lot-fefo" class="btn btn-flat btn-sm">⏳ FEFO</button>
+              <button type="button" id="btn-lot-new" class="btn btn-primary btn-sm">➕ Novo lote</button>
+            </div>
+          </div>
+
+          <div id="lot-hint" class="lot-hint hidden">
+            ⚠️ Para habilitar os lotes, primeiro clique em <b>Salvar Estoque</b> para criar o product_stock_id.
+          </div>
+
+          <div class="fields-inline">
+
+            <label class="field-group" for="lot-q">
+              <span>Buscar lote</span>
+              <input id="lot-q" type="text" placeholder="Ex: L2026-001">
+            </label>
+
+            <label class="field-group" for="lot-only-available">
+              <span>Somente disponíveis</span>
+              <select id="lot-only-available">
+                <option value="false">Não</option>
+                <option value="true">Sim</option>
+              </select>
+            </label>
+
+            <label class="field-group" for="lot-show-inactive">
+              <span>Mostrar inativos</span>
+              <select id="lot-show-inactive">
+                <option value="false" selected>Não</option>
+                <option value="true">Sim</option>
+              </select>
+            </label>
+
+            <label class="field-group" for="lot-orderby">
+              <span>Ordenar por</span>
+              <select id="lot-orderby">
+                <option value="expires_at">Validade</option>
+                <option value="lot_code">Lote</option>
+                <option value="qty_on_hand">Qtd em mãos</option>
+                <option value="qty_reserved">Reservado</option>
+                <option value="updated_at">Atualização</option>
+                <option value="created_at">Criação</option>
+              </select>
+            </label>
+
+            <label class="field-group" for="lot-dir">
+              <span>Direção</span>
+              <select id="lot-dir">
+                <option value="asc">Asc</option>
+                <option value="desc">Desc</option>
+              </select>
+            </label>
+
+            <label class="field-group" for="lot-limit">
+              <span>Itens</span>
+              <select id="lot-limit">
+                <option>10</option>
+                <option selected>20</option>
+                <option>50</option>
+                <option>100</option>
+              </select>
+            </label>
+
+          </div>
+
+          <section class="table-layout">
+            <div class="table-scroll table-scroll--flex" data-table-settings="createproduct.lot-tbody">
+              <table class="table table-fixed table-zebra table-zebra-hover table-sticky-head"
+                aria-label="Tabela de lotes do produto">
+                <colgroup>
+                  <col style="width:40px">
+                  <col style="width:100px">
+                  <col style="width:90px">
+                  <col style="width:90px">
+                  <col style="width:90px">
+                  <col style="width:90px">
+                  <col style="width:100px">
+                  <col style="width:150px">
+                  <col style="width:90px">
+                  <col style="width:300px">
+                </colgroup>
+
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Grade</th>
+                    <th>Lote</th>
+                    <th>Validade</th>
+                    <th class="num">Em mãos</th>
+                    <th class="num">Reservado</th>
+                    <th class="num">Disponível</th>
+                    <th>Atualizado</th>
+                    <th>Status</th>
+                    <th class="th-actions">Ações</th>
+                  </tr>
+                </thead>
+
+                <tbody id="lot-tbody">
+                  <tr>
+                    <td colspan="10" class="muted" style="padding:12px 14px;">Carregando…</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="entity-header__footer">
+              <div class="muted">
+                Dica: use <b>FEFO</b> para sugerir o lote que vence primeiro.
+              </div>
+
+              <div id="lot-paging" class="muted">—</div>
+            </div>
+          </section>
+
+        </header>
+
+      </div>
+
+      <dialog id="dlgLot" aria-labelledby="dlgLotTitle">
+        <form method="dialog" id="formDlgLot">
+
+          <div class="dlg-head">
+            <div class="dlg-title" id="dlgLotTitle">Lote</div>
+            <button type="button" id="lot-modal-close" class="btn btn-flat btn-sm">✕</button>
+          </div>
+
+          <div class="dlg-body">
+
+            <input type="hidden" id="mLotId">
+
+            <div class="row row-5" style="margin-bottom: 12px;">
+
+              <label class="stack" style="gap:6px;">
+                <span>Grade</span>
+                <select id="mProductGradeId">
+                  <option value="">Sem grade</option>
+                </select>
+              </label>
+
+              <label class="stack" style="gap:6px;">
+                <span>Lote *</span>
+                <input id="mLotCode" type="text" placeholder="Ex: L2026-001" required>
+              </label>
+
+              <label class="stack" style="gap:6px;">
+                <span>Validade</span>
+                <input id="mExpiresAt" type="date">
+              </label>
+
+              <label class="stack" style="gap:6px;">
+                <span>Qtd em mãos</span>
+                <input id="mQtyOnHand" type="number" step="0.001" value="0">
+              </label>
+
+              <label class="stack" style="gap:6px;">
+                <span>Reservado</span>
+                <input id="mQtyReserved" type="number" step="0.001" value="0" disabled>
+              </label>
+
+              <label class="stack" style="gap:6px;">
+                <span>Custo unitário</span>
+                <input id="mCostUnit" type="number" step="0.000001" placeholder="Opcional">
+              </label>
+
+            </div>
+
+            <div class="row row-5">
+
+              <label class="stack" style="gap:6px;">
+                <span>Chave NF-e</span>
+                <input id="mNfeKey" type="text" placeholder="Opcional">
+              </label>
+
+              <label class="stack" style="gap:6px;">
+                <span>Item NF-e</span>
+                <input id="mNfeItemSeq" type="number" placeholder="Opcional">
+              </label>
+
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="stack" style="gap:8px;">
+              <div style="font-weight: 900;">Operações rápidas</div>
+
+              <div class="row center" style="gap:10px; flex-wrap: wrap;">
+
+                <label class="stack" style="width:220px;gap:6px;">
+                  <span>Quantidade</span>
+                  <input id="lotOpQty" type="number" step="0.001" value="1">
+                </label>
+
+                <button type="button" id="lotOpReserve" class="btn btn-primary btn-sm">Reservar</button>
+                <button type="button" id="lotOpUnreserve" class="btn btn-flat btn-sm">Desreservar</button>
+                <button type="button" id="lotOpConsume" class="btn btn-danger btn-sm">Baixar</button>
+
+              </div>
+
+              <div class="muted" style="font-weight: 700;">
+                Reservar/desreservar para orçamento. Baixar para saída confirmada.
+              </div>
+            </div>
+
+          </div>
+
+          <div class="dlg-foot">
+            <div>
+              <button type="button" id="lot-modal-delete" class="btn btn-danger btn-sm hidden">Excluir</button>
+            </div>
+
+            <div class="row center" style="gap:8px;">
+              <button type="button" id="lot-modal-cancel" class="btn btn-flat btn-sm">Cancelar</button>
+              <button type="button" id="lot-modal-save" class="btn btn-primary btn-sm">Salvar</button>
+            </div>
+          </div>
+
+        </form>
+      </dialog>
+
+    </section>
+
+    <!-- 🧾 Fiscal -->
+    <section id="aba-fiscal" class="tab-panel" role="tabpanel" aria-hidden="true">
+
+      <div class="consart-panel">
+
+        <header class="entity-header">
+
+          <div class="entity-header__top">
+
+            <div>
+              <div class="entity-header__title">
+                🧾 Dados Fiscais
+              </div>
+
+              <div class="entity-header__subtitle">
+                Os dados fiscais são vinculados através da
+                <strong>Classificação Fiscal</strong> e do
+                <strong>Perfil Fiscal</strong>.
+              </div>
+            </div>
+
+            <div class="page-toolbar__group">
+
+              <button type="button" id="btnVincularClassificacaoFiscal" class="btn btn-primary btn-sm">
+                🔍 Vincular / Alterar Classificação
+              </button>
+
+              <button type="button" id="btnRemoverClassificacaoFiscal" class="btn btn-danger btn-sm">
+                ❌ Remover Vínculo Fiscal
+              </button>
+
+              <button id="btnConfirmarVinculoFiscal" type="button" class="btn btn-save btn-sm">
+                ✔️ Confirmar Vínculo Fiscal
+              </button>
+
+            </div>
+
+          </div>
+
+          <!-- ===================================================== -->
+          <!-- Classificação Fiscal                                  -->
+          <!-- ===================================================== -->
+
+          <div class="entity-header__table">
+
+            <div class="entity-header__table-title">
+              📂 Classificação Fiscal
+            </div>
+
+            <section class="table-layout">
+              <div class="table-scroll table-scroll--flex " data-table-settings="createproduct.table-3">
+                <table class="table table-fixed table-zebra table-zebra-hover table-sticky-head">
+                  <thead>
+                    <tr>
+                      <th>Classificação</th>
+                      <th>NCM</th>
+                      <th>CEST</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr>
+                      <td id="classificacao_desc">—</td>
+                      <td id="ncm_texto">—</td>
+                      <td id="cest_texto">—</td>
+                    </tr>
+                  </tbody>
+
+                </table>
+
+              </div>
+
+              <!-- ===================================================== -->
+              <!-- Perfil Fiscal                                         -->
+              <!-- ===================================================== -->
+
+              <div class="entity-header__table">
+
+                <div class="entity-header__table-title">
+                  🔗 Perfil Fiscal Vinculado
+                </div>
+
+                <section class="table-layout">
+                  <div class="table-scroll table-scroll--flex " data-table-settings="createproduct.table-4">
+                    <table class="table table-fixed table-zebra table-zebra-hover table-sticky-head">
+                      <thead>
+                        <tr>
+                          <th>Nome</th>
+                          <th>CST</th>
+                          <th>ICMS</th>
+                          <th>Origem</th>
+                          <th>CFOP Entrada</th>
+                          <th>CFOP Saída</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        <tr>
+                          <td id="perfil_nome">—</td>
+                          <td id="perfil_cst">—</td>
+                          <td id="perfil_aliq">—</td>
+                          <td id="perfil_origem">—</td>
+                          <td id="perfil_cfop_entrada">—</td>
+                          <td id="perfil_cfop_saida">—</td>
+                        </tr>
+                      </tbody>
+
+                    </table>
+
+                  </div>
+
+                  <div class="entity-header__footer">
+
+                    <div class="entity-header__footnote">
+                      Ao confirmar, o produto terá o
+                      <strong>Produto Fiscal</strong>
+                      atualizado automaticamente.
+                    </div>
+
+                  </div>
+                </section>
+              </div>
+            </section>
+          </div>
+
+        </header>
+      </div>
+    </section>
+
+    <!-- 📏 Unidades -->
+    <section id="aba-unidades" class="tab-panel" role="tabpanel" aria-hidden="true">
+
+      <div class="consart-panel">
+
+        <header class="entity-header">
+
+          <form id="formUnitProduct" novalidate>
+
+            <div class="entity-header__top">
+
+              <div class="entity-header__title">
+                📏 Unidades do Produto
+              </div>
+
+              <button type="submit" class="btn btn-toolbar btn-sm">
+                ➕ Adicionar Unidade
+              </button>
+
+            </div>
+
+            <div class="entity-header__grid">
+
+              <label class="field-group" for="unidadeSelect">
+                <span>Unidade</span>
+                <select id="unidadeSelect" name="unidadeSelect"></select>
+              </label>
+
+              <label class="field-group" for="unitFactor">
+                <span>Fator</span>
+                <input type="number" step="0.01" id="unitFactor" name="unitFactor" readonly class="is-readonly">
+              </label>
+
+              <label class="field-group" for="unitDesc">
+                <span>Descrição</span>
+                <input type="text" id="unitDesc" name="unitDesc" readonly class="is-readonly">
+              </label>
+
+              <label class="field-group entity-header__span-2" for="unitBarcode">
+
+                <span>Código de Barras (Unidade)</span>
+
+                <div class="unit-barcode-group">
+
+                  <input type="text" id="unitBarcode" name="unitBarcode" placeholder="Automático se vazio"
+                    autocomplete="off">
+
+                  <button type="button" id="btnGenerateUnitBarcode" class="btn btn-flat btn-sm">
+                    🎯 Gerar
+                  </button>
+
+                </div>
+
+                <small class="unit-hint">
+                  Se deixar vazio, o sistema gera automaticamente.
+                </small>
+
+              </label>
+
+              <label class="field-group" for="unitWidth">
+                <span>Largura (cm)</span>
+                <input type="number" step="0.01" id="unitWidth" placeholder="0,00">
+              </label>
+
+              <label class="field-group" for="unitLength">
+                <span>Comprimento (cm)</span>
+                <input type="number" step="0.01" id="unitLength" placeholder="0,00">
+              </label>
+
+              <label class="field-group" for="unitHeight">
+                <span>Altura (cm)</span>
+                <input type="number" step="0.01" id="unitHeight" placeholder="0,00">
+              </label>
+
+              <label class="field-group" for="unitWeight">
+                <span>Peso (kg)</span>
+                <input type="number" step="0.01" id="unitWeight" placeholder="0,00">
+              </label>
+
+            </div>
+
+            <div class="entity-header__footer">
+
+              <label class="row center" style="gap:6px;">
+                <input type="checkbox" id="unitIsDefault" name="unitIsDefault">
+                Padrão
+              </label>
+
+              <label class="row center" style="gap:6px;">
+                <input type="checkbox" id="unitIsActive" name="unitIsActive" checked>
+                Ativo
+              </label>
+
+            </div>
+
+          </form>
+
+          <section class="table-layout">
+            <div class="table-scroll table-scroll--flex " data-table-settings="createproduct.unitstablebody">
+              <table class="table table-fixed table-zebra table-zebra-hover table-sticky-head"
+                aria-label="Unidades do produto">
+                <thead>
+                  <tr>
+                    <th>Unidade</th>
+                    <th>Descrição</th>
+                    <th>Fator</th>
+                    <th>Código de Barras</th>
+                    <th>Largura</th>
+                    <th>Comprimento</th>
+                    <th>Altura</th>
+                    <th>Peso</th>
+                    <th>Ativo</th>
+                    <th>Padrão</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+
+                <tbody id="unitsTableBody"></tbody>
+
+              </table>
+
+            </div>
+          </section>
+
+        </header>
+
+      </div>
+
+    </section>
+    <!-- 🧩 Grade -->
+    <section id="aba-grade" class="tab-panel" role="tabpanel" aria-hidden="true">
+
+      <div class="consart-panel">
+
+        <header class="entity-header">
+
+          <form id="formGradeProduct" novalidate>
+
+            <!-- ===================================================== -->
+            <!-- Header -->
+            <!-- ===================================================== -->
+
+            <div class="entity-header__top">
+
+              <div class="entity-header__title">
+                🧩 Grades do Produto
+              </div>
+
+              <button type="submit" class="btn btn-toolbar btn-sm">
+                ➕ Adicionar Grade
+              </button>
+
+            </div>
+
+            <!-- ===================================================== -->
+            <!-- Informações -->
+            <!-- ===================================================== -->
+
+            <div class="entity-header__grid">
+
+              <label class="field-group" for="gradeSelect">
+                <span>Grade</span>
+
+                <select id="gradeSelect" name="gradeSelect">
+                  <option value="">— Selecione uma grade —</option>
+                </select>
+              </label>
+
+              <label class="field-group" for="gradeStock">
+                <span>Estoque</span>
+
+                <input type="number" id="gradeStock" name="gradeStock" min="0" step="1" value="0">
+              </label>
+
+            </div>
+
+          </form>
+
+          <!-- ===================================================== -->
+          <!-- Tabela -->
+          <!-- ===================================================== -->
+
+          <div class="entity-header__table">
+
+            <section class="table-layout">
+              <div class="table-scroll table-scroll--flex" data-table-settings="createproduct.gradestablebody">
+                <table class="table table-fixed table-zebra table-zebra-hover table-sticky-head"
+                  aria-label="Grades do produto">
+
+                  <colgroup>
+                    <col style="width:200px">
+                    <col>
+                    <col style="width:200px">
+                    <col style="width:200px">
+                    <col style="width:200px">
+                  </colgroup>
+
+                  <thead>
+                    <tr>
+                      <th>Grade</th>
+                      <th>Descrição</th>
+                      <th>Estoque</th>
+                      <th>Status</th>
+                      <th>Ações</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="gradesTableBody">
+
+                    <!-- Carregado via JavaScript -->
+
+                  </tbody>
+
+                </table>
+
+              </div>
+            </section>
+          </div>
+
+        </header>
+
+      </div>
+
+    </section>
+
+    <!-- 📜 Registros -->
+    <section id="aba-registros" class="tab-panel" role="tabpanel" aria-hidden="true">
+
+      <div class="consart-panel">
+
+        <header class="entity-header">
+
+          <!-- ===================================================== -->
+          <!-- Header -->
+          <!-- ===================================================== -->
+
+          <div class="entity-header__top">
+
+            <div>
+
+              <div class="entity-header__title">
+                📜 Registros do Produto
+              </div>
+
+              <div class="entity-header__subtitle">
+                Histórico de movimentações, alterações de estoque, compras,
+                vendas, inventários e ajustes.
+              </div>
+
+            </div>
+
+            <button type="button" id="btnAtualizarRegistrosProduto" class="btn btn-toolbar btn-sm">
+              🔄 Atualizar
+            </button>
+
+          </div>
+
+          <!-- ===================================================== -->
+          <!-- Tabela -->
+          <!-- ===================================================== -->
+
+          <div class="entity-header__table">
+
+            <section class="table-layout">
+              <div class="table-scroll table-scroll--flex" data-table-settings="createproduct.registrosprodutobody">
+                <table class="table table-fixed table-zebra table-zebra-hover table-sticky-head"
+                  aria-label="Registros do Produto">
+
+                  <thead>
+                    <tr>
+                      <th>Data</th>
+                      <th>Tipo</th>
+                      <th>Origem</th>
+                      <th>Quantidade</th>
+                      <th>Estoque</th>
+                      <th>Grade</th>
+                      <th>Lote</th>
+                      <th>Usuário</th>
+                      <th>Observação</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="registrosProdutoBody">
+
+                    <tr>
+                      <td colspan="9" class="muted" style="padding:12px 14px;">
+                        Nenhum registro carregado.
+                      </td>
+                    </tr>
+
+                  </tbody>
+
+                </table>
+
+              </div>
+            </section>
+          </div>
+
+        </header>
+
+      </div>
+
+    </section>
+
+    <dialog id="dlgCusto" aria-labelledby="dlgTitle">
+      <form method="dialog" id="formDlgCusto" style="padding:16px">
+        <h3 id="dlgTitle" style="margin:0 0 8px">Alterar preço de custo</h3>
+        <p style="margin:0 0 10px;color:var(--muted)">Informe a senha de autorização:</p>
+        <input type="password" id="dlgSenhaCusto" required autocomplete="current-password"
+          style="width:100%;padding:10px;border:1px solid var(--line);border-radius:var(--radius-sm)" />
+        <div class="row" style="gap:8px;justify-content:flex-end;margin-top:12px;">
+          <button type="button" id="dlgCancelar" class="btn btn-flat">Cancelar</button>
+          <button type="submit" id="dlgOk" class="btn btn-primary">Confirmar</button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- ⚙️ Scripts globais -->
+    <script type="module" src="/public/includes/js/core.js"></script>
+
+
+    <!-- SEM type="module" ou COM, tanto faz, porque você usa window.* -->
+    <script type="module" src="/public/includes/js/apiBase.js"></script>
+
+
+    <!-- 🚀 Orquestrador da página -->
+    <script type="module" src="/public/createProduct/createProduct.js" defer></script>
+    <!-- appFeature PRODUCT_LOCATIONS: LOCATIONS_DISABLED → oculta [data-feature="PRODUCT_LOCATIONS"] -->
+    <script type="module">import { initProductLocationsFeature } from "/public/includes/js/productLocationsFeature.js"; initProductLocationsFeature();</script>
+  </main>
+</body>
+
+</html>

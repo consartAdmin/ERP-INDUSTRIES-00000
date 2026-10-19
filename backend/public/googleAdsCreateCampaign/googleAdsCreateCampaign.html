@@ -1,0 +1,191 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ googleAdsCreateCampaign.html — Criar Campanha Google Ads — CONSART  ║
+     ║ Formulário completo (Campanha → Grupo → Keywords → Anúncios)        ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR" class="page-googleads-create">
+<head>
+  <meta charset="UTF-8" />
+  <title>Criar Campanha Google Ads | PRODNEX ERP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <!-- Styles padrão CONSART -->
+  <link rel="stylesheet" href="/public/includes/css/topGradientBar.css" />
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/googleAdsCreateCampaign/googleAdsCreateCampaign.css" />
+</head>
+
+<body class="c-page consart-theme with-fixed-header page-googleads-create">
+
+  <!-- ╔═══════════════════════════════════════════════════════════╗
+       ║ 1. BARRA SUPERIOR (TopGradientBar)                        ║
+       ╚═══════════════════════════════════════════════════════════╝ -->
+  <header class="top-gradient-bar">
+    <div class="top-gradient-bar__inner">
+      <div class="top-gradient-bar__titles">
+        <h1 class="top-gradient-bar__title">Criar Campanha — Google Ads</h1>
+        <p class="top-gradient-bar__subtitle">
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ╔═══════════════════════════════════════════════════════════╗
+       ║ 2. CONTEÚDO PRINCIPAL                                    ║
+       ╚═══════════════════════════════════════════════════════════╝ -->
+  <main class="c-main">
+    <div class="c-container c-container--3xl stack">
+
+      <!-- ░░░ HEADER CARD (igual ecommerceOrders) ░░░ -->
+      <section class="section-card ga-header-card stack">
+        <div class="row between center">
+          <div>
+            <h2 class="ga-title">Criador de Campanhas Google Ads</h2>
+            <p class="ga-subtitle">
+              Preencha todas as informações abaixo para criar uma campanha completa (campanha → grupo → keywords → anúncios).
+            </p>
+          </div>
+
+          <div class="ga-kpi-row">
+            <div class="ga-kpi-card">
+              <span class="ga-kpi-label">Modo</span>
+              <strong class="ga-kpi-value">Campanha Completa</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ╔═══════════════════════════════════════════════════╗
+           ║ SECTION 1 — Dados da Campanha                    ║
+           ╚═══════════════════════════════════════════════════╝ -->
+      <section class="section-card stack ga-section">
+        <h3 class="ga-section-title">1. Dados da Campanha</h3>
+
+        <div class="row wrap gap-16">
+          <div class="ga-field">
+            <label class="ga-label">Nome da campanha</label>
+            <input id="gaCampaignName" class="ga-input" type="text" placeholder="Ex: Campanha BH3 Produtos de Limpeza" />
+          </div>
+
+          <div class="ga-field">
+            <label class="ga-label">Orçamento diário (R$)</label>
+            <input id="gaDailyBudget" class="ga-input" type="number" step="0.01" placeholder="50.00" />
+          </div>
+
+          <div class="ga-field">
+            <label class="ga-label">Data inicial</label>
+            <input id="gaStartDate" class="ga-input" type="date" />
+          </div>
+
+          <div class="ga-field">
+            <label class="ga-label">Data final (opcional)</label>
+            <input id="gaEndDate" class="ga-input" type="date" />
+          </div>
+        </div>
+      </section>
+
+      <!-- ╔═══════════════════════════════════════════════════╗
+           ║ SECTION 2 — Grupo de Anúncios                     ║
+           ╚═══════════════════════════════════════════════════╝ -->
+      <section class="section-card stack ga-section">
+        <h3 class="ga-section-title">2. Grupo de Anúncios</h3>
+
+        <div class="row wrap gap-16">
+          <div class="ga-field">
+            <label class="ga-label">Nome do grupo</label>
+            <input id="gaAdGroupName" class="ga-input" type="text" placeholder="Grupo BH3 Limpeza" />
+          </div>
+
+          <div class="ga-field">
+            <label class="ga-label">CPC máximo (R$)</label>
+            <input id="gaCpcBid" class="ga-input" type="number" step="0.01" placeholder="1.50" />
+          </div>
+        </div>
+      </section>
+
+      <!-- ╔═══════════════════════════════════════════════════╗
+           ║ SECTION 3 — Palavras-chave                        ║
+           ╚═══════════════════════════════════════════════════╝ -->
+      <section class="section-card stack ga-section">
+        <h3 class="ga-section-title">3. Palavras-chave</h3>
+
+        <p class="ga-mini-hint">
+          Uma palavra-chave por linha. Exemplo: <strong>detergente biodegradável</strong>.
+        </p>
+
+        <textarea id="gaKeywordsInput" class="ga-textarea" rows="6"
+          placeholder="Exemplo:
+detergente biodegradável
+limpeza industrial
+sabão líquido hospitalar"></textarea>
+      </section>
+
+      <!-- ╔═══════════════════════════════════════════════════╗
+           ║ SECTION 4 — Anúncios                              ║
+           ╚═══════════════════════════════════════════════════╝ -->
+      <section class="section-card stack ga-section">
+        <h3 class="ga-section-title">4. Anúncios</h3>
+
+        <div class="row wrap gap-16">
+          <div class="ga-field ga-field-lg">
+            <label class="ga-label">Título 1</label>
+            <input id="gaHeadline1" class="ga-input" type="text" maxlength="30" placeholder="Produtos de limpeza BH3" />
+          </div>
+
+          <div class="ga-field ga-field-lg">
+            <label class="ga-label">Título 2</label>
+            <input id="gaHeadline2" class="ga-input" type="text" maxlength="30" placeholder="Entrega rápida e segura" />
+          </div>
+
+          <div class="ga-field ga-field-lg">
+            <label class="ga-label">Título 3 (opcional)</label>
+            <input id="gaHeadline3" class="ga-input" type="text" maxlength="30" />
+          </div>
+
+          <div class="ga-field ga-field-xl">
+            <label class="ga-label">Descrição</label>
+            <textarea id="gaDescription" class="ga-textarea" rows="3"
+              maxlength="90" placeholder="Linha completa de produtos de limpeza para residências e empresas."></textarea>
+          </div>
+
+          <div class="ga-field ga-field-xl">
+            <label class="ga-label">URL Final</label>
+            <input id="gaFinalUrl" class="ga-input" type="url" placeholder="https://bh3distribuidora.com.br" />
+          </div>
+        </div>
+      </section>
+
+      <!-- ╔═══════════════════════════════════════════════════╗
+           ║ SECTION 5 — Ação                                 ║
+           ╚═══════════════════════════════════════════════════╝ -->
+      <section class="section-card ga-section stack center">
+        <button id="gaBtnCreateCampaign" class="btn btn-primary ga-btn-submit">
+          🚀 Criar Campanha Completa
+        </button>
+
+        <p id="gaCreateStatus" class="ga-status-text"></p>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script type="module">
+    import { initTopGradientBar } from '/public/includes/js/topGradientBar.js';
+    initTopGradientBar({
+      title: 'Criar Campanha – Google Ads',
+      subtitle: 'Ferramenta CONSART para criação de campanhas.',
+    });
+  </script>
+
+  <script src="/public/includes/js/core.js" type="module"></script>
+
+  <script src="/public/googleAdsCreateCampaign/googleAdsCreateCampaign.js" type="module"></script>
+</body>
+</html>

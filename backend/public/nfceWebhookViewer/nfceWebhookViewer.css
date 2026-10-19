@@ -1,0 +1,417 @@
+/* ╔══════════════════════════════════════════════════════════╗
+   ║ nfceWebhookViewer.css — Painel Eventos Webhook NFC-e    ║
+   ╚══════════════════════════════════════════════════════════╝ */
+
+:root {
+  --nfcew-bg: #020617;
+  --nfcew-card-bg: #0b1120;
+  --nfcew-border: #1f2937;
+  --nfcew-text: #e5e7eb;
+  --nfcew-muted: #9ca3af;
+  --nfcew-accent: #0ea5e9;
+  --nfcew-radius-lg: 18px;
+  --nfcew-radius-md: 12px;
+  --nfcew-gap: 16px;
+  --nfcew-gap-lg: 24px;
+  --nfcew-shadow-soft: 0 24px 48px rgba(15, 23, 42, 0.9);
+}
+
+/* Fullscreen base */
+html,
+body {
+  height: 100%;
+}
+
+.hidden {
+  display: none !important;
+}
+
+body.c-page.c-page-nfce-webhook-viewer {
+  margin: 0;
+  padding: 0; /* sem bordas laterais */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    sans-serif;
+  background: radial-gradient(circle at top left, #0f172a 0, #020617 32%, #020617 100%);
+  color: var(--nfcew-text);
+}
+
+/* MAIN em fullscreen */
+body.c-page.c-page-nfce-webhook-viewer .c-main {
+  max-width: none;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+}
+
+/* Shell principal ocupa toda a viewport */
+.nfcew-shell {
+  flex: 1;
+  background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.18), rgba(12, 10, 29, 0.98)),
+              url('/public/imagens/bgDashboardConsart.png') center/cover no-repeat;
+  border-radius: 0;                 /* encosta nas bordas da tela */
+  padding: 24px 40px 30px;
+  box-shadow: none;                 /* fullscreen, sem sombra externa */
+  box-sizing: border-box;
+}
+
+/* Header */
+.nfcew-header {
+  margin-bottom: 20px;
+}
+
+.nfcew-title {
+  margin: 0 0 4px;
+  font-size: 1.7rem;
+  font-weight: 600;
+}
+
+.nfcew-subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--nfcew-muted);
+}
+
+/* Card de filtros */
+.nfcew-filters-card {
+  background: rgba(15, 23, 42, 0.96);
+  border-radius: var(--nfcew-radius-lg);
+  padding: 18px 18px 14px;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.85);
+}
+
+.nfcew-filter-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--nfcew-gap);
+  align-items: flex-end;
+}
+
+.nfcew-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nfcew-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9ca3af;
+}
+
+.nfcew-input,
+.nfcew-select {
+  border-radius: 999px;
+  border: 1px solid var(--nfcew-border);
+  padding: 9px 13px;
+  font-size: 0.9rem;
+  outline: none;
+  background: #020617;
+  color: var(--nfcew-text);
+}
+
+.nfcew-input:focus,
+.nfcew-select:focus {
+  border-color: var(--nfcew-accent);
+  box-shadow: 0 0 0 1px rgba(14, 165, 233, 0.6);
+}
+
+/* Datas */
+.nfcew-dates {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nfcew-date-sep {
+  font-size: 0.8rem;
+  color: var(--nfcew-muted);
+}
+
+.nfcew-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-end;
+  grid-column: span 2;
+}
+
+.btn {
+  border-radius: 999px;
+  border: 1px solid transparent;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+  color: #020617;
+  font-weight: 600;
+  box-shadow: 0 12px 24px rgba(56, 189, 248, 0.4);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.06);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--nfcew-text);
+  border-color: var(--nfcew-border);
+}
+
+.btn-ghost:hover {
+  background: rgba(31, 41, 55, 0.8);
+}
+
+/* Barra de importação PlugNotas */
+.nfcew-import-bar {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(148, 163, 184, 0.6);
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.nfcew-import-fields {
+  flex: 1;
+  min-width: 220px;
+}
+
+.nfcew-import-btn {
+  align-self: flex-end;
+}
+
+/* Tip */
+.nfcew-tip {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: var(--nfcew-muted);
+}
+
+/* Status */
+.nfcew-status-area {
+  margin-top: 16px;
+}
+
+.nfcew-status-message {
+  font-size: 0.86rem;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+
+.nfcew-status-message.info {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: rgba(96, 165, 250, 0.9);
+  color: #dbeafe;
+}
+
+.nfcew-status-message.error {
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(248, 113, 113, 0.9);
+  color: #fee2e2;
+}
+
+/* Resultados */
+.nfcew-results {
+  margin-top: 20px;
+  background: rgba(15, 23, 42, 0.96);
+  border-radius: var(--nfcew-radius-lg);
+  padding: 18px 18px 20px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+}
+
+.nfcew-results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+
+.nfcew-results-header h2 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.nfcew-results-count {
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.nfcew-results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Cards de eventos */
+.nfcew-card {
+  background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.4), rgba(15, 23, 42, 0.96));
+  border-radius: var(--nfcew-radius-md);
+  padding: 12px 14px;
+  border: 1px solid rgba(129, 140, 248, 0.75);
+  font-size: 0.82rem;
+}
+
+.nfcew-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.nfcew-card-title {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.nfcew-card-subtitle {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #cbd5f5;
+}
+
+/* Badge status */
+.nfcew-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border: 1px solid transparent;
+}
+
+.nfcew-status-badge.concluido {
+  background: rgba(22, 163, 74, 0.18);
+  border-color: rgba(22, 163, 74, 0.9);
+  color: #bbf7d0;
+}
+
+.nfcew-status-badge.rejeitado {
+  background: rgba(239, 68, 68, 0.22);
+  border-color: rgba(248, 113, 113, 0.95);
+  color: #fecaca;
+}
+
+.nfcew-status-badge.denegado {
+  background: rgba(234, 179, 8, 0.2);
+  border-color: rgba(234, 179, 8, 0.95);
+  color: #fef9c3;
+}
+
+.nfcew-status-badge.cancelado {
+  background: rgba(148, 163, 184, 0.25);
+  border-color: rgba(148, 163, 184, 0.95);
+  color: #e5e7eb;
+}
+
+.nfcew-details-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(180px, 1fr));
+  gap: 10px 16px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.nfcew-detail-value {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+.nfcew-detail-label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(219, 234, 254, 0.9);
+  margin-bottom: 1px;
+}
+
+.nfcew-detail-value {
+  font-size: 0.8rem;
+}
+
+/* Mensagem / erro */
+.nfcew-message-block {
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px dashed rgba(148, 163, 184, 0.6);
+  font-size: 0.78rem;
+}
+
+.nfcew-message-block .label {
+  font-weight: 600;
+  margin-right: 3px;
+}
+
+/* Links XML/PDF */
+.nfcew-links {
+  margin-top: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.nfcew-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(129, 140, 248, 0.9);
+  color: #c7d2fe;
+  text-decoration: none;
+  font-size: 0.76rem;
+}
+
+.nfcew-link:hover {
+  background: rgba(129, 140, 248, 0.35);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  body.c-page.c-page-nfce-webhook-viewer .c-main {
+    min-height: 100vh;
+  }
+
+  .nfcew-shell {
+    padding: 18px 16px 22px;
+  }
+
+  .nfcew-filter-form {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .nfcew-import-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nfcew-import-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+.nfcew-import-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NF-e CONSUMO</title>
+    <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+    <link rel="stylesheet" href="/public/includes/css/style.css">
+    <link rel="stylesheet" href="/public/includes/css/modals.css">
+    <link rel="stylesheet" href="/public/modalsSearch/budgetsModal.css">
+    <link rel="stylesheet" href="./usoConsumo.css">
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+    <main class="consart-container consart-container--full consart-container--ultraslim">
+
+
+        <!-- A criação de Uso e Consumo agora acontece em modal. -->
+        <div id="modalUsoConsumo" class="modal" aria-hidden="true">
+            <div class="modal__dialog">
+                <section class="modal__panel uc-modal-panel" role="dialog" aria-modal="true"
+                    aria-labelledby="modalUsoConsumoTitle">
+                    <header class="modal__header modal-header-color-3">
+                        <h2 id="modalUsoConsumoTitle" class="modal__title">Novo Uso e Consumo</h2>
+                        <button id="btnCloseUsoConsumo" class="modal__close" type="button" aria-label="Fechar">&times;</button>
+                    </header>
+
+                    <div class="modal__body uc-modal-body">
+                        <div id="selectedBudgetBox" class="uc-selected-budget hidden">
+                            <div><small>Orçamento selecionado</small><strong id="selectedBudgetTitle">-</strong></div>
+                            <div><small>Cliente</small><strong id="selectedBudgetCustomer">-</strong></div>
+                            <div><small>Total</small><strong id="selectedBudgetTotal">R$ 0,00</strong></div>
+                            <button id="btnRemoveBudget" type="button" title="Remover orçamento">×</button>
+                        </div>
+
+                        <div class="fields-inlines fields-gap-3">
+                            <div class="fields-inline fields-gap-3 uc-modal-grid">
+                                <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                                    <label>Nº / ID do Orçamento
+                                        <input id="budgetId" type="number" min="1" placeholder="Ex: 1025">
+                                    </label>
+                                </div>
+                                <div class="btn-inline uc-budget-buttons">
+                                    <button id="btnFindBudget" class="btn btn-new btn-sm" type="button">Buscar</button>
+                                    <button id="btnOpenBudgetsModal" class="btn btn-new btn-sm" type="button">Importar</button>
+                                </div>
+                                <div class="fields fields-h-6 fields-w-30 fields-font-3">
+                                    <label>CFOP
+                                        <select id="cfop">
+                                            <option value="5.949">5.949 - Outra saída de mercadoria/prestação não especificada</option>
+                                            <option value="5.556">5.556 - Devolução de compra de material de uso/consumo</option>
+                                            <option value="1.556">1.556 - Compra de material para uso ou consumo</option>
+                                            <option value="2.556">2.556 - Compra interestadual de material para uso ou consumo</option>
+                                        </select>
+                                    </label>
+                                </div>
+                                <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                                    <label>Departamento
+                                        <input id="department" type="text" maxlength="120" placeholder="Ex: Expedição">
+                                    </label>
+                                </div>
+                                <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                                    <label>Responsável
+                                        <input id="responsible" type="text" maxlength="120" placeholder="Ex: Renato">
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="fields fields-h-5 fields-w-20 fields-font-3 uc-reason-field">
+                                <label class="uc-full">Motivo
+                                    <textarea id="reason" rows="4" placeholder="Ex: Produtos retirados para uso interno da empresa."></textarea>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <footer class="modal__footer uc-modal-footer">
+                        <button id="btnClear" class="btn btn-clean btn-sm" type="button">Limpar</button>
+                        <button id="btnFinish" class="btn btn-new btn-sm" type="button">Finalizar como Uso e Consumo</button>
+                    </footer>
+                </section>
+            </div>
+        </div>
+
+        <section class="table-layout-integrated">
+            <div class="table-layout-integrated__filter table-max-height-500">
+
+                <div class="uc-list-title-row">
+                    <h2>Registros finalizados e NF-e</h2>
+                    <button id="btnNewUsoConsumo" class="btn btn-new btn-sm" type="button">Novo Uso e Consumo</button>
+                </div>
+
+                <!-- Container for all vertical lines -->
+                <div class="fields-inline fields-gap-3">
+
+                    <!-- Line 1: fields side by side -->
+                    <div class="fields-inline">
+                        <div class="fields fields-h-6 fields-w-30 fields-font-3">
+                            <input id="search" type="search" placeholder="Pesquisar...">
+                        </div>
+
+                        <div class="btn-inline">
+                            <button id="btnSearch" class="btn btn-new btn-sm" type="button">Buscar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-scroll table-height-flex table-row-h-20" data-table-settings="usoconsumo.rows">
+                <table class="table table-zebra table-zebra-hover table-sticky-head">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Número</th>
+                            <th>Orçamento</th>
+                            <th>Departamento</th>
+                            <th>Responsável</th>
+                            <th>CFOP</th>
+                            <th>Total</th>
+                            <th>NF-e</th>
+                            <th>Status NF-e</th>
+                            <th>Data</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rows">
+                        <tr>
+                            <td colspan="11">Carregando...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <footer class="table-footer">
+
+                <div class="table-footer__info">
+                    <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+                        <span id="apTableInfo">0 Registros </span>
+                    </div>
+                </div>
+
+                <div class="table-footer__pagination">
+                    <button type="button" id="btnPreviousPage" class="btn btn-clean btn-sm">
+                        Anterior
+                    </button>
+
+                    <span id="apPageInfo">Página 1 de 1</span>
+
+                    <button type="button" id="btnNextPage" class="btn btn-new btn-sm">
+                        Próxima
+                    </button>
+                </div>
+
+                <div class="table-footer__page-size">
+                    <label for="apRowsPerPage">Mostrar</label>
+
+                    <select id="apRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+                        <option value="10">10 linhas</option>
+                        <option value="20">20 linhas</option>
+                        <option value="30">30 linhas</option>
+                        <option value="50" selected>50 linhas</option>
+                        <option value="100">100 linhas</option>
+                    </select>
+                </div>
+
+            </footer>
+        </section>
+
+    </main>
+    <script type="module" src="/public/includes/js/core.js"></script>
+    <script type="module" src="./usoConsumo.js"></script>
+</body>
+
+</html>

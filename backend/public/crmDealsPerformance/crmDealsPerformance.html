@@ -1,0 +1,182 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ crmDealsReativationPerformance.html — Performance CRM Reativação     ║
+     ║ PRODNEX ERP | Frontend (HTML)                                       ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CRM • Performance Reativação | PRODNEX ERP</title>
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <!-- CSS global CONSART -->
+  <link rel="stylesheet" href="/public/includes/css/style.css"/>
+
+  <!-- CSS do módulo -->
+  <link rel="stylesheet" href="./crmDealsReativationPerformance.css"/>
+</head>
+
+<body class="consart-theme c-page page-crm-reativacao-performance">
+  <div id="menuConsartMount"></div>
+
+  <main class="c-main">
+    <div class="c-container c-container--2xl crmperf">
+
+      <!-- Header -->
+      <header class="crmperf__header">
+        <div class="crmperf__title">
+        </div>
+
+        <div class="crmperf__right menu-botoes">
+          <button id="btnExportCsv" class="btn btn-flat" type="button" title="Exportar CSV">
+            ⬇ Exportar CSV
+          </button>
+        </div>
+      </header>
+
+      <!-- Filters -->
+      <section class="crmperf__card crmperf__filters">
+        <div class="crmperf__filtersGrid">
+
+          <div class="crmperf__field">
+            <label for="fStart">Início</label>
+            <input id="fStart" type="date" class="crmperf__input" />
+          </div>
+
+          <div class="crmperf__field">
+            <label for="fEnd">Fim</label>
+            <input id="fEnd" type="date" class="crmperf__input" />
+          </div>
+
+          <div class="crmperf__field">
+            <label for="fSeller">Vendedor</label>
+            <select id="fSeller" class="crmperf__input">
+              <option value="">Todos os vendedores</option>
+            </select>
+          </div>
+
+          <div class="crmperf__field">
+            <label for="fAction">Ação</label>
+            <select id="fAction" class="crmperf__input">
+              <option value="">Todas</option>
+              <option value="CREATE_DEAL">Criação de Card</option>
+              <option value="UPDATE_DEAL">Atualização de Card</option>
+              <option value="MOVE_STAGE">Movimentação de Etapa</option>
+              <option value="DELETE_DEAL">Exclusão de Card</option>
+              <option value="OUTCOME_CONVERSION">Conversão</option>
+              <option value="OUTCOME_LOSS">Queda de Venda</option>
+              <option value="NOTE">Anotação</option>
+              <option value="CALL">Ligação</option>
+              <option value="WHATSAPP">WhatsApp</option>
+              <option value="EMAIL">E-mail</option>
+              <option value="VISIT">Visita</option>
+            </select>
+          </div>
+
+          <div class="crmperf__field crmperf__field--grow">
+            <label for="fSearch">Buscar</label>
+
+            <div class="crmperf__search">
+              <input id="fSearch" type="text" class="crmperf__input" placeholder="Cliente, vendedor, etapa, tag, observação..." />
+              <button id="btnApply" class="btn btn-primary" type="button">Aplicar</button>
+              <button id="btnReset" class="btn btn-flat" type="button">Limpar</button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- KPIs -->
+      <section class="crmperf__kpis">
+        <div class="crmperf__card crmperf__kpi">
+          <div class="crmperf__kpiTitle">Ações</div>
+          <div class="crmperf__kpiValue" id="kpiActions">—</div>
+          <div class="crmperf__kpiSub" id="kpiActionsSub">Total no período</div>
+        </div>
+
+        <div class="crmperf__card crmperf__kpi">
+          <div class="crmperf__kpiTitle">Movimentações</div>
+          <div class="crmperf__kpiValue" id="kpiMoves">—</div>
+          <div class="crmperf__kpiSub" id="kpiMovesSub">Etapas alteradas</div>
+        </div>
+
+        <div class="crmperf__card crmperf__kpi">
+          <div class="crmperf__kpiTitle">Convertidos</div>
+          <div class="crmperf__kpiValue" id="kpiConverted">—</div>
+          <div class="crmperf__kpiSub" id="kpiConvertedSub">R$ no período</div>
+        </div>
+
+        <div class="crmperf__card crmperf__kpi">
+          <div class="crmperf__kpiTitle">Perdidos</div>
+          <div class="crmperf__kpiValue" id="kpiLost">—</div>
+          <div class="crmperf__kpiSub" id="kpiLostSub">R$ no período</div>
+        </div>
+      </section>
+
+      <!-- Table -->
+      <section class="crmperf__card crmperf__tableWrap">
+        <div class="crmperf__tableTop">
+          <div class="crmperf__tableTitle">
+            <h2>Histórico de Ações</h2>
+            <span id="tableMeta" class="crmperf__meta">—</span>
+          </div>
+
+          <div class="crmperf__pager menu-botoes">
+            <button id="btnPrev" class="btn btn-flat" type="button" aria-label="Página anterior">←</button>
+            <span id="pageInfo" class="crmperf__pageInfo">—</span>
+            <button id="btnNext" class="btn btn-flat" type="button" aria-label="Próxima página">→</button>
+          </div>
+        </div>
+
+        <div class="crmperf__tableScroll table-wrapper">
+          <table class="crmperf__table">
+            <thead>
+              <tr>
+                <th>Data/Hora</th>
+                <th>Vendedor</th>
+                <th>Cliente</th>
+                <th>Ação</th>
+                <th>Etapa</th>
+                <th class="ta-right">Valor</th>
+                <th>Detalhes</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyActions">
+              <tr>
+                <td colspan="7" class="crmperf__empty">Carregando…</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <footer class="crmperf__footer">
+          <div class="crmperf__footerLeft">
+            <span class="crmperf__pill" id="resultPill">—</span>
+          </div>
+          <div class="crmperf__footerRight">
+            <label class="crmperf__limit">
+              Itens por página
+              <select id="fLimit" class="crmperf__input crmperf__input--sm">
+                <option value="25">25</option>
+                <option value="50" selected>50</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+              </select>
+            </label>
+          </div>
+        </footer>
+      </section>
+
+    </div>
+  </main>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="./crmDealsReativationPerformance.js"></script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+/* ===== faturamento.css (baseado no theme-consart) ===== */
+
+html, body {
+  overflow: hidden;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== Barra sticky respeitando o menu fixo ===== */
+.sticky-toolbar{
+  position: sticky;
+  top: var(--c-header-h);
+  z-index: 90;
+  background: var(--btn-bg);
+  border: 1px solid var(--c-input-bd);
+  border-radius: var(--radius);
+  padding: calc(var(--c-space-2)) calc(var(--c-space-3));
+  display:flex; flex-wrap:wrap; gap:.1rem; align-items:center;
+  margin-bottom: var(--c-space-6);
+  box-shadow: 0 1px 0 rgba(0,0,0,.03), inset 0 1px 0 rgba(255,255,255,.6);
+}
+.sticky-toolbar .sp{ flex:1; min-width:1px; }
+.sticky-toolbar input[type="number"]{ height:1px; padding:1px 1px; font-size:14px; width:120px; }
+
+/* ===== Cards e subcards ===== */
+.card{
+  background: var(--btn-bg);
+  border: 1px solid var(--c-input-bd);
+  border-radius: var(--radius);
+  padding: var(--c-space-6);
+  box-shadow: 0 1px 0 rgba(0,0,0,.03), inset 0 1px 0 rgba(255,255,255,.6);
+}
+.subcard{
+  border: 1px dashed var(--c-input-bd);
+  border-radius: var(--radius);
+  padding: var(--c-space-4);
+  background: var(--btn-bg);
+}
+
+/* ===== Badges / callouts / stepper ===== */
+.badge{ display:inline-block; padding:.28rem .5rem; border-radius:.5rem; font-size:.85rem; border:1px solid var(--c-input-bd); background:var(--btn-bg); color:var(--btn-fg); }
+.badge.ok{ background:#e8fff2; color:#159957; border-color:#b7f1cf }
+.badge.info{ background:#eef2ff; color:#374151; border-color:#c7d2fe }
+.callout{ border:1px solid var(--c-input-bd); border-left-width:4px; padding:.75rem; border-radius:.5rem; background:var(--c-input-bg) }
+.callout.warn{ border-left-color:#c08400 }
+.hidden{ display:none !important }
+
+.stepper{ display:flex; gap:.5rem; flex-wrap:wrap; margin:.5rem 0; align-items:center; }
+.step{
+  display:flex; align-items:center; gap:.5rem;
+  padding:.35rem .6rem; border:1px dashed var(--c-input-bd); border-radius:.6rem; font-size:.9rem; color:var(--btn-fg); background:var(--btn-bg);
+}
+.step.active{ border-style:solid; border-color:var(--c-input-bd-hover); box-shadow:0 1px 0 rgba(0,0,0,.02) }
+.step.done{ background:#eff6ff; border-color:#60a5fa }
+
+/* ===== Grids ===== */
+.cabecalho-grid{ display:grid; gap: var(--c-space-6); grid-template-columns: 1fr; }
+@media (min-width: 1024px){
+  .cabecalho-grid{ grid-template-columns: repeat(3, 1fr); }
+}
+.grid-2{ display:grid; gap: var(--c-space-3); }
+.grid-2.cols-2{ grid-template-columns: 1fr 1fr; }
+.grid-2 .span-2{ grid-column: 1 / -1; }
+
+/* ===== Tabs ===== */
+.tabs{ display:flex; gap:1rem; margin-bottom:var(--c-space-4); }
+.tabs .tab{
+  background: var(--btn-bg);
+  border:1px solid var(--c-input-bd);
+  border-radius: var(--radius);
+  padding:.5rem 1rem;
+  cursor:pointer;
+}
+.tabs .tab.active{
+  background: var(--c-primary);
+  color: #fff;
+  border-color: var(--c-primary-hover);
+}
+.tab-content.hidden{ display:none; }
+
+/* ===== Tabela de produtos ===== */
+.tabela-produtos{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+  background: var(--btn-bg);
+  min-width: 960px;
+  font-size:14px;
+}
+.tabela-produtos thead th{
+  position:sticky; top:0; z-index:2;
+  background: var(--btn-bg);
+  border-bottom:1px solid var(--c-input-bd);
+  box-shadow:0 2px 0 rgba(0,0,0,.03);
+  text-align:left;
+}
+.tabela-produtos th, .tabela-produtos td{
+  padding:10px 12px;
+  border-bottom:1px solid var(--c-input-bd);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  vertical-align:middle;
+}
+
+/* Larguras (mantidas também no HTML) */
+.tabela-produtos th:nth-child(1), .tabela-produtos td:nth-child(1){ width:100px; }
+.tabela-produtos th:nth-child(2), .tabela-produtos td:nth-child(2){ width:320px; }
+.tabela-produtos th:nth-child(3), .tabela-produtos td:nth-child(3){ width:80px; }
+.tabela-produtos th:nth-child(4), .tabela-produtos td:nth-child(4){ width:80px; }
+.tabela-produtos th:nth-child(5), .tabela-produtos td:nth-child(5){ width:80px; }
+.tabela-produtos th:nth-child(6), .tabela-produtos td:nth-child(6){ width:80px; }
+.tabela-produtos th:nth-child(7), .tabela-produtos td:nth-child(7){ width:60px; }
+.tabela-produtos th:nth-child(8), .tabela-produtos td:nth-child(8){ width:60px; }
+.tabela-produtos th:nth-child(9), .tabela-produtos td:nth-child(9){ width:100px; }
+.tabela-produtos th:nth-child(10), .tabela-produtos td:nth-child(10){ width:120px; }
+
+.tabela-produtos tbody tr:hover{ background: #f8fbff; }
+
+/* ===== Botões ===== */
+.btn{ height:40px; min-width:84px; padding:0 12px; }
+.btn-primary{
+  background:var(--c-primary);
+  color:#07203a;
+  border:1px solid rgba(0,0,0,0.05);
+  box-shadow: 0 1px 0 rgba(0,0,0,.03);
+}
+.btn-primary:hover{ filter:brightness(0.98); }
+
+/* ===== Responsivo ===== */
+@media (max-width: 1024px){
+  .cabecalho-grid{ grid-template-columns: 1fr; }
+}
+@media (max-width: 640px){
+  .tabela-produtos{ min-width: 720px; }
+  .sticky-toolbar{ padding:.5rem; gap:.35rem; }
+  .sticky-toolbar input[type="number"]{ width:90px; }
+}
+
+/* ===== Inputs padrão ===== */
+label input, label select, label textarea{
+  width:100%; box-sizing:border-box;
+  background: var(--c-input-bg, #f9fbff);
+  border: 1px solid var(--c-input-bd, #d1d5db);
+  border-radius: var(--radius, 6px);
+  padding: 6px 10px; font-size:14px; color: var(--btn-fg, #111827);
+  transition: border-color .2s ease;
+}
+label input:focus, label select:focus, label textarea:focus{
+  border-color: var(--c-primary, #2563eb);
+  outline: none; background:#fff;
+}
+
+/* ===== c-scroll adjustments ===== */
+.c-scroll--table { max-height: 550px; padding: var(--c-space-2); }
+.c-scroll--table table { width:100%; border-collapse:collapse; background:var(--btn-bg); }
+.c-scroll--table tbody tr:hover { background:#f8fbff; }
+
+/* ===== Painéis lado a lado (se quiser usar) ===== */
+.painel-lado-a-lado { display:flex; flex-wrap:wrap; gap:var(--c-space-4); justify-content:space-between; }
+.painel-lado-a-lado .subcard { flex:1 1 32%; min-width:300px; box-sizing:border-box; }
+
+/* ░░ Prazo de Pagamento (duplicatas) ░░ */
+.prazo-wrapper{
+  margin: .5rem 6px 0;
+  display:flex; justify-content:flex-start;
+}
+.prazo-card{
+  width:min(580px, 100%); background: var(--btn-bg);
+  border:1px solid var(--c-input-bd); border-radius: var(--radius);
+  box-shadow: 0 1px 0 rgba(0,0,0,.03), inset 0 1px 0 rgba(255,255,255,.6);
+  padding:8px;
+}
+.prazo-header{
+  display:flex; gap:.5rem; align-items:center; justify-content:flex-start;
+  margin:0 0 6px;
+}
+.prazo-pill{
+  background:#eef2ff; color:#374151; border:1px solid #c7d2fe;
+  border-radius:999px; padding:2px 8px; font-size:.85rem;
+}
+.prazo-table{
+  width:100%; border-collapse:collapse; table-layout:fixed;
+  background:var(--btn-bg);
+}
+.prazo-table th, .prazo-table td{
+  padding:8px 10px; border-bottom:1px solid var(--c-input-bd);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.prazo-table thead th{ position:sticky; top:0; background:var(--btn-bg); z-index:1; }
+.prazo-table .num{ text-align:right; }
+.prazo-footer{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:10px; margin-top:6px;
+}

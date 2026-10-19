@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- 🟦 Favicons CONSART -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+    <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title> ASAAS – PRODNEX ERP</title>
+
+  <!-- CSS global do tema (já incorpora base.css, layout.css, components.css, centerAlertModal, etc.) -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- CSS específico desta página -->
+  <link rel="stylesheet" href="/public/cobrancas/asaas.css" />
+
+  <style>
+    /* 🎯 Modal: máscara e container */
+    .modal-mask{
+      position:fixed; inset:0; background:rgba(0,0,0,.45);
+      display:none; align-items:center; justify-content:center; z-index:9999;
+    }
+    .modal{
+      background:#fff; border-radius:12px; width:95%; max-width:1100px;
+      max-height:85vh; box-shadow:0 10px 30px rgba(0,0,0,.2);
+      display:flex; flex-direction:column; padding:16px;
+    }
+    .modal header{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; padding-bottom:8px; border-bottom:1px solid #eee;
+      position:sticky; top:0; background:#fff; z-index:2;
+    }
+    .modal .input-row{ display:flex; gap:10px; margin-top:10px; }
+    .modal .input-row input{ flex:1; }
+
+    /* Área rolável da tabela dentro do modal */
+    .modal-table-wrap{
+      margin-top:12px; border:1px solid #eee; border-radius:10px; overflow:auto;
+      max-height:60vh; background:#fff;
+    }
+
+    .modal table{
+      width:100%; border-collapse:separate; border-spacing:0;
+      table-layout:fixed;
+    }
+    .modal th, .modal td{
+      padding:10px; border-bottom:1px solid #f1f1f1;
+      font-size:0.95rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+
+    .modal thead th{
+      position:sticky; top:0; z-index:1; background:#f7faff;
+    }
+
+    .modal th:nth-child(1), .modal td:nth-child(1){ min-width:320px; }
+    .modal th:nth-child(2), .modal td:nth-child(2){ min-width:160px; }
+    .modal th:nth-child(3), .modal td:nth-child(3){ min-width:220px; }
+    .modal th:nth-child(4), .modal td:nth-child(4){ min-width:140px; }
+    .modal th:nth-child(5), .modal td:nth-child(5){ min-width:170px; }
+    .modal th:nth-child(6), .modal td:nth-child(6){ min-width:120px; text-align:right; }
+
+    .modal .actions{ display:flex; gap:10px; justify-content:flex-end; margin-top:12px; }
+    .btn-mini{ height:28px; line-height:28px; padding:0 10px; font-size:.85rem; }
+
+    /* Badge do Asaas */
+    .tag-ok{
+      display:inline-block; background:#e9f8ef; color:#1e7e34; font-weight:600;
+      padding:2px 8px; border-radius:999px; font-size:.85rem;
+    }
+
+    body.modal-open{ overflow:hidden; }
+
+    /* Linha única de campos (Nova Cobrança), integrando com tokens globais */
+    .linha-form{
+      display:grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: var(--gap, 14px);
+      align-items:flex-end;
+    }
+    .linha-form label{
+      display:flex;
+      flex-direction:column;
+      font-size:var(--fs-14, 14px);
+      color:var(--muted, #6b7280);
+      gap:4px;
+    }
+    .linha-form input,
+    .linha-form select{
+      padding:8px 10px;
+      border-radius:var(--radius-sm, 6px);
+      border:1px solid var(--line, #dce3ef);
+      background:#fff;
+    }
+    @media (max-width: 1200px){
+      .linha-form{ grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px){
+      .linha-form{ grid-template-columns: 1fr; }
+    }
+
+    /* Totais em cards usando o visual padrão */
+    .totais-resumo{
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap:var(--gap);
+      margin:var(--gap-lg) 0;
+    }
+    .total-card,
+    .bloco-confirmadas,
+    .bloco-saldo{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:var(--gap);
+    }
+    .total-card h3,
+    .bloco-confirmadas h3,
+    .bloco-saldo h3{
+      margin-bottom:6px;
+      font-size:var(--fs-16);
+    }
+    .total-card p{
+      font-size:var(--fs-20);
+      font-weight:600;
+    }
+    .bloco-confirmadas .valor-principal{
+      font-size:var(--fs-18);
+      font-weight:600;
+    }
+    .bloco-confirmadas .valor-liquido{
+      font-size:var(--fs-14);
+      color:var(--muted);
+      margin-bottom:4px;
+    }
+    .bloco-saldo{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:flex-start;
+    }
+
+    .total-card.verde   { border-left:4px solid var(--success); }
+    .total-card.amarelo { border-left:4px solid var(--warning); }
+    .total-card.vermelho{ border-left:4px solid var(--danger); }
+
+    @media (max-width: 1024px){
+      .totais-resumo{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px){
+      .totais-resumo{ grid-template-columns: 1fr; }
+    }
+
+    /* Painel de colunas */
+    .colunas-status{
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap:var(--gap);
+    }
+    .coluna{
+      background:var(--card);
+      border-radius:var(--radius);
+      border:1px solid var(--line);
+      padding:var(--gap-sm);
+      min-height:120px;
+    }
+    .coluna h3{
+      font-size:var(--fs-14);
+      margin-bottom:var(--gap-sm);
+    }
+    .card-cobranca{
+      background:#f9fafb;
+      border-radius:var(--radius-sm);
+      padding:8px 10px;
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      margin-bottom:6px;
+      font-size:var(--fs-12);
+    }
+    .card-cobranca .acoes{
+      margin-top:4px;
+      display:flex;
+      gap:6px;
+      justify-content:flex-end;
+    }
+
+    @media (max-width: 1024px){
+      .colunas-status{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px){
+      .colunas-status{ grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body class="consart-theme c-page page-asaas">
+  <main class="c-main">
+    <div class="c-container c-container--2xl stack">
+
+      <!-- Cabeçalho da página -->
+      <header class="page-header">
+        <h1>💰 Gestão de Cobranças – Asaas</h1>
+        <p class="page-subtitle" style="color:var(--muted); margin:4px 0 0;">
+          Controle centralizado de cobranças, status e saldo da conta Asaas.
+        </p>
+      </header>
+
+      <!-- ➕ Nova Cobrança -->
+      <section class="section-card">
+        <header class="row between center" style="margin-bottom: var(--gap-sm);">
+          <h2>➕ Nova Cobrança</h2>
+        </header>
+
+        <div class="linha-form">
+          <label>
+            Cliente (ID no Asaas)
+            <div style="display:flex; gap:8px;">
+              <input type="text" id="clienteId" placeholder="ID do Cliente no Asaas" />
+              <button class="btn btn-primary" type="button" id="btnAbrirModalClientes">🔎 Buscar</button>
+            </div>
+          </label>
+
+          <label>
+            Cliente Selecionado (nome)
+            <input type="text" id="clienteNomeSelecionado" placeholder="—" readonly />
+          </label>
+
+          <label>
+            Descrição
+            <input type="text" id="descricao" placeholder="Descrição da cobrança" />
+          </label>
+
+          <label>
+            Valor (R$)
+            <input type="number" id="valor" placeholder="0,00" step="0.01" />
+          </label>
+
+          <label>
+            Vencimento
+            <input type="date" id="vencimento" />
+          </label>
+
+          <label>
+            Forma de Pagamento
+            <select id="formaPagamento">
+              <option value="BOLETO">Boleto</option>
+              <option value="PIX">PIX</option>
+              <option value="CREDIT_CARD">Cartão de Crédito</option>
+              <option value="UNDEFINED">Outro</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="menu-botoes" style="margin-top: var(--gap); justify-content:flex-end;">
+          <button class="btn btn-primary" onclick="criarCobranca()">💾 Gerar Cobrança</button>
+        </div>
+      </section>
+
+      <!-- 🔎 Filtro -->
+      <section class="section-card">
+        <header style="margin-bottom: var(--gap-sm);">
+          <h2>🔎 Filtro de Cobranças</h2>
+        </header>
+
+        <div class="filtros-grid" style="display:grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap:var(--gap);">
+          <label>Status
+            <select id="filtroStatus">
+              <option value="">Todos</option>
+              <option value="RECEIVED">Pagos</option>
+              <option value="PENDING">Pendentes</option>
+              <option value="OVERDUE">Vencidos</option>
+              <option value="CANCELLED">Cancelados</option>
+            </select>
+          </label>
+
+          <label>Filtrar por
+            <select id="tipoData">
+              <option value="dueDate">Data de Vencimento</option>
+              <option value="createdAt">Data de Criação</option>
+              <option value="paymentDate">Data de Pagamento</option>
+            </select>
+          </label>
+
+          <label>Data Início
+            <input type="date" id="dataInicio" />
+          </label>
+
+          <label>Data Fim
+            <input type="date" id="dataFim" />
+          </label>
+
+          <label>Ordenar por
+            <select id="sort">
+              <option value="dueDate">Data de Vencimento</option>
+              <option value="value">Valor</option>
+              <option value="createdAt">Criação</option>
+            </select>
+          </label>
+
+          <label>Ordem
+            <select id="order">
+              <option value="asc">Crescente</option>
+              <option value="desc">Decrescente</option>
+            </select>
+          </label>
+
+          <div class="menu-botoes" style="grid-column: 1 / -1; justify-content:flex-end; margin-top:var(--gap-sm);">
+            <button class="btn btn-secondary" onclick="carregarCobrancas()">🔍 Aplicar Filtro</button>
+            <button class="btn btn-flat" onclick="limparFiltros()">🧹 Limpar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 📊 Totais -->
+      <section class="totais-resumo">
+        <div class="total-card verde">
+          <h3>🟢 Total Pago</h3>
+          <p id="totalPago">R$ 0,00</p>
+        </div>
+        <div class="total-card amarelo">
+          <h3>🟡 À Vencer</h3>
+          <p id="totalAvencer">R$ 0,00</p>
+        </div>
+        <div class="total-card vermelho">
+          <h3>🔴 Vencido</h3>
+          <p id="totalVencido">R$ 0,00</p>
+        </div>
+
+        <div class="bloco-confirmadas">
+          <h3>Confirmadas</h3>
+          <div class="valor-principal" id="valorConfirmado">R$ 0,00</div>
+          <div class="valor-liquido">R$ <span id="valorLiquido">0,00</span> líquido</div>
+          <div><span id="qtdClientesConfirmados">0 cliente</span></div>
+          <div><span id="qtdCobrancasConfirmadas">0 cobrança</span></div>
+        </div>
+
+        <div class="bloco-saldo">
+          <h3>Saldo disponível na conta</h3>
+          <div id="saldoConta" style="font-size:var(--fs-20); font-weight:600;">R$ 0,00</div>
+        </div>
+      </section>
+
+      <!-- 🧾 Painel -->
+      <section class="section-card">
+        <header style="margin-bottom: var(--gap-sm);">
+          <h2>📊 Painel de Cobranças</h2>
+        </header>
+
+        <div class="c-scroll c-scroll--panel" role="region" aria-label="Painel de Cobranças">
+          <div class="colunas-status">
+            <div class="coluna" id="coluna-received"><h3>🟢 Pagos</h3></div>
+            <div class="coluna" id="coluna-pending"><h3>🟡 À Vencer</h3></div>
+            <div class="coluna" id="coluna-overdue"><h3>🔴 Vencidos</h3></div>
+            <div class="coluna" id="coluna-cancelled"><h3>⛔ Cancelados</h3></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- MODAL – BUSCA DE CLIENTES -->
+  <div class="modal-mask" id="modalClientesMask" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalClientesTitle">
+      <header>
+        <h3 id="modalClientesTitle">🔎 Buscar Cliente (SQL)</h3>
+        <button class="btn btn-flat" id="btnFecharModalClientes">✖</button>
+      </header>
+
+      <div class="input-row">
+        <input type="text" id="buscaClienteSQL" placeholder="Digite nome, CNPJ/CPF ou e-mail (mín. 3 letras)..." autocomplete="off" />
+        <button class="btn btn-primary" id="btnBuscarClienteSQL">Buscar</button>
+      </div>
+
+      <div class="modal-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>CNPJ/CPF</th>
+              <th>E-mail</th>
+              <th>Telefone</th>
+              <th>Asaas</th>
+              <th style="width: 120px;"></th>
+            </tr>
+          </thead>
+          <tbody id="resultadoClientesSQL"></tbody>
+        </table>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-flat" id="btnCancelarModalClientes">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Core (centerAlertModal, helpers globais, etc.) -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <!-- JS do módulo Asaas -->
+  <script src="/public/cobrancas/asaas.js"></script>
+
+  <!-- Script do modal (isolado para não depender do asaas.js) -->
+  <script>
+    (function(){
+      const api = (p='') => ((window.apiBase || '') + p);
+
+      const els = {
+        mask: document.getElementById('modalClientesMask'),
+        open: document.getElementById('btnAbrirModalClientes'),
+        closeX: document.getElementById('btnFecharModalClientes'),
+        close: document.getElementById('btnCancelarModalClientes'),
+        buscar: document.getElementById('btnBuscarClienteSQL'),
+        input: document.getElementById('buscaClienteSQL'),
+        tbody: document.getElementById('resultadoClientesSQL'),
+        asaasId: document.getElementById('clienteId'),
+        nomeSel: document.getElementById('clienteNomeSelecionado')
+      };
+
+      function openModal(){
+        els.mask.style.display = 'flex';
+        document.body.classList.add('modal-open');
+        els.input.focus();
+      }
+      function closeModal(){
+        els.mask.style.display = 'none';
+        document.body.classList.remove('modal-open');
+        els.tbody.innerHTML = '';
+        els.input.value = '';
+      }
+
+      els.open.addEventListener('click', openModal);
+      els.closeX.addEventListener('click', closeModal);
+      els.close.addEventListener('click', closeModal);
+
+      let t;
+      els.input.addEventListener('input', () => {
+        clearTimeout(t);
+        const v = els.input.value.trim();
+        if (v.length < 3) { els.tbody.innerHTML=''; return; }
+        t = setTimeout(()=>buscar(v), 300);
+      });
+
+      els.buscar.addEventListener('click', () => {
+        const v = els.input.value.trim();
+        if (v.length < 3) { alert('Digite ao menos 3 caracteres.'); return; }
+        buscar(v);
+      });
+
+      async function buscar(q){
+        try {
+          const res = await fetch(`/api/clientes?q=${encodeURIComponent(q)}`, {
+            headers: { 'Accept': 'application/json' },
+            credentials: 'include'
+          });
+
+          if (!res.ok) {
+            const text = await res.text();
+            console.error("Erro HTTP", res.status, text);
+            alert(`Erro ao buscar clientes (${res.status}).`);
+            return;
+          }
+
+          const data = await res.json();
+          const lista = Array.isArray(data) ? data : (data?.clientes || []);
+          render(lista);
+
+        } catch (err) {
+          console.error("Erro na busca:", err);
+          alert("Falha de rede/busca. Veja o console.");
+        }
+      }
+
+      function normalize(s){
+        return (s || '')
+          .toString()
+          .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+          .toLowerCase()
+          .trim();
+      }
+
+      function render(lista){
+        els.tbody.innerHTML = '';
+
+        const qRaw = els.input.value || '';
+        const qNorm = normalize(qRaw);
+        const tokens = qNorm.split(/\s+/).filter(Boolean);
+        const qDigits = qRaw.replace(/\D/g, '');
+
+        const filtrada = lista.filter(c => {
+          const nome  = normalize(c.nome_fantasia);
+          const razao = normalize(c.razao_social);
+          const email = normalize(c.email);
+          const tel   = normalize(c.telefone);
+          const cnpj  = (c.cnpj_cpf || '').replace(/\D/g, '');
+
+          const textOK = tokens.every(t =>
+            nome.includes(t) || razao.includes(t) || email.includes(t) || normalize(tel).includes(t)
+          );
+          const cnpjOK = qDigits ? cnpj.includes(qDigits) : true;
+
+          return textOK && cnpjOK;
+        });
+
+        const dados = filtrada;
+
+        if (!dados.length) {
+          els.tbody.innerHTML = `<tr><td colspan="6">Sem resultados para “${qRaw}”.</td></tr>`;
+          return;
+        }
+
+        for (const c of dados) {
+          const nome  = c.nome_fantasia ?? '-';
+          const email = c.email ?? '-';
+          const tel   = c.telefone ?? '-';
+          const cnpj  = c.cnpj_cpf ?? '-';
+          const asaas = c.asaas_id || '';
+
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td title="${nome}">${nome}</td>
+            <td title="${cnpj}">${cnpj}</td>
+            <td title="${email}">${email}</td>
+            <td title="${tel}">${tel}</td>
+            <td>${asaas ? `<span class="tag-ok" title="${asaas}">${asaas}</span>` : '—'}</td>
+            <td style="text-align:right;">
+              <button class="btn btn-sm btn-primary" data-id="${c.id}"
+                      data-nome="${(nome||'').replace(/"/g,'&quot;')}"
+                      data-asaas="${asaas}">
+                Selecionar
+              </button>
+            </td>
+          `;
+          tr.querySelector('button').addEventListener('click', onSelectClick);
+          els.tbody.appendChild(tr);
+        }
+      }
+
+      async function onSelectClick(ev){
+        const btn  = ev.currentTarget;
+        const id   = btn.dataset.id;
+        const nome = btn.dataset.nome;
+        let asaas  = btn.dataset.asaas;
+
+        if (!asaas) {
+          btn.disabled = true; btn.textContent = 'Vinculando...';
+          try {
+            const r  = await fetch(api(`/api/cobrancas/clientes/${id}/vincular-asaas`), { method: 'POST' });
+            const js = await r.json();
+            if (!r.ok) {
+              console.error(js);
+              alert(js.erro || 'Falha ao vincular com Asaas');
+              btn.disabled = false; btn.textContent = 'Selecionar';
+              return;
+            }
+            asaas = js.asaas_id || '';
+          } catch (err) {
+            console.error(err);
+            alert('Erro ao vincular com Asaas.');
+            btn.disabled = false; btn.textContent = 'Selecionar';
+            return;
+          }
+          btn.disabled = false; btn.textContent = 'Selecionar';
+        }
+
+        els.asaasId.value = asaas || '';
+        els.nomeSel.value = nome || '';
+
+        closeModal();
+      }
+    })();
+  </script>
+</body>
+</html>

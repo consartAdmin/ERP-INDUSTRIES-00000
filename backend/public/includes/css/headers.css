@@ -1,0 +1,194 @@
+/*---------------------------------------------------------
+                        headers.css
+---------------------------------------------------------*/
+
+:root {
+
+    /*Header height*/
+
+    --header-height-1: 10px;
+    --header-height-2: 20px;
+    --header-height-3: 30px;
+    --header-height-4: 40px;
+    --header-height-5: 60px;
+    --header-height-7: 100px;
+    --header-height-8: 120px;
+    --header-heightheader-height-9: 150px;
+    --header-height-10: 200px;
+    --header-height-12: 250px;
+
+    /* Default header height */
+    --header-height: var(--header-height-5);
+
+    /* Header appearance */
+    --header-background: #f3f4f6;
+    --header-border-color: #111827;
+    --header-border-width: 1px;
+    --header-border-radius: 6px;
+
+    /* Header bottom spacing */
+    --header-space-1: 4px;
+    --header-space-2: 8px;
+    --header-space-3: 12px;
+    --header-space-4: 16px;
+}
+
+/* ====================================================================
+   STANDARD HEADER
+==================================================================== */
+.header {
+    width: 100%;
+    min-width: 0;
+    min-height: var(--header-height);
+
+    padding: 10px 12px;
+
+    background-color: var(--header-background);
+
+    border: var(--header-border-width) solid var(--header-border-color);
+    border-radius: var(--header-border-radius);
+
+    box-sizing: border-box;
+}
+
+
+/*HEIGHT CONTROL*/
+.header-h-1 {
+    --header-height: var(--header-height-1);
+}
+
+.header-h-2 {
+    --header-height: var(--header-height-2);
+}
+
+.header-h-3 {
+    --header-height: var(--header-height-3);
+}
+
+.header-h-4 {
+    --header-height: var(--header-height-4);
+}
+
+.header-h-5 {
+    --header-height: var(--header-height-5);
+}
+
+.header-h-7 {
+    --header-height: var(--header-height-7);
+}
+
+.header-h-8 {
+    --header-height: var(--header-height-8);
+}
+
+.header-h-9 {
+    --header-height: var(--header-height-9);
+}
+
+.header-h-10 {
+    --header-height: var(--header-height-10);
+}
+
+.header-h-12 {
+    --header-height: var(--header-height-12);
+}
+
+/* ====================================================================
+   HEADER WITH INTERNAL HORIZONTAL SCROLL
+==================================================================== */
+
+.header-scroll-x {
+    width: 100%;
+    min-width: 0;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    scrollbar-width: thin;
+    scrollbar-color: #9ca3af #e5e7eb;
+}
+
+/* Keeps the header contents on one continuous line */
+.header-scroll-x>.fields-lines {
+    width: max-content;
+    min-width: 100%;
+}
+
+/* Prevents fields from wrapping onto another line */
+.header-scroll-x .fields-inline {
+    width: max-content;
+    min-width: 100%;
+
+    display: flex;
+    flex-wrap: nowrap;
+
+    align-items: flex-end;
+}
+
+/* Prevents individual fields from shrinking */
+.header-scroll-x .fields-inline>.fields {
+    flex: 0 0 auto;
+}
+
+/* Chrome, Edge and Safari scrollbar */
+.header-scroll-x::-webkit-scrollbar {
+    height: 8px;
+}
+
+.header-scroll-x::-webkit-scrollbar-track {
+    background-color: #e5e7eb;
+    border-radius: 999px;
+}
+
+.header-scroll-x::-webkit-scrollbar-thumb {
+    background-color: #9ca3af;
+    border-radius: 999px;
+    border: 2px solid #e5e7eb;
+}
+
+.header-scroll-x::-webkit-scrollbar-thumb:hover {
+    background-color: #6b7280;
+}
+
+/* =========================================================
+   HEADER BOTTOM SPACING
+   ========================================================= */
+
+.header-mb-1 {
+    margin-bottom: var(--header-space-1);
+}
+
+.header-mb-2 {
+    margin-bottom: var(--header-space-2);
+}
+
+.header-mb-3 {
+    margin-bottom: var(--header-space-3);
+}
+
+.header-mb-4 {
+    margin-bottom: var(--header-space-4);
+}
+
+/* Vertical header: title above actions */
+.header-column {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+}
+/* Horizontal header: title on the left, actions on the right */
+.header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.header-row h1 {
+    margin: 0;
+}
+
+.header-row p {
+    margin: 4px 0 0;
+}

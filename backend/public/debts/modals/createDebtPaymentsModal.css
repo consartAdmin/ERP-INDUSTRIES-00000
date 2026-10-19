@@ -1,0 +1,132 @@
+#paymentModal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+}
+
+#paymentModal .modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, .55);
+}
+
+#paymentModal .modal__panel {
+  position: relative;
+  z-index: 1;
+  width: min(1180px, calc(100vw - 48px));
+  max-height: calc(100vh - 48px);
+  margin: 24px auto;
+  background: #fff;
+  border-radius: 14px;
+  overflow: auto;
+}
+
+#paymentModal .modal__header {
+  padding: 16px 22px;
+  border-bottom: 1px solid #dbe2ea;
+  background: #fff;
+}
+
+#paymentModal .modal__body {
+  padding: 18px 22px;
+  background: #fff;
+}
+
+#paymentModal .form-grid {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+#paymentModal .payment-grid-inline-5 {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+#paymentModal .payment-grid-inline-actions {
+  grid-template-columns: 1fr 1fr 1fr 1fr auto;
+  align-items: end;
+  border-bottom: 1px solid #dbe2ea;
+  padding-bottom: 16px;
+}
+
+#paymentModal .field-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+#paymentModal input,
+#paymentModal select {
+  width: 100%;
+  height: 38px;
+}
+
+#paymentModal .payment-actions-inline {
+  display: flex;
+  align-items: end;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-bottom: 1px;
+  white-space: nowrap;
+}
+
+#paymentModal .payment-actions-inline .btn {
+  height: 38px;
+}
+
+#paymentModal #paymentSummaryBox {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  padding: 14px;
+  margin-bottom: 16px;
+  background: #f8fafc;
+  border: 1px solid #dbe2ea;
+  border-radius: 12px;
+}
+
+#paymentModal .table-scroll {
+  max-height: 280px;
+  overflow: auto;
+  border: 1px solid #dbe2ea;
+  border-radius: 12px;
+}
+
+#paymentModal table {
+  width: 100%;
+}
+
+@media (max-width: 1200px) {
+  #paymentModal .payment-grid-inline-5 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  #paymentModal .payment-grid-inline-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #paymentModal .payment-actions-inline {
+    justify-content: flex-start;
+  }
+
+  #paymentModal #paymentSummaryBox {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  #paymentModal .modal__panel {
+    width: calc(100vw - 20px);
+    margin: 10px auto;
+  }
+
+  #paymentModal .payment-grid-inline-5,
+  #paymentModal .payment-grid-inline-actions,
+  #paymentModal #paymentSummaryBox {
+    grid-template-columns: 1fr;
+  }
+
+  #paymentModal .payment-actions-inline {
+    flex-wrap: wrap;
+  }
+}

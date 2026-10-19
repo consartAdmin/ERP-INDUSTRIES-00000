@@ -1,0 +1,344 @@
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ nfeInbox.html — Caixa de Entrada NF-e | PRODNEX ERP             ║
+     ║ ✅ Usa containerConsart.css (altura fixa real + scroll interno)   ║
+     ║ ✅ Card único: filtros + header + controles + tabela + paginação  ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png" />
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png" />
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png" />
+
+  <title>DF-E | PRODNEX ERP</title>
+
+  <!-- 🎨 Design System global -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- 📅 Componente de intervalo de datas -->
+  <link rel="stylesheet" href="/public/includes/css/date-range-field.css" />
+
+  <!-- ↕️ Cabeçalhos ordenáveis -->
+  <link rel="stylesheet" href="/public/includes/css/sortableTable.css" />
+
+  <link rel="stylesheet" href="/public/nfeInbox/css/nfeInbox.modals.css" />
+
+  <!-- 🎨 CSS específico do módulo -->
+  <link rel="stylesheet" href="./css/nfeInbox.css?v=4" />
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <section class="table-layout-integrated">
+      <form id="nfi-filter-form" class="table-layout-integrated__filter">
+
+        <!-- =======================
+             LINHA 1 — FILTROS
+             ======================= -->
+        <div class="fields fields-inline fields-gap-3 nfi-filter-header">
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <div>
+              <h2>Filtros</h2>
+            </div>
+          </div>
+
+          <!-- Data/hora da última sincronização DF-e (preenchida via API) -->
+          <span id="nfi-sync-info" class="nfi-sync-info" data-sync-status="never">—</span>
+        </div>
+
+        <div class="fields fields-inline fields-gap-3">
+          <div class="fields fields-h-6 fields-w-8 fields-font-3">
+            <label for="situacao">Situação</label>
+            <select id="situacao" name="situacao">
+              <option value="">Todas</option>
+              <option value="AUTORIZADA">Autorizada</option>
+              <option value="CANCELADA">Cancelada</option>
+              <option value="DENEGADA">Denegada</option>
+            </select>
+          </div>
+
+          <!-- Oculto: mantido no DOM para os filtros continuarem funcionando -->
+          <div class="fields fields-h-6 fields-w-10 fields-font-3 nfi-hidden-field" hidden>
+            <label for="manifestacao">Manifestação</label>
+            <select id="manifestacao" name="manifestacao">
+              <option value="">Todas</option>
+              <option value="CIENTE">Ciente</option>
+              <option value="CONFIRMADA">Confirmada</option>
+              <option value="DESCONHECIDA">Desconhecida</option>
+              <option value="NAO_REALIZADA">Não Realizada</option>
+            </select>
+          </div>
+
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <label for="nfi-q">Buscar</label>
+            <input id="nfi-q" type="text" placeholder="Buscar por chave (44), nº NF-e ou emitente…"
+              autocomplete="off" />
+          </div>
+
+          <div class="fields fields-h-6 fields-w-16 fields-font-3">
+            <date-range-field id="filterDateRange" class="drf-width-3 drf-height-3" label="Período"
+              locale="pt-BR"></date-range-field>
+          </div>
+
+          <div class="nfi-actions nfi-actions--inline menu-botoes">
+            <button type="submit" class="btn btn-toolbar btn-sm" id="btnNfiApplyFilters">🔍 Filtrar</button>
+            <button type="button" class="btn btn-toolbar btn-sm" id="btnNfiClearFilters">Limpar</button>
+          </div>
+
+          <!-- =======================
+             LINHA 2 — HEADER + BUSCA
+             ======================= -->
+          <div class="fields fields-inline fields-gap-3">
+
+            <!-- =======================
+             LINHA 3 — CONTROLES + BOTÕES
+             ======================= -->
+
+            <!-- Oculto: mantido no DOM para o fluxo de manifestação continuar funcionando -->
+            <div class="fields fields-h-6 fields-w-20 fields-font-3 nfi-hidden-field" hidden>
+              <select id="nfi-manifest-select" title="Operação de manifestação">
+                <option value="">Manifestação...</option>
+                <option value="CIENCIA">CIÊNCIA</option>
+                <option value="CONFIRMACAO">CONFIRMAÇÃO</option>
+                <option value="DESCONHECIMENTO">DESCONHECIMENTO</option>
+                <option value="NAO_REALIZADA">NÃO REALIZADA</option>
+              </select>
+            </div>
+
+            <!-- Oculto junto com o select de manifestação; a lógica permanece intacta -->
+            <button type="button" id="btnNfiManifest" class="btn btn-toolbar btn-sm nfi-hidden-field"
+              title="Enviar manifestação SEFAZ para a NF selecionada" hidden disabled>🖊️ Manifestar</button>
+
+            <button type="button" id="btnNfiDownloadXml" class="btn btn-toolbar btn-sm"
+              title="Baixar XML oficial (se disponível) da NF selecionada" disabled>📄 Baixar XML</button>
+
+            <button type="button" id="btnNfiDownloadXmlLote" class="btn btn-toolbar btn-sm"
+              title="Baixar XML oficial (se disponível) da NF selecionada" disabled>📄 Baixar XML Lote</button>
+
+            <!-- ✅ NOVO: PDF / DANFE -->
+            <button type="button" id="btnNfiDownloadPdf" class="btn btn-toolbar btn-sm"
+              title="Baixar DANFE (PDF) gerado a partir do XML da NF selecionada" disabled>🧾 Baixar PDF</button>
+
+            <button type="button" id="btnNfiEntrada" class="btn btn-toolbar btn-sm"
+              title="Iniciar processo de entrada de produtos para a NF selecionada" disabled>📥 Entrada NF</button>
+
+            <button type="button" id="btnNfiImportXml" class="btn btn-toolbar btn-sm">⬆️ Importar XML</button>
+
+            <!-- Dispara a sincronização DF-e sob demanda; o resultado aparece
+                 no indicador "Última sincronização" no topo dos filtros. -->
+            <button type="button" id="btnNfiSyncDfe" class="btn btn-toolbar btn-sm"
+              title="Buscar na SEFAZ as NF-e emitidas contra o CNPJ da empresa">🔄 Sincronizar DF-e</button>
+
+            <div class="fields fields-h-6 fields-w-20 fields-font-3">
+              <input id="nfi-file-input" type="file" accept=".xml,application/xml,text/xml" multiple hidden />
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <!--===================================================-->
+      <!-- TABLE                                               -->
+      <!-- =================================================== -->
+
+      <div class="table-scroll table-height-500 table-row-h-28" data-table-settings="nfeinbox.nfi-table">
+        <table id="nfi-table" class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th class="table-sortable" data-sort-column="data_autorizacao" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  Data <span data-sort-icon aria-hidden="true">↕</span>
+                </button>
+              </th>
+              <th class="table-sortable" data-sort-column="chave_nfe" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  Chave NF-e <span data-sort-icon aria-hidden="true">↕</span>
+                </button>
+              </th>
+              <th class="table-sortable nfi-col-numero" data-sort-column="numero" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  Nº NF-e <span data-sort-icon aria-hidden="true">↕</span>
+                </button>
+              </th>
+              <th class="table-sortable" data-sort-column="emitente_razao" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  Emitente <span data-sort-icon aria-hidden="true">↕</span>
+                </button>
+              </th>
+              <th class="table-sortable" data-sort-column="destinatario_razao" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  Destinatário <span data-sort-icon aria-hidden="true">↕</span>
+                </button>
+              </th>
+              <th class="table-sortable nfi-col-right" data-sort-column="valor_total" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  Valor Total <span data-sort-icon aria-hidden="true">↕</span>
+                </button>
+              </th>
+              <th class="table-sortable" data-sort-column="entrada_criada" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  Situação <span data-sort-icon aria-hidden="true">↕</span>
+                </button>
+              </th>
+              <!-- Sem table-sortable: 'manifestacao' não está em SORTABLE_COLUMNS
+                   (coluna oculta), e marcá-la como ordenável dispararia o
+                   onError do sortableTable caso a coluna volte a aparecer. -->
+              <th class="nfi-col-manifest">Manifestação</th>
+            </tr>
+          </thead>
+          <tbody id="tableBodyList"></tbody>
+        </table>
+
+        <p id="nfi-empty-state" class="nfi-empty-state" hidden>
+          Nenhuma NF-e encontrada para os filtros selecionados.
+        </p>
+      </div>
+
+      <!-- =================================================== -->
+      <!-- TABLE FOOTER                                        -->
+      <!-- =================================================== -->
+
+      <footer class="table-footer">
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill-success summary-width-5 summary-left-space-3">
+            <span id="apTableInfo">
+              0 Registros
+            </span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button id="btnPrevious" type="button" class="btn btn-toolbar btn-sm">
+            Anterior
+          </button>
+
+          <span id="pageInfo">
+            Página 1 de 1
+          </span>
+
+          <button id="btnNext" type="button" class="btn btn-toolbar btn-sm">
+            Próxima
+          </button>
+        </div>
+        <div class="table-footer__page-size">
+          <label for="pageSize">
+            Mostrar
+          </label>
+          <div class="fields fields-h-6 fields-w-3 fields-font-3">
+            <select id="pageSize" class="table-footer__page-size-select">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50" selected>50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <!-- Modal de Entrada NF -->
+  <div id="nfi-entry-modal" class="nfi-modal" hidden>
+    <div class="nfi-modal-backdrop">
+      <div class="nfi-modal-content">
+        <header class="nfi-modal-header">
+          <h3>Entrada de Nota Fiscal</h3>
+          <button type="button" id="nfi-entry-close" class="nfi-modal-close" aria-label="Fechar">&times;</button>
+        </header>
+
+        <section class="nfi-modal-body">
+          <p class="nfi-modal-subtitle">
+            Você selecionou a seguinte NF-e para iniciar o processo de entrada de produtos:
+          </p>
+
+          <div class="nfi-modal-grid">
+            <div class="nfi-modal-block">
+              <h4>NF-e Selecionada</h4>
+              <p><strong>Chave:</strong> <span id="nfi-entry-chave">-</span></p>
+              <p><strong>Emitente:</strong> <span id="nfi-entry-emitente">-</span></p>
+              <p><strong>Valor Total:</strong> <span id="nfi-entry-valor">-</span></p>
+            </div>
+          </div>
+
+          <p class="nfi-modal-question">
+            Deseja iniciar o processo de <strong>entrada de produtos</strong> para esta nota fiscal?
+          </p>
+
+          <div class="nfi-modal-actions menu-botoes">
+            <button type="button" id="nfi-entry-confirm" class="btn btn-toolbar btn-sm">Iniciar Entrada</button>
+            <button type="button" id="nfi-entry-cancel" class="btn btn-toolbar btn-sm">Cancelar</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de detalhes -->
+  <div id="nfi-detail-modal" class="nfi-modal" hidden>
+    <div class="nfi-modal-backdrop"></div>
+    <div class="nfi-modal-content">
+      <header class="nfi-modal-header">
+        <h3>Detalhes da NF-e</h3>
+        <button type="button" id="nfi-modal-close" class="nfi-modal-close" aria-label="Fechar">&times;</button>
+      </header>
+
+      <section class="nfi-modal-body">
+        <div class="nfi-modal-grid">
+          <div class="nfi-modal-block">
+            <h4>Identificação</h4>
+            <p><strong>Chave:</strong> <span id="nfi-detail-chave"></span></p>
+            <p><strong>Modelo/Série/Número:</strong> <span id="nfi-detail-mod-serie-num"></span></p>
+            <p><strong>Data Emissão:</strong> <span id="nfi-detail-emissao"></span></p>
+            <p><strong>Data Autorização:</strong> <span id="nfi-detail-autorizacao"></span></p>
+          </div>
+
+          <div class="nfi-modal-block">
+            <h4>Emitente</h4>
+            <p><strong>CNPJ:</strong> <span id="nfi-detail-emitente-cnpj"></span></p>
+            <p><strong>Razão:</strong> <span id="nfi-detail-emitente-razao"></span></p>
+          </div>
+
+          <div class="nfi-modal-block">
+            <h4>Destinatário</h4>
+            <p><strong>CNPJ:</strong> <span id="nfi-detail-dest-cnpj"></span></p>
+            <p><strong>Razão:</strong> <span id="nfi-detail-dest-razao"></span></p>
+          </div>
+
+          <div class="nfi-modal-block">
+            <h4>Resumo Fiscal</h4>
+            <p><strong>Situação:</strong> <span id="nfi-detail-situacao"></span></p>
+            <p><strong>Manifestação:</strong> <span id="nfi-detail-manifestacao"></span></p>
+            <p><strong>Valor Total:</strong> <span id="nfi-detail-valor"></span></p>
+          </div>
+        </div>
+
+        <details class="nfi-xml-toggle">
+          <summary>Ver XML (completo/resumido)</summary>
+          <pre id="nfi-detail-xml" class="nfi-xml-viewer"></pre>
+        </details>
+      </section>
+    </div>
+  </div>
+
+  <!-- Scripts do módulo
+       ATENÇÃO: o ?v= abaixo invalida o cache APENAS de nfeInbox.init.js.
+       Os módulos importados por ele (actions, render, state, ...) são
+       buscados pela URL sem query e podem continuar vindo do cache do
+       navegador após um deploy. Versionar cada import criaria instâncias
+       duplicadas de módulo se um deles ficasse para trás; a correção certa
+       é no servidor — enviar Cache-Control: no-cache para /public/**/*.js
+       ou publicar com nomes de arquivo versionados. -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="/public/includes/js/date-range-field.js"></script>
+  <script type="module" src="./js/nfeInbox.init.js?v=12"></script>
+  <script type="module" src="/public/modalsSearch/inboundModals.js"></script>
+</body>
+
+</html>

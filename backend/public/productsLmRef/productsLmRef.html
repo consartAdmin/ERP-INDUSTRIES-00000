@@ -1,0 +1,134 @@
+<!-- ╔════════════════════════════════════════════════════════════════════╗
+     ║ FILE: productsLmRef.html                                         ║
+     ║ MODULE: Produtos LM Referência                                   ║
+     ║ DESCRIPTION: Gestão das referências de produtos LM               ║
+     ║ PRODNEX ERP                                                      ║
+     ╚════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+  <title>PRODUTOS LM REFERÊNCIA | PRODNEX ERP</title>
+  <link rel="stylesheet" href="/public/includes/css/style.css">
+  <link rel="stylesheet" href="./productsLmRef.css">
+  <link rel="stylesheet" href="./productsLmRefModal.css">
+  <link rel="stylesheet" href="/public/modalsSearch/suppliersModalSearch.css">
+</head>
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+    <header class="header">
+      <div class="fields-inline">
+        <div class="fields-inline fields-h-6 fields-w-full fields-font-3"><h2>Produtos LM Referência</h2></div>
+      </div>
+      <div class="fields-inline fields-h-6 fields-w-full fields-font-3">
+        <p>Gerencie o relacionamento entre fornecedores, códigos de nota fiscal e códigos internos de produtos.</p>
+        <div class="btn-inline btn-position-right">
+          <button id="btnNew" class="btn btn-tolbar btn-sm" type="button">Nova Referência</button>
+          <button id="btnRefresh" class="btn btn-tolbar btn-sm" type="button">Atualizar</button>
+        </div>
+      </div>
+    </header>
+
+    <div id="productsLmRefMessage" class="products-lm-ref-message" hidden></div>
+
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter table-max-height-500">
+        <div><h2 class="tp-section-title">Filtros de pesquisa</h2></div>
+        <div class="fields-inline fields-gap-3">
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <label for="searchInput">Pesquisar</label>
+            <input id="searchInput" type="search" placeholder="Código NF, código do produto ou descrição...">
+          </div>
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <label for="searchStatus">Status</label>
+            <select id="searchStatus">
+              <option value="">Todos</option><option value="true">Ativo</option><option value="false">Inativo</option>
+            </select>
+          </div>
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <label aria-hidden="true">&nbsp;</label>
+            <button id="btnSearch" class="btn btn-toolbar btn-sm" type="button">Buscar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-scroll table-height-fkex table-row-h-28" data-table-settings="productslmref.bodytable">
+        <table class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead><tr>
+            <th style="width:80px">ID</th><th style="width:120px">Fornecedor</th>
+            <th style="min-width:170px">Código NF</th><th style="min-width:170px">Código Produto</th>
+            <th style="min-width:320px">Descrição</th><th style="width:110px">Status</th>
+            <th style="width:180px">Ações</th>
+          </tr></thead>
+          <tbody id="bodyTable"></tbody>
+        </table>
+        <div id="loadingIndicator" class="products-lm-ref-loading" hidden>Carregando...</div>
+      </div>
+
+      <footer class="table-footer">
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-5 summary-left-space-3">
+            <span id="apTableInfo">0 registros</span>
+          </div>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <dialog id="productsLmRefModal" class="products-lm-ref-modal">
+    <form id="productsLmRefForm" method="dialog" novalidate>
+      <header class="products-lm-ref-modal__header">
+        <h2 id="formTitle">Nova referência de produto</h2>
+        <button id="btnCloseModal" class="btn btn-toolbar btn-sm" type="button" aria-label="Fechar">×</button>
+      </header>
+      <div class="products-lm-ref-modal__body">
+        <div class="products-lm-ref-form-grid">
+          <div class="fields fields-h-6 fields-font-3">
+            <label for="supplierName">Fornecedor</label>
+            <div class="products-lm-ref-lookup">
+              <input id="supplierName" name="supplierName" type="text" readonly placeholder="Clique para pesquisar o fornecedor...">
+              <button id="btnPickSupplier" class="btn btn-toolbar btn-sm" type="button" title="Pesquisar fornecedor" aria-label="Pesquisar fornecedor">🔍</button>
+            </div>
+            <input id="supplierId" name="supplierId" type="hidden">
+            <span class="products-lm-ref-error" data-error="supplierId"></span>
+          </div>
+          <div class="fields fields-h-6 fields-font-3">
+            <label for="nfProductCode">Código do produto na NF</label><input id="nfProductCode" name="nfProductCode" maxlength="60" required>
+            <span class="products-lm-ref-error" data-error="nfProductCode"></span>
+          </div>
+          <div class="fields fields-h-6 fields-font-3">
+            <label for="productCode">Código interno do produto</label>
+            <div class="products-lm-ref-lookup">
+              <input id="productCode" name="productCode" maxlength="50" required placeholder="Pesquise o produto (F2)">
+              <button id="btnPickProduct" class="btn btn-toolbar btn-sm" type="button" title="Pesquisar produto" aria-label="Pesquisar produto">🔍</button>
+            </div>
+            <span class="products-lm-ref-error" data-error="productCode"></span>
+          </div>
+          <div class="fields fields-h-6 fields-font-3 products-lm-ref-form-grid__full">
+            <label for="description">Descrição</label>
+            <div class="products-lm-ref-lookup">
+              <input id="description" name="description" maxlength="255" required placeholder="Preenchida pela pesquisa de produto (F2)">
+              <button id="btnPickProductByDescription" class="btn btn-toolbar btn-sm" type="button" title="Pesquisar produto" aria-label="Pesquisar produto">🔍</button>
+            </div>
+            <span class="products-lm-ref-error" data-error="description"></span>
+          </div>
+          <label class="products-lm-ref-checkbox"><input name="isActive" type="checkbox" checked> Ativo</label>
+        </div>
+      </div>
+      <footer class="products-lm-ref-modal__footer">
+        <button id="cancelEditButton" class="btn btn-toolbar btn-sm" type="button">Cancelar</button>
+        <button class="btn btn-tolbar btn-sm" type="submit">Salvar</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="./js/productsLmRef.init.js"></script>
+</body>
+</html>
+

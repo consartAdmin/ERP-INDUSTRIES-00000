@@ -1,0 +1,89 @@
+/* budgets.layout.css */
+:root{
+  --consart-topbar-h: 64px;
+  --consart-breadcrumb-h: 92px;
+  --consart-page-pad: 24px;
+
+  --budgets-panel-h: calc(
+    100vh
+    - var(--consart-topbar-h)
+    - var(--consart-breadcrumb-h)
+    - (var(--consart-page-pad) * 2)
+  );
+
+  /* UI height unify */
+  --ui-h: var(--consart-input-h, 30px);
+}
+
+/* LIST + EDITOR panels fixed */
+.tab-panel{
+  height:var(--budgets-panel-h);
+  max-height:var(--budgets-panel-h);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+}
+
+.table-wrapper--budgets{
+  flex:1;
+  min-height:0;
+  overflow:auto;
+}
+#paginacao{ flex:0 0 auto; }
+
+/* EDITOR: fixed panel, items table scrolls, payment pinned */
+#editor{
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+}
+#editor .editor-container{
+  flex:1;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+}
+#editor .editor-container > .stack{
+  flex:1;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  margin-top:6px !important;
+  gap:10px !important;
+}
+#editor .editor-container > .stack > .stack{
+  flex:1;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+}
+#editor .table-wrapper.scroll-y{
+  flex:1;
+  min-height:140px;
+  overflow:auto !important;
+}
+
+/* payment pinned */
+.pagamento-total-wrapper{
+  margin-top:auto !important;
+  background:#fff;
+  border-top:1px solid #e5e7eb;
+  padding-top:10px;
+  position:relative;
+  z-index:5;
+}
+
+.page .field-input,
+.page .field-select{
+  height:var(--ui-h) !important;
+  min-height:var(--ui-h) !important;
+  line-height:calc(var(--ui-h) - 2px) !important;
+  box-sizing:border-box !important;
+}
+.form-grid--items input,
+.form-grid--items select{
+  height:var(--ui-h) !important;
+  min-height:var(--ui-h) !important;
+  line-height:calc(var(--ui-h) - 2px) !important;
+}

@@ -1,0 +1,168 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ createProductsStockLotsModal.css — Modal (Overlay 100% + Center)     ║
+   ║ Path: backend/public/productsStockLots/createProductsStockLotsModal.css║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+body.modal-open{
+  overflow: hidden !important;
+}
+
+/* Overlay 100% por cima */
+.modal-layer{
+  position: fixed;
+  inset: 0;
+  z-index: 999999;             /* acima de tudo */
+  display: grid;
+  place-items: center;
+  padding: 24px;
+
+  /* Backdrop forte para não “misturar cores” */
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(10px);
+}
+
+.modal-layer.hidden{
+  display:none;
+}
+
+/* Modal centralizado e com scroll interno */
+.modal{
+  width: min(980px, 100%);
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+
+  background: #ffffff;
+  color: #111827;
+  border: 1px solid rgba(0,0,0,.10);
+  border-radius: 22px;
+  box-shadow: 0 22px 70px rgba(0,0,0,.45);
+}
+
+/* Cabeçalho sticky */
+.modal-head{
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #ffffff;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+}
+
+.modal-title{
+  font-weight: 900;
+  letter-spacing: .2px;
+}
+
+/* Botão fechar */
+.icon-btn{
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(0,0,0,.04);
+  color: #111827;
+  cursor:pointer;
+}
+.icon-btn:hover{ background: rgba(0,0,0,.08); }
+
+.icon-btn-mini{
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+}
+
+/* Conteúdo */
+.modal-body{ padding: 16px; }
+
+/* grid do formulário */
+.grid-2{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* input + botão */
+.input-with-btn{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+.input-with-btn > input{
+  flex:1;
+}
+
+/* Dica pequena */
+.hint{
+  margin-top: 6px;
+  font-size: .82rem;
+  opacity: .85;
+}
+
+/* Separador */
+.divider{
+  margin: 14px 0;
+  height: 1px;
+  background: rgba(0,0,0,.08);
+}
+
+/* Box operações */
+.ops{
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,.08);
+  background: rgba(0,0,0,.03);
+}
+.ops-title{ font-weight: 900; margin-bottom: 10px; }
+.ops-row{
+  display:flex;
+  gap: 10px;
+  align-items:flex-end;
+  flex-wrap:wrap;
+}
+.ops-row .field{ width: 180px; }
+.ops-hint{ margin-top: 8px; font-size:.9rem; }
+
+/* Rodapé sticky */
+.modal-foot{
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  background: #ffffff;
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-top: 1px solid rgba(0,0,0,.08);
+}
+.modal-foot .right{ display:flex; gap:10px; }
+
+/* Toast acima do overlay */
+.toast{
+  position: fixed;
+  z-index: 1000000;
+  right: 16px;
+  bottom: 16px;
+  max-width: min(520px, calc(100% - 32px));
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(0,0,0,.75);
+  color: #fff;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 18px 50px rgba(0,0,0,.45);
+  font-weight: 800;
+}
+
+.toast.hidden{ display:none; }
+
+/* Mobile */
+@media (max-width: 720px){
+  .modal-layer{ padding: 14px; }
+  .grid-2{ grid-template-columns: 1fr; }
+}

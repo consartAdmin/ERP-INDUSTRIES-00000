@@ -1,0 +1,200 @@
+<!-- ╔════════════════════════════════════════════════════════════════════╗
+     ║ employeeDocuments.html — Documentos de Colaboradores              ║
+     ║ PRODNEX ERP | Frontend (ESM)                                      ║
+     ╚════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>DOCUMENTOS DO COLABORADOR | PRODNEX ERP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <!-- 🌐 Design System CONSART -->
+  <link rel="stylesheet" href="/public/includes/css/style.css">
+  <link rel="stylesheet" href="/public/employeeDocuments/employeeDocuments.css?v=esm-01">
+</head>
+
+<body class="page-employee-documents">
+
+  <main class="edm-main">
+    <!-- Cabeçalho da página -->
+    <section class="edm-header">
+      <div class="edm-header__left">
+        <p class="edm-header__description">
+          Selecione um colaborador à esquerda para listar e gerenciar documentos à direita.
+        </p>
+      </div>
+
+      <div class="edm-header__right">
+        <a class="edm-btn edm-btn--ghost" href="/public/employees/employee.html">← Voltar (Colaboradores)</a>
+        <button type="button" id="btnReloadAll" class="edm-btn edm-btn--ghost">⟳ Atualizar tudo</button>
+      </div>
+    </section>
+
+    <!-- Layout 2 colunas -->
+    <section class="edm-layout">
+
+      <!-- ╭──────────────────────────────────────────────╮
+           │ CARD: COLABORADORES (SELEÇÃO)              │
+           ╰──────────────────────────────────────────────╯ -->
+      <section class="edm-card edm-card--employees">
+        <header class="edm-card__header">
+          <div>
+            <h3 class="edm-card__title">Colaboradores</h3>
+            <p class="edm-card__subtitle">Clique em um colaborador para ver os documentos.</p>
+          </div>
+
+          <div class="edm-card__header-actions">
+            <div class="edm-input-group">
+              <input id="employeesSearch" class="edm-input" placeholder="Buscar colaborador..." />
+              <button type="button" id="btnSearchEmployees" class="edm-btn edm-btn--ghost">🔍</button>
+            </div>
+
+            <label class="edm-toggle">
+              <input type="checkbox" id="employeesShowInactive" />
+              <span>Incluir inativos</span>
+            </label>
+          </div>
+        </header>
+
+        <div class="edm-table-wrapper">
+          <table class="edm-table" aria-label="Colaboradores">
+            <thead>
+              <tr>
+                <th class="edm-table__col-id">ID</th>
+                <th>Nome</th>
+                <th class="edm-table__col-actions">Selecionar</th>
+              </tr>
+            </thead>
+            <tbody id="employeesTableBody"></tbody>
+          </table>
+        </div>
+
+        <footer class="edm-card__footer">
+          <span id="employeesSummary" class="edm-card__summary">Carregando...</span>
+        </footer>
+      </section>
+
+      <!-- ╭──────────────────────────────────────────────╮
+           │ CARD: DOCUMENTOS                           │
+           ╰──────────────────────────────────────────────╯ -->
+      <section class="edm-card edm-card--documents">
+        <header class="edm-card__header">
+          <div>
+            <h3 class="edm-card__title">Documentos</h3>
+            <p class="edm-card__subtitle">Envie arquivos para o Google Bucket e registre os metadados no banco.</p>
+          </div>
+
+          <div class="edm-card__header-actions">
+            <div class="edm-input-group">
+              <input id="docsSearch" class="edm-input" placeholder="Buscar por tipo/nome do arquivo..." />
+              <button type="button" id="btnSearchDocs" class="edm-btn edm-btn--ghost">🔍</button>
+            </div>
+
+            <button type="button" id="btnNewDoc" class="edm-btn edm-btn--primary">+ Novo Documento</button>
+          </div>
+        </header>
+
+        <!-- seleção atual -->
+        <div class="edm-selected-employee">
+          <span id="selectedEmployeeLabel">Nenhum colaborador selecionado.</span>
+          <button type="button" id="btnClearSelectedEmployee" class="edm-btn edm-btn--tiny edm-btn--ghost">Limpar</button>
+        </div>
+
+        <!-- Form inline do documento -->
+        <form id="docForm" class="edm-form edm-form--inline" autocomplete="off">
+          <input type="hidden" id="employee_document_id" />
+
+          <div class="edm-form__grid">
+            <div class="edm-form__field">
+              <label for="employee_id">Employee ID *</label>
+              <input id="employee_id" class="edm-input" type="number" min="1" required />
+            </div>
+
+            <div class="edm-form__field">
+              <label for="document_type">Tipo *</label>
+              <input id="document_type" class="edm-input" maxlength="50" required placeholder="Ex.: Contrato, CNH" />
+            </div>
+
+            <div class="edm-form__field edm-span-2">
+              <label for="file_name">Nome arquivo *</label>
+              <input id="file_name" class="edm-input" maxlength="255" required placeholder="ex: contrato.pdf" />
+            </div>
+
+            <div class="edm-form__field edm-span-2">
+              <label for="file_path">Caminho/URL (opcional)</label>
+              <input
+                id="file_path"
+                class="edm-input"
+                placeholder="(opcional) Ex.: /public/uploads/... | ou deixe vazio se enviar para o Bucket"
+              />
+            </div>
+
+            <div class="edm-form__field">
+              <label for="mime_type">MIME</label>
+              <input id="mime_type" class="edm-input" maxlength="100" placeholder="application/pdf" />
+            </div>
+
+            <div class="edm-form__field">
+              <label for="file_size">Tamanho (bytes)</label>
+              <input id="file_size" class="edm-input" type="number" min="0" />
+            </div>
+
+            <div class="edm-form__field edm-span-2">
+              <label for="notes">Notas</label>
+              <input id="notes" class="edm-input" placeholder="Observações..." />
+            </div>
+
+            <div class="edm-form__field edm-span-2">
+              <label for="file_pick">Selecionar arquivo (opcional — auto preenche nome/mime/tamanho)</label>
+              <input
+                id="file_pick"
+                class="edm-input"
+                type="file"
+                accept=".pdf,image/*,.doc,.docx,.xls,.xlsx,.txt,.zip,.rar"
+              />
+            </div>
+          </div>
+
+          <div class="edm-form__actions">
+            <button type="submit" class="edm-btn edm-btn--primary" id="btnSaveDoc">💾 Salvar</button>
+            <button type="button" class="edm-btn edm-btn--ghost" id="btnCancelDocEdit">✖ Cancelar</button>
+          </div>
+        </form>
+
+        <!-- Tabela docs -->
+        <div class="edm-table-wrapper">
+          <table class="edm-table" aria-label="Documentos">
+            <thead>
+              <tr>
+                <th class="edm-table__col-id">Doc ID</th>
+                <th>Tipo</th>
+                <th>Arquivo</th>
+                <th class="edm-table__col-mime">MIME</th>
+                <th class="edm-table__col-size">Tamanho</th>
+                <th class="edm-table__col-date">Upload</th>
+                <th class="edm-table__col-actions">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="docsTableBody"></tbody>
+          </table>
+        </div>
+
+        <footer class="edm-card__footer">
+          <span id="docsSummary" class="edm-card__summary">Selecione um colaborador para listar documentos.</span>
+        </footer>
+      </section>
+
+    </section>
+  </main>
+
+  <script type="module" src="/public/employeeDocuments/employeeDocuments.js?v=esm-01"></script>
+  <script type="module" src="/public/includes/js/core.js"></script>
+</body>
+</html>

@@ -1,0 +1,943 @@
+// ╔══════════════════════════════════════════════════════════════════════╗
+// ║ crmDealsReativation.js — Frontend CRM Reativação (PRODNEX ERP)       ║
+// ║ ✅ Conclusão do Lead: ao dropar -> fecha no backend -> some do kanban ║
+// ║ ✅ Summary do topo vem do backend (cards FECHADOS por statusType)     ║
+// ╚══════════════════════════════════════════════════════════════════════╝
+
+import {
+  openCrmCustomerSearchModal,
+  openCrmSellerSearchModal,
+} from '/public/modalsSearch/crmConsartModalsSearch.js';
+
+// ======================================================================
+// API BASE
+// ======================================================================
+const API_BASES = {
+  local: 'http://localhost:8080',
+  homolog: 'https://erp.consart.com.br',
+  prod: 'https://erp.consart.com.br',
+};
+
+const getEnv = () => {
+  const host = window.location.hostname || '';
+  if (host.includes('localhost') || host.includes('127.0.0.1')) return 'local';
+  if (host.includes('consult.consart.com.br')) return 'prod';
+  return 'prod';
+};
+
+const ENV = getEnv();
+const apiBase = API_BASES[ENV] || API_BASES.prod;
+
+const API_PREFIX = '/api';
+const apiUrl = (path) => `${apiBase}${API_PREFIX}${path}`;
+
+// rotas
+const ROUTE_SET_STATUS_TYPE = (id) => `/crm/reativacao/deals/${id}/status-type`;
+
+// ======================================================================
+// STATE
+// ======================================================================
+let stages = [];
+let deals = [];
+let sellers = [];
+let statusTypes = [];
+let currentSeller = 'all';
+let draggedId = null;
+
+// DOM cache
+const dom = {
+  selectSeller: null,
+  btnAddCard: null,
+  modalNewCard: null,
+  modalStageSelect: null,
+  modalCustomer: null,
+  modalSeller: null,
+  modalValue: null,
+  modalTagStatus: null,
+  modalTag: null,
+  modalNextStep: null,
+  btnModalSave: null,
+  btnModalCancel: null,
+
+  outcomeSummary: null,
+  conclusionZones: null,
+  counterFinal: null,
+};
+
+// ======================================================================
+// INIT
+// ======================================================================
+(async function initCrmReativacao() {
+  try {
+    cacheDom();
+    attachStaticEvents();
+
+    await loadStages();
+    await loadDeals();
+    await loadSellers();
+    await loadStatusTypes();
+
+    renderStages();
+    renderDeals();
+    fillSellerFilter();
+
+    attachDynamicEvents();
+    renderLeadConclusionZones();
+    attachConclusionDropzones();
+
+    await loadLeadConclusionSummary(); // ✅ agora do backend
+
+    console.log('[CRM Reativação] inicializado com sucesso');
+  } catch (err) {
+    console.error('[CRM Reativação] Erro na inicialização:', err);
+  }
+})();
+
+function cacheDom() {
+  dom.selectSeller = document.getElementById('crm-vendedor');
+  dom.btnAddCard = document.getElementById('crm-btn-add-card');
+
+  dom.modalNewCard = document.getElementById('crm-modal-new-card');
+  dom.modalStageSelect = document.getElementById('crm-new-stage');
+  dom.modalCustomer = document.getElementById('crm-new-customer');
+  dom.modalSeller = document.getElementById('crm-new-seller');
+  dom.modalValue = document.getElementById('crm-new-value');
+
+  dom.modalTagStatus = document.getElementById('crm-new-tag-status');
+  dom.modalTag = document.getElementById('crm-new-tag');
+
+  dom.modalNextStep = document.getElementById('crm-new-nextstep');
+  dom.btnModalSave = document.getElementById('crm-modal-save');
+  dom.btnModalCancel = document.getElementById('crm-modal-cancel');
+
+  dom.outcomeSummary = document.getElementById('crm-outcome-summary');
+  dom.conclusionZones = document.getElementById('crm-lead-conclusion-zones');
+  dom.counterFinal = document.getElementById('counter-final');
+}
+
+// ======================================================================
+// LOADERS
+// ======================================================================
+async function loadStages() {
+  try {
+    const res = await fetch(apiUrl('/crm/reativacao/stages'));
+    const json = await res.json();
+    if (!json.ok) throw new Error(json.error || 'STAGES_LOAD_ERROR');
+
+    stages = (json.data || []).map((s) => ({ ...s, code_norm: normalizeCode(s.code) }));
+  } catch (err) {
+    console.error('[CRM] Erro ao carregar stages:', err);
+    stages = [];
+  }
+}
+
+async function loadDeals() {
+  try {
+    const url = new URL(apiUrl('/crm/reativacao/deals'));
+    if (currentSeller !== 'all') url.searchParams.set('sellerId', currentSeller);
+
+    const res = await fetch(url.toString(), { cache: 'no-store' });
+    const json = await res.json();
+    if (!json.ok) throw new Error(json.error || 'DEALS_LOAD_ERROR');
+
+    // ⚠️ backend já retorna só ABERTOS
+    deals = (json.data || []).map((d) => ({ ...d, stage_code_norm: normalizeCode(d.stage_code) }));
+  } catch (err) {
+    console.error('[CRM] Erro ao carregar deals:', err);
+    deals = [];
+  }
+}
+
+async function loadSellers() {
+  try {
+    const res = await fetch(apiUrl('/sellers'), { cache: 'no-store' });
+    const json = await res.json();
+    if (!json.ok) throw new Error(json.error || 'SELLERS_LOAD_ERROR');
+    sellers = json.data || [];
+  } catch (err) {
+    console.error('[CRM] Erro ao carregar vendedores:', err);
+    sellers = [];
+  }
+}
+
+async function loadStatusTypes() {
+  try {
+    const res = await fetch(apiUrl('/crm/reativacao/status-types'), { cache: 'no-store' });
+    const json = await res.json();
+    if (!json.ok) throw new Error(json.error || 'STATUS_TYPES_LOAD_ERROR');
+
+    statusTypes = (json.data || [])
+      .filter((s) => s.active !== false && s.is_active !== false)
+      .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+
+    fillStatusTypesSelect();
+  } catch (err) {
+    console.error('[CRM] Erro ao carregar status-types:', err);
+    statusTypes = [];
+    fillStatusTypesSelect(true);
+  }
+}
+
+function fillStatusTypesSelect(isError = false) {
+  if (!dom.modalTagStatus) return;
+
+  dom.modalTagStatus.innerHTML = isError
+    ? '<option value="">(Erro ao carregar status)</option>'
+    : '<option value="">Selecione o status</option>';
+
+  if (isError) return;
+
+  statusTypes.forEach((st) => {
+    const opt = document.createElement('option');
+    opt.value = String(st.id);
+    opt.textContent =
+      st.name_pt ||
+      st.status_name_pt ||
+      st.name ||
+      st.label ||
+      st.internal_code ||
+      st.code ||
+      `Status #${st.id}`;
+    opt.dataset.color = st.color_hex || st.status_color_hex || '';
+    dom.modalTagStatus.appendChild(opt);
+  });
+}
+
+function fillSellerFilter() {
+  if (!dom.selectSeller) return;
+
+  dom.selectSeller.innerHTML = '<option value="all">Todos os vendedores</option>';
+
+  sellers.forEach((v) => {
+    const opt = document.createElement('option');
+    opt.value = v.id;
+    opt.textContent = v.nome || v.name || `Vendedor #${v.id}`;
+    dom.selectSeller.appendChild(opt);
+  });
+}
+
+// ======================================================================
+// RENDER STAGES
+// ======================================================================
+function renderStages() {
+  const stagesWrap = document.getElementById('crm-kanban-stages');
+  if (!stagesWrap) return;
+
+  stagesWrap.innerHTML = '';
+
+  stages
+    .filter((s) => s.active)
+    .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
+    .forEach((stage) => {
+      const col = document.createElement('div');
+      col.className = 'crm-column';
+      col.dataset.stageId = String(stage.id);
+      col.dataset.stageCode = stage.code;
+
+      col.innerHTML = `
+        <header class="crm-column__header">
+          <div class="crm-column__title-wrap">
+            <span class="crm-column__badge" style="background:${escapeAttr(stage.color || '#0ea5e9')}"></span>
+            <span class="crm-column__title">${escapeHtml(stage.name || stage.code || 'Stage')}</span>
+          </div>
+          <span class="crm-column__counter" id="counter-${escapeAttr(stage.code)}">0</span>
+        </header>
+
+        <div class="crm-column__body"
+             data-column="${escapeAttr(stage.code)}"
+             data-column-norm="${escapeAttr(stage.code_norm)}"
+             data-stage-id="${escapeAttr(String(stage.id))}">
+        </div>
+      `;
+
+      stagesWrap.appendChild(col);
+    });
+}
+
+// ======================================================================
+// RENDER DEALS
+// ======================================================================
+function renderDeals() {
+  document.querySelectorAll('#crm-kanban-stages .crm-column__body').forEach((col) => (col.innerHTML = ''));
+
+  const stageIdToNorm = new Map(stages.map((s) => [String(s.id), s.code_norm]));
+
+  stages.forEach((stage) => {
+    const colBody = document.querySelector(
+      `#crm-kanban-stages .crm-column__body[data-column-norm="${cssEscape(stage.code_norm)}"]`
+    );
+    if (!colBody) return;
+
+    const filtered = deals.filter((d) => {
+      const dNorm = normalizeCode(d.stage_code);
+      if (dNorm && dNorm === stage.code_norm) return true;
+
+      const possibleStageId = d.stage_id ?? d.stageId ?? d.stage ?? d.stageID ?? null;
+      if (possibleStageId != null) {
+        const normFromId = stageIdToNorm.get(String(possibleStageId));
+        if (normFromId && normFromId === stage.code_norm) return true;
+      }
+      return false;
+    });
+
+    filtered.forEach((deal) => colBody.appendChild(createDealCard(deal)));
+
+    const counter = document.getElementById(`counter-${escapeAttr(stage.code)}`);
+    if (counter) counter.textContent = String(filtered.length);
+  });
+
+  // contador final = não é mais "status definido" nos abertos.
+  // Mantém um contador simples de dropzones (pode ser 0 aqui).
+  if (dom.counterFinal) dom.counterFinal.textContent = '0';
+}
+
+function createDealCard(deal) {
+  const el = document.createElement('div');
+  el.className = 'crm-card';
+  el.draggable = true;
+  el.dataset.id = String(deal.id);
+
+  const customerName = deal.customer_name || 'Cliente';
+  const sellerLabel = formatSellerLabel(deal);
+
+  const statusLabel =
+    deal.status_name_pt ||
+    deal.status_name ||
+    deal.name_pt ||
+    deal.tag ||
+    'Sem status';
+
+  const statusColor = deal.status_color_hex || deal.color_hex || '#e5e7eb';
+  const chipBg = alphaBg(statusColor, 0.12);
+
+  const nextStep = deal.next_step || 'Sem próxima ação';
+
+  el.innerHTML = `
+    <div class="crm-card__row-top">
+      <div class="crm-card__customer">${escapeHtml(customerName)}</div>
+      <div class="crm-card__value">${deal.estimated_value ? formatCurrency(deal.estimated_value) : 'R$ 0,00'}</div>
+    </div>
+
+    <div class="crm-card__row-middle">
+      <div class="crm-card__seller">Vendedor: ${escapeHtml(sellerLabel)}</div>
+      <span class="crm-chip" style="border-color:${escapeAttr(statusColor)}; background:${escapeAttr(chipBg)};">
+        ${escapeHtml(statusLabel)}
+      </span>
+    </div>
+
+    <div class="crm-card__next-step">${escapeHtml(nextStep)}</div>
+
+    <div class="crm-card__footer">
+      Última atividade: ${deal.last_activity_date ? formatDate(deal.last_activity_date) : '-'}
+    </div>
+  `;
+
+  el.addEventListener('dragstart', onDragStart);
+  el.addEventListener('dragend', onDragEnd);
+  return el;
+}
+
+// ======================================================================
+// STATIC EVENTS
+// ======================================================================
+function attachStaticEvents() {
+  if (dom.selectSeller) {
+    dom.selectSeller.addEventListener('change', async (e) => {
+      currentSeller = e.target.value;
+      await loadDeals();
+      renderDeals();
+      await loadLeadConclusionSummary();
+    });
+
+    dom.selectSeller.addEventListener('dblclick', () => {
+      openCrmSellerSearchModal({
+        apiBase,
+        onPick(seller) {
+          const id = String(seller.id);
+          let opt = dom.selectSeller.querySelector(`option[value="${cssEscapeAttr(id)}"]`);
+          if (!opt) {
+            opt = document.createElement('option');
+            opt.value = id;
+            opt.textContent = seller.name || seller.nome || `Vendedor #${seller.id}`;
+            dom.selectSeller.appendChild(opt);
+          }
+          dom.selectSeller.value = id;
+          currentSeller = id;
+
+          loadDeals().then(() => {
+            renderDeals();
+            loadLeadConclusionSummary();
+          });
+        },
+      });
+    });
+  }
+
+  if (dom.btnAddCard) dom.btnAddCard.addEventListener('click', openNewCardModal);
+
+if (dom.modalCustomer) {
+  dom.modalCustomer.addEventListener('dblclick', () => {
+    openCrmCustomerSearchModal({
+      apiBase,
+      onPick(customer) {
+        const name =
+          customer.nome_fantasia ||
+          customer.razao_social ||
+          customer.name ||
+          customer.customer_name ||
+          `Cliente #${customer.id || customer.customer_id}`;
+
+        dom.modalCustomer.value = name;
+
+        // ✅ MUITO IMPORTANTE:
+        // O ID que precisa ir para crmDealsReativation.customer_id é customers.customer_id
+        const customersCustomerId =
+          customer.customer_id ?? customer.customerId ?? null;
+
+        // fallback (se seu modal ainda retorna id de "clientes")
+        // NÂO use isso se a FK for customers.customer_id (vai quebrar).
+        // const legacyClientesId = customer.id ?? null;
+
+        dom.modalCustomer.dataset.customerId = customersCustomerId ? String(customersCustomerId) : '';
+      },
+    });
+  });
+}
+
+  if (dom.modalSeller) {
+    dom.modalSeller.addEventListener('dblclick', () => {
+      openCrmSellerSearchModal({
+        apiBase,
+        onPick(seller) {
+          const name = seller.name || seller.nome || `Vendedor #${seller.id}`;
+          const nick = seller.nickname || seller.apelido || '';
+          dom.modalSeller.value = nick ? `${name} (${nick})` : name;
+          dom.modalSeller.dataset.sellerId = seller.id;
+        },
+      });
+    });
+  }
+
+  if (dom.btnModalCancel) dom.btnModalCancel.addEventListener('click', closeNewCardModal);
+  if (dom.btnModalSave) dom.btnModalSave.addEventListener('click', saveNewCard);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && dom.modalNewCard && !dom.modalNewCard.classList.contains('hidden')) {
+      closeNewCardModal();
+    }
+  });
+
+  if (dom.modalNewCard) {
+    dom.modalNewCard.addEventListener('click', (e) => {
+      if (e.target === dom.modalNewCard) closeNewCardModal();
+    });
+  }
+
+  // click no summary (opcional)
+  dom.outcomeSummary?.addEventListener('click', (e) => {
+    const btn = e.target?.closest?.('[data-status-type-id]');
+    if (!btn) return;
+    console.log('[Conclusão do Lead] status_type_id:', btn.dataset.statusTypeId);
+  });
+}
+
+// ======================================================================
+// DYNAMIC EVENTS (stages columns)
+// ======================================================================
+function attachDynamicEvents() {
+  document.querySelectorAll('#crm-kanban-stages .crm-column__body').forEach((col) => {
+    col.addEventListener('dragover', onDragOverColumn);
+    col.addEventListener('drop', onDropColumn);
+    col.addEventListener('dragleave', () => col.classList.remove('crm-column__body--drag-over'));
+  });
+}
+
+// ======================================================================
+// DRAG & DROP (cards -> columns)
+// ======================================================================
+function onDragStart(e) {
+  const card = e.currentTarget;
+  draggedId = card?.dataset?.id || null;
+
+  if (e.dataTransfer && draggedId) {
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', String(draggedId));
+  }
+}
+function onDragEnd() {
+  draggedId = null;
+}
+
+function onDragOverColumn(e) {
+  e.preventDefault();
+  e.currentTarget.classList.add('crm-column__body--drag-over');
+}
+
+async function onDropColumn(e) {
+  e.preventDefault();
+
+  const col = e.currentTarget;
+  col.classList.remove('crm-column__body--drag-over');
+
+  const id = (e.dataTransfer?.getData('text/plain') || draggedId || '').trim();
+  if (!id) return;
+
+  const newStageCodeRaw = col.dataset.column || '';
+  const newStageNorm = normalizeCode(col.dataset.columnNorm || newStageCodeRaw);
+  const newStageId = col.dataset.stageId;
+
+  const cardEl = document.querySelector(`.crm-card[data-id="${cssEscape(id)}"]`);
+  const fromCol = cardEl?.closest('.crm-column__body') || null;
+  const fromStageCodeRaw = fromCol?.dataset?.column || '';
+  const fromStageNorm = normalizeCode(fromCol?.dataset?.columnNorm || fromStageCodeRaw);
+
+  if (!newStageNorm || newStageNorm === fromStageNorm) return;
+
+  const prevDeals = deals;
+
+  deals = deals.map((d) => {
+    if (String(d.id) !== String(id)) return d;
+    return {
+      ...d,
+      stage_code: newStageCodeRaw,
+      stage_code_norm: newStageNorm,
+      stage_id: Number.isFinite(Number(newStageId)) ? Number(newStageId) : d.stage_id,
+    };
+  });
+
+  renderDeals();
+
+  const moved = await moveDealToStage(id, newStageCodeRaw, newStageId);
+  if (!moved.ok) {
+    console.error('[CRM] Erro ao mover card:', moved.error || moved.message || moved);
+    deals = prevDeals;
+    renderDeals();
+    return;
+  }
+
+  try {
+    await loadDeals();
+    renderDeals();
+  } catch (_) {}
+}
+
+// ======================================================================
+// ✅ CONCLUSÃO DO LEAD — dropzones (statusTypes)
+// ======================================================================
+function renderLeadConclusionZones() {
+  if (!dom.conclusionZones) return;
+
+  const list = Array.isArray(statusTypes) ? statusTypes : [];
+
+  if (!list.length) {
+    dom.conclusionZones.innerHTML = `
+      <div class="crm-outcomes-summary__placeholder" style="padding:10px;">
+        Nenhum Status Type carregado.
+      </div>
+    `;
+    return;
+  }
+
+  dom.conclusionZones.innerHTML = list
+    .map((st) => {
+      const id = Number(st.id);
+      if (!Number.isFinite(id)) return '';
+      const name =
+        st.name_pt ||
+        st.status_name_pt ||
+        st.name ||
+        st.label ||
+        st.internal_code ||
+        st.code ||
+        `Status #${st.id}`;
+
+      const color = st.color_hex || st.status_color_hex || '#cbd5e1';
+
+      return `
+        <div class="crm-outcome-dropzone"
+             data-status-type-id="${escapeAttr(String(id))}"
+             style="border-color:${escapeAttr(color)};">
+          <div class="crm-outcome-title">${escapeHtml(name)}</div>
+          <div class="crm-outcome-subtitle">Solte aqui os cards deste status</div>
+        </div>
+      `;
+    })
+    .join('');
+
+  attachConclusionDropzones();
+}
+
+function attachConclusionDropzones() {
+  const zones = dom.conclusionZones?.querySelectorAll?.('.crm-outcome-dropzone');
+  if (!zones || !zones.length) return;
+
+  zones.forEach((zone) => {
+    zone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      zone.classList.add('crm-dropzone--over');
+    });
+
+    zone.addEventListener('dragleave', () => zone.classList.remove('crm-dropzone--over'));
+
+    zone.addEventListener('drop', async (e) => {
+      e.preventDefault();
+      zone.classList.remove('crm-dropzone--over');
+
+      const id = (e.dataTransfer?.getData('text/plain') || draggedId || '').trim();
+      if (!id) return;
+
+      const statusTypeId = Number(zone.dataset.statusTypeId || zone.dataset.statusTypeID || '');
+      if (!Number.isFinite(statusTypeId)) {
+        console.error('[CRM] statusTypeId inválido na dropzone');
+        return;
+      }
+
+      // ✅ 1) Remove do kanban IMEDIATAMENTE (otimista)
+      const prevDeals = deals;
+      deals = deals.filter((d) => String(d.id) !== String(id));
+      renderDeals();
+
+      // ✅ 2) Persiste no backend (fecha card)
+      const result = await apiSetDealStatusType(id, statusTypeId);
+      if (!result.ok) {
+        console.error('[CRM] Falha ao salvar conclusão:', result.error || result.message || result);
+        deals = prevDeals;
+        renderDeals();
+        await loadLeadConclusionSummary();
+        return;
+      }
+
+      // ✅ 3) Recarrega lista de abertos + atualiza summary
+      try {
+        await loadDeals();
+        renderDeals();
+        await loadLeadConclusionSummary();
+      } catch (_) {}
+    });
+  });
+}
+
+// ======================================================================
+// API
+// ======================================================================
+async function moveDealToStage(id, stageCode, stageId) {
+  try {
+    const body = { stageCode, stage_code: stageCode };
+    if (stageId !== undefined && stageId !== null && stageId !== '') {
+      body.stageId = Number(stageId);
+      body.stage_id = Number(stageId);
+    }
+
+    const res = await fetch(apiUrl(`/crm/reativacao/deals/${id}/move`), {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+
+    return await res.json();
+  } catch (err) {
+    return { ok: false, error: err.message };
+  }
+}
+
+async function apiSetDealStatusType(id, statusTypeId) {
+  try {
+    const res = await fetch(apiUrl(ROUTE_SET_STATUS_TYPE(id)), {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status_type_id: statusTypeId }),
+    });
+
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok || !json?.ok) return { ok: false, error: json?.error || `HTTP_${res.status}`, raw: json };
+    return json;
+  } catch (err) {
+    return { ok: false, error: err.message };
+  }
+}
+
+// ======================================================================
+// ✅ SUMMARY TOP — AGORA VEM DO BACKEND (fechados por statusType)
+// ======================================================================
+async function loadLeadConclusionSummary() {
+  if (!dom.outcomeSummary) return;
+
+  try {
+    if (!Array.isArray(statusTypes) || !statusTypes.length) {
+      await loadStatusTypes();
+      renderLeadConclusionZones();
+    }
+
+    const url = new URL(apiUrl('/crm/reativacao/conclusion/summary'));
+    if (currentSeller !== 'all') url.searchParams.set('sellerId', currentSeller);
+
+    const res = await fetch(url.toString(), { cache: 'no-store' });
+    const json = await res.json();
+    if (!json.ok) throw new Error(json.error || 'LEAD_CONCLUSION_SUMMARY_ERROR');
+
+    const summaryRows = json.data || [];
+    const items = mergeStatusTypesWithSummary(statusTypes, summaryRows);
+    renderConclusionLeadSummary(items);
+  } catch (err) {
+    console.error('[CRM] Erro ao carregar Conclusão do Lead:', err);
+    renderConclusionLeadSummary(null);
+  }
+}
+
+function mergeStatusTypesWithSummary(statusTypesList, summaryRows) {
+  const map = new Map();
+
+  (statusTypesList || []).forEach((st) => {
+    const id = Number(st.id);
+    if (!Number.isFinite(id)) return;
+    map.set(id, {
+      id,
+      name: st.name_pt || st.status_name_pt || st.name || st.label || st.internal_code || `Status #${st.id}`,
+      color: st.color_hex || st.status_color_hex || '#e5e7eb',
+      sort_order: Number(st.sort_order ?? 0),
+      count: 0,
+      total: 0,
+    });
+  });
+
+  (summaryRows || []).forEach((r) => {
+    const sid = Number(r.status_type_id);
+    if (!Number.isFinite(sid)) return;
+    const it = map.get(sid);
+    if (!it) return;
+    it.count = Number(r.count_cards || 0);
+    it.total = Number(r.total_value || 0);
+  });
+
+  return Array.from(map.values()).sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+}
+
+function renderConclusionLeadSummary(items) {
+  if (!dom.outcomeSummary) return;
+
+  if (!Array.isArray(items) || !items.length) {
+    dom.outcomeSummary.innerHTML = `
+      <div class="crm-outcomes-summary__row">
+        <div class="crm-outcomes-summary__metric">
+          <span class="crm-outcomes-summary__label">Sem dados</span>
+          <span class="crm-outcomes-summary__sub">Nenhum status carregado</span>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  dom.outcomeSummary.innerHTML = `
+    <div class="crm-outcomes-summary__row crm-outcomes-summary__row--wrap">
+      ${items
+        .map((it) => {
+          const bg = alphaBg(it.color, 0.10);
+          return `
+            <button type="button"
+              class="crm-outcomes-summary__metric crm-outcomes-summary__metric--btn"
+              data-status-type-id="${escapeAttr(String(it.id))}"
+              style="border:1px solid ${escapeAttr(it.color)}; background:${escapeAttr(bg)};">
+              <span class="crm-outcomes-summary__label">${escapeHtml(it.name)}</span>
+              <span class="crm-outcomes-summary__value">${formatCurrency(it.total)}</span>
+              <span class="crm-outcomes-summary__sub">${it.count} card(s)</span>
+            </button>
+          `;
+        })
+        .join('')}
+    </div>
+  `;
+}
+
+// ======================================================================
+// MODAL — NOVO CARD
+// ======================================================================
+function openNewCardModal() {
+  if (!dom.modalNewCard) return;
+
+  if (dom.modalStageSelect) {
+    dom.modalStageSelect.innerHTML = '';
+    stages
+      .filter((s) => s.active)
+      .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
+      .forEach((s) => {
+        const opt = document.createElement('option');
+        opt.value = s.code;
+        opt.textContent = s.name;
+        dom.modalStageSelect.appendChild(opt);
+      });
+  }
+
+  fillStatusTypesSelect();
+
+  if (dom.modalCustomer) {
+    dom.modalCustomer.value = '';
+    delete dom.modalCustomer.dataset.customerId; // ✅ limpa o ID
+  }
+
+  if (dom.modalSeller) {
+    dom.modalSeller.value = '';
+    delete dom.modalSeller.dataset.sellerId;
+  }
+  if (dom.modalValue) dom.modalValue.value = '';
+  if (dom.modalTagStatus) dom.modalTagStatus.value = '';
+  if (dom.modalTag) dom.modalTag.value = '';
+  if (dom.modalNextStep) dom.modalNextStep.value = '';
+
+  dom.modalNewCard.classList.remove('hidden');
+}
+
+function closeNewCardModal() {
+  if (!dom.modalNewCard) return;
+  dom.modalNewCard.classList.add('hidden');
+}
+
+async function saveNewCard() {
+  try {
+    const customerName = (dom.modalCustomer?.value || '').trim();
+
+    // ✅ pega o ID REAL do customer (FK: customers.customer_id) do dataset
+    const customerIdRaw = String(dom.modalCustomer?.dataset?.customerId || '').trim();
+    const customerId = customerIdRaw ? Number(customerIdRaw) : null;
+
+    const estimatedValue = dom.modalValue?.value
+      ? Number(String(dom.modalValue.value).replace(',', '.'))
+      : null;
+
+    const statusTypeIdRaw = String(dom.modalTagStatus?.value || '').trim();
+    const statusTypeId = statusTypeIdRaw ? Number(statusTypeIdRaw) : null;
+
+    const tagLegacy = (dom.modalTag?.value || '').trim();
+    const nextStep = (dom.modalNextStep?.value || '').trim();
+    const stageCode = dom.modalStageSelect?.value || null;
+
+    if (!stageCode) {
+      alert('Selecione uma coluna para o card.');
+      return;
+    }
+
+    let sellerId = null;
+    if (dom.modalSeller?.dataset?.sellerId) sellerId = Number(dom.modalSeller.dataset.sellerId);
+    else if (currentSeller !== 'all') sellerId = Number(currentSeller);
+
+    const payload = {
+      customer_id: Number.isFinite(customerId) ? customerId : null, // ✅ agora existe
+      customer_name: customerName || 'Cliente não informado',
+      estimated_value: Number.isFinite(estimatedValue) ? estimatedValue : null,
+      status_type_id: Number.isFinite(statusTypeId) ? statusTypeId : null,
+      tag: tagLegacy || null,
+      next_step: nextStep || null,
+
+      // compat
+      stageCode,
+      stage_code: stageCode,
+    };
+
+    if (Number.isFinite(sellerId)) {
+      payload.seller_id = sellerId;
+      payload.sellerId = sellerId; // compat
+    }
+
+    // (opcional) debug
+    // console.log('[CRM saveNewCard] payload:', payload);
+
+    const res = await fetch(apiUrl('/crm/reativacao/deals'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok || !json?.ok) {
+      console.error('[CRM] Erro ao criar card:', json?.error || `HTTP_${res.status}`, json);
+      alert('Erro ao criar card.');
+      return;
+    }
+
+    closeNewCardModal();
+    await loadDeals();
+    renderDeals();
+    await loadLeadConclusionSummary();
+  } catch (err) {
+    console.error('[CRM] Exceção ao salvar card:', err);
+    alert('Erro inesperado ao salvar card.');
+  }
+}
+
+// ======================================================================
+// HELPERS
+// ======================================================================
+function formatSellerLabel(deal) {
+  const name = (deal.seller_name ?? deal.sellerName ?? '').toString().trim();
+  const nickname = (deal.seller_nickname ?? deal.sellerNickname ?? deal.nickname ?? '').toString().trim();
+
+  const cleaned = name
+    .replace(/\s*\(([^)]+)\)\s*$/g, (m, inside) => {
+      if (inside.trim().toLowerCase() === name.replace(m, '').trim().toLowerCase()) return '';
+      return m;
+    })
+    .trim();
+
+  const base = cleaned || name;
+  if (!base && !nickname) return 'Sem vendedor';
+
+  if (nickname && base && nickname.toLowerCase() !== base.toLowerCase()) return `${nickname} (${base})`;
+  return nickname || base || 'Sem vendedor';
+}
+
+function formatCurrency(v) {
+  return Number(v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+}
+
+function formatDate(dateIso) {
+  try {
+    return new Date(dateIso).toLocaleDateString('pt-BR');
+  } catch {
+    return dateIso;
+  }
+}
+
+function normalizeCode(value) {
+  return String(value ?? '')
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '');
+}
+
+function escapeHtml(str) {
+  return String(str ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
+function escapeAttr(str) {
+  return escapeHtml(str).replaceAll(' ', '_');
+}
+
+function cssEscape(value) {
+  if (window.CSS && typeof window.CSS.escape === 'function') return window.CSS.escape(String(value));
+  return String(value).replace(/[^a-zA-Z0-9_\-]/g, '\\$&');
+}
+
+function cssEscapeAttr(value) {
+  return String(value).replace(/"/g, '\\"');
+}
+
+// ✅ evita erro "background inválido" quando a cor não é HEX
+function alphaBg(color, alpha = 0.12) {
+  const c = String(color || '').trim();
+  const hex = c.startsWith('#') ? c.slice(1) : '';
+  const isHex = /^[0-9a-fA-F]{6}$/.test(hex);
+
+  if (!isHex) return `rgba(100,116,139,${alpha})`; // fallback slate
+
+  const r = parseInt(hex.slice(0, 2), 16);
+  const g = parseInt(hex.slice(2, 4), 16);
+  const b = parseInt(hex.slice(4, 6), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}

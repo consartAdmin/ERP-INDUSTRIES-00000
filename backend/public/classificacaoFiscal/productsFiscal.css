@@ -1,0 +1,291 @@
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║ 🎨 classificacaoFiscal.css – Estilo da Classificação Fiscal ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+/* OBS: Se desejar rolagem vertical da página, remova/ajuste overflow:hidden em html,body */
+html, body {
+  /* cuidado: bloquear rolagem global pode esconder conteúdo em telas pequenas */
+  overflow: hidden;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* ====== Layout base da página (mantendo seu visual, mas usando vars) ====== */
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background-color: #f9f9f9;
+  margin: 0;
+  padding: 0; /* <- corrigido (antes tinha vírgula) */
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 0 24px 24px; /* topo 0px, laterais 24px, baixo 24px (corrigido) */
+  border-radius: var(--radius, 8px);
+  box-shadow: 0 0 10px rgba(0,0,0,0.08);
+}
+
+/* Empurra o conteúdo logo abaixo do menu fixo + leve respiro */
+body.consart-theme.with-aurora main.container {
+  margin-top: calc(var(--c-header-h) + 8px) !important;
+  padding-top: 12px;
+}
+
+h1 {
+  text-align: center;
+  margin: 0 0 24px; /* zera margin-top (corrigido) */
+  color: #2c3e50;
+  line-height: 0; /* compacta levemente o título */
+}
+
+/* ================== Formulário ================== */
+form.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+form.formulario label {
+  font-weight: 600;
+  color: #34495e;
+}
+
+form.formulario input[type="text"],
+form.formulario input[type="number"],
+form.formulario input[type="search"],
+form.formulario select {
+  padding: 10px 12px;
+  border-radius: var(--radius, 8px);
+  border: 1px solid var(--c-input-bd, #cfe2ff);
+  background: var(--c-input-bg, #f7fbff);
+  font-size: 14px;
+  color: #0f172a;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s, background-color .15s;
+  box-shadow: 0 1px 0 rgba(0,0,0,.03), inset 0 1px 0 rgba(255,255,255,.6);
+}
+
+form.formulario input[type="text"]::placeholder { color: #94a3b8; }
+
+form.formulario input[type="text"]:hover,
+form.formulario input[type="number"]:hover,
+form.formulario input[type="search"]:hover,
+form.formulario select:hover {
+  border-color: var(--c-input-bd-hover, #9ec1ff);
+}
+
+form.formulario input[type="text"]:focus,
+form.formulario input[type="number"]:focus,
+form.formulario input[type="search"]:focus,
+form.formulario select:focus {
+  border-color: var(--c-primary, #a6c8ee);
+  box-shadow: 0 0 0 3px var(--c-ring, rgba(0,87,184,.22));
+  background: #fff;
+}
+
+form.formulario input[type="checkbox"] {
+  margin-right: 8px;
+  transform: scale(1.1);
+}
+
+form.formulario button {
+  background: var(--btn-bg, #fff);
+  color: var(--btn-fg, #000);
+  border: 1px solid var(--btn-bd, #000);
+  padding: 10px 14px;
+  border-radius: var(--radius, 8px);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color .15s, border-color .15s, transform .02s, box-shadow .15s;
+}
+form.formulario button:hover { background: var(--btn-bg-hover, #f5f5f5); }
+form.formulario button:active { transform: translateY(1px); }
+form.formulario button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--c-ring, rgba(0,87,184,.22));
+}
+
+/* 🔍 Campo de busca com autocomplete */
+#buscaDescricao {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid var(--c-primary, #a6c8ee);
+  border-radius: var(--radius, 8px);
+  margin-bottom: 16px;
+  background: var(--c-input-bg, #f7fbff);
+}
+
+/* ================== Tabela (com wrapper rolável) ================== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  background: #fff;
+  box-shadow: 0 0 6px rgba(0,0,0,0.06);
+  table-layout: fixed;
+  min-width: 960px;
+}
+
+table thead { background-color: #ecf0f1; }
+
+table th, table td {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+table th { font-weight: 700; color: #2c3e50; }
+table tbody tr:hover { background: #f8fbff; }
+
+table td button {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 6px 8px;
+}
+table td button:hover {
+  border-color: var(--c-input-bd, #cfe2ff);
+  background: var(--c-input-bg, #f7fbff);
+}
+
+/* Wrapper rolável (usa .c-scroll do theme + modificador local) */
+.c-scroll--table {
+  max-height: 450px;
+  padding: var(--c-space-2, 12px);
+  border-radius: var(--radius, 8px);
+}
+
+/* Cabeçalho sticky dentro do wrapper */
+.c-scroll--table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #ffffff;
+  border-bottom: 1px solid var(--c-input-bd, #cfe2ff);
+  box-shadow: 0 2px 0 rgba(0,0,0,.03);
+}
+
+/* Larguras sugeridas */
+#tabelaClassificacoes th:nth-child(1),
+#tabelaClassificacoes td:nth-child(1) { width: 80px; }
+#tabelaClassificacoes th:nth-child(2),
+#tabelaClassificacoes td:nth-child(2) { width: 280px; }
+#tabelaClassificacoes th:nth-child(3),
+#tabelaClassificacoes td:nth-child(3) { width: 110px; }
+#tabelaClassificacoes th:nth-child(4),
+#tabelaClassificacoes td:nth-child(4) { width: 220px; }
+#tabelaClassificacoes th:nth-child(5),
+#tabelaClassificacoes td:nth-child(5) { width: 110px; }
+#tabelaClassificacoes th:nth-child(6),
+#tabelaClassificacoes td:nth-child(6) { width: 220px; }
+#tabelaClassificacoes th:nth-child(7),
+#tabelaClassificacoes td:nth-child(7) { width: 100px; }
+#tabelaClassificacoes th:nth-child(8),
+#tabelaClassificacoes td:nth-child(8) { width: 160px; }
+
+/* Fixar a primeira coluna (ID) – opcional */
+.c-scroll--table td:first-child,
+.c-scroll--table th:first-child {
+  position: sticky;
+  left: 0;
+  background: #fff;
+  z-index: 2;
+  border-right: 1px solid var(--c-input-bd, #cfe2ff);
+}
+
+/* ================== Responsividade ================== */
+@media (max-width: 1024px) {
+  .container { padding: 0 16px 16px; }
+}
+
+@media (max-width: 640px) {
+  body { padding: 0; }
+  .container { padding: 0 12px 12px; }
+  #buscaDescricao { margin-bottom: 12px; }
+  .c-scroll--table { max-height: 320px; }
+  table { min-width: 720px; }
+}
+
+/* ============================
+   Linhas do formulário em GRID
+   ============================ */
+form.formulario .linha-form {
+  display: grid;
+  gap: 12px;
+}
+
+/* Label à esquerda + campo à direita (ex.: Descrição) */
+form.formulario .linha-form.cols-label {
+  grid-template-columns: 180px 1fr;
+  align-items: center;
+}
+
+/* Dois ou três campos lado a lado (cada um com label em cima) */
+form.formulario .linha-form.cols-2 { grid-template-columns: 1fr 1fr; }
+form.formulario .linha-form.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+/* Cada “grupo” de campo em coluna (label em cima, input embaixo) */
+form.formulario .linha-form > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Responsivo: empilha tudo no mobile */
+@media (max-width: 720px) {
+  form.formulario .linha-form.cols-label { grid-template-columns: 1fr; }
+  form.formulario .linha-form.cols-2,
+  form.formulario .linha-form.cols-3 { grid-template-columns: 1fr; }
+}
+
+/* Utilitários de largura/alinhamento */
+.w-2 { grid-column: span 2; }
+.w-3 { grid-column: span 3; }
+.right { justify-self: end; }
+.center { justify-self: center; }
+.stretch { align-self: stretch; }
+
+/* Defesa extra contra estilos globais que adicionem espaços */
+header, .topbar, .menu, .menu-wrap { margin-bottom: 0 !important; }
+
+.linha-perfil-ativo {
+  display: grid;
+  grid-template-columns: 1.8fr 1fr auto;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Ajuste para cada bloco */
+.linha-perfil-ativo .perfil-fiscal {
+  display: flex;
+  flex-direction: column;
+}
+
+.linha-perfil-ativo .ativo-checkbox {
+  justify-self: center;
+  white-space: nowrap;
+}
+
+.linha-perfil-ativo .botao-salvar {
+  justify-self: end;
+}
+
+.linha-ncm-cest {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.linha-ncm-cest > div {
+  display: flex;
+  flex-direction: column;
+}

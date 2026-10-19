@@ -1,0 +1,246 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ ibgeLocations.css — UI padrão “Grupos & Subgrupos” | PRODNEX ERP     ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.page-ibge-locations .section-card { border-radius: 16px; }
+
+/* Top header */
+.ibge-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.ibge-top__title { margin: 0; font-size: 26px; }
+.ibge-top__crumbs { margin-top: 6px; }
+.ibge-top__right { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* 2-column grid */
+.ibge-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* Card header */
+.ibge-card { padding: 14px; }
+.ibge-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+.ibge-card__title { margin: 0; font-size: 18px; }
+.ibge-card__subtitle { margin: 6px 0 0; opacity: .75; font-size: 12px; max-width: 520px; }
+.ibge-card__headActions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  min-width: 360px;
+}
+
+/* Search pill */
+.ibge-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 999px;
+  padding: 6px 8px;
+}
+.ibge-search input {
+  border: none;
+  outline: none;
+  padding: 6px 8px;
+  width: 210px;
+  background: transparent;
+}
+.ibge-search__btn {
+  border: none;
+  background: rgba(0,0,0,0.04);
+  border-radius: 999px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.ibge-search__btn:hover { background: rgba(0,0,0,0.07); }
+
+.ibge-check { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 12px; opacity: .85; }
+.ibge-select { padding: 10px 12px; border-radius: 12px; min-width: 82px; }
+
+/* inner box */
+.ibge-inner { padding: 12px; }
+.ibge-selected {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.03);
+  margin-bottom: 10px;
+}
+
+/* status */
+.ibge-status { min-height: 18px; margin: 4px 0 10px; font-weight: 800; }
+.ibge-status.is-ok { color: #1f7a39; }
+.ibge-status.is-err { color: #b42318; }
+.ibge-status.is-warn { color: #8a5a00; }
+
+/* table */
+.table-wrapper { overflow: auto; border-radius: 12px; }
+.tbl--hover tbody tr:hover { background: rgba(0,0,0,0.02); }
+.tbl thead th { background: rgba(0,0,0,0.03); position: sticky; top: 0; z-index: 1; }
+
+.ibge-foot {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+/* status chips */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 74px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 12px;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+.chip--on { background: rgba(31, 122, 57, 0.12); color: #0f5b2a; }
+.chip--off { background: rgba(180, 35, 24, 0.12); color: #7d1b12; }
+
+/* actions */
+.actions { display: flex; gap: 8px; }
+.action-btn {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: #fff;
+  cursor: pointer;
+
+  /* ✅ garante o “+” visível */
+  color: #111 !important;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1;
+}
+.action-btn:hover { background: rgba(0,0,0,0.05); }
+
+/* ✅ destaque opcional do botão “new” (o +) */
+.page-ibge-locations .action-btn[data-act="new"]{
+  color: #0f5b2a !important;
+  background: rgba(31, 122, 57, 0.10);
+  border-color: rgba(31, 122, 57, 0.25);
+}
+.page-ibge-locations .action-btn[data-act="new"]:hover{
+  background: rgba(31, 122, 57, 0.16);
+}
+
+/* empty */
+.ibge-empty { text-align: center; padding: 18px 10px; }
+.ibge-empty__icon { font-size: 26px; }
+.ibge-empty__title { font-weight: 900; margin-top: 6px; }
+.ibge-empty__text { opacity: .7; margin-top: 6px; }
+
+/* pagination */
+.ibge-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+/* modal */
+.ibge-modal { position: fixed; inset: 0; z-index: 9999; }
+.ibge-modal__overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.42); }
+.ibge-modal__card { position: relative; width: min(920px, calc(100% - 24px)); margin: 60px auto 0; padding: 14px; }
+.ibge-modal__head { display:flex; justify-content: space-between; align-items:flex-start; gap: 10px; }
+.ibge-modal__kicker { font-size: 12px; font-weight: 900; opacity: .7; }
+.ibge-modal__title { margin: 6px 0 0; }
+.ibge-form { margin-top: 12px; }
+.ibge-form__grid { display:flex; gap: 12px; flex-wrap: wrap; }
+.field { display:flex; flex-direction: column; gap: 6px; min-width: 170px; }
+.field--grow { flex: 1; min-width: 280px; }
+.field input, .field select { padding: 10px 12px; border-radius: 12px; }
+.ibge-form__actions { display:flex; justify-content: flex-end; gap: 10px; margin-top: 14px; }
+
+/* responsive */
+@media (max-width: 980px) {
+  .ibge-grid { grid-template-columns: 1fr; }
+  .ibge-card__headActions { min-width: auto; justify-content: flex-start; }
+  .ibge-search input { width: 180px; }
+}
+
+/* Anti-overlay */
+.page-ibge-locations .ibge-card,
+.page-ibge-locations .ibge-inner,
+.page-ibge-locations .table-wrapper,
+.page-ibge-locations table {
+  position: relative;
+  z-index: 1;
+}
+.page-ibge-locations .action-btn,
+.page-ibge-locations .ibge-search__btn,
+.page-ibge-locations .btn {
+  cursor: pointer !important;
+}
+
+/* Total box */
+.ibge-totalBox{
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.03);
+  margin: 6px 0 10px 0;
+  font-weight: 900;
+}
+
+/* ✅ Força paginação clicável */
+.page-ibge-locations .ibge-pagination{
+  position: relative;
+  z-index: 99999;
+}
+.page-ibge-locations .ibge-pagination *{
+  pointer-events: auto !important;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ✅ REDUZ ALTURA DO CONTAINER "Cidades / Municípios" (MEIA TELA)
+   - A tabela vira área rolável (scroll)
+   - Total e paginação continuam visíveis
+   ══════════════════════════════════════════════════════════════ */
+
+.page-ibge-locations .ibge-inner--cities{
+  display: flex;
+  flex-direction: column;
+}
+
+/* ✅ ajuste aqui para metade (vh) */
+.page-ibge-locations .table-wrapper--cities{
+  flex: 1;
+  max-height: 42vh; /* <- se quiser menor: 35vh | maior: 50vh */
+  overflow: auto;
+  border-radius: 12px;
+}
+
+/* ✅ cabeçalho da tabela “grudado” dentro do scroll */
+.page-ibge-locations .table-wrapper--cities .tbl thead th{
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}

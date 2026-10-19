@@ -1,0 +1,149 @@
+<!-- ╔════════════════════════════════════════════════════════════════════╗ -->
+<!-- ║ spedFiscal.html — Tela do módulo SPED Fiscal | PRODNEX ERP        ║ -->
+<!-- ╚════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPED FISCAL | PRODNEX ERP</title>
+
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png" />
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/includes/css/modals.css" />
+  <link rel="stylesheet" href="/public/includes/css/readOnlyText.css" />
+  <link rel="stylesheet" href="/public/modalsSearch/enterpriseModalSearch.css" />
+  <link rel="stylesheet" href="/public/spedFiscal/spedFiscal.css" />
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+    <div class="header">
+      <div class="fields-inline fields-gap-3">
+        <div class="fields fields-w-20 fields-h-6">
+          <label for="enterpriseName">Empresa</label>
+          <input id="companyId" type="hidden" />
+          <input id="enterpriseName" type="text" placeholder="Selecione a empresa..." readonly />
+        </div>
+
+        <div class="btn-inline btn-h-5">
+          <button id="btnSearchEnterprise" class="btn btn-toolbar btn-sm" type="button">Buscar</button>
+        </div>
+
+        <div class="fields fields-w-7 fields-h-6">
+          <label for="month">Mês</label>
+          <select id="month">
+            <option value="1">01</option>
+            <option value="2">02</option>
+            <option value="3">03</option>
+            <option value="4">04</option>
+            <option value="5">05</option>
+            <option value="6">06</option>
+            <option value="7">07</option>
+            <option value="8">08</option>
+            <option value="9">09</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+          </select>
+        </div>
+
+        <div class="fields fields-w-7 fields-h-6">
+          <label for="year">Ano</label>
+          <input id="year" type="number" min="2020" step="1" />
+        </div>
+
+        <div class="fields fields-w-7 fields-h-6">
+          <label for="uf">UF</label>
+          <input id="uf" type="text" maxlength="2" placeholder="MG" />
+        </div>
+
+        <div class="fields fields-w-10 fields-h-6">
+          <label for="finalidade">Finalidade</label>
+          <select id="finalidade">
+            <option value="original">Original</option>
+            <option value="substituto">Substituto</option>
+          </select>
+        </div>
+
+        <div class="btn-inline btn-h-5">
+          <button id="btnPreview" class="btn btn-new btn-sm" type="button">Prévia</button>
+          <button id="btnValidate" class="btn btn-new btn-sm" type="button">Validar</button>
+          <button id="btnGenerate" class="btn btn-new btn-sm" type="button">Gerar TXT</button>
+          <div class="fields fields-h-6 fields-w-10">
+            <input id="downloadLoteId" type="number" min="1" placeholder="Lote ID para baixar" />
+          </div>
+          <button id="btnDownload" class="btn btn-new btn-sm" type="button">Baixar TXT</button>
+
+
+          <div class="btn-inline btn-h-5">
+            <button id="btnOpenIssues" class="btn btn-toolbar btn-sm" type="button">Ver inconsistências</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="header">
+      <article class="sf-card sf-summary-card sf-summary-card--full">
+        <div class="sf-summary-header">
+          <h2>Resumo</h2>
+          <span class="sf-summary-header-line" aria-hidden="true"></span>
+          <div id="statusBox" class="sf-status-inline empty">Aguardando ação.</div>
+        </div>
+        <div id="summaryBox" class="sf-summary empty">Nenhuma prévia carregada.</div>
+      </article>
+    </div>
+
+  </main>
+
+  <!-- Modal global de inconsistências -->
+  <div id="spedIssuesModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true"
+    aria-labelledby="spedIssuesModalTitle">
+    <div class="modal__backdrop" data-modal-close="issues"></div>
+
+    <div class="modal__dialog">
+      <section class="modal__panel modal-width-10 modal-height-9 modal-header-color-7 modal-footer-color-2">
+        <header class="modal__header">
+          <h2 id="spedIssuesModalTitle" class="modal__title">
+            Inconsistências — <span id="issuesCount">0</span> registro(s)
+          </h2>
+          <button id="btnCloseIssues" class="modal__close" type="button" aria-label="Fechar modal">×</button>
+        </header>
+
+        <div class="modal__body">
+          <div class="table-scroll--rounded table-height-600 table-row-h-20" data-table-settings="spedfiscal.issuestablebody">
+            <table class="table table-zebra table-zebra-hover table-sticky-head">
+              <thead>
+                <tr>
+                  <th>Tipo</th>
+                  <th>Bloco</th>
+                  <th>Registro</th>
+                  <th>Referência</th>
+                  <th>Mensagem</th>
+                </tr>
+              </thead>
+              <tbody id="issuesTableBody">
+                <tr>
+                  <td colspan="5" class="sf-empty-row">Nenhuma inconsistência carregada.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <footer class="modal__footer">
+          <button class="btn btn-cancel btn-sm" type="button" data-modal-close="issues">
+            Fechar
+          </button>
+        </footer>
+      </section>
+    </div>
+  </div>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="/public/spedFiscal/spedFiscal.init.js"></script>
+</body>
+
+</html>

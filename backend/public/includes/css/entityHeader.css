@@ -1,0 +1,80 @@
+/* ╔════════════════════════════════════════════════════════════════════╗
+   ║ entityHeader.css — Entity Header | PRODNEX ERP                    ║
+   ╚════════════════════════════════════════════════════════════════════╝ */
+
+:root {
+    --entity-header-bg: #f3f4f6;
+    --entity-header-border: #9ca3af;
+    --entity-header-title: #111827;
+
+    --entity-header-radius: 8px;
+    --entity-header-padding: 12px;
+    --entity-header-gap: 12px;
+}
+
+.entity-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--entity-header-gap);
+
+    width: 100%;
+    padding: var(--entity-header-padding);
+
+    background: var(--entity-header-bg);
+    border: 1px solid var(--entity-header-border);
+    border-radius: var(--entity-header-radius);
+
+    box-sizing: border-box;
+}
+
+.entity-header__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.entity-header__title {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--entity-header-title);
+}
+
+.entity-header__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px 12px;
+}
+
+.entity-header__location {
+    grid-column: span 3;
+}
+
+.entity-header .field-group {
+    margin: 0;
+}
+
+.entity-header .plm-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.entity-header .plm-field input {
+    flex: 1;
+    min-width: 0;
+}
+
+.entity-header__table {
+    width: 100%;
+    overflow: auto;
+
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+}
+
+.entity-header__table table {
+    width: 100%;
+    border-collapse: collapse;
+}

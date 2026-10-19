@@ -1,0 +1,103 @@
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║ symbols.css — Símbolos / ícones do sistema | PRODNEX ERP     ║
+   ║ ✅ Botões visuais padronizados                               ║
+   ║ ✅ Expandir, editar, excluir, visualizar                     ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+/* =========================================================
+   Base
+========================================================= */
+.consart-symbol{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+
+  border: 1px solid rgba(20, 24, 40, 0.10);
+  border-radius: 8px;
+  background: #ffffff;
+  color: #334155;
+
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  line-height: 1;
+  font-size: 12px;
+  font-weight: 700;
+
+  transition: background-color .15s ease, border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+}
+
+.consart-symbol:hover{
+  background: #f8fafc;
+  border-color: rgba(20, 24, 40, 0.18);
+}
+
+.consart-symbol:focus{
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(59,130,246,0.18);
+}
+
+/* =========================================================
+   Expand / Collapse
+========================================================= */
+.symbol-expand{
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+}
+
+.symbol-expand:hover{
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+.symbol-expand.is-open{
+  transform: rotate(90deg);
+}
+
+/* =========================================================
+   Pager
+========================================================= */
+.symbol-pager{
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  min-height: 30px;
+}
+
+/* =========================================================
+   Neutral
+========================================================= */
+.symbol-neutral{
+  background: #f8fafc;
+  color: #334155;
+}
+
+/* =========================================================
+   View
+========================================================= */
+.symbol-view{
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+/* =========================================================
+   Edit
+========================================================= */
+.symbol-edit{
+  background: #dcfce7;
+  color: #166534;
+}
+
+/* =========================================================
+   Delete
+========================================================= */
+.symbol-delete{
+  background: #fee2e2;
+  color: #991b1b;
+}

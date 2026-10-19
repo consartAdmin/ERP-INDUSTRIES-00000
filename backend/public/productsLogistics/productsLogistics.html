@@ -1,0 +1,322 @@
+<!--╔══════════════════════════════════════════════════════════════════════╗
+    ║ productsLogistics.html — Produtos • Logística (PRODNEX ERP)         ║
+    ║ Path: backend/public/productsLogistics/productsLogistics.html       ║
+    ╚══════════════════════════════════════════════════════════════════════╝-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+  <title>Relação de Operações de Logística | PRODNEX ERP</title>
+
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/productsLogistics/productsLogistics.css" />
+
+  <script>
+    window.apiBase = window.apiBase || location.origin;
+  </script>
+</head>
+
+<body class="consart-theme">
+  <main class="plx-wrap">
+    <section class="plx-toolbar c-card">
+      <div class="plx-toolbar__row">
+
+        <!-- CONTEXTO DE PEDIDO -->
+        <div class="plx-field">
+          <label>Pedido (order_id)</label>
+          <input id="orderId" type="text" readonly />
+          <small id="orderMeta" class="plx-hint">Nenhum pedido selecionado.</small>
+        </div>
+
+        <div class="plx-field">
+          <label>&nbsp;</label>
+          <div class="plx-actions">
+            <button class="btn btn-pastel-primary" id="btnPickOrder" type="button">Escolher Pedido</button>
+            <button class="btn btn-pastel-primary" id="btnImportOrderItems" type="button" disabled>Importar Itens</button>
+            <button class="btn btn-pastel-primary" id="btnClearOrder" type="button" disabled>Limpar</button>
+          </div>
+          <small class="plx-hint" id="importMeta">—</small>
+        </div>
+
+        <div class="plx-field">
+          <div class="plx-inputIcon">
+          </div>
+        </div>
+
+        <div class="plx-field">
+          <label for="qLimit">Itens por página</label>
+          <select id="qLimit">
+            <option value="25">25</option>
+            <option value="50" selected>50</option>
+            <option value="100">100</option>
+            <option value="200">200</option>
+          </select>
+          <small class="plx-hint">Paginação por offset</small>
+        </div>
+
+        <div class="plx-field">
+          <label>&nbsp;</label>
+          <div class="plx-actions">
+            <button class="btn btn-pastel-primary" id="btnRefresh">Atualizar</button>
+            <button class="btn btn-pastel-primary" id="btnClear">Limpar</button>
+          </div>
+          <small class="plx-hint" id="metaInfo">—</small>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="plx-tableCard c-card">
+      <div class="plx-tableHeader">
+        <div class="plx-tableTitle">Relação de Operações de Logística</div>
+        <div class="plx-pager">
+          <button class="btn btn-pastel-primary" id="btnPrev">◀</button>
+          <span id="pageInfo" class="plx-pageInfo">Página 1</span>
+          <button class="btn btn-pastel-primary" id="btnNext">▶</button>
+        </div>
+      </div>
+
+      <div class="plx-tableWrap">
+        <table class="plx-table" id="tbl">
+          <thead>
+            <tr>
+              <th>Product Code</th>
+              <th>Product Name</th>
+              <th class="t-right">Gross (kg)</th>
+              <th class="t-right">Net (kg)</th>
+              <th class="t-right">H (cm)</th>
+              <th class="t-right">W (cm)</th>
+              <th class="t-right">L (cm)</th>
+              <th class="t-right">m³</th>
+              <th>Package</th>
+              <th class="t-center">Stack</th>
+              <th class="t-center">Fragile</th>
+              <th class="t-center">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbody">
+            <tr><td colspan="12" class="plx-empty">Carregando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal: CRUD Logistics -->
+  <div class="plx-modal" id="modal" aria-hidden="true">
+    <div class="plx-modal__backdrop" data-close="1"></div>
+    <div class="plx-modal__card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="plx-modal__head">
+        <div>
+          <div class="plx-modal__title" id="modalTitle">Novo Registro</div>
+          <div class="plx-modal__sub" id="modalSub">Preencha as informações de logística do produto.</div>
+        </div>
+        <button class="plx-x" data-close="1" title="Fechar">✕</button>
+      </div>
+
+      <div class="plx-modal__body">
+        <form id="form" class="plx-form" autocomplete="off">
+          <div class="plx-grid">
+
+            <div class="plx-field">
+              <label>Product Code *</label>
+              <input id="fProductCode" type="text" placeholder="Ex: 00005050" required />
+              <small class="plx-hint">Usa FK em products(product_code)</small>
+            </div>
+
+            <div class="plx-field">
+              <label>Product Name</label>
+              <input id="fProductName" type="text" placeholder="Descrição do produto" />
+              <small class="plx-hint">Importado do pedido (orderItems.description) quando aplicável</small>
+            </div>
+
+            <div class="plx-field">
+              <label>Package Type</label>
+              <input id="fPackageType" type="text" placeholder="UN / CX / FD..." />
+              <small class="plx-hint">Default: UN</small>
+            </div>
+
+            <div class="plx-field">
+              <label>Gross Weight (kg)</label>
+              <input id="fGross" type="number" step="0.001" min="0" placeholder="0,000" />
+            </div>
+
+            <div class="plx-field">
+              <label>Net Weight (kg)</label>
+              <input id="fNet" type="number" step="0.001" min="0" placeholder="0,000" />
+              <small class="plx-hint">Não pode ser maior que o bruto</small>
+            </div>
+
+            <div class="plx-field">
+              <label>Height (cm)</label>
+              <input id="fH" type="number" step="0.001" min="0" placeholder="0,000" />
+            </div>
+
+            <div class="plx-field">
+              <label>Width (cm)</label>
+              <input id="fW" type="number" step="0.001" min="0" placeholder="0,000" />
+            </div>
+
+            <div class="plx-field">
+              <label>Length (cm)</label>
+              <input id="fL" type="number" step="0.001" min="0" placeholder="0,000" />
+            </div>
+
+            <div class="plx-field">
+              <label>Volume (m³)</label>
+              <div class="plx-volumeRow">
+                <input id="fM3" type="number" step="0.000001" min="0" placeholder="0,000000" />
+                <button type="button" class="btn btn-pastel-primary" id="btnToggleAuto">Auto</button>
+              </div>
+              <small class="plx-hint" id="m3Hint">Auto ON: calculando por H×W×L</small>
+            </div>
+
+            <div class="plx-field plx-switch">
+              <label>Stackable</label>
+              <label class="plx-toggle">
+                <input id="fStack" type="checkbox" checked />
+                <span></span>
+              </label>
+            </div>
+
+            <div class="plx-field plx-switch">
+              <label>Fragile</label>
+              <label class="plx-toggle">
+                <input id="fFragile" type="checkbox" />
+                <span></span>
+              </label>
+            </div>
+
+          </div>
+
+          <div class="plx-form__footer">
+            <div class="plx-leftMeta" id="formMeta">—</div>
+            <div class="plx-form__actions">
+              <button type="button" class="btn btn-pastel-primary" data-close="1">Cancelar</button>
+              <button type="submit" class="btn btn-pastel-primary" id="btnSave">Salvar</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Selecionar Pedido -->
+  <div class="plx-modal" id="orderModal" aria-hidden="true">
+    <div class="plx-modal__backdrop" data-close-order="1"></div>
+    <div class="plx-modal__card" role="dialog" aria-modal="true">
+      <div class="plx-modal__head">
+        <div>
+          <div class="plx-modal__title">Selecionar Pedido</div>
+          <div class="plx-modal__sub" id="orderModalMeta">Digite para buscar...</div>
+        </div>
+        <button class="plx-x" data-close-order="1" title="Fechar">✕</button>
+      </div>
+      <div class="plx-modal__body">
+        <div class="plx-field">
+          <label>Buscar pedido</label>
+          <input id="orderSearch" type="text" placeholder="Ex: 235 / cliente..." />
+        </div>
+
+        <div class="plx-tableWrap" style="margin-top:12px;">
+          <table class="plx-table">
+            <thead>
+              <tr>
+                <th class="t-center">Ação</th>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Status</th>
+                <th class="t-right">Total</th>
+              </tr>
+            </thead>
+            <tbody id="orderTbody">
+              <tr><td colspan="5" class="plx-empty">Digite para buscar...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ NOVO Modal: Itens do Pedido -->
+  <div class="plx-modal" id="orderItemsModal" aria-hidden="true">
+    <div class="plx-modal__backdrop" data-close-order-items="1"></div>
+    <div class="plx-modal__card" role="dialog" aria-modal="true">
+      <div class="plx-modal__head">
+        <div>
+          <div class="plx-modal__title">Produtos do Pedido</div>
+          <div class="plx-modal__sub" id="orderItemsMeta">—</div>
+        </div>
+        <button class="plx-x" data-close-order-items="1" title="Fechar">✕</button>
+      </div>
+
+      <div class="plx-modal__body">
+        <div class="plx-tableWrap">
+          <table class="plx-table plx-table--compact">
+            <thead>
+              <tr>
+                <th class="t-center">Sel</th>
+                <th>Product Code</th>
+                <th>Product Name</th>
+                <th class="t-right">Qtd</th>
+                <th>Un</th>
+              </tr>
+            </thead>
+            <tbody id="orderItemsTbody">
+              <tr><td colspan="5" class="plx-empty">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="plx-form__footer">
+          <div class="plx-leftMeta">Selecione os itens que deseja importar</div>
+          <div class="plx-form__actions">
+            <button type="button" class="btn btn-pastel-primary" data-close-order-items="1">Cancelar</button>
+            <button type="button" class="btn btn-pastel-primary" id="btnConfirmOrderItems" disabled>Confirmar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <!-- ✅ Carrega a tela principal -->
+  <script type="module" src="/public/productsLogistics/productsLogistics.js"></script>
+
+  <!-- ✅ Bootstrap do modal externo (não depende do productsLogistics.js) -->
+  <script type="module">
+    import { openProductsLogisticsOrderPicker } from '/public/modalsSearch/productsLogisticsModal.js';
+
+    const API_BASE = window.apiBase || location.origin;
+
+    const btnPick = document.querySelector('#btnPickOrder');
+    if (btnPick) {
+      btnPick.addEventListener('click', () => {
+        openProductsLogisticsOrderPicker({
+          apiBase: API_BASE,
+
+          // ✅ sua busca de pedidos atual (mantida)
+          ordersSearchUrl: `${API_BASE}/api/orders/search`,
+
+          // ✅ AJUSTE se sua rota real for outra:
+          // padrão proposto: GET /api/orders/:id/items
+          orderItemsUrl: (orderId) => `${API_BASE}/api/orders/${encodeURIComponent(orderId)}/items`,
+
+          onPick: ({ order, items }) => {
+            // ✅ Integração com a tela:
+            // productsLogistics.js já tem setSelectedOrder(), mas está em módulo separado.
+            // Então aqui emitimos um CustomEvent e a tela pode capturar (opcional).
+            window.dispatchEvent(new CustomEvent('plx:orderPicked', { detail: { order, items } }));
+          },
+        });
+      });
+    }
+  </script>
+
+</body>
+</html>

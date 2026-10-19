@@ -1,0 +1,474 @@
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║ 🎨 editClients.css – CONSART theme + grid utilitário        ║
+   ║ • Padrão visual unificado                                   ║
+   ║ • Grade 12 colunas + utilitários col-span                   ║
+   ║ • Presets para 4 blocos (Dados, Contato, Endereço, Extra)   ║
+   ║ • Responsivo e fácil de ajustar manualmente                 ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+
+/* ========================= ROOT / VARIÁVEIS ========================= */
+/* Área centralizada de variáveis CSS; permite trocar o tema facilmente */
+:root{
+  /* Cores base – usadas em botões, títulos e foco */
+  --c-primary:#a6c8ee;                 /* cor primária clara (início do gradiente) */
+  --c-primary-600:#8cb9ff;             /* variação um pouco mais escura (fim do gradiente) */
+
+  /* Cores de campos (inputs/selects) */
+  --c-input-bg:#f7fbff;                /* fundo padrão dos inputs */
+  --c-input-bd:#cfe2ff;                /* borda padrão */
+  --c-input-bd-hover:#9ec1ff;          /* borda ao hover/focus */
+  --c-ring:rgba(0,87,184,.22);         /* “anel” de foco (box-shadow) */
+
+  /* Dimensão */
+  --radius:10px;                       /* raio padrão de bordas arredondadas */
+
+  /* Fundo da página (gradiente suave) */
+  --bg1:#f6f9ff; 
+  --bg2:#ecf3ff;
+
+  /* Tipografia */
+  --font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; /* pilha de fontes segura */
+  --font-size: 16px;                   /* base do rem */
+
+  /* Sombras utilitárias */
+  --shadow-1: 0 6px 24px rgba(0,0,0,.06); /* sombra profunda (container) */
+  --shadow-2: 0 2px 8px rgba(0,0,0,.04);  /* sombra leve (cards/seções) */
+}
+
+
+/* ========================= BASE DA PÁGINA ========================= */
+*{ box-sizing: border-box; }            /* inclui bordas/padding no cálculo do tamanho */
+html{ font-size: var(--font-size); }    /* base de tamanho tipográfico */
+body{
+  margin:0;                             /* remove margem padrão */
+  padding:24px;                         /* respiro externo da página */
+  font-family: var(--font-body);        /* família tipográfica padrão */
+  color:#111;                           /* cor base do texto */
+  /* Fundo com três radiais + um linear para leve textura */
+  background:
+    radial-gradient(1200px 600px at -10% -10%, rgba(168,201,255,.55), transparent 60%),
+    radial-gradient(900px 500px at 110% -10%, rgba(189,214,255,.42), transparent 60%),
+    radial-gradient(900px 500px at 50% 120%, rgba(160,205,255,.38), transparent 60%),
+    linear-gradient(180deg, var(--bg1), var(--bg2));
+}
+
+
+/* ========================= CONTAINER ========================= */
+/* “Card” principal que envolve todo o conteúdo da página */
+.container{
+  max-width:1180px;                     /* largura máxima do formulário */
+  margin:0 auto;                        /* centraliza na viewport */
+  background:#fff;                      /* fundo branco para contraste */
+  padding:28px;                         /* espaçamento interno */
+  border:1px solid var(--c-input-bd);   /* borda sutil */
+  border-radius: calc(var(--radius) + 2px); /* bordas arredondadas */
+  box-shadow: var(--shadow-1);          /* sombra para profundidade */
+}
+/* Título da página */
+h1{
+  margin:0 0 22px;                      /* margem inferior */
+  text-align:center;                    /* centraliza texto */
+  color:#0f2647;                        /* cor destacada */
+  font-weight:600;                      /* peso forte */
+  letter-spacing:.10px;                 /* leve espaçamento entre letras */
+}
+
+
+/* ========================= SEÇÕES (CARDS) ========================= */
+/* Cada bloco (Dados, Contato, Endereço, Extra) é um card */
+.card.section{
+  margin-bottom:18px;                   /* separação entre seções */
+  padding:18px;                         /* espaçamento interno */
+  border-radius: var(--radius);         /* bordas arredondadas */
+  background:#fff;                      /* fundo branco (sobre gradiente) */
+  border:1px solid var(--c-input-bd);   /* borda sutil */
+  box-shadow: var(--shadow-2);          /* sombra leve */
+}
+/* Cabeçalho de cada card */
+.section-title{
+  display:flex;                         /* ícone/decor + texto lado a lado */
+  align-items:center;                   /* alinha verticalmente */
+  gap:5px;                              /* espaço entre “barra” e texto */
+  font-size:1.1rem;                     /* tamanho um pouco maior */
+  font-weight:800;                      /* peso forte */
+  color:#0f2647;                        /* cor de destaque */
+  margin:0 0 12px;                      /* separação do conteúdo abaixo */
+}
+/* “Barra” colorida à esquerda do título */
+.section-title::before{
+  content:'';                           /* gera o elemento decorativo */
+  width:6px; height:22px;               /* dimensões da barra */
+  border-radius: 999px;                 /* cantos arredondados (pílula) */
+  background: linear-gradient(180deg, var(--c-primary), var(--c-primary-600)); /* gradiente do tema */
+  display:inline-block;                 /* mantém dimensões definidas */
+}
+
+
+/* ========================= FORM FIELDS ========================= */
+/* Label padrão (texto acima do campo) */
+label{
+  display:flex; flex-direction:column;  /* empilha rótulo e controle */
+  gap:6px;                              /* espaço entre rótulo e input */
+  font-weight:700;                      /* rótulo enfático */
+  color:#1f2a44;                        /* cor do rótulo */
+  font-size:.95rem;                     /* tamanho do rótulo */
+}
+/* Estilo visual unificado de campos */
+input, select, textarea{
+  appearance:none;                      /* remove estilos nativos inconsistentes */
+  background:var(--c-input-bg);         /* fundo claro */
+  border:1px solid var(--c-input-bd);   /* borda padrão */
+  border-radius:var(--radius);          /* cantos arredondados */
+  padding:10px 12px;                    /* área clicável confortável */
+  font-size:.80rem;                     /* tamanho do texto */
+  color:#0a0a0a;                        /* cor do texto do campo */
+  transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease; /* transições suaves */
+  outline:none;                         /* remove contorno nativo (usaremos box-shadow) */
+}
+input::placeholder, textarea::placeholder{ color:#7a869a; } /* placeholder mais suave */
+input:hover, select:hover, textarea:hover{ border-color:var(--c-input-bd-hover); } /* realce ao hover */
+input:focus, select:focus, textarea:focus{
+  border-color:var(--c-input-bd-hover); /* realce na borda */
+  box-shadow:0 0 0 3px var(--c-ring);   /* anel de foco acessível */
+  background:#fff;                      /* fundo branco em foco para contraste */
+}
+textarea{ min-height:70px; resize:vertical; } /* altura inicial e permite redimensionar */
+
+/* Campos de leitura (bloqueados) */
+input[readonly], select[readonly]{
+  background:#f0f4ff;                   /* fundo diferente */
+  color:#4b5563;                        /* texto mais pálido */
+  cursor:not-allowed;                   /* cursor indica bloqueio */
+}
+
+
+/* ========================= BOTÕES ========================= */
+/* Base visual de botões – coerente com o tema */
+button{
+  font-size:.80rem;                     /* tamanho do texto */
+  font-weight:500;                      /* peso do texto */
+  padding:10px 18px;                    /* área clicável */
+  border-radius: calc(var(--radius) - 2px); /* bordas arredondadas */
+  border:1px solid transparent;         /* borda “limpa” (variantes ajustam) */
+  cursor:pointer;                       /* cursor de ação */
+  background:#fff;                      /* fundo base */
+  color:#0f172a;                        /* cor do texto */
+  transition: 
+    transform .04s ease,               /* leve “flutuar” */
+    box-shadow .2s ease, 
+    background-color .2s ease, 
+    border-color .2s ease;
+  box-shadow:0 1px 0 rgba(0,0,0,.04);   /* relevo mínimo */
+  user-select:none;                     /* evita seleção de texto acidental */
+}
+button:hover{ transform: translateY(-1px); }  /* pequeno “lift” no hover */
+button:active{ transform: translateY(0); }    /* volta ao pressionar */
+button:focus-visible{
+  outline:none;                         /* remove outline nativo */
+  box-shadow:0 0 0 3px var(--c-ring), 0 1px 0 rgba(0,0,0,.05) inset; /* acessibilidade */
+}
+/* Variante primária (Salvar) */
+button.primary{
+  background:linear-gradient(180deg, var(--c-primary), var(--c-primary-600)); /* gradiente de tema */
+  color:#0a1a2f;                        /* texto escuro para contraste */
+  border-color:#b9d6ff;                 /* borda combinando */
+}
+/* Variante de cancelamento */
+button.cancelar{
+  background:#fff5f5;                   /* fundo rosado */
+  color:#7f1d1d;                        /* texto vermelho escuro */
+  border-color:#fecaca;                 /* borda temática */
+}
+button.cancelar:hover{ background:#ffe4e6; border-color:#fca5a5; } /* reforço no hover */
+/* Variante aviso (Observações) */
+button.btn-warning{
+  background:#fff8e1;                   /* fundo amarelo claro */
+  color:#7a4b00;                        /* texto âmbar escuro */
+  border-color:#ffe082;                 /* borda combinando */
+}
+button.btn-warning:hover{ background:#ffefc1; border-color:#ffd54f; } /* hover */
+
+/* Grupo de botões (rodapé do formulário) */
+.botoes{
+  display:flex;                         /* coloca lado a lado */
+  justify-content:center;               /* centra horizontalmente */
+  gap:12px;                             /* espaço entre botões */
+  margin-top:22px;                      /* separação do conteúdo acima */
+  flex-wrap:wrap;                       /* quebra em múltiplas linhas se necessário */
+}
+
+
+/* ========================= GRID SISTEMA (12 colunas) ========================= */
+/* Contêiner de grade padrão usado em seções e linhas de formulário */
+.grid, .grid-12, .grid-form{
+  display:grid;                         /* ativa CSS Grid */
+  gap:14px;                             /* espaçamento entre células */
+  grid-template-columns: repeat(12, 1fr); /* 12 colunas iguais (sistema tipo “Bootstrap”) */
+}
+
+/* Utilitários de span: aplique em qualquer filho do grid para controlar largura */
+.col-span-1{ grid-column: span 1; }     /* ocupa 1/12 da linha */
+.col-span-2{ grid-column: span 2; }     /* ocupa 2/12 da linha */
+.col-span-3{ grid-column: span 3; }     /* … */
+.col-span-4{ grid-column: span 4; }
+.col-span-5{ grid-column: span 5; }
+.col-span-6{ grid-column: span 6; }     /* metade da linha */
+.col-span-7{ grid-column: span 7; }
+.col-span-8{ grid-column: span 8; }
+.col-span-9{ grid-column: span 9; }
+.col-span-10{ grid-column: span 10; }
+.col-span-11{ grid-column: span 11; }
+.col-span-12{ grid-column: span 12; }   /* ocupa a linha inteira */
+
+/* Compatibilidade com códigos anteriores (labels padrão ocupam 4/12) */
+.grid-form label{ grid-column: span 4; }   /* 3 campos por linha por padrão */
+.grid-form label.span-6{ grid-column: span 6; }  /* helper “meia linha” */
+.grid-form label.span-8{ grid-column: span 8; }  /* helper “2/3 da linha” */
+.grid-form label.span-12{ grid-column: span 12; }/* helper “linha inteira” */
+
+/* Presets de colunas simples – úteis quando não quiser lidar com spans */
+.grid-5col{ grid-template-columns: repeat(5, 1fr); gap:14px; display:grid;grid-template-columns: repeat(5, minmax(0,1fr)); }
+.grid-4col{ grid-template-columns: repeat(4, 1fr); gap:14px; display:grid;grid-template-columns: repeat(4, minmax(0,1fr)); } /* 4 campos por linha */
+.grid-3col{ grid-template-columns: repeat(3, 1fr); gap:14px; display:grid;grid-template-columns: repeat(3, minmax(0,1fr)); }           /* 3 campos por linha */
+.grid-2col{ grid-template-columns: repeat(2, 1fr); gap:14px; display:grid;grid-template-columns: repeat(2, minmax(0,1fr)); }           /* 2 campos por linha */
+.grid-1col{ grid-template-columns: 1fr; }                      /* empilha (1 por linha) */
+
+/* Inputs mais “baixinhos” em áreas específicas */
+.input-slim input, .input-slim select { 
+  height: 36px;                          /* reduz altura do controle */
+  padding: 8px 10px;                     /* ajusta padding proporcional */
+}
+
+
+/* ========================= RESPONSIVIDADE ========================= */
+/* Em telas grandes→médias reduz colunas do grid principal para 8; presets se ajustam */
+@media (max-width: 1200px){
+  .grid, .grid-12, .grid-form{ grid-template-columns: repeat(8, 1fr); } /* 8 colunas */
+  .grid-4col{ grid-template-columns: repeat(2, 1fr); } /* 4→2 por linha (Contato, por ex.) */
+}
+/* Em telas pequenas (mobile) reduz grid para 4 colunas e empilha presets comuns */
+@media (max-width: 768px){
+  .grid, .grid-12, .grid-form{ grid-template-columns: repeat(4, 1fr); } /* 4 colunas */
+  .grid-4col, .grid-3col{ grid-template-columns: 1fr; } /* tudo 1 por linha */
+}
+
+
+/* ========================= CAMPOS INLINE (ASAAS) ========================= */
+/* Agrupa input e botão Gerar ID lado a lado de forma fluida */
+.inline-field{ display:flex; gap:8px; align-items:center; } /* linha com espaçamento */
+.inline-field input{ flex:1; }                               /* input cresce e ocupa o espaço */
+.hint{ color:#6b7280; font-size:.85rem; }                    /* texto auxiliar abaixo do campo */
+
+
+/* ========================= ESTADO DE ERRO ========================= */
+/* Classe para sinalizar campos inválidos (ex.: validação JS) */
+.is-invalid{
+  border-color:#ef4444 !important;      /* borda vermelha destacada */
+  box-shadow:0 0 0 3px rgba(239, 68, 68, .18) !important; /* anel de erro */
+}
+
+
+/* ========================= PRESETS POR BLOCO (OPCIONAL) ========================= */
+/* Se não quiser pensar em col-spans, aplique estas classes nas seções do HTML. */
+
+/* 1) DADOS DO CLIENTE – distribuição sugerida:
+      nome/razão (6/6), tipo (4), CNPJ (4), IE (4), IM (6) */
+.grupo-dados .grid-form label{ grid-column: span 6; }        /* nome/razão: metade/metade */
+.grupo-dados .grid-form label[for="tipoPessoa"]{ grid-column: span 4; } /* 1/3 da linha */
+.grupo-dados .grid-form label[for="cnpj_cpf"]{ grid-column: span 4; }   /* 1/3 da linha */
+.grupo-dados .grid-form label[for="inscricao_estadual"]{ grid-column: span 4; } /* 1/3 */
+.grupo-dados .grid-form label[for="inscricao_municipal"]{ grid-column: span 6; } /* meia linha */
+
+/* 2) CONTATO – 4 campos por linha em telas grandes; reflow automático em breakpoints */
+.grupo-contato .grid-form{ grid-template-columns: repeat(12, 1fr); } /* mantém 12 col */
+.grupo-contato .grid-form label{ grid-column: span 3; } /* 12/3 = 4 campos por linha */
+@media (max-width: 1200px){
+  .grupo-contato .grid-form label{ grid-column: span 6; } /* 2 por linha em md */
+}
+@media (max-width: 768px){
+  .grupo-contato .grid-form label{ grid-column: span 12; } /* 1 por linha em sm */
+}
+
+/* 3) ENDEREÇO – layout típico:
+      logradouro(6) número(2) compl(4) bairro(6) cidade(4) estado(2) */
+.grupo-endereco .grid-form label[for="nome_logradouro"]{ grid-column: span 6; } /* 1/2 */
+.grupo-endereco .grid-form label[for="numero"]{ grid-column: span 2; }           /* 1/6 */
+.grupo-endereco .grid-form label[for="complemento"]{ grid-column: span 4; }      /* 1/3 */
+.grupo-endereco .grid-form label[for="bairro"]{ grid-column: span 6; }           /* 1/2 */
+.grupo-endereco .grid-form label[for="cidade"]{ grid-column: span 4; }           /* 1/3 */
+.grupo-endereco .grid-form label[for="estado"]{ grid-column: span 2; }           /* 1/6 */
+
+/* 4) INFORMAÇÕES COMPLEMENTARES – seg(4) class(4) ativo(4) asaas(8) */
+.grupo-extra .grid-form label[for="segmento"]{ grid-column: span 4; }            /* 1/3 */
+.grupo-extra .grid-form label[for="classificacao"]{ grid-column: span 4; }       /* 1/3 */
+.grupo-extra .grid-form label[for="ativo"]{ grid-column: span 4; }               /* 1/3 */
+.grupo-extra .grid-form label[for="asaas_id"]{ grid-column: span 8; }            /* 2/3 (input + botão) */
+
+
+/* ========================= UTILITÁRIOS RÁPIDOS ========================= */
+/* Pequenos helpers de espaçamento e largura total */
+.w-100{ width:100%; }                   /* força 100% da largura do contêiner */
+.mt-0{ margin-top:0; } 
+.mt-2{ margin-top:8px; } 
+.mt-3{ margin-top:12px; } 
+.mt-4{ margin-top:16px; }
+.mb-0{ margin-bottom:0; } 
+.mb-2{ margin-bottom:8px; } 
+.mb-3{ margin-bottom:12px; } 
+.mb-4{ margin-bottom:16px; }
+
+
+/* ========================= EXEMPLOS DE ADAPTAÇÃO (COMENTADOS) ========= */
+/*
+  ➤ Quatro campos por linha (ex.: Contato) usando preset simples:
+     <section class="card section">
+       <h2 class="section-title">Contato</h2>
+       <div class="grid-4col">  ← gera 4 colunas iguais automaticamente
+         <label>...</label>
+         <label>...</label>
+         <label>...</label>
+         <label>...</label>
+       </div>
+     </section>
+
+  ➤ Controle fino com o grid de 12 colunas (spans manuais):
+     <div class="grid-12">
+       <label class="col-span-8">Nome</label>     ← ocupa 8/12
+       <label class="col-span-4">CNPJ</label>     ← ocupa 4/12
+       <label class="col-span-3">Telefone</label> ← ocupa 3/12
+       <label class="col-span-9">E-mail</label>   ← ocupa 9/12
+     </div>
+
+  ➤ Inputs mais “baixinhos” (ex.: cabeçalho enxuto):
+     <div class="grid-12 input-slim"> ... </div>
+*/
+/* ╔══════════════════════════════════════════════════════════╗
+   ║ 🎨 Botões padrão Consart (ícone + texto)                 ║
+   ╚══════════════════════════════════════════════════════════╝ */
+
+button {
+  display: inline-flex;              /* permite alinhar ícone + texto */
+  align-items: center;
+  gap: 8px;                          /* espaço entre ícone e texto */
+  padding: 8px 16px;
+  border: 1px solid #b0b9cc;
+  border-radius: 8px;
+  background-color: #f5f6fa;
+  color: #0a0a0a;
+  font-weight: 480;
+  font-size: 0.85rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: #e8ebf3;
+  border-color: #9aa4b8;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transform: translateY(-1px);
+}
+
+button:active {
+  background-color: #dce1ec;
+  transform: translateY(0);
+}
+
+button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(64, 140, 255, 0.3);
+}
+
+/* 🟦 Botão principal (Salvar) */
+button.primary {
+  background: lab(87.3% 2.83 -12.89);
+  border-color: lab(87.3% 2.83 -12.89);
+  color: #0a1a2f;
+}
+button.primary:hover {
+  background: linear-gradient(180deg, #b8c6ff, #95acff);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+/* ❌ Cancelar */
+button.cancelar {
+  background: lab(87.3% 2.83 -12.89);
+  border-color: lab(87.3% 2.83 -12.89);
+  color: #7f1d1d;
+}
+button.cancelar:hover {
+  background: #ffe4e6;
+  border-color: #f87171;
+}
+
+/* ⚠️ Observações */
+button.btn-warning {
+  background: lab(87.3% 2.83 -12.89);
+  border-color: lab(87.3% 2.83 -12.89);
+  color: #7a4b00;
+}
+button.btn-warning:hover {
+  background: #ffefc1;
+  border-color: lab(87.3% 2.83 -12.89);
+}
+
+/* 📦 Ícones padrão (se usar emoji ou <i> de font-awesome) */
+button i, button svg {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+/* ╔══════════════════════════════════════════╗
+   ║ Toasts – avisos flutuantes               ║
+   ╚══════════════════════════════════════════╝ */
+#toast-root{
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 9999;
+}
+.toast{
+  min-width: 280px;
+  max-width: 420px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.12);
+  color: #0b1020;
+  border: 1px solid transparent;
+  background: #f5f6fa;
+  animation: toastIn .18s ease-out;
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  gap: 10px;
+  align-items: start;
+}
+.toast .t-ico{ font-size: 18px; line-height: 1; }
+.toast .t-title{ font-weight: 800; margin-bottom: 2px; }
+.toast .t-msg{ font-size: .95rem; }
+.toast .t-close{
+  background: transparent; border: 0; cursor: pointer;
+  font-size: 18px; line-height: 1; opacity: .6;
+}
+.toast.t-success{ border-color:#c6f6d5; background:#ecfdf5; }
+.toast.t-error{   border-color:#fecaca; background:#fff5f5; }
+.toast.t-warn{    border-color:#ffe082; background:#fff8e1; }
+.toast.t-info{    border-color:#cfe2ff; background:#eef6ff; }
+@keyframes toastIn{ from{ transform: translateY(-6px); opacity:0; } to{ transform: translateY(0); opacity:1; } }
+
+/* ╔══════════════════════════════════════════╗
+   ║ Erros por campo                          ║
+   ╚══════════════════════════════════════════╝ */
+.field-error{
+  margin-top: 4px;
+  color: #b91c1c;
+  font-size: .85rem;
+  font-weight: 700;
+}
+.is-invalid{
+  border-color:#ef4444 !important;
+  box-shadow:0 0 0 3px rgba(239, 68, 68, .18) !important;
+}

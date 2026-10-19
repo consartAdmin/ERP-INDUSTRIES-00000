@@ -1,0 +1,269 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ plano_acao.html — Plano de Ação | PRODNEX ERP                        ║
+     ║ Path: backend/public/plano_acao/plano_acao.html                      ║
+     ║ UI: Lista + Filtros + Paginação + CRUD + Import Bulk (JSON)          ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Plano de Ação | PRODNEX ERP</title>
+
+  <!-- Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <!-- (Opcional) CSS global do seu ERP -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- CSS do módulo -->
+  <link rel="stylesheet" href="./plano_acao.css" />
+</head>
+
+<body class="consart-theme c-page page page-plano-acao">
+  <main class="pa-wrap">
+    <!-- Header -->
+    <header class="pa-header">
+      <div class="pa-title">
+        <h1>Plano de Ação Secury</h1>
+        <p>Controle de ações por empresa, responsável e status.</p>
+      </div>
+
+      <div class="pa-actions">
+        <button class="btn btn-primary" id="btnNovo">+ Novo</button>
+        <button class="btn btn-ghost" id="btnImportar">Importar (Bulk)</button>
+        <button class="btn btn-ghost" id="btnRefresh" title="Atualizar">↻</button>
+      </div>
+    </header>
+
+    <!-- Filters -->
+    <section class="pa-filters card">
+      <div class="grid">
+        <div class="field">
+          <label for="f_q">Busca</label>
+          <input id="f_q" class="input" placeholder="Pesquisar em empresa, ação, situação, evidências..." />
+        </div>
+
+        <div class="field">
+          <label for="f_item">Item</label>
+          <input id="f_item" class="input" placeholder="Ex.: 1" inputmode="numeric" />
+        </div>
+
+        <div class="field">
+          <label for="f_empresa">Empresa</label>
+          <input id="f_empresa" class="input" placeholder="Ex.: PREFEITURA..." />
+        </div>
+
+        <div class="field">
+          <label for="f_status">Status</label>
+          <select id="f_status" class="input">
+            <option value="">Todos</option>
+            <option>Aberta (Open)</option>
+            <option>Executado</option>
+            <option>Em execução (Running)</option>
+            <option>Atrasada (Delay)</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="f_responsavel">Responsável</label>
+          <input id="f_responsavel" class="input" placeholder="Ex.: REGYS" />
+        </div>
+
+        <div class="field">
+          <label for="f_pageSize">Por página</label>
+          <select id="f_pageSize" class="input">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50" selected>50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="f_orderBy">Ordenar</label>
+          <select id="f_orderBy" class="input">
+            <option value="item asc">Item (ASC)</option>
+            <option value="item desc">Item (DESC)</option>
+            <option value="data desc">Data (DESC)</option>
+            <option value="data asc">Data (ASC)</option>
+            <option value="created_at desc">Criado (DESC)</option>
+            <option value="updated_at desc">Atualizado (DESC)</option>
+          </select>
+        </div>
+
+        <div class="field field-actions">
+          <label>&nbsp;</label>
+          <div class="btn-row">
+            <button class="btn btn-secondary" id="btnAplicar">Aplicar</button>
+            <button class="btn btn-ghost" id="btnLimpar">Limpar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Table -->
+    <section class="pa-table card">
+      <div class="table-head">
+        <div class="table-meta">
+          <span class="chip" id="metaTotal">0 registros</span>
+          <span class="chip chip-soft" id="metaPage">Página 1</span>
+          <span class="chip chip-soft" id="metaReq">reqId: -</span>
+        </div>
+
+        <div class="table-pager">
+          <button class="btn btn-ghost" id="btnPrev">◀</button>
+          <span class="pager-label" id="pagerLabel">1 / 1</span>
+          <button class="btn btn-ghost" id="btnNext">▶</button>
+        </div>
+      </div>
+
+      <div class="table-scroll" data-table-settings="plano-acao.tbody">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th class="col-id">ID</th>
+              <th class="col-item">Item</th>
+              <th class="col-empresa">Empresa</th>
+              <th class="col-acao">Ação</th>
+              <th class="col-resp">Responsável</th>
+              <th class="col-data">Data</th>
+              <th class="col-status">Status</th>
+              <th class="col-sit">Situação Atual</th>
+              <th class="col-obs">Observ./Evidências</th>
+              <th class="col-extra">Campo Extra</th>
+              <th class="col-actions">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="empty" id="emptyState" hidden>
+        <div class="empty-card">
+          <h3>Nenhum registro encontrado</h3>
+          <p>Tente ajustar os filtros ou cadastre uma nova ação.</p>
+          <button class="btn btn-primary" id="btnNovo2">+ Novo</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal: Create/Edit -->
+  <div class="modal-backdrop" id="modalForm" hidden>
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modalTitle">Novo Plano de Ação</h2>
+        <button class="icon-btn" id="modalClose" title="Fechar" type="button">✕</button>
+      </div>
+
+      <form class="modal-body" id="form">
+        <input type="hidden" id="id" />
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="item">Item *</label>
+            <input id="item" class="input" placeholder="1" inputmode="numeric" required />
+          </div>
+
+          <div class="field">
+            <label for="empresa">Empresa *</label>
+            <input id="empresa" class="input" placeholder="Nome da empresa" required />
+          </div>
+
+          <div class="field">
+            <label for="responsavel">Responsável</label>
+            <input id="responsavel" class="input" placeholder="Ex.: REGYS" />
+          </div>
+
+          <div class="field">
+            <label for="data">Data</label>
+            <input id="data" class="input" type="date" />
+          </div>
+
+          <div class="field">
+            <label for="status">Status</label>
+            <select id="status" class="input">
+              <option value="">—</option>
+              <option>Aberta (Open)</option>
+              <option>Executado</option>
+              <option>Em execução (Running)</option>
+              <option>Atrasada (Delay)</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="campo_extra_01">Campo extra 01</label>
+            <input id="campo_extra_01" class="input" placeholder="Ex.: KARINE - RH" />
+          </div>
+
+          <div class="field col-2">
+            <label for="causa">Causa</label>
+            <textarea id="causa" class="input" rows="2" placeholder="Causa (opcional)"></textarea>
+          </div>
+
+          <div class="field col-2">
+            <label for="acao">Ação</label>
+            <textarea id="acao" class="input" rows="2" placeholder="Ação / atividade"></textarea>
+          </div>
+
+          <div class="field col-2">
+            <label for="situacao_atual">Situação Atual</label>
+            <textarea id="situacao_atual" class="input" rows="3" placeholder="Situação atual"></textarea>
+          </div>
+
+          <div class="field col-2">
+            <label for="observ_evidencias">Observ./Evidências</label>
+            <textarea id="observ_evidencias" class="input" rows="3" placeholder="Evidências / observações"></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" id="btnCancelar">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btnSalvar">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Bulk Import -->
+  <div class="modal-backdrop" id="modalBulk" hidden>
+    <div class="modal modal-wide">
+      <div class="modal-header">
+        <h2>Importação em lote (Bulk)</h2>
+        <button class="icon-btn" id="bulkClose" title="Fechar" type="button">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="bulk-help">
+          <p><b>Formato esperado:</b> JSON (array) com objetos contendo as colunas. Ex.:</p>
+          <pre class="code">[
+  {"item":1,"empresa":"PREFEITURA X","acao":"VISITA TECNICA","responsavel":"REGYS","data":"2026-01-05","status":"Executado"},
+  {"item":1,"empresa":"PREFEITURA X","acao":"ATUALIZANDO DADOS","status":"Em execução (Running)"}
+]</pre>
+          <p class="muted">Dica: você pode enviar também com <code>data</code> em <code>DD/MM/YYYY</code>.</p>
+        </div>
+
+        <div class="field">
+          <label for="bulkJson">Cole aqui o JSON (array)</label>
+          <textarea id="bulkJson" class="input" rows="14" placeholder='[{"item":1,"empresa":"..."}]'></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" id="btnBulkCancelar">Cancelar</button>
+          <button type="button" class="btn btn-secondary" id="btnBulkValidar">Validar</button>
+          <button type="button" class="btn btn-primary" id="btnBulkEnviar">Importar</button>
+        </div>
+
+        <div class="bulk-result" id="bulkResult" hidden></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="./plano_acao.js"></script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>DESPESA FIXA | PRODNEX ERP</title>
+
+  <!-- Globais -->
+  <link rel="stylesheet" href="/public/includes/css/style.css"/>
+  <link rel="stylesheet" href="./fixedExpenses.css"/>
+</head>
+
+<body class="consart-theme c-page page" style="--consart-input-h: 30px;">
+  <main class="consart-container consart-container--fixed consart-container--full consart-container--h-800">
+    <div class="consart-layout-col">
+
+      <!-- Header -->
+      <section class="fx-header">
+        <div class="fx-header__left">
+          <div class="fx-title">
+            <span class="fx-title__icon" aria-hidden="true">💸</span>
+            <div>
+              <h1 class="fx-title__h1">Despesas Fixas</h1>
+              <p class="fx-title__sub">Gerencie relatórios e payloads (JSON) com filtros, paginação e edição rápida.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="fx-header__right">
+          <button id="btnNovo" class="btn btn-primary fx-btn-primary">
+            <span aria-hidden="true">＋</span>
+            <span>Novo</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Filters -->
+      <section class="fx-card stack">
+        <div class="fx-card__top">
+          <div class="fx-card__title">
+            <span class="fx-dot" aria-hidden="true"></span>
+            <strong>Filtros</strong>
+            <span class="muted">refine sua busca</span>
+          </div>
+
+          <div class="fx-actions">
+            <button id="btnFiltrar" class="btn btn-toolbar btn-sm">Filtrar</button>
+            <button id="btnLimpar" class="btn btn-toolbar btn-sm">Limpar</button>
+          </div>
+        </div>
+
+        <div class="filters-grid">
+          <div class="form-field">
+            <label for="fSearch">Busca</label>
+            <input id="fSearch" type="text" placeholder="Procurar em Relatório e Payload…">
+          </div>
+
+          <div class="form-field">
+            <label for="fReportName">Nome do Relatório</label>
+            <input id="fReportName" type="text" placeholder="ex.: Despesas - Novembro/2025">
+          </div>
+
+          <div class="form-field">
+            <label for="fDateFrom">De</label>
+            <input id="fDateFrom" type="date">
+          </div>
+
+          <div class="form-field">
+            <label for="fDateTo">Até</label>
+            <input id="fDateTo" type="date">
+          </div>
+
+          <div class="form-field">
+            <label for="fOrderBy">Ordenar por</label>
+            <select id="fOrderBy">
+              <option value="created_at DESC">Criado ↓</option>
+              <option value="created_at ASC">Criado ↑</option>
+              <option value="updated_at DESC">Atualizado ↓</option>
+              <option value="updated_at ASC">Atualizado ↑</option>
+              <option value="report_name ASC">Relatório A→Z</option>
+              <option value="report_name DESC">Relatório Z→A</option>
+              <option value="id DESC">ID ↓</option>
+              <option value="id ASC">ID ↑</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="fPageSize">Por página</label>
+            <select id="fPageSize">
+              <option>10</option>
+              <option selected>20</option>
+              <option>50</option>
+              <option>100</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- small helper line (optional) -->
+        <div class="fx-hint muted">
+          Dica: pressione <kbd>Enter</kbd> na busca para filtrar.
+        </div>
+      </section>
+
+      <!-- Table -->
+      <section class="fx-card stack">
+        <div class="fx-card__top">
+          <div class="fx-card__title">
+            <span class="fx-dot" aria-hidden="true"></span>
+            <strong>Registros</strong>
+            <span id="paginInfo" class="muted">—</span>
+          </div>
+
+          <div class="fx-pager">
+            <button id="btnPrev" class="btn btn-toolbar btn-sm" title="Anterior" aria-label="Página anterior">◀</button>
+            <button id="btnNext" class="btn btn-toolbar btn-sm" title="Próxima" aria-label="Próxima página">▶</button>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="table fx-table" id="tbFx">
+            <thead>
+              <tr>
+                <th class="fx-col-id">ID</th>
+                <th>Nome do Relatório</th>
+                <th>Resumo</th>
+                <th class="fx-col-date">Criado em</th>
+                <th class="fx-col-date">Atualizado em</th>
+                <th class="fx-col-actions">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tbBody">
+              <tr><td colspan="5" class="muted">Carregando…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <dialog id="dlgExpense" class="c-dialog fx-dialog">
+    <form id="formExpense" method="dialog" class="stack fx-modal">
+      <div class="fx-modal__head">
+        <div>
+          <h2 id="dlgTitle" class="fx-modal__title">Nova Despesa</h2>
+          <p class="fx-modal__sub muted">Informe o nome do relatório e o payload em JSON (opcional).</p>
+        </div>
+        <button type="button" id="dlgClose" class="btn btn--ghost fx-close" aria-label="Fechar">✖</button>
+      </div>
+
+      <input type="hidden" id="feId">
+
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="feReportName">Nome do Relatório <span class="req">*</span></label>
+          <input id="feReportName" type="text" required placeholder="ex.: Despesas - Novembro/2025">
+        </div>
+      </div>
+
+<div class="form-field">
+  <label>Payload (Estruturado)</label>
+
+  <div class="fx-payload">
+    <div class="fx-payload__toolbar">
+      <button type="button" id="btnAddRow" class="btn btn--ghost">+ Adicionar campo</button>
+      <button type="button" id="btnLoadExample" class="btn btn--ghost">Exemplo</button>
+      <span class="muted">Campos são convertidos automaticamente para JSON.</span>
+    </div>
+
+    <div class="fx-payload__tablewrap">
+      <table class="fx-payload__table">
+        <thead>
+          <tr>
+            <th style="width: 34%;">Chave</th>
+            <th style="width: 18%;">Tipo</th>
+            <th>Valor</th>
+            <th style="width: 70px;">Ação</th>
+          </tr>
+        </thead>
+        <tbody id="payloadRows"></tbody>
+      </table>
+    </div>
+
+    <!-- Hidden field keeps compatibility with your current JS save -->
+    <textarea id="fePayload" class="fx-hidden" aria-hidden="true" tabindex="-1"></textarea>
+
+    <small id="payloadError" class="muted"></small>
+  </div>
+</div>
+
+      <div class="row end gap-8 fx-modal__foot">
+        <button type="button" id="btnCancelar" class="btn btn-toolbar btn-sm">Cancelar</button>
+        <button type="button" id="btnSalvar" class="btn btn-toolbar btn-sm">Salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- scripts globais -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="./fixedExpenses.js"></script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ transportersModal.css                                               ║
+   ║ Complementos semânticos do modal de Transportadoras                ║
+   ║ Layout alinhado ao modal "Nova Conta a Pagar"                      ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.tpm-body-lock {
+  overflow: hidden !important;
+}
+
+#transportersModalOverlay.is-hidden,
+.tpm-error.is-hidden,
+.tpm-tab-panel:not(.is-active),
+.tpm-cnpj-status.is-hidden,
+.tpm-attachments-alert.is-hidden,
+.tpm-attachments-disabled.is-hidden {
+  display: none !important;
+}
+
+/* Compatibilidade com modals.css global do CONSART */
+#transportersModalOverlay.modal.is-open:not([hidden]) {
+  display: flex;
+}
+
+.transporter-modal-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.transporter-modal-form {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  flex-direction: column;
+}
+
+/* ==========================================================
+   ABAS — Informações | Anexos
+   ========================================================== */
+
+#transportersModalOverlay .transporter-modal-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 10px;
+  border-bottom: 1px solid #d8e2ef;
+}
+
+#transportersModalOverlay .transporter-modal-tab {
+  margin-bottom: -1px;
+  padding: 7px 14px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: #64748b;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#transportersModalOverlay .transporter-modal-tab:hover {
+  color: #2c609f;
+}
+
+#transportersModalOverlay .transporter-modal-tab.is-active {
+  color: #2c609f;
+  border-bottom-color: #2c609f;
+}
+
+#transportersModalOverlay .tpm-tab-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ==========================================================
+   TÍTULOS DE SEÇÃO — mesmo padrão do modal "Nova Conta a Pagar"
+   ========================================================== */
+
+#transportersModalOverlay .tpm-section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin: 6px 0 2px;
+  color: #2c609f;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+
+#transportersModalOverlay .tpm-section-title::after {
+  content: "";
+  height: 1px;
+  flex: 1 1 auto;
+  background: #d8e2ef;
+}
+
+#transportersModalOverlay .tpm-tab-panel>.tpm-section-title:first-child {
+  margin-top: 0;
+}
+
+/* ==========================================================
+   CAMPOS
+   ========================================================== */
+
+#transportersModalOverlay input,
+#transportersModalOverlay select,
+#transportersModalOverlay textarea {
+  font-weight: 700;
+}
+
+.tpm-cnpj-status {
+  display: block;
+  min-height: 14px;
+  margin-top: 2px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #64748b;
+}
+
+.tpm-cnpj-status[data-type="success"] {
+  color: #15803d;
+}
+
+.tpm-cnpj-status[data-type="error"] {
+  color: #b91c1c;
+}
+
+/* ==========================================================
+   ALERTAS
+   ========================================================== */
+
+.tpm-error,
+.tpm-attachments-alert,
+.tpm-attachments-disabled {
+  padding: 9px 11px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.tpm-error {
+  margin-bottom: 10px;
+}
+
+.tpm-attachments-alert,
+.tpm-attachments-disabled {
+  margin-top: 8px;
+}
+
+.tpm-error,
+.tpm-attachments-alert[data-type="error"] {
+  background: rgba(239, 68, 68, .10);
+  color: #b91c1c;
+}
+
+.tpm-attachments-alert[data-type="success"] {
+  background: rgba(34, 197, 94, .10);
+  color: #15803d;
+}
+
+.tpm-attachments-disabled {
+  background: rgba(100, 116, 139, .10);
+  color: #64748b;
+}
+
+/* ==========================================================
+   ABA ANEXOS — upload | lista
+   ========================================================== */
+
+.transporter-files-layout {
+  --tpm-box-height: 220px;
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  width: 100%;
+  min-width: 0;
+}
+
+.transporter-files-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.transporter-dropzone {
+  box-sizing: border-box;
+  height: var(--tpm-box-height);
+  min-height: var(--tpm-box-height);
+  gap: 4px;
+  font: inherit;
+  font-size: 12px;
+  overflow: hidden;
+}
+
+.transporter-dropzone span {
+  color: #64748b;
+  font-size: 11px;
+}
+
+.transporter-dropzone:disabled {
+  cursor: not-allowed;
+  opacity: .55;
+}
+
+.transporter-attachments-table-wrap {
+  height: var(--tpm-box-height);
+  overflow: auto;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+}
+
+.transporter-col-file {
+  width: 150px;
+}
+
+.transporter-col-size {
+  width: 70px;
+}
+
+.transporter-col-date {
+  width: 70px;
+}
+
+.transporter-col-actions {
+  width: 70px;
+}
+
+#transportersModalOverlay #tpm_notes {
+  resize: vertical;
+}
+
+.tpm-attachment-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.tpm-empty-row {
+  text-align: center;
+  color: #64748b;
+}
+
+@media (max-width: 900px) {
+  .transporter-files-layout {
+    grid-template-columns: 1fr;
+  }
+}

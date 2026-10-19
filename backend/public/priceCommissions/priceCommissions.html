@@ -1,0 +1,214 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ priceCommissions.html — Comissão por Tabela de Preço | PRODNEX ERP  ║
+     ║ Path: /backend/public/priceCommissions/priceCommissions.html        ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Comissões por Tabela de Preço | CONSART</title>
+
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <link rel="stylesheet" href="/public/includes/css/style.css">
+
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter">
+
+        <!-- FILTERS -->
+        <div class="fields-inline fields-gap-3">
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <label>Buscar</label>
+            <input id="fQ" type="text" placeholder="Tabela, vendedor..." />
+          </div>
+
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <label>Tabela de Preço</label>
+            <select id="fPrice"></select>
+          </div>
+
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <label>Vendedor</label>
+            <select id="fSeller"></select>
+          </div>
+
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <label>Ativo</label>
+            <select id="fActive">
+              <option value="">Todos</option>
+              <option value="true" selected>Ativos</option>
+              <option value="false">Inativos</option>
+            </select>
+          </div>
+
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <label>Vigente em</label>
+            <input id="fDate" type="date" />
+          </div>
+
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <label>&nbsp;</label>
+            <button id="btnSearch" class="btn btn-new btn-sm">Pesquisar</button>
+            <button id="btnClear" class="btn btn-new btn-sm">Limpar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-scroll table-height-500 table-row-h-20" data-table-settings="pricecommissions.tbody">
+        <table class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Tabela</th>
+              <th>Vendedor</th>
+              <th>Tipo</th>
+              <th>Valor</th>
+              <th>Vigência</th>
+              <th>Ativo</th>
+              <th style="width:180px;">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+
+
+      <!-- =================================================== -->
+      <!-- TABLE FOOTER                                        -->
+      <!-- =================================================== -->
+
+      <footer class="table-footer">
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill-success summary-width-5 summary-left-space-3">
+            <span id="apTableInfo">
+              0 Registros
+            </span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button id="btnPrevious" type="button" class="btn btn-toolbar btn-sm">
+            Anterior
+          </button>
+
+          <span id="pageInfo">
+            Página 1 de 1
+          </span>
+
+          <button id="btnNext" type="button" class="btn btn-toolbar btn-sm">
+            Próxima
+          </button>
+        </div>
+        <div class="table-footer__page-size">
+          <label for="pageSize">
+            Mostrar
+          </label>
+          <div class="fields fields-h-6 fields-w-3 fields-font-3">
+            <select id="pageSize" class="table-footer__page-size-select">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50" selected>50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <!-- MODAL -->
+  <div id="modal" class="modal modal-width-9 modal-height-8" hidden aria-hidden="true">
+    <div class="modal__backdrop" data-close-modal="paymentModal"></div>
+
+    <div class="modal__dialog">
+      <section class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="formTitle">
+
+        <header class="modal__header modal-header-color-3">
+          <div>
+            <h3 id="mTitle">Nova Regra</h3>
+            <p id="mSubtitle">Preencha os campos abaixo.</p>
+          </div>
+          <button class="pc-x" id="btnClose" title="Fechar" aria-label="Fechar">✕</button>
+
+          <div class="btn-inline">
+            <button type="button" class="btn btn-clean btn-sm" data-close-modal="paymentModal" aria-label="Fechar">
+              ×
+            </button>
+          </div>
+        </header>
+
+        <form id="form" class="modal__body payment-modal__form">
+          <input type="hidden" id="commission_id" name="payment_debt_id">
+
+          <div class="fields-inline fields-gap-3">
+            <div class="fields fields-h-6 fields-w-12 fields-font-3">
+              <label>Tabela de Preço *</label>
+              <select id="price_id" required></select>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-12 fields-font-3">
+              <label>Vendedor *</label>
+              <select id="seller_id" required></select>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-12 fields-font-3">
+              <label>Tipo *</label>
+              <select id="commission_type" required>
+                <option value="PERCENT">Percentual (%)</option>
+                <option value="FIXED">Fixo (R$)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="fields-inline fields-gap-3">
+            <div class="fields fields-h-6 fields-w-12 fields-font-3">
+              <label>Percentual (%)</label>
+              <input id="percent_value" type="number" step="0.0001" min="0" value="0" />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-12 fields-font-3">
+              <label>Fixo (R$)</label>
+              <input id="fixed_value" type="number" step="0.01" min="0" value="0" />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-12 fields-font-3">
+              <label>Ativo</label>
+              <select id="active">
+                <option value="true" selected>Sim</option>
+                <option value="false">Não</option>
+              </select>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-12 fields-font-3">
+              <label>Válido a partir *</label>
+              <input id="valid_from" type="date" required />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-12 fields-font-3">
+              <label>Válido até</label>
+              <input id="valid_to" type="date" />
+            </div>
+
+            <button type="button" id="btnDelete">Excluir</button>
+            <div class="pc-spacer"></div>
+            <button type="button" id="btnCancel" class="btn btn-new btn-sm">Cancelar</button>
+            <button type="submit" id="btnSave" class="btn btn-new btn-sm">Salvar</button>
+          </div>
+    </div>
+    </form>
+  </div>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <script type="module" src="/public/priceCommissions/js/priceComissions.init.js"></script>
+
+</body>
+
+</html>

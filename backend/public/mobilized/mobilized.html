@@ -1,0 +1,423 @@
+<!-- ╔════════════════════════════════════════════════════════════════════════════╗
+     ║ mobilized.html — Módulo Mobilized (CONSART)                              ║
+     ║ Path: backend/public/mobilized/mobilized.html                            ║
+     ║                                                                            ║
+     ║ Funções:                                                                  ║
+     ║  - Listar / criar / editar / excluir mobilized                            ║
+     ║  - Gerenciar itens (mobilizedItems)                                       ║
+     ║  - Totais (somatório de total_value)                                      ║
+     ║  - PDF: gerar/baixar + upload GCS + gerar+upload                          ║
+     ║  - Imagem por item via mobilizedAttachments + GCS                         ║
+     ║  - ✅ Campos novos por item: Modelo, S/N, NF-e                             ║
+     ╚════════════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>MOBILIZADO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <!-- CSS base do sistema -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter"> <!-- Container for all vertical lines -->
+
+        <div class="fields-inline fields-gap-3">
+          <div class="fields fields-h-5 fields-w-30 fields-font-3">
+            <div>
+              <h2>Mobilized</h2>
+              <p class="mz-subtitle">Gerencie mobilizados, itens, totalizações e PDF (GCS).</p>
+            </div>
+
+            <!-- Layout: Left list + Right editor -->
+            <!-- LIST -->
+            <div class="fields fields-inline fields-gap-3">
+              <div class="fields fields-h-5 fields-w-20 fields-font-3">
+                <input id="q" class="input" type="search" placeholder="Pesquisar (título, notas, external_ref)..." />
+              </div>
+
+              <div class="fields fields-h-5 fields-w-10 fields-font-3">
+                <select id="statusFilter" class="select">
+                  <option value="">Todos</option>
+                  <option value="ACTIVE">ACTIVE</option>
+                  <option value="ARCHIVED">ARCHIVED</option>
+                  <option value="CANCELED">CANCELED</option>
+                </select>
+              </div>
+
+              <button id="btnSearch" class="btn btn-new btn-sm" type="button">Buscar</button>
+            </div>
+          </div>
+
+          <div class="buttons-inline btn-position-right">
+            <button id="btnNew" class="btn btn-secondary btn-sm" type="button">+ Novo</button>
+
+            <button id="btnRefresh" class="btn btn-secondary btn-sm" type="button">Atualizar</button>
+
+            <button id="btnPdfAll" class="btn btn-secondary btn-sm" type="button"
+              title="Baixar PDF com todos os mobilizados (respeita filtros)">
+              📄 PDF (Todos)
+            </button>
+          </div>
+        </div>
+      </div>
+      </div>
+
+      <!-- TABELA DE MOBILIZADOS -->
+      <!-- ✅ Área rolável padrão CONSART -->
+      <div class="table-scroll table-height-550 table-row-h-28" data-table-settings="mobilized.tablebody">
+        <table class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th>Data / Hora</th>
+              <th>Título</th>
+              <th>Status</th>
+              <th>Itens</th>
+              <th>Valor total</th>
+              <th>PDF</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+
+      <footer class="table-footer">
+
+        <!-- Rodapé -->
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+            <span id="apTableInfo"> 0 registros encontrados</span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+
+          <button type="button" id="pagAnterior" class="btn btn-clean btn-sm">
+            Anterior
+          </button>
+
+          <span id="infoPagina">Página 1 de 1</span>
+
+          <button type="button" id="pagProxima" class="btn btn-new btn-sm">
+            Próxima
+          </button>
+
+        </div>
+
+        <div class="table-footer__page-size">
+          <label for="perPage">Mostrar</label>
+
+          <select id="perPage" class="table-footer__page-size-select" name="perPage">
+            <option value="10">10 linhas</option>
+            <option value="20">20 linhas</option>
+            <option value="30">30 linhas</option>
+            <option value="50" selected>50 linhas</option>
+            <option value="100">100 linhas</option>
+          </select>
+        </div>
+
+      </footer>
+  </main>
+
+  <!-- EDITOR -->
+  <section class="mz-card mz-editor">
+    <div class="mz-card__head mz-editor__head">
+      <div>
+        <h2 class="mz-h2">Detalhes</h2>
+        <p id="editorHint" class="mz-muted">Selecione um registro na lista ou clique em <b>Novo</b>.</p>
+      </div>
+
+      <div class="mz-actions">
+        <button id="btnSave" class="btn btn-primary" type="button" disabled>Salvar</button>
+        <button id="btnDelete" class="btn btn-danger" type="button" disabled>Excluir</button>
+      </div>
+    </div>
+
+    <div class="mz-card__body">
+      <form id="formMobilized" class="mz-form" autocomplete="off">
+        <input type="hidden" id="mobilized_id" />
+
+        <div class="fields-inline fields-gap-3">
+          <div class="fields fields-h-5 fields-w-20 fields-font-3">
+            <label for="title">Título *</label>
+            <input id="title" class="input" type="text" maxlength="180"
+              placeholder="Ex: Mobilizado Fornecedor X — Fev/2026" required />
+          </div>
+
+          <div class="fields fields-h-5 fields-w-12 fields-font-3">
+            <label for="status">Status</label>
+            <select id="status" class="select">
+              <option value="ACTIVE">ACTIVE</option>
+              <option value="ARCHIVED">ARCHIVED</option>
+              <option value="CANCELED">CANCELED</option>
+            </select>
+          </div>
+
+          <div class="fields fields-h-5 fields-w-12 fields-font-3">
+            <label for="acquired_at">Data aquisição</label>
+            <input id="acquired_at" class="input" type="datetime-local" />
+          </div>
+
+          <div class="fields fields-h-5 fields-w-12 fields-font-3">
+            <label for="source_system">Sistema origem</label>
+            <input id="source_system" class="input" type="text" maxlength="60"
+              placeholder="Ex: PortalFornecedor, ERP_X..." />
+          </div>
+
+          <div class="fields fields-h-5 fields-w-12 fields-font-3">
+            <label for="external_ref">External Ref</label>
+            <input id="external_ref" class="input" type="text" maxlength="80"
+              placeholder="ID externo / número documento" />
+          </div>
+        </div>
+
+        <div class="fields fields-h-5 fields-w-20 fields-font-3">
+          <label for="notes">Notas</label>
+          <textarea id="notes" class="textarea" rows="3" placeholder="Observações gerais do mobilizado..."></textarea>
+        </div>
+
+        <!-- PDF (metadados + ações) -->
+        <div class="fields-inline fields-gap-3">
+          <div>
+            <h3 class="mz-h3">PDF do Mobilizado</h3>
+          </div>
+          <span class="mz-badge">gerar / upload GCS</span>
+        </div>
+
+        <!-- Botões -->
+        <div class="btn-inline btn-gap-4">
+          <button id="btnPdfDownload" class="btn btn-new btn-sm" type="button" disabled>Gerar / Abrir PDF</button>
+          <button id="btnPdfGenerateUpload" class="btn btn-new btn-sm" type="button" disabled>Gerar + Upload
+            (GCS)</button>
+          <button id="btnPdfPickUpload" class="btn btn-new btn-sm" type="button" disabled>Upload PDF (GCS)</button>
+          <input id="pdfFile" type="file" accept="application/pdf" hidden />
+        </div>
+
+        <div class="fields-inline fields-gap-3">
+          <div class="fields fields-h-5 fields-w-12 fields-font-3">
+            <label for="pdf_storage">Storage</label>
+            <select id="pdf_storage" class="select">
+              <option value="local">local</option>
+              <option value="url">url</option>
+              <option value="gcs">gcs</option>
+              <option value="s3">s3</option>
+            </select>
+          </div>
+
+          <div class="fields fields-h-5 fields-w-20 fields-font-3">
+            <label for="pdf_path">Caminho/URL</label>
+            <input id="pdf_path" class="input" type="text" placeholder="/public/...  ou  https://..." />
+          </div>
+
+          <div class="btn-inline btn-gap-4">
+            <label>&nbsp;</label>
+            <button id="btnOpenPdf" class="btn btn-new btn-sm" type="button" disabled>Abrir</button>
+          </div>
+        </div>
+    </div>
+
+    <div class="fields-inline fields-gap-3">
+      <div class="fields fields-h-5 fields-w-20 fields-font-3">
+        <label for="pdf_filename">Nome arquivo</label>
+        <input id="pdf_filename" class="input" type="text" maxlength="255" placeholder="arquivo.pdf" />
+      </div>
+
+      <div class="fields fields-h-5 fields-w-5 fields-font-3">
+        <label for="pdf_version">Versão</label>
+        <input id="pdf_version" class="input" type="number" min="1" step="1" value="1" />
+      </div>
+
+      <div class="fields fields-h-5 fields-w-5 fields-font-3">
+        <label for="pdf_uploaded_at">Enviado em</label>
+        <input id="pdf_uploaded_at" class="input" type="datetime-local" />
+      </div>
+
+      <div class="fields fields-h-5 fields-w-10 fields-font-3">
+        <label for="pdf_size_bytes">Tamanho (bytes)</label>
+        <input id="pdf_size_bytes" class="input" type="number" min="0" step="1" placeholder="Ex: 245991" />
+      </div>
+
+      <div class="fields fields-h-5 fields-w-5 fields-font-3">
+        <label for="pdf_sha256">SHA256</label>
+        <input id="pdf_sha256" class="input" type="text" maxlength="64" placeholder="hash de integridade (opcional)" />
+      </div>
+    </div>
+
+    <!-- ITEMS -->
+    <div class="fields-inline fields-gap-3">
+      <div class="fields fields-h-5 fields-w-20 fields-font-3">
+        <h3 class="mz-h3">Itens</h3>
+
+        <div class="fields-inline fields-gap-3">
+          <div class="fields fields-h-5 fields-w-20 fields-font-3">
+            <div class="mz-kpi__label">Itens</div>
+            <div id="kpiItemsCount" class="mz-kpi__value">0</div>
+          </div>
+
+          <div class="fields fields-h-5 fields-w-20 fields-font-3">
+            <div class="mz-kpi__label">Total</div>
+            <div id="kpiItemsTotal" class="mz-kpi__value">R$ 0,00</div>
+          </div>
+
+          <div class="btn-inline btn-gap-4">
+            <button id="btnAddItem" class="btn btn-new btn-sm" type="button" disabled>+ Adicionar item</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-layout">
+      <div class="table-scroll table-height-flex table-row-h-28" data-table-settings="mobilized.itemsbody">
+        <table class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th style="width:72px;">Img</th>
+              <th style="width:80px;">SKU</th>
+              <th style="width:200px;">Descrição</th>
+              <th style="width:80px;">Modelo</th>
+              <th style="width:80px;">S/N</th>
+              <th style="width:80px;">NF-e</th>
+              <th style="width:90px;">Qtd</th>
+              <th style="width:80px;">Un.</th>
+              <th style="width:120px;">Unitário</th>
+              <th style="width:120px;">Total</th>
+              <th style="width:140px;">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="itemsBody">
+            <tr>
+              <td colspan="11" class="mz-muted mz-center">Nenhum item carregado.</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="9" class="mz-items-foot-label">Total geral</td>
+              <td id="itemsFootTotal" class="mz-items-foot-total">R$ 0,00</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+    </div>
+  </section>
+  </section>
+
+  <!-- Modal Item — padrão global modals.css -->
+  <div id="itemModal" class="modal modal-width-8 modal-height-8 modal-header-color-3 modal-footer-color-3" hidden
+    aria-hidden="true">
+    <div id="itemModalBackdrop" class="modal__backdrop" aria-hidden="true"></div>
+
+    <div class="modal__dialog">
+      <section class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="itemModalTitle" tabindex="-1">
+        <header class="modal__header">
+          <h3 id="itemModalTitle" class="modal__title">Item do Mobilizado</h3>
+          <button id="btnCloseItemModal" class="modal__close" type="button" title="Fechar"
+            aria-label="Fechar modal do item">✕</button>
+        </header>
+
+        <div class="modal__body">
+          <input type="hidden" id="mobilized_item_id" />
+
+          <div class="fields-inline fields-gap-3">
+            <div class="fields fields-h-6 fields-w-15 fields-font-3">
+              <img id="item_img_preview" alt="Imagem do item" />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-40 fields-font-3">
+              Salve o item e envie uma imagem JPG, PNG ou WEBP.<br />
+              O arquivo será registrado em <code>mobilizedAttachments</code>.
+            </div>
+            <button id="btnItemSetImageUrl" class="btn btn-new btn-sm" type="button">Enviar imagem</button>
+            <button id="btnItemClearImageUrl" class="btn btn-new btn-sm" type="button">Remover imagem</button>
+          </div>
+
+          <div class="fields-inline fields-gap-3">
+            <div class="fields fields-h-6 fields-w-15 fields-font-3">
+              <label for="item_sku">SKU</label>
+              <input id="item_sku" class="input" type="text" maxlength="60" />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-20 fields-font-3">
+              <label for="item_description">Descrição *</label>
+              <input id="item_description" class="input" type="text" maxlength="500" required />
+            </div>
+
+            <!-- ✅ NOVOS CAMPOS -->
+            <div class="fields fields-h-6 fields-w-15 fields-font-3">
+              <label for="item_model">Modelo</label>
+              <input id="item_model" class="input" type="text" maxlength="120" placeholder="Ex: Dell OptiPlex 7090" />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-15 fields-font-3">
+              <label for="item_serial_number">S/N (Serial Number)</label>
+              <input id="item_serial_number" class="input" type="text" maxlength="120"
+                placeholder="Ex: ABCD-1234-XYZ" />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-15 fields-font-3">
+              <label for="item_nfe_ref">NF-e</label>
+              <input id="item_nfe_ref" class="input" type="text" maxlength="120"
+                placeholder="Ex: 3526... (chave) ou Nº NF" />
+            </div>
+          </div>
+
+          <div class="fields-inline fields-gap-3">
+            <div class="fields fields-h-6 fields-w-15 fields-font-3">
+              <label for="item_quantity">Quantidade *</label>
+              <input id="item_quantity" class="input" type="number" step="0.0001" min="0" value="1" required />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-15 fields-font-3">
+              <label for="item_unit">Un.</label>
+              <input id="item_unit" class="input" type="text" maxlength="10" placeholder="UN, CX, PCT..." />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-15 fields-font-3">
+              <label for="item_unit_price">Unitário</label>
+              <input id="item_unit_price" class="input" type="number" step="0.0001" min="0" />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-15 fields-font-3">
+              <label for="item_total_value">Total (preview)</label>
+              <input id="item_total_value" class="input" type="text" readonly />
+            </div>
+          </div>
+
+          <div class="fields fields-h-6 fields-w-15 fields-font-3">
+            <label for="item_notes">Notas</label>
+            <textarea id="item_notes" class="textarea" rows="3"></textarea>
+          </div>
+        </div>
+
+        <footer class="modal__footer">
+          <button id="btnItemCancel" class="btn btn-new btn-sm" type="button">Cancelar</button>
+          <button id="btnItemSave" class="btn btn-new btn-sm" type="button">Salvar item</button>
+        </footer>
+      </section>
+    </div>
+  </div>
+  </main>
+
+  <!-- Scripts globais -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <!-- Script da página -->
+  <script type="module" src="/public/mobilized/js/mobilized.init.js"></script>
+</body>
+
+</html>

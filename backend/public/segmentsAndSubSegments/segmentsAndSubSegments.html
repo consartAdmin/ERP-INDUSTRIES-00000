@@ -1,0 +1,236 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ segmentsAndSubSegments.html — Customer Segments & Subsegments       ║
+     ║ PRODNEX ERP                                                         ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Segments & SubSegments | PRODNEX ERP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="./segmentsAndSubSegments.css" />
+</head>
+<body>
+  <div class="page-wrapper">
+
+    <header class="page-topbar">
+      <div class="page-topbar__titles">
+        <h1 class="page-topbar__title">SEGMENTOS E SUBSEGMENTOS</h1>
+        <p class="page-topbar__subtitle">
+          Parametrizar os segmentos e subsegmentos relacionados aos clientes.
+        </p>
+      </div>
+      <button id="btnRefreshAll" class="btn btn-soft">
+        &#x21bb; Atualizar tudo
+      </button>
+    </header>
+
+    <main class="page-main">
+
+      <!-- SEGMENTOS -->
+      <section class="card card-left">
+        <header class="card-header">
+          <div>
+            <h2 class="card-title">Segmentos de Clientes</h2>
+            <p class="card-subtitle">
+              Nível superior de classificação. Ex.: RETAIL, WHOLESALE, VIP.
+            </p>
+          </div>
+
+          <div class="card-header__actions">
+            <div class="input-search">
+              <input
+                type="text"
+                id="searchSegmentInput"
+                placeholder="Buscar segmento por nome..."
+              />
+              <button id="btnSearchSegments" class="icon-button" title="Buscar">
+                🔍
+              </button>
+            </div>
+
+            <label class="checkbox-inline">
+              <input type="checkbox" id="chkIncludeInactiveSegments" />
+              <span>Incluir inativos</span>
+            </label>
+
+            <button id="btnNewSegment" class="btn btn-primary">
+              + Novo Segmento
+            </button>
+          </div>
+        </header>
+
+        <section class="card-form">
+          <form id="segmentForm">
+            <input type="hidden" id="segmentId" />
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="segmentName">Nome do segmento *</label>
+                <input
+                  type="text"
+                  id="segmentName"
+                  placeholder="Ex.: Retail Customers"
+                  required
+                />
+              </div>
+
+              <div class="form-group form-group--inline-checkbox">
+                <label for="segmentActive">Ativo</label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="segmentActive" checked />
+                  <span>Ativo</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="segmentDescription">Descrição</label>
+              <textarea
+                id="segmentDescription"
+                rows="2"
+                placeholder="Descrição opcional para este segmento..."
+              ></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">💾 Salvar</button>
+              <button type="button" id="btnCancelSegment" class="btn btn-ghost">
+                ✕ Cancelar
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <section class="card-table">
+          <table class="data-table" id="segmentsTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Código</th>
+                <th>Status</th>
+                <th class="col-actions">Ações</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+
+          <div class="table-footer">
+            <span id="segmentsCountInfo">0 segmento(s) carregado(s).</span>
+            <button id="btnClearSegmentSelection" class="btn btn-ghost btn-xs">
+              Limpar seleção
+            </button>
+          </div>
+        </section>
+      </section>
+
+      <!-- SUBSEGMENTOS -->
+      <section class="card card-right">
+        <header class="card-header">
+          <div>
+            <h2 class="card-title">Subsegmentos de Clientes</h2>
+            <p class="card-subtitle">
+              Detalhamento dentro de cada segmento. Ex.: Small Retail Markets, Large Chains.
+            </p>
+          </div>
+
+          <div class="card-header__actions">
+            <div class="input-search">
+              <input
+                type="text"
+                id="searchSubsegmentInput"
+                placeholder="Buscar subsegmento por nome..."
+              />
+              <button id="btnSearchSubsegments" class="icon-button" title="Buscar">
+                🔍
+              </button>
+            </div>
+
+            <label class="checkbox-inline">
+              <input type="checkbox" id="chkIncludeInactiveSubsegments" />
+              <span>Incluir inativos</span>
+            </label>
+
+            <button id="btnNewSubsegment" class="btn btn-primary">
+              + Novo Subsegmento
+            </button>
+          </div>
+        </header>
+
+        <section class="card-form">
+          <form id="subsegmentForm">
+            <input type="hidden" id="subsegmentId" />
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="subsegmentName">Nome do subsegmento *</label>
+                <input
+                  type="text"
+                  id="subsegmentName"
+                  placeholder="Ex.: Small Retail Markets"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="subsegmentSegment">Segmento vinculado *</label>
+                <select id="subsegmentSegment" required>
+                  <option value="">Selecione um segmento...</option>
+                </select>
+              </div>
+
+              <div class="form-group form-group--inline-checkbox">
+                <label for="subsegmentActive">Ativo</label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="subsegmentActive" checked />
+                  <span>Ativo</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="subsegmentDescription">Descrição</label>
+              <textarea
+                id="subsegmentDescription"
+                rows="2"
+                placeholder="Descrição opcional para este subsegmento..."
+              ></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">💾 Salvar</button>
+              <button type="button" id="btnCancelSubsegment" class="btn btn-ghost">
+                ✕ Cancelar
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <section class="card-table">
+          <table class="data-table" id="subsegmentsTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Segmento</th>
+                <th>Status</th>
+                <th class="col-actions">Ações</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+
+          <div class="table-footer">
+            <span id="subsegmentsCountInfo">0 subsegmento(s) carregado(s).</span>
+          </div>
+        </section>
+      </section>
+
+    </main>
+  </div>
+
+  <script type="module" src="./segmentsAndSubSegments.js"></script>
+</body>
+</html>

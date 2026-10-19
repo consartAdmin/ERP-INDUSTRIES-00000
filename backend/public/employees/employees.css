@@ -1,0 +1,333 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ employees.css — Colaboradores + Documentos (PRODNEX ERP)             ║
+   ║ Layout: ABA Lista ↔ ABA Detalhes/Docs                                ║
+   ║ ✅ Tabela/filtro/campos vêm do Design System (style.css)             ║
+   ║    Aqui ficam só abas, card de detalhes e ajustes do módulo          ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+:root{
+  --emp-gap: 12px;
+  --emp-radius: 12px;
+  --emp-border: rgba(17, 24, 39, .10);
+  --emp-soft: rgba(17, 24, 39, .06);
+  --emp-card: rgba(255, 255, 255, 1);
+  --emp-text: rgba(17, 24, 39, 1);
+  --emp-muted: rgba(107, 114, 128, 1);
+  --emp-primary: rgba(59, 130, 246, 1);
+  --emp-success: rgba(22, 163, 74, 1);
+  --emp-danger: rgba(220, 38, 38, 1);
+
+  /* ✅ mesmas cores/bordas da tabela integrada (lista) */
+  --emp-line: var(--table-border-color, #02080f);
+  --emp-line-w: var(--table-border-width, 1px);
+  --emp-panel-bg: var(--table-filter-bg, #f3f4f6);
+  --emp-radius-ds: var(--table-radius-top, 10px);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   TABS
+   ───────────────────────────────────────────────────────────── */
+.emp-tabs{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+  margin-bottom: var(--emp-gap);
+}
+
+.emp-tabs .btn.is-active{
+  background: rgba(59,130,246,.12);
+  border-color: rgba(59,130,246,.45);
+  font-weight: 800;
+}
+
+.emp-tabs .btn:disabled{
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+.emp-tabs__spacer{ flex: 1; }
+
+/* ─────────────────────────────────────────────────────────────
+   VIEW SWITCH
+   ───────────────────────────────────────────────────────────── */
+.page-employees[data-emp-view="list"] .emp-card--details{ display:none; }
+.page-employees[data-emp-view="details"] .emp-card--list{ display:none; }
+.page-employees[data-emp-view="details"] #btnBackToList{ visibility: visible; }
+.page-employees[data-emp-view="list"] #btnBackToList{ visibility: hidden; }
+
+/* ─────────────────────────────────────────────────────────────
+   CARD (Detalhes)
+   ───────────────────────────────────────────────────────────── */
+.emp-card{
+  background: var(--emp-panel-bg);
+  border: var(--emp-line-w) solid var(--emp-line);
+  border-radius: var(--emp-radius-ds);
+  overflow: hidden;
+}
+
+.emp-card__header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap: 14px;
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid var(--emp-line);
+}
+
+.emp-card__title{
+  margin: 0;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--emp-text);
+}
+
+.emp-card__subtitle{
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: var(--emp-muted);
+}
+
+.emp-card__header-actions{
+  display:flex;
+  gap: 8px;
+  align-items:center;
+  flex-wrap: wrap;
+  justify-content:flex-end;
+}
+
+.emp-card__footer{
+  padding: 8px 2px 0;
+}
+
+.emp-card__summary{
+  font-size: 12px;
+  color: var(--emp-muted);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   TOGGLE / CHECKBOX (alinha com campos fields-h-6)
+   ───────────────────────────────────────────────────────────── */
+.emp-toggle,
+.emp-checkbox{
+  display:inline-flex;
+  flex: 0 0 auto;
+  gap: 6px;
+  align-items:center;
+  height: 30px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  font-size: 12px;
+  color: var(--emp-text);
+  border: 1px solid var(--fields-border-color, #020508);
+  border-radius: var(--fields-border-radius, 6px);
+  background: #fff;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   TABELAS (colunas + ações + status)
+   ───────────────────────────────────────────────────────────── */
+.emp-col-id{ width: 54px; }
+.emp-col-name{ width: 280px; }
+.emp-col-dept{ width: 160px; }
+.emp-col-role{ width: 160px; }
+.emp-col-cpf{ width: 120px; }
+.emp-col-date{ width: 100px; }
+.emp-col-status{ width: 90px; }
+.emp-col-actions{ width: 170px; text-align:right; }
+
+.emp-table-actions{
+  display:flex;
+  gap: 4px;
+  justify-content:flex-end;
+}
+
+.emp-row--selected > td{
+  background: rgba(59,130,246,.14) !important;
+}
+
+#employeesTableBody tr[data-id]{ cursor: pointer; }
+
+.emp-empty{
+  color: var(--emp-muted);
+  padding: 12px 10px !important;
+}
+
+.emp-pill{
+  display:inline-block;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.emp-pill--active{ color: var(--emp-success); background: rgba(22,163,74,.10); }
+.emp-pill--inactive{ color: var(--emp-danger); background: rgba(220,38,38,.10); }
+
+/* ─────────────────────────────────────────────────────────────
+   FORM
+   ───────────────────────────────────────────────────────────── */
+.emp-form{ padding: 12px 14px 14px; }
+
+.emp-form__actions{
+  margin-top: 12px;
+  display:flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items:center;
+  flex-wrap: wrap;
+}
+
+.emp-actions-left,
+.emp-actions-right{
+  display:flex;
+  gap: 8px;
+  align-items:center;
+  flex-wrap: wrap;
+}
+
+.emp-divider{
+  height: 1px;
+  background: var(--emp-line);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   CAMPOS AVANÇADOS
+   ───────────────────────────────────────────────────────────── */
+.emp-adv{
+  margin-top: 12px;
+  border: var(--emp-line-w) solid var(--emp-line);
+  border-radius: var(--emp-radius-ds);
+  background: var(--emp-panel-bg);
+  overflow: hidden;
+}
+
+.emp-adv__summary{
+  list-style: none;
+  cursor: pointer;
+  padding: 10px 12px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--emp-text);
+  background: #fff;
+}
+
+.emp-adv[open] .emp-adv__summary{ border-bottom: 1px solid var(--emp-line); }
+.emp-adv__summary::-webkit-details-marker{ display:none; }
+.emp-adv__summary::before{
+  content: "▸";
+  display: inline-block;
+  margin-right: 8px;
+  opacity: .75;
+}
+.emp-adv[open] .emp-adv__summary::before{ content: "▾"; }
+
+/* ✅ seções lado a lado (cards) — quebra automaticamente em telas menores */
+.emp-adv__content{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 12px;
+  padding: 12px;
+  align-items: stretch;
+}
+
+.emp-section{
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: #fff;
+  border: var(--emp-line-w) solid var(--emp-line);
+  border-radius: var(--emp-radius-ds);
+  padding: 10px 12px 12px;
+}
+
+/* campos dentro do card: grid de 2 colunas, textos longos ocupam a linha toda */
+.emp-section__grid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 12px;
+  align-items: end;
+}
+
+.emp-section__grid > .fields{ width: auto; }
+.emp-section__grid > .emp-span-full{ grid-column: 1 / -1; }
+.emp-section__grid > .emp-checkbox{ justify-self: start; }
+
+/* textarea de Observações preenche a altura do card */
+.emp-section__fill{
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+.emp-section__fill textarea{ flex: 1 1 auto; min-height: 90px; }
+
+.emp-section__title{
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--emp-text);
+  margin: -10px -12px 10px;
+  padding: 7px 12px;
+  background: var(--emp-panel-bg);
+  border-bottom: 1px solid var(--emp-line);
+  border-radius: var(--emp-radius-ds) var(--emp-radius-ds) 0 0;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   DOCUMENTOS
+   ───────────────────────────────────────────────────────────── */
+.emp-docs{ padding: 12px 14px 14px; }
+
+.emp-docs__header{
+  display:flex;
+  justify-content:space-between;
+  gap: 10px;
+  align-items:flex-end;
+  margin-bottom: 10px;
+}
+
+.emp-docs__title{
+  margin: 0;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.emp-docs__subtitle{
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: var(--emp-muted);
+}
+
+.emp-doc-form{
+  border: var(--emp-line-w) solid var(--emp-line);
+  background: #fff;
+  border-radius: var(--emp-radius-ds);
+  padding: 10px 12px;
+  margin-bottom: 10px;
+}
+
+.emp-doc-form.is-editing{
+  border-color: rgba(59,130,246,.45);
+  background: rgba(59,130,246,.05);
+}
+
+.emp-mini-hint{
+  margin: 8px 0 0;
+  font-size: 11px;
+  color: var(--emp-muted);
+}
+
+.emp-mini-hint__legend{
+  margin-left: 8px;
+  opacity: .9;
+}
+
+.emp-docs-scroll{
+  max-height: 260px;
+  background: #fff;
+}
+
+/* Endereço: Cidade | UF | CEP na mesma linha */
+.emp-section__grid--address{
+  grid-template-columns: minmax(0, 2fr) minmax(0, .6fr) minmax(0, 1fr);
+}

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ Caixa › Categorias & Subcategorias                                 ║
+     ║ Path: backend/public/caixaCategories/caixaCategories.html          ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Caixa | Categorias & Subcategorias</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <!-- CSS base do sistema -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- CSS do módulo -->
+  <link rel="stylesheet" href="./caixaCategories.css" />
+
+  <script>
+    window.apiBase = window.apiBase || location.origin;
+  </script>
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+
+  <!-- ✅ Padrão CONSART: container fixo + layout left/right -->
+  <main class="consart-container consart-container--fixed consart-lr consart-lr--equal caixa-categories">
+
+    <!-- ════════════════ LEFT: CATEGORIAS ════════════════ -->
+    <section class="table-layout-integrated table-max-height-700">
+      <div class="table-layout-integrated-filter">
+
+        <div class="header">
+          <h2 class="cc-title">Categorias</h2>
+
+          <div class="cc-actions">
+            <input id="searchCategoria" class="cc-input" type="search" placeholder="Buscar categoria..."
+              aria-label="Buscar categoria" autocomplete="off" />
+            <label class="cc-check">
+              <input type="checkbox" id="catInativos" />
+              <span>Incluir inativos</span>
+            </label>
+            <button class="btn btn-toolbar btn-sm" id="btnNovaCategoria" type="button">+ Nova</button>
+          </div>
+        </div>
+      </div>
+
+      <form id="formCategoria" class="cc-form hidden">
+        <input type="hidden" id="categoriaId" />
+        <input id="categoriaNome" class="cc-input" placeholder="Nome da categoria" aria-label="Nome da categoria"
+          maxlength="120" required />
+        <label class="cc-check">
+          <input type="checkbox" id="categoriaAtivo" checked />
+          <span>Ativo</span>
+        </label>
+
+        <div class="cc-form-actions">
+          <button class="btn btn-toolbar btn-sm" type="submit">Salvar</button>
+          <button class="btn btn-toolbar btn-sm" type="button" id="cancelCategoria">Cancelar</button>
+        </div>
+
+      </form>
+
+      <!-- ✅ scroll interno (table-scroll--flex = ocupa todo o espaço restante do painel) -->
+      <div class="table-scroll table-scroll--flex table-row-h-20" data-table-settings="caixacategories.tbodycategorias">
+        <table class="table table-fixed table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th class="cc-col-id">ID</th>
+              <th>Nome</th>
+              <th class="cc-col-status">Status</th>
+              <th class="cc-col-actions">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyCategorias"></tbody>
+        </table>
+      </div>
+
+      <!-- ✅ Footer: 3 colunas do grid (.table-footer) → info | paginação | linhas por página
+           IDs com prefixo "cat" para não colidir com o footer das subcategorias -->
+      <footer class="table-footer" aria-label="Paginação das categorias">
+
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-left-space-3">
+            <span id="catTableInfo" aria-live="polite">0 registros encontrados</span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button type="button" id="catPagAnterior" class="btn btn-clean btn-sm" disabled>Anterior</button>
+          <span id="catInfoPagina">Página 1 de 1</span>
+          <button type="button" id="catPagProxima" class="btn btn-new btn-sm" disabled>Próxima</button>
+        </div>
+
+        <div class="table-footer__page-size">
+          <label for="catRowsPerPage">Mostrar</label>
+          <select id="catRowsPerPage" class="table-footer__page-size-select" name="catRowsPerPage">
+            <option value="10">10 linhas</option>
+            <option value="20">20 linhas</option>
+            <option value="30">30 linhas</option>
+            <option value="50" selected>50 linhas</option>
+            <option value="100">100 linhas</option>
+          </select>
+        </div>
+
+      </footer>
+
+    </section>
+
+    <!-- ════════════════ RIGHT: SUBCATEGORIAS ════════════════ -->
+    <section class="table-layout-integrated table-max-height-700">
+      <div class="table-layout-integrated-filter">
+
+        <div class="header">
+          <div class="cc-titlewrap">
+            <h2 class="cc-title">Subcategorias</h2>
+            <div class="cc-hint">
+              Categoria: <span id="categoriaSelecionada">Nenhuma categoria selecionada</span>
+            </div>
+          </div>
+
+          <div class="cc-actions">
+            <button class="btn btn-toolbar btn-sm" id="btnNovaSub" type="button" disabled>+ Nova</button>
+          </div>
+        </div>
+      </div>
+
+      <form id="formSubcategoria" class="cc-form hidden">
+        <input type="hidden" id="subId" />
+        <input id="subNome" class="cc-input" placeholder="Nome da subcategoria" aria-label="Nome da subcategoria"
+          maxlength="120" required />
+        <label class="cc-check">
+          <input type="checkbox" id="subAtivo" checked />
+          <span>Ativo</span>
+        </label>
+
+        <div class="cc-form-actions">
+          <button class="btn btn-toolbar btn-sm" type="submit">Salvar</button>
+          <button class="btn btn-toolbar btn-sm" type="button" id="cancelSub">Cancelar</button>
+        </div>
+      </form>
+
+      <!-- ✅ scroll interno (table-scroll--flex = ocupa todo o espaço restante do painel) -->
+      <div class="table-scroll table-scroll--flex table-row-h-20" data-table-settings="caixacategories.tbodysubcategorias">
+        <table class="table table-fixed table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th class="cc-col-id">ID</th>
+              <th>Nome</th>
+              <th class="cc-col-status">Status</th>
+              <th class="cc-col-actions">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbodySubcategorias"></tbody>
+        </table>
+      </div>
+
+      <!-- ✅ Footer: 3 colunas do grid (.table-footer) → info | paginação | linhas por página
+           IDs com prefixo "sub" para não colidir com o footer das categorias -->
+      <footer class="table-footer" aria-label="Paginação das subcategorias">
+
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-left-space-3">
+            <span id="subTableInfo" aria-live="polite">0 registros encontrados</span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button type="button" id="subPagAnterior" class="btn btn-clean btn-sm" disabled>Anterior</button>
+          <span id="subInfoPagina">Página 1 de 1</span>
+          <button type="button" id="subPagProxima" class="btn btn-new btn-sm" disabled>Próxima</button>
+        </div>
+
+        <div class="table-footer__page-size">
+          <label for="subRowsPerPage">Mostrar</label>
+          <select id="subRowsPerPage" class="table-footer__page-size-select" name="subRowsPerPage">
+            <option value="10">10 linhas</option>
+            <option value="20">20 linhas</option>
+            <option value="30">30 linhas</option>
+            <option value="50" selected>50 linhas</option>
+            <option value="100">100 linhas</option>
+          </select>
+        </div>
+
+      </footer>
+    </section>
+
+  </main>
+
+  <!-- CORE -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="./caixaCategories.js"></script>
+</body>
+
+</html>

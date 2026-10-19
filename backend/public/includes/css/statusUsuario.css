@@ -1,0 +1,48 @@
+:root {
+  --statusbar-h: 36px;
+  --statusbar-bg: #f8fafc;      /* claro */
+  --statusbar-fg: #111827;
+  --statusbar-border: #e5e7eb;
+  --statusbar-muted: #6b7280;
+}
+
+body { padding-bottom: var(--statusbar-h); }
+
+#status-usuario-bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  height: var(--statusbar-h);
+  display: flex; align-items: center; gap: 14px;
+  padding: 0 12px;
+  background: var(--statusbar-bg);
+  color: var(--statusbar-fg);
+  border-top: 1px solid var(--statusbar-border);
+  font: 500 13px/1.1 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  z-index: 9999;
+}
+
+#status-usuario-bar .sep {
+  width: 1px; height: 18px; background: var(--statusbar-border);
+}
+
+#status-usuario-bar .muted { color: var(--statusbar-muted); font-weight: 400; }
+
+#status-usuario-bar .right {
+  margin-left: auto; display: flex; align-items: center; gap: 10px;
+}
+
+#status-usuario-bar a, #status-usuario-bar button {
+  border: 0; background: transparent; color: inherit; cursor: pointer;
+  text-decoration: none; padding: 4px 6px; border-radius: 6px;
+}
+#status-usuario-bar a:hover, #status-usuario-bar button:hover {
+  background: rgba(0,0,0,.06);
+}
+
+/* Dark mode (quando body tiver .dark-mode) */
+.dark-mode {
+  --statusbar-bg: #0b1220;
+  --statusbar-fg: #e5e7eb;
+  --statusbar-border: #1f2937;
+  --statusbar-muted: #9ca3af;
+}

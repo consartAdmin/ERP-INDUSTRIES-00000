@@ -1,0 +1,260 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ crmDealsReativationPerformance.css — Performance CRM Reativação      ║
+   ║ PRODNEX ERP | Frontend (CSS)                                         ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.page-crm-reativacao-performance .crmperf{
+  padding-top: var(--gap-lg);
+  padding-bottom: var(--gap-xl);
+}
+
+/* Card padrão do módulo (alinhado com section-card, mas sem depender dele) */
+.crmperf__card{
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+/* Inputs padrão do módulo (não depende de c-input antigo) */
+.crmperf__input{
+  width: 100%;
+  height: 36px;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: var(--fs-14);
+  outline: none;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+}
+
+.crmperf__input:focus{
+  border-color: color-mix(in oklab, var(--primary) 50%, var(--line));
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary-100) 70%, transparent);
+}
+
+.crmperf__input--sm{
+  height: 32px;
+  padding: 6px 10px;
+  font-size: var(--fs-12);
+}
+
+/* Header */
+.crmperf__header{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--gap);
+  margin-bottom: var(--gap);
+}
+
+.crmperf__title h1{
+  margin: 0;
+  font-size: var(--fs-24);
+  letter-spacing: .2px;
+}
+
+.crmperf__title p{
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: var(--fs-12);
+}
+
+/* Filters */
+.crmperf__filters{
+  padding: var(--gap) var(--gap);
+  margin-bottom: var(--gap);
+}
+
+.crmperf__filtersGrid{
+  display: grid;
+  grid-template-columns: 160px 160px 260px 220px 1fr;
+  gap: var(--gap-sm);
+  align-items: end;
+}
+
+.crmperf__field label{
+  display: block;
+  font-size: var(--fs-12);
+  color: color-mix(in oklab, var(--text) 70%, var(--muted));
+  margin-bottom: 6px;
+}
+
+.crmperf__field--grow{
+  min-width: 280px;
+}
+
+.crmperf__hint{
+  display: block;
+  font-size: 11px;
+  color: color-mix(in oklab, var(--muted) 85%, transparent);
+  margin-top: 6px;
+}
+
+.crmperf__search{
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  align-items: center;
+}
+
+/* KPIs */
+.crmperf__kpis{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--gap-sm);
+  margin-bottom: var(--gap);
+}
+
+.crmperf__kpi{
+  padding: var(--gap);
+}
+
+.crmperf__kpiTitle{
+  font-size: var(--fs-12);
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.crmperf__kpiValue{
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: .2px;
+  color: var(--text);
+}
+
+.crmperf__kpiSub{
+  margin-top: 6px;
+  font-size: 11px;
+  color: color-mix(in oklab, var(--muted) 85%, transparent);
+}
+
+/* Table */
+.crmperf__tableWrap{
+  padding: var(--gap);
+}
+
+.crmperf__tableTop{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-sm);
+  margin-bottom: 10px;
+}
+
+.crmperf__tableTitle h2{
+  margin: 0;
+  font-size: var(--fs-18);
+}
+
+.crmperf__meta{
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 11px;
+  color: color-mix(in oklab, var(--muted) 85%, transparent);
+}
+
+.crmperf__pager{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.crmperf__pageInfo{
+  font-size: var(--fs-12);
+  color: color-mix(in oklab, var(--text) 70%, var(--muted));
+  min-width: 140px;
+  text-align: center;
+}
+
+/* Scroll + table */
+.crmperf__tableScroll{
+  overflow: auto;
+  border-radius: var(--radius);
+  border: 1px solid color-mix(in oklab, var(--line) 85%, transparent);
+  background: #fff;
+}
+
+.crmperf__table{
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1100px;
+}
+
+.crmperf__table thead th{
+  text-align: left;
+  font-size: 11px;
+  color: color-mix(in oklab, var(--text) 70%, var(--muted));
+  background: color-mix(in oklab, var(--card) 70%, var(--bg));
+  padding: 10px 10px;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  border-bottom: 1px solid color-mix(in oklab, var(--line) 90%, transparent);
+}
+
+.crmperf__table tbody td{
+  padding: 10px 10px;
+  font-size: var(--fs-12);
+  border-bottom: 1px solid color-mix(in oklab, var(--line) 70%, transparent);
+  vertical-align: top;
+  color: color-mix(in oklab, var(--text) 92%, transparent);
+}
+
+.crmperf__table tbody tr:hover{
+  background: color-mix(in oklab, var(--primary-50) 35%, transparent);
+}
+
+.crmperf__empty{
+  text-align: center;
+  padding: 18px 10px !important;
+  color: var(--muted);
+}
+
+.ta-right{ text-align: right; }
+
+/* Footer */
+.crmperf__footer{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-sm);
+  padding: 10px 2px 2px;
+}
+
+.crmperf__pill{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px dashed color-mix(in oklab, var(--line) 95%, transparent);
+  background: color-mix(in oklab, var(--bg) 65%, transparent);
+  font-size: 11px;
+  color: color-mix(in oklab, var(--text) 70%, var(--muted));
+}
+
+.crmperf__limit{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--fs-12);
+  color: color-mix(in oklab, var(--text) 70%, var(--muted));
+}
+
+/* Responsive */
+@media (max-width: 1200px){
+  .crmperf__filtersGrid{
+    grid-template-columns: 1fr 1fr;
+  }
+  .crmperf__kpis{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .crmperf__field--grow{
+    grid-column: 1 / -1;
+  }
+  .crmperf__pageInfo{
+    min-width: 120px;
+  }
+}

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Descrições de Produto | PRODNEX ERP</title>
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <!-- 🎨 CONSART Design System (orquestrador) -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- ✅ containerConsart.css -->
+  <link rel="stylesheet" href="/public/includes/css/containerConsart.css" />
+
+  <!-- CSS do módulo -->
+  <link rel="stylesheet" href="/public/productsDescriptions/productsDescriptions.css" />
+</head>
+
+<body class="consart-theme c-page">
+
+  <main class="consart-container consart-container--fixed consart-container--full consart-container--vh-92">
+
+    <!-- HEADER / TOOLBAR -->
+    <section class="pd-toolbar">
+      <div class="pd-title">
+        <h1 class="pd-h1">Descrições de Produto</h1>
+        <p class="pd-sub">Cadastro e manutenção do catálogo de descrições (por produto).</p>
+      </div>
+
+      <div class="pd-toolbar-actions">
+        <button id="btnNew" class="btn btn-toolbar" type="button">Novo</button>
+        <button id="btnReload" class="btn btn-toolbar" type="button">Recarregar</button>
+      </div>
+    </section>
+
+    <!-- FILTROS -->
+    <section class="pd-filters">
+      <div class="pd-field">
+        <label for="q">Buscar</label>
+        <input id="q" type="text" placeholder="product_code ou trecho da descrição" />
+      </div>
+
+      <div class="pd-field">
+        <label for="filter_product_code">Product Code</label>
+        <input id="filter_product_code" type="text" placeholder="ex: 7800" />
+      </div>
+
+      <div class="pd-field">
+        <label for="filter_active">Status</label>
+        <select id="filter_active">
+          <option value="">Todos</option>
+          <option value="true" selected>Ativos</option>
+          <option value="false">Inativos</option>
+        </select>
+      </div>
+
+      <div class="pd-filter-actions">
+        <button id="btnSearch" class="btn btn-primary" type="button">Pesquisar</button>
+        <button id="btnClear" class="btn btn-light" type="button">Limpar</button>
+      </div>
+    </section>
+
+    <!-- FORM -->
+    <section class="pd-card">
+      <div class="pd-card-head">
+        <h2 class="pd-h2">Editar / Criar</h2>
+        <div class="pd-pill" id="formModePill">NOVO</div>
+      </div>
+
+      <div class="pd-form">
+        <input type="hidden" id="product_description_id" />
+
+        <div class="pd-field pd-span-2">
+          <label for="product_code">Product Code *</label>
+          <input id="product_code" type="text" placeholder="F2 para buscar / duplo clique"
+            title="Pressione F2 ou dê duplo clique para buscar o produto" autocomplete="off" />
+        </div>
+
+        <div class="pd-field pd-span-6">
+          <label for="description">Descrição *</label>
+          <textarea id="description" placeholder="Digite a descrição completa..."></textarea>
+        </div>
+
+        <div class="pd-field pd-span-2 pd-active">
+          <label for="is_active">Ativo</label>
+          <select id="is_active">
+            <option value="true" selected>Sim</option>
+            <option value="false">Não</option>
+          </select>
+        </div>
+
+        <div class="pd-actions pd-span-8">
+          <button id="btnSave" class="btn btn-primary" type="button">Salvar</button>
+          <button id="btnDeactivate" class="btn btn-warning" type="button">Desativar</button>
+          <button id="btnDelete" class="btn btn-danger" type="button">Excluir</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TABELA -->
+    <section class="pd-table-wrap consart-scroll-area">
+      <table class="pd-table consart-table-sticky">
+        <thead>
+          <tr>
+            <th style="width:110px;">ID</th>
+            <th style="width:160px;">Product Code</th>
+            <th>Descrição</th>
+            <th style="width:110px;">Ativo</th>
+            <th style="width:210px;">Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+
+      <div class="pd-empty" id="emptyState" hidden>
+        Nenhum registro encontrado.
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Core (se você usa no seu projeto, mantém) -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <!-- Script do módulo -->
+  <script type="module" src="/public/productsDescriptions/productsDescriptions.js"></script>
+</body>
+
+</html>

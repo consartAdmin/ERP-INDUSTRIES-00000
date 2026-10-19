@@ -1,0 +1,498 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ 🎨 ordersKanban.css – Kanban de Entregas (PRODNEX ERP)              ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+/* Página */
+.page-orders-kanban .page-header h1 {
+  font-size: var(--fs-20);
+  margin-bottom: 4px;
+}
+
+.page-orders-kanban .page-subtitle {
+  margin: 0;
+  font-size: var(--fs-14);
+  color: var(--muted);
+}
+
+/* ====================================================================== */
+/* Toolbar / filtros                                                      */
+/* ====================================================================== */
+.ok-toolbar {
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--gap);
+}
+
+.ok-label {
+  font-size: var(--fs-14);
+  font-weight: 500;
+  color: var(--text);
+}
+
+.ok-select {
+  min-width: 180px;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: #fff;
+  font-size: var(--fs-14);
+}
+
+.ok-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: var(--fs-12);
+  border: 1px solid transparent;
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.ok-badge--success {
+  background: #ecfdf3;
+  border-color: #bbf7d0;
+  color: #15803d;
+}
+
+/* ====================================================================== */
+/* Form de criação de card                                                */
+/* ====================================================================== */
+
+.ok-section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: var(--gap);
+}
+
+.ok-section-header h2 {
+  font-size: var(--fs-16);
+  margin: 0;
+}
+
+.ok-subtext {
+  font-size: var(--fs-12);
+  color: var(--muted);
+}
+
+.ok-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr auto;
+  gap: var(--gap);
+  align-items: flex-end;
+}
+
+.ok-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ok-field--wide {
+  grid-column: span 2;
+}
+
+.ok-field--actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  white-space: nowrap;
+}
+
+.ok-input,
+.ok-textarea {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  padding: 6px 10px;
+  background: #fff;
+  font-size: var(--fs-14);
+}
+
+.ok-input:focus,
+.ok-textarea:focus,
+.ok-select:focus {
+  outline: 2px solid var(--primary-100);
+  border-color: var(--primary-400);
+}
+
+.ok-textarea {
+  resize: vertical;
+  min-height: 32px;
+}
+
+.ok-input-with-btn {
+  display: flex;
+  gap: 6px;
+}
+
+/* Responsivo */
+@media (max-width: 960px) {
+  .ok-form-grid {
+    grid-template-columns: 1fr;
+  }
+  .ok-field--wide {
+    grid-column: span 1;
+  }
+}
+
+/* ====================================================================== */
+/* Board Kanban                                                           */
+/* ====================================================================== */
+
+.ok-kanban-board {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: var(--gap-lg);
+  overflow-x: auto;
+  padding-bottom: var(--gap-sm);
+}
+
+.ok-kanban-column {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  min-width: 260px;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  max-height: 780px;
+}
+
+.ok-kanban-column-header {
+  padding: var(--gap-sm) var(--gap);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-sm);
+}
+
+.ok-kanban-column-title {
+  font-size: var(--fs-14);
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+}
+
+.ok-kanban-column-title span {
+  font-weight: 400;
+  font-size: var(--fs-12);
+  color: var(--muted);
+}
+
+.ok-kanban-column-badge {
+  font-size: var(--fs-12);
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--primary-50);
+  color: var(--primary-800);
+}
+
+.ok-kanban-list {
+  padding: var(--gap);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+  overflow-y: auto;
+}
+
+/* Cartão */
+.ok-card {
+  background: #f3f6ff;
+  border-radius: var(--radius);
+  border: 1px solid #d2ddff;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+  padding: 8px 10px;
+  cursor: grab;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ok-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.ok-card-title {
+  font-size: var(--fs-12);
+  font-weight: 600;
+}
+
+.ok-card-chip {
+  font-size: var(--fs-10);
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.ok-card-body {
+  font-size: var(--fs-12);
+  color: #111827;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ok-card-footer {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.ok-card-urgent {
+  border: 1px solid #fecaca;
+  box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.2);
+  background: #fff1f2;
+}
+
+.ok-chip-urgent {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* ====================================================================== */
+/* Modais próprios do Kanban                                             */
+/* ====================================================================== */
+
+.ok-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 8000;
+}
+
+.ok-modal.is-open {
+  display: flex;
+}
+
+.ok-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.ok-modal__dialog {
+  position: relative;
+  z-index: 1;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 22px 60px rgba(15, 23, 42, 0.4);
+  width: min(960px, calc(100% - 32px));
+  max-height: 86vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.ok-modal__header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-sm);
+}
+
+.ok-modal__header h3 {
+  margin: 0;
+  font-size: var(--fs-16);
+}
+
+.ok-modal__body {
+  padding: 12px 16px 16px;
+  overflow-y: auto;
+}
+
+.ok-modal__close {
+  background: #f9fafb;
+  border-radius: 999px;
+  padding-inline: 10px;
+}
+
+/* Form de pendências dentro do modal */
+.ok-pend-form {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--gap);
+  align-items: flex-end;
+  margin-bottom: var(--gap);
+}
+
+.ok-pend-form .ok-field--wide {
+  grid-column: span 2;
+}
+
+.ok-pend-form .ok-field--actions {
+  justify-content: flex-start;
+}
+
+@media (max-width: 960px) {
+  .ok-pend-form {
+    grid-template-columns: 1fr;
+  }
+  .ok-pend-form .ok-field--wide {
+    grid-column: span 1;
+  }
+}
+
+/* Listas de pendências */
+.ok-pend-lists {
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 960px) {
+  .ok-pend-lists {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ok-pend-group h4 {
+  margin: 0 0 6px;
+  font-size: var(--fs-14);
+}
+
+.ok-pend-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ok-pend-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: #f9fafb;
+  font-size: var(--fs-12);
+}
+
+.ok-pend-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.ok-pend-meta {
+  font-size: var(--fs-10);
+  color: var(--muted);
+}
+
+/* Observação / detalhes do cliente */
+.ok-obs-text,
+.ok-cliente-details {
+  font-size: var(--fs-14);
+  line-height: 1.4;
+  white-space: pre-line;
+}
+
+/* ====================================================================== */
+/* Utilitários                                                            */
+/* ====================================================================== */
+
+.ok-text-muted {
+  color: var(--muted);
+}
+
+.ok-mini-label {
+  font-size: var(--fs-10);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+/* ====================================================================== */
+/* 🔗 Ponte JS ↔ CSS – Colunas e cards criados via #kanbanBoard           */
+/* ====================================================================== */
+
+/* Board vindo do JS (id="kanbanBoard") aproveitando o layout ok-kanban-board */
+#kanbanBoard {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: var(--gap-lg);
+  overflow-x: auto;
+  padding-bottom: var(--gap-sm);
+}
+
+/* Cada coluna criada dinamicamente (data-column-id) vira uma coluna visual */
+#kanbanBoard > [data-column-id] {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+
+  /* 🔽 largura da coluna */
+  min-width: 230px;   /* antes 320 */
+  max-width: 320px;   /* antes 420 */
+
+  display: flex;
+  flex-direction: column;
+  max-height: 780px;
+}
+
+/* Cabeçalho da coluna – se o JS não usar .ok-kanban-column-header,
+   o primeiro filho serve como header visual básico */
+#kanbanBoard > [data-column-id] > .ok-kanban-column-header,
+#kanbanBoard > [data-column-id] > header {
+  padding: var(--gap-sm) var(--gap);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-sm);
+}
+
+/* Título dentro do header (nome da coluna + contadores) */
+#kanbanBoard > [data-column-id] .ok-kanban-column-title,
+#kanbanBoard > [data-column-id] header h3 {
+  font-size: var(--fs-14);
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Lista de cards da coluna */
+#kanbanBoard > [data-column-id] .ok-kanban-list,
+#kanbanBoard > [data-column-id] .cards-list,
+#kanbanBoard > [data-column-id] > div {
+  padding: 0px;         /* era var(--gap) ≈ 16px */
+  display: flex;
+  flex-direction: column;
+  gap: 6px;             /* também pode diminuir o gap entre cards */
+  overflow-y: auto;
+}
+
+#kanbanBoard [data-card-id] {
+  background: #f3f6ff;
+  border-radius: var(--radius);
+  border: 1px solid #d2ddff;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+  padding: 8px 10px;
+  cursor: grab;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: var(--fs-12);
+
+  /* 🔽 controle de largura do card */
+  width: 100%;
+  max-width: 96%;         /* ou 95% */
+  margin: 0 auto;         /* fica só um respiro lateral pequeno */
+  box-sizing: border-box;
+}
+
+/* Nesta tela específica, não queremos que nada use span 2 */
+.page-orders-kanban .ok-form-grid .ok-field--wide {
+  grid-column: auto; /* volta a ocupar só 1 coluna */
+}

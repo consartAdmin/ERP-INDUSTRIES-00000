@@ -1,0 +1,118 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ expenseCreateModal.css — Modal Criar/Editar Despesa (CENTER FIX)     ║
+   ║ Path: public/expenses/expenseCreateModal.css                         ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+/* ✅ Overlay: hard-center using GRID (beats most global CSS) */
+#modalLayer.modal-layer{
+  position:fixed !important;
+  inset:0 !important;
+  width:100vw !important;
+  height:100vh !important;
+
+  display:grid !important;
+  place-items:center !important;
+
+  padding:18px !important;
+  background:rgba(2,6,23,.45) !important;
+  z-index:9999 !important;
+
+  margin:0 !important;
+  left:0 !important;
+  top:0 !important;
+  transform:none !important;
+}
+
+#modalLayer.hidden{ display:none !important; }
+
+/* ✅ Modal box: always centered, no external “float/left” */
+#modalLayer .modal{
+  width:min(980px, calc(100vw - 36px)) !important;
+  max-height:calc(100vh - 36px) !important;
+
+  background:#fff !important;
+  border-radius:18px !important;
+  box-shadow:0 30px 80px rgba(2,6,23,.35) !important;
+  border:1px solid rgba(255,255,255,.35) !important;
+
+  margin:0 !important;
+  position:relative !important;
+  left:auto !important;
+  right:auto !important;
+  top:auto !important;
+  bottom:auto !important;
+  transform:none !important;
+
+  /* Better internal layout */
+  overflow:hidden !important;
+  display:flex !important;
+  flex-direction:column !important;
+}
+
+/* ✅ Header full width */
+#modalLayer .modal-h{
+  display:flex !important;
+  justify-content:space-between !important;
+  align-items:center !important;
+  gap:12px !important;
+
+  padding:14px 16px !important;
+  border-bottom:1px solid var(--line) !important;
+  background:#fbfbfd !important;
+
+  width:100% !important;
+}
+
+/* ✅ Body scrolls (not the entire modal) */
+#modalLayer .modal-b{
+  padding:14px 16px 16px !important;
+  overflow:auto !important;
+  flex:1 1 auto !important;
+}
+
+/* ✅ Footer stays visible */
+#modalLayer .modal-f{
+  display:flex !important;
+  justify-content:space-between !important;
+  align-items:center !important;
+  gap:10px !important;
+
+  padding:12px 16px !important;
+  border-top:1px solid var(--line) !important;
+  background:#fbfbfd !important;
+
+  width:100% !important;
+}
+
+/* Grid */
+/* ✅ 5 columns grid (desktop) */
+#modalLayer .grid{
+  display:grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap:12px !important;
+  align-items:start !important;
+}
+
+/* Spans */
+#modalLayer .col-span-2{ grid-column: span 2 !important; }
+#modalLayer .col-span-3{ grid-column: span 3 !important; }
+#modalLayer .col-span-4{ grid-column: span 4 !important; }
+#modalLayer .col-span-5{ grid-column: 1 / -1 !important; } /* full row */
+
+/* Buttons alignment */
+#modalLayer .right{
+  display:flex !important;
+  gap:8px !important;
+  align-items:center !important;
+}
+
+/* Responsive */
+@media (max-width: 1200px){
+  #modalLayer .grid{ grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+}
+@media (max-width: 900px){
+  #modalLayer .grid{ grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
+@media (max-width: 720px){
+  #modalLayer .grid{ grid-template-columns: 1fr !important; }
+}

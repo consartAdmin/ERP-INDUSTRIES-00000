@@ -1,0 +1,451 @@
+/* ╔══════════════════════════════════════════════════════════════════════════╗
+   ║ public/productsKey/productsKey.css — UI padrão "Grupos & Subgrupos"     ║
+   ║ ProductsKey (PRODNEX ERP)                                              ║
+   ╚══════════════════════════════════════════════════════════════════════════╝ */
+
+.page-products-key .pk-wrap{
+  width: 100%;
+  max-width: 100%;
+  padding: 14px 18px 28px;
+}
+
+@media (min-width: 1600px){
+  .page-products-key .pk-wrap{ padding-left: 28px; padding-right: 28px; }
+}
+
+/* Header */
+.page-products-key .pk-header{
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px 8px;
+}
+
+.page-products-key .pk-header__left{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.page-products-key .pk-kicker{
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .12em;
+  opacity: .65;
+  text-transform: uppercase;
+}
+
+.page-products-key .pk-title{
+  margin: 0;
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: .2px;
+}
+
+.page-products-key .pk-subtitle{
+  margin-top: 2px;
+  font-size: 12px;
+  opacity: .72;
+  font-weight: 700;
+}
+
+.page-products-key .pk-header__right{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Layout 2 cards */
+.page-products-key .pk-grid{
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+@media (max-width: 1100px){
+  .page-products-key .pk-grid{ grid-template-columns: 1fr; }
+}
+
+/* Card base (igual vibe do screenshot) */
+.page-products-key .pk-card{
+  background: rgba(255,255,255,.78);
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 18px;
+  box-shadow: 0 18px 36px rgba(0,0,0,.06);
+  overflow: hidden;
+}
+
+.page-products-key .pk-card__top{
+  padding: 16px 16px 12px;
+}
+
+.page-products-key .pk-card__title{
+  font-size: 18px;
+  font-weight: 900;
+  margin: 0;
+}
+
+.page-products-key .pk-card__hint{
+  font-size: 12px;
+  opacity: .70;
+  margin-top: 6px;
+  font-weight: 700;
+}
+
+.page-products-key .pk-card__tools{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+/* Search (como no screenshot) */
+.page-products-key .pk-search{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,.95);
+  border: 1px solid rgba(0,0,0,.10);
+  border-radius: 999px;
+  padding: 8px 10px;
+  flex: 1 1 360px;
+  min-width: 260px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.65);
+}
+
+.page-products-key .pk-search input{
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  font-weight: 800;
+  color: #0b1220;
+}
+
+/* Inputs */
+.page-products-key .pk-input,
+.page-products-key .pk-form input{
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: rgba(255,255,255,.95);
+  padding: 11px 12px;
+  outline: none;
+  color: #0b1220;
+  font-weight: 800;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.60);
+}
+
+.page-products-key .pk-input--sm{
+  width: 180px;
+}
+
+/* Focus CONSART (sem azul chapado) */
+.page-products-key .pk-form input:focus,
+.page-products-key .pk-input:focus{
+  border-color: rgba(0,0,0,.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.70),
+    0 0 0 4px rgba(0,0,0,.04);
+}
+
+.page-products-key .pk-formbox{
+  padding: 0 16px 14px;
+}
+
+/* Form */
+.page-products-key .pk-form{
+  background: rgba(245,247,252,.75);
+  border: 1px dashed rgba(0,0,0,.10);
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.page-products-key .pk-field{
+  margin-bottom: 10px;
+}
+
+.page-products-key .pk-field label{
+  display: block;
+  font-size: 12px;
+  opacity: .78;
+  margin-bottom: 6px;
+  font-weight: 900;
+}
+
+/* input + button (lupa colada) */
+.page-products-key .pk-inputbtn{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.page-products-key .pk-inputbtn input{
+  border-radius: 14px;
+}
+
+.page-products-key .pk-grid2{
+  display: grid;
+  grid-template-columns: 1fr 140px;
+  gap: 10px;
+}
+
+@media (max-width: 520px){
+  .page-products-key .pk-grid2{ grid-template-columns: 1fr; }
+}
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ CONSART BUTTONS — padrão "Grupos & Subgrupos"                         ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+/* Base */
+.page-products-key .pk-btn{
+  appearance: none;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 900;
+  letter-spacing: .2px;
+  cursor: pointer;
+
+  background: rgba(255,255,255,.88);                 /* glass */
+  border: 1px solid rgba(0,0,0,.10);
+  color: #0b1220;
+
+  box-shadow:
+    0 10px 22px rgba(0,0,0,.06),
+    inset 0 1px 0 rgba(255,255,255,.55);
+
+  transition:
+    transform .10s ease,
+    filter .12s ease,
+    box-shadow .12s ease,
+    border-color .12s ease,
+    background .12s ease;
+}
+
+.page-products-key .pk-btn:hover{
+  background: rgba(255,255,255,.95);
+  border-color: rgba(0,0,0,.14);
+  box-shadow:
+    0 14px 28px rgba(0,0,0,.08),
+    inset 0 1px 0 rgba(255,255,255,.65);
+}
+
+.page-products-key .pk-btn:active{
+  transform: translateY(1px);
+  filter: brightness(.99);
+}
+
+/* Primary CONSART (glow leve, sem azul chapado) */
+.page-products-key .pk-btn--primary{
+  background: linear-gradient(180deg, rgba(58,128,255,.18), rgba(58,128,255,.06));
+  border-color: rgba(58,128,255,.22);
+  color: #0b1220;
+}
+
+.page-products-key .pk-btn--primary:hover{
+  background: linear-gradient(180deg, rgba(58,128,255,.22), rgba(58,128,255,.08));
+  border-color: rgba(58,128,255,.30);
+}
+
+/* Ghost CONSART */
+.page-products-key .pk-btn--ghost{
+  background: rgba(255,255,255,.82);
+  border-color: rgba(0,0,0,.10);
+}
+
+.page-products-key .pk-btn--ghost:hover{
+  background: rgba(255,255,255,.95);
+  border-color: rgba(0,0,0,.14);
+}
+
+/* Actions */
+.page-products-key .pk-actions{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+/* Icon buttons (lupas) */
+.page-products-key .pk-iconbtn{
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(255,255,255,.88);
+  border-radius: 999px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: 900;
+
+  box-shadow:
+    0 10px 20px rgba(0,0,0,.05),
+    inset 0 1px 0 rgba(255,255,255,.55);
+
+  transition: transform .10s ease, border-color .12s ease, background .12s ease, box-shadow .12s ease;
+}
+
+.page-products-key .pk-iconbtn:hover{
+  background: rgba(58,128,255,.10);
+  border-color: rgba(58,128,255,.22);
+  box-shadow:
+    0 14px 28px rgba(0,0,0,.06),
+    inset 0 1px 0 rgba(255,255,255,.60);
+}
+
+.page-products-key .pk-iconbtn:active{ transform: translateY(1px); }
+
+/* Table */
+.page-products-key .pk-tablewrap{
+  padding: 0 16px 16px;
+}
+
+.page-products-key .pk-table{
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border-radius: 16px;
+  background: rgba(255,255,255,.95);
+  border: 1px solid rgba(0,0,0,.08);
+}
+
+.page-products-key .pk-table thead th{
+  text-align: left;
+  font-size: 12px;
+  font-weight: 900;
+  padding: 10px 12px;
+  background: rgba(30,60,120,.08);
+  border-bottom: 1px solid rgba(0,0,0,.08);
+}
+
+.page-products-key .pk-table tbody td{
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(0,0,0,.05);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.page-products-key .pk-table tbody tr:hover{
+  background: rgba(58,128,255,.06);
+}
+
+.page-products-key .pk-muted{
+  opacity: .70;
+  font-weight: 800;
+}
+
+/* Actions inside table */
+.page-products-key .pk-rowactions{
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.page-products-key .pk-mini{
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(255,255,255,.88);
+  border-radius: 999px;
+  padding: 7px 10px;
+  cursor: pointer;
+  font-weight: 900;
+
+  box-shadow:
+    0 10px 20px rgba(0,0,0,.05),
+    inset 0 1px 0 rgba(255,255,255,.55);
+
+  transition: transform .10s ease, border-color .12s ease, background .12s ease;
+}
+
+.page-products-key .pk-mini:hover{
+  background: rgba(58,128,255,.10);
+  border-color: rgba(58,128,255,.22);
+}
+
+.page-products-key .pk-mini:active{ transform: translateY(1px); }
+
+/* Danger leve */
+.page-products-key .pk-mini--danger{
+  background: rgba(231,76,60,.08);
+  border-color: rgba(231,76,60,.20);
+}
+.page-products-key .pk-mini--danger:hover{
+  background: rgba(231,76,60,.12);
+  border-color: rgba(231,76,60,.30);
+}
+
+/* Footer hint */
+.page-products-key .pk-footerhint{
+  padding: 0 16px 16px;
+  font-size: 12px;
+  opacity: .72;
+  font-weight: 800;
+}
+
+/* Right card result */
+.page-products-key .pk-result{
+  padding: 0 16px 16px;
+}
+
+.page-products-key .pk-result__title{
+  font-size: 13px;
+  font-weight: 900;
+  margin: 8px 0;
+}
+
+.page-products-key .pk-result__row{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.page-products-key .pk-pill{
+  font-size: 12px;
+  font-weight: 900;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(0,0,0,.05);
+  border: 1px solid rgba(0,0,0,.08);
+}
+
+.page-products-key .pk-mono{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+}
+
+.page-products-key .pk-result__cols{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 900px){
+  .page-products-key .pk-result__cols{ grid-template-columns: 1fr; }
+}
+
+.page-products-key .pk-result__sub{
+  font-size: 12px;
+  font-weight: 900;
+  opacity: .78;
+  margin-bottom: 6px;
+}
+
+.page-products-key .pk-result__box{
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(255,255,255,.95);
+  border-radius: 14px;
+  padding: 10px;
+  min-height: 70px;
+}
+
+.page-products-key .pk-note{
+  padding: 0 16px 16px;
+  font-size: 12px;
+  opacity: .75;
+  font-weight: 800;
+}

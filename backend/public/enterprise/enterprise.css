@@ -1,0 +1,366 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ enterprise.css                                                      ║
+   ║ Módulo: Empresas                                                    ║
+   ║ Projeto: PRODNEX ERP                                                ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+
+.enterprise-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+  min-height: 0;
+}
+
+.enterprise-header,
+.enterprise-card {
+  background: var(--card, #fff);
+  border-radius: 18px;
+  box-shadow: var(--shadow, 0 10px 30px rgba(0, 0, 0, .08));
+}
+
+.enterprise-header {
+  padding: 18px 20px;
+}
+
+.enterprise-header h1,
+.enterprise-card-title h2 {
+  margin: 0;
+}
+
+.enterprise-header h1 {
+  margin-bottom: 6px;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.enterprise-header p,
+.enterprise-card-title p {
+  margin: 0;
+  opacity: .72;
+}
+
+.enterprise-card {
+  padding: 16px;
+}
+
+.enterprise-filter-card {
+  flex: 0 0 auto;
+}
+
+.enterprise-list-card {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+}
+
+.enterprise-card-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.enterprise-card-title h2 {
+  margin-bottom: 4px;
+  font-size: 18px;
+}
+
+.enterprise-result-info {
+  font-size: 12px;
+}
+
+.enterprise-search-row {
+  display: flex;
+  gap: 12px;
+  align-items: end;
+  flex-wrap: wrap;
+}
+
+.enterprise-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.enterprise-field.grow {
+  flex: 1;
+  min-width: 260px;
+}
+
+.enterprise-field.small {
+  width: 170px;
+}
+
+.enterprise-field label {
+  font-size: 13px;
+  font-weight: 700;
+  opacity: .82;
+}
+
+.enterprise-field input,
+.enterprise-field select,
+.enterprise-field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid rgba(0, 0, 0, .14);
+  border-radius: 10px;
+  padding: 8px 11px;
+  outline: none;
+  background: #fff;
+  font: inherit;
+}
+
+.enterprise-field input,
+.enterprise-field select {
+  min-height: 38px;
+}
+
+.enterprise-field textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.enterprise-field input:focus,
+.enterprise-field select:focus,
+.enterprise-field textarea:focus {
+  border-color: rgba(30, 94, 255, .55);
+  box-shadow: 0 0 0 3px rgba(30, 94, 255, .10);
+}
+
+
+.enterprise-col-actions {
+  width: 1%;
+  text-align: right !important;
+}
+
+.enterprise-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.enterprise-empty,
+.enterprise-loading,
+.enterprise-error {
+  padding: 28px 12px !important;
+  text-align: center;
+}
+
+.enterprise-empty,
+.enterprise-loading {
+  opacity: .68;
+}
+
+.enterprise-error {
+  color: #9d2020;
+}
+
+.enterprise-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 62px;
+  height: 24px;
+  padding: 0 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.enterprise-badge.on {
+  background: #dff8e5;
+  color: #146c2e;
+}
+
+.enterprise-badge.off {
+  background: #ffe4e4;
+  color: #9d2020;
+}
+
+/* Modal: estrutura, dimensões, grid, scroll e responsividade são fornecidos
+   globalmente por /public/includes/css/modals.css. */
+
+.enterprise-modal-form {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  flex-direction: column;
+}
+
+.modal__subtitle {
+  margin: 4px 0 0;
+  font-size: 12px;
+  opacity: .72;
+}
+
+.enterprise-modal .enterprise-field textarea {
+  min-height: 96px;
+}
+
+/* =====================================================================
+   ENTERPRISE EDIT MODAL — sectional layout
+   Keeps the global modal structure from modals.css and adds only the
+   Enterprise-specific section headings/dividers, matching PRODNEX ERP.
+===================================================================== */
+
+.enterprise-modal__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.enterprise-modal-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 0 18px;
+  margin: 0 0 18px;
+}
+
+.enterprise-modal-section--last {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.enterprise-modal-section__heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.enterprise-modal-section__title {
+  flex: 0 0 auto;
+  margin: 0;
+  color: #1d5ca8;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.enterprise-modal-section__line {
+  flex: 1 1 auto;
+  min-width: 24px;
+  height: 1px;
+  background: #cbd8e8;
+}
+
+.enterprise-modal-section .fields-inline {
+  align-items: end;
+}
+
+.enterprise-modal-notes-row {
+  align-items: start !important;
+}
+
+.enterprise-modal-notes textarea {
+  min-height: 92px;
+  resize: vertical;
+}
+
+@media (max-width: 900px) {
+  .enterprise-modal-section {
+    gap: 10px;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+  }
+
+  .enterprise-modal-section__heading {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 640px) {
+  .enterprise-modal-section__title {
+    font-size: 12px;
+    white-space: normal;
+  }
+
+  .enterprise-modal-section__line {
+    min-width: 12px;
+  }
+}
+
+/* =====================================================================
+   ENTERPRISE LOGO UPLOAD
+===================================================================== */
+
+.enterprise-logo-field {
+  min-width: 300px;
+}
+
+.enterprise-logo-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.enterprise-logo-status {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  color: #64748b;
+  font-size: 11px;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.enterprise-logo-status.is-loading {
+  color: #1d4ed8;
+}
+
+.enterprise-logo-status.is-success {
+  color: #15803d;
+}
+
+.enterprise-logo-status.is-error {
+  color: #b91c1c;
+}
+
+.enterprise-logo-preview {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 70px;
+  padding: 8px;
+  margin-top: 6px;
+  overflow: hidden;
+  background: #f8fafc;
+  border: 1px solid #d7dee8;
+  border-radius: 8px;
+}
+
+.enterprise-logo-preview[hidden] {
+  display: none !important;
+}
+
+.enterprise-logo-preview img {
+  display: block;
+  max-width: 220px;
+  max-height: 72px;
+  object-fit: contain;
+}
+
+@media (max-width: 640px) {
+  .enterprise-logo-field {
+    min-width: 100%;
+  }
+
+  .enterprise-logo-control {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .enterprise-logo-status {
+    white-space: normal;
+  }
+}

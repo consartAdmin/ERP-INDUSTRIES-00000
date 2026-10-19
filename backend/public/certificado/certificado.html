@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Consart ERP — Upload Certificado Digital</title>
+
+  <!-- Tema / Globais (mantendo seu padrão) -->
+  <link rel="stylesheet" href="/public/includes/theme-consart.css" />
+  <link rel="stylesheet" href="/public/includes/home.css" />
+  <link rel="stylesheet" href="/public/includes/menu.css" />
+  <link rel="stylesheet" href="/public/statusUsuario/statusUsuario.css" />
+
+  <!-- Estilos da página -->
+  <link rel="stylesheet" href="certificado.css" />
+
+  <!-- Fallback rápido caso alguma var de tema falte -->
+  <style>
+    .page-wrap{max-width:1000px;margin:0 auto;padding:16px}
+    .breadcrumbs{font-size:.9rem;opacity:.8;margin:8px 0 16px}
+    .c-toolbar{display:flex;justify-content:space-between;align-items:flex-end;margin:8px 0 16px}
+    .c-toolbar__title .c-h1{margin:0}
+    .c-card{background:#fff;border:1px solid var(--c-input-bd,#e5e7eb);border-radius:var(--radius,10px);box-shadow:var(--shadow-sm,0 1px 2px rgba(0,0,0,.05))}
+    .c-card__header{padding:14px 16px;border-bottom:1px solid var(--c-input-bd,#e5e7eb);display:flex;justify-content:space-between;align-items:center}
+    .c-card__body{padding:16px}
+    .actions{display:flex;gap:8px;align-items:center}
+    .btn{height:40px;padding:0 14px;border-radius:8px;border:1px solid transparent;cursor:pointer}
+    .btn--ghost{background:#fff;border-color:#d1d5db}
+  </style>
+</head>
+
+<body>
+  <!-- Menu global do sistema -->
+  <header id="topo">
+    <!-- Caso use um header fixo/menus dinâmicos, eles já são aplicados via seus includes -->
+  </header>
+
+  <main class="page-wrap">
+    <!-- Caminho/Trilha -->
+    <nav class="breadcrumbs">
+      <span>Início</span> ▸ <span>Fiscal</span> ▸ <strong>Certificado Digital</strong>
+    </nav>
+
+    <!-- Barra superior -->
+    <div class="c-toolbar">
+      <div class="c-toolbar__title">
+        <h1 class="c-h1">📑 Certificado Digital A1 (.pfx)</h1>
+        <div class="c-subtle">Envie o arquivo .pfx e a senha para armazenar no bucket (GCS)</div>
+      </div>
+      <div class="actions">
+        <a class="btn btn--ghost" href="/public/index.html">⟵ Voltar</a>
+      </div>
+    </div>
+
+    <!-- Card principal -->
+    <section class="c-card">
+      <header class="c-card__header">
+        <strong>Upload & Validação</strong>
+        <small class="c-subtle">Destino: <code>gs://<span id="bucketName">…</span>/certificadoDigital/</code></small>
+      </header>
+
+      <div class="c-card__body">
+        <form id="formCertificado" enctype="multipart/form-data">
+          <label for="arquivo">Arquivo .pfx</label>
+          <input type="file" name="certificado" id="arquivo" required accept=".pfx" />
+
+          <label for="senha" style="display:block;margin-top:12px">Senha do certificado</label>
+          <input type="password" name="senha" id="senha" required />
+
+          <button type="submit" class="btn" style="margin-top:16px;background:var(--c-primary,#111827);color:#fff;">
+            Salvar
+          </button>
+        </form>
+
+        <div id="infoCertificado" style="margin-top:12px;font-weight:600;color:green;"></div>
+        <div class="alerta-erro" id="erroCertificado" style="margin-top:8px;"></div>
+
+        <div class="help" style="margin-top:14px;font-size:.9rem;opacity:.9">
+          <p><strong>Atenção:</strong> a senha não é armazenada pelo frontend. Use o Secret Manager com a env <code>NFE_CERT_PASSWORD</code>.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+    <!-- Globais -->
+  <script src="/public/verificarLogin/verificarLogin.js"></script>
+  <script src="/public/statusUsuario/statusUsuario.js" defer></script>
+  <script src="/public/includes/menu.js"></script>
+  <script src="/public/includes/sessionTimeout.js" defer></script>
+
+  <!-- Script da página -->
+  <script src="certificado.js"></script>
+</body>
+</html>

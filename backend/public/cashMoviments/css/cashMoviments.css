@@ -1,0 +1,13 @@
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║ caixa.css (orchestrator) — PRODNEX ERP                       ║
+   ║ Apenas organiza via @import                                  ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+@import url("./cashMoviments.variables.css");
+@import url("./cacashMovimentsixa.layout.css");
+@import url("./cashMoviments.tabs-cards-forms.css");
+@import url("./cashMoviments.movs-table.css");
+@import url("./cashMoviments.compact.css");
+@import url("./cashMoviments.modal.css");
+@import url("./cashMoviments.fix-flexsafe.css");
+@import url("./cashMovimentsMobile.css");

@@ -1,0 +1,398 @@
+/* ╔══════════════════════════════════════════════════════════════════╗
+   ║ googleAdsCampaignDetails.css — Campaign 360° (Frontend)          ║
+   ║ PRODNEX ERP                                                      ║
+   ╚══════════════════════════════════════════════════════════════════╝ */
+
+/* ------------------------------------------------------------------ */
+/* CONSART Tokens (safe fallback)                                      */
+/* ------------------------------------------------------------------ */
+:root{
+  --cgd-primary: #2563eb;          /* azul Consart (fallback) */
+  --cgd-primary-2: #1d4ed8;
+  --cgd-ink: #0f172a;
+  --cgd-muted: rgba(15,23,42,.72);
+  --cgd-card: #ffffff;
+  --cgd-border: rgba(15,23,42,.08);
+  --cgd-soft: rgba(37,99,235,.10);
+  --cgd-soft-2: rgba(37,99,235,.16);
+  --cgd-bg1: #f7f9ff;
+  --cgd-bg2: #ffffff;
+}
+
+/* ------------------------------------------------------------------ */
+/* Page background (Consart soft gradient)                             */
+/* ------------------------------------------------------------------ */
+body{
+  background: linear-gradient(180deg, var(--cgd-bg1) 0%, var(--cgd-bg2) 55%);
+  color: var(--cgd-ink);
+}
+
+/* ------------------------------------------------------------------ */
+/* Wrapper                                                            */
+/* ------------------------------------------------------------------ */
+.cgd-wrap{
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 14px 16px 28px;
+}
+
+.cgd-header{ margin-bottom: 14px; }
+
+/* ------------------------------------------------------------------ */
+/* Header bar                                                         */
+/* ------------------------------------------------------------------ */
+.cgd-header__bar{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap: 14px;
+  background: var(--cgd-card);
+  border-radius: 14px;
+  border: 1px solid var(--cgd-border);
+  padding: 12px 12px;
+  box-shadow: 0 14px 40px rgba(15,23,42,.06);
+}
+
+.cgd-header__left{
+  display:flex;
+  align-items:center;
+  gap: 12px;
+  min-width: 320px;
+}
+
+.cgd-titlebox{
+  display:flex;
+  flex-direction:column;
+  gap: 6px;
+}
+
+.cgd-title{
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: .2px;
+  color: var(--cgd-ink);
+}
+
+.cgd-subtitle{
+  display:flex;
+  flex-wrap:wrap;
+  gap: 8px;
+}
+
+/* Badges */
+.cgd-badge{
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(15,23,42,.10);
+  background: rgba(15,23,42,.03);
+  font-size: 12px;
+  font-weight: 800;
+  color: rgba(15,23,42,.84);
+}
+
+.cgd-badge--muted{ opacity: .90; }
+
+.cgd-header__right{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:flex-end;
+  justify-content:flex-end;
+  gap: 10px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Filters / Inputs                                                   */
+/* ------------------------------------------------------------------ */
+.cgd-filter{
+  display:flex;
+  flex-direction:column;
+  gap: 6px;
+  min-width: 170px;
+}
+
+.cgd-filter label{
+  font-size: 12px;
+  opacity: .78;
+  font-weight: 900;
+  color: var(--cgd-muted);
+}
+
+.cgd-filter--inline{ min-width: 320px; }
+
+.cgd-date-inputs__row{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+}
+
+.cgd-date-separator{
+  font-size: 12px;
+  opacity: .70;
+  font-weight: 900;
+}
+
+.cgd-input{
+  border: 1px solid rgba(15,23,42,.12);
+  border-radius: 12px;
+  padding: 9px 12px;
+  background: #fff;
+  min-width: 160px;
+  color: var(--cgd-ink);
+  outline: none;
+}
+
+.cgd-input:focus{
+  border-color: rgba(37,99,235,.40);
+  box-shadow: 0 0 0 4px rgba(37,99,235,.14);
+}
+
+/* ------------------------------------------------------------------ */
+/* Header meta cards                                                  */
+/* ------------------------------------------------------------------ */
+.cgd-header__meta{
+  margin-top: 10px;
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+@media (max-width: 1100px){
+  .cgd-header__meta{ grid-template-columns: 1fr; }
+  .cgd-filter--inline{ min-width: unset; width: 100%; }
+}
+
+.cgd-meta-card{
+  background: var(--cgd-card);
+  border-radius: 14px;
+  border: 1px solid var(--cgd-border);
+  padding: 10px 12px;
+  box-shadow: 0 14px 40px rgba(15,23,42,.06);
+}
+
+.cgd-meta-label{
+  font-size: 12px;
+  opacity: .78;
+  font-weight: 900;
+  color: var(--cgd-muted);
+}
+
+.cgd-meta-value{
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: 900;
+  color: var(--cgd-ink);
+}
+
+/* ------------------------------------------------------------------ */
+/* KPIs                                                               */
+/* ------------------------------------------------------------------ */
+.cgd-kpis{
+  display:grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+@media (max-width: 1100px){
+  .cgd-kpis{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ------------------------------------------------------------------ */
+/* Tabs                                                               */
+/* ------------------------------------------------------------------ */
+.cgd-tabs{ background: transparent; }
+
+.cgd-tabbar{
+  display:flex;
+  flex-wrap:wrap;
+  gap: 8px;
+  padding: 10px 10px;
+  background: var(--cgd-card);
+  border-radius: 14px;
+  border: 1px solid var(--cgd-border);
+  box-shadow: 0 14px 40px rgba(15,23,42,.06);
+}
+
+.cgd-tab{
+  border: 1px solid rgba(15,23,42,.12);
+  background: #fff;
+  border-radius: 999px;
+  padding: 9px 12px;
+  font-weight: 900;
+  cursor:pointer;
+  font-size: 13px;
+  color: rgba(15,23,42,.78);
+  transition: .15s ease;
+}
+
+.cgd-tab:hover{
+  border-color: rgba(37,99,235,.30);
+  background: rgba(37,99,235,.06);
+  color: rgba(15,23,42,.90);
+}
+
+.cgd-tab.is-active{
+  background: linear-gradient(180deg, rgba(37,99,235,.16), rgba(37,99,235,.10));
+  border-color: rgba(37,99,235,.32);
+  color: var(--cgd-primary-2);
+}
+
+.cgd-panel{ display:none; margin-top: 12px; }
+.cgd-panel.is-active{ display:block; }
+
+.cgd-grid-2{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 1100px){
+  .cgd-grid-2{ grid-template-columns: 1fr; }
+}
+
+/* ------------------------------------------------------------------ */
+/* Cards                                                              */
+/* ------------------------------------------------------------------ */
+.cgd-card{
+  background: var(--cgd-card);
+  border-radius: 14px;
+  border: 1px solid var(--cgd-border);
+  padding: 12px 12px;
+  box-shadow: 0 14px 40px rgba(15,23,42,.06);
+}
+
+.cgd-card__header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.cgd-card__header h2{
+  margin:0;
+  font-size: 14px;
+  font-weight: 900;
+  color: var(--cgd-ink);
+}
+
+.cgd-meta{
+  font-size: 12px;
+  opacity: .78;
+  font-weight: 900;
+  color: var(--cgd-muted);
+}
+
+/* ------------------------------------------------------------------ */
+/* Key/Value                                                          */
+/* ------------------------------------------------------------------ */
+.cgd-kv{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+@media (max-width: 900px){
+  .cgd-kv{ grid-template-columns: 1fr; }
+}
+
+.cgd-kv__row{
+  border: 1px solid rgba(15,23,42,.08);
+  background: rgba(15,23,42,.02);
+  border-radius: 12px;
+  padding: 10px 10px;
+}
+
+.cgd-kv__k{
+  font-size: 12px;
+  opacity: .78;
+  font-weight: 900;
+  color: var(--cgd-muted);
+}
+
+.cgd-kv__v{
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--cgd-ink);
+}
+
+/* ------------------------------------------------------------------ */
+/* Lists                                                              */
+/* ------------------------------------------------------------------ */
+.cgd-list{
+  list-style:none;
+  padding: 0;
+  margin: 0;
+  display:grid;
+  gap: 8px;
+}
+
+.cgd-list li{
+  border: 1px solid rgba(15,23,42,.08);
+  background: rgba(15,23,42,.02);
+  border-radius: 12px;
+  padding: 10px 10px;
+  font-weight: 800;
+  font-size: 13px;
+  color: rgba(15,23,42,.86);
+  overflow-wrap:anywhere;
+}
+
+/* ------------------------------------------------------------------ */
+/* Footer                                                             */
+/* ------------------------------------------------------------------ */
+.cgd-footer{
+  margin-top: 14px;
+  text-align:center;
+}
+
+.cgd-footer-note{
+  opacity: .78;
+  color: var(--cgd-muted);
+}
+
+/* ------------------------------------------------------------------ */
+/* BUTTONS - enforce Consart contrast (only inside this page)          */
+/* ------------------------------------------------------------------ */
+.page-google-ads-campaign-details .btn,
+.page-google-ads-campaign-details button.btn,
+.page-google-ads-campaign-details .btn-primary,
+.page-google-ads-campaign-details .btn-soft{
+  border-radius: 12px;
+  font-weight: 900;
+  letter-spacing: .2px;
+}
+
+/* If your HTML uses generic <button class="btn-primary"> */
+.page-google-ads-campaign-details .btn-primary{
+  background: linear-gradient(180deg, var(--cgd-primary) 0%, var(--cgd-primary-2) 100%);
+  color: #fff !important;
+  border: 1px solid rgba(29,78,216,.35) !important;
+  box-shadow: 0 10px 26px rgba(37,99,235,.18);
+}
+
+.page-google-ads-campaign-details .btn-primary:hover{
+  filter: brightness(1.02);
+  transform: translateY(-1px);
+}
+
+.page-google-ads-campaign-details .btn-primary:active{
+  transform: translateY(0);
+  filter: brightness(.98);
+}
+
+/* Soft buttons (PDF / Debug style) */
+.page-google-ads-campaign-details .btn-soft{
+  background: rgba(37,99,235,.10) !important;
+  color: var(--cgd-primary-2) !important;
+  border: 1px solid rgba(37,99,235,.22) !important;
+}
+
+.page-google-ads-campaign-details .btn-soft:hover{
+  background: rgba(37,99,235,.14) !important;
+  border-color: rgba(37,99,235,.30) !important;
+}

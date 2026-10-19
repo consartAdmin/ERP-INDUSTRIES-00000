@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+
+    <title>CÓD.BARRAS LOCALIZAÇÃO | PRODNEX ERP</title>
+
+    <link rel="stylesheet" href="/public/includes/css/style.css">
+
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+    <main class="consart-container consart-container--full consart-container--ultraslim">
+
+        <!-- ===================================================== -->
+        <!-- HEADER -->
+        <!-- ===================================================== -->
+
+        <header class="header header-h-3">
+            <div class="fields fields-inline">
+                <div>
+                    <h1 class="font-bold">Código de Barras por Localização</h1>
+
+                    <p class="font-normal">
+                        Gerenciamento de códigos de barras das localizações
+                    </p>
+                </div>
+
+                <div class="btn-inline btn-position-right">
+                    <button id="btnGenerate" class="btn btn-toolbar btn-sm">
+                        ⚡ Gerar Barcodes
+                    </button>
+
+                    <button id="btnPrintSelected" class="btn btn-toolbar btn-sm">
+                        🖨️ Imprimir Selecionados
+                    </button>
+
+                    <button id="btnReload" class="btn btn-toolbar btn-sm">
+                        🔄 Atualizar
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- ===================================================== -->
+        <!-- INTEGRATED TABLE -->
+        <!-- ===================================================== -->
+
+        <section class="table-layout-integrated">
+            <div class="table-layout-integrated__filter">
+
+                <div class="fields-inline fields-gap-3">
+
+                    <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                        <label for="scannerInput">Leitura por Scanner</label>
+
+                        <input id="scannerInput" class="scanner-input" type="text" autocomplete="off"
+                            placeholder="Aguardando leitura do scanner...">
+                    </div>
+
+                    <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                        <button id="btnReadBarcode" type="button" class="btn btn-toolbar btn-sm">
+                            Buscar
+                        </button>
+                    </div>
+
+                    <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                        <label for="filterSearch">Pesquisa</label>
+
+                        <input id="filterSearch" type="search" placeholder="Pesquisar barcode...">
+                    </div>
+
+                    <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                        <label for="filterLocal">Local</label>
+                        <input id="filterLocal" placeholder="Local">
+                    </div>
+
+                    <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                        <label for="filterCorridor">Corredor</label>
+                        <input id="filterCorridor" placeholder="Corredor">
+                    </div>
+
+                    <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                        <label for="filterShelf">Prateleira</label>
+                        <input id="filterShelf" placeholder="Prateleira">
+                    </div>
+
+                    <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                        <label for="filterBin">Bandeja</label>
+                        <input id="filterBin" placeholder="Bandeja">
+                    </div>
+
+                    <div class="btn-inline btn-gap-3">
+
+                        <button id="btnSearch" type="button" class="btn btn-toolbar btn-sm">
+                            Pesquisar
+                        </button>
+
+                        <button id="btnClear" type="button" class="btn btn-toolbar btn-sm">
+                            Limpar
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABLE SCROLL -->
+            <div class="table-scroll table-height-500 table-row-h-28" data-table-settings="locationsbarcode.tablebody">
+                <table class="table table-zebra table-zebra-hover table-sticky-head">
+                    <thead>
+                        <tr>
+                            <th class="table-col-select">
+                                <input type="checkbox" id="checkAll">
+                            </th>
+                            <th>ID</th>
+                            <th>Barcode</th>
+                            <th>Local</th>
+                            <th>Corredor</th>
+                            <th>Prateleira</th>
+                            <th>Bandeja</th>
+                            <th>Posição</th>
+                            <th>Status</th>
+                            <th class="table-col-w-7">Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tableBody">
+                        <tr>
+                            <td colspan="10" class="empty">
+                                Carregando...
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+            </div>
+            </div>
+
+            <!-- FOOTER: OUTSIDE TABLE-SCROLL -->
+            <footer class="table-footer">
+
+                <div class="table-footer__info">
+                    <div class="summary-pill summary-pill-success summary-width-5 summary-left-space-3">
+                        <span id="apTableInfo">0 registros encontrados</span>
+                    </div>
+                </div>
+
+                <div class="table-footer__pagination">
+
+                    <button id="btnPrevious" type="button" class="btn btn-toolbar btn-sm">
+                        Anterior
+                    </button>
+
+                    <span id="pageInfo">
+                        Página 1 de 1
+                    </span>
+
+                    <button id="btnNext" type="button" class="btn btn-toolbar btn-sm">
+                        Próxima
+                    </button>
+
+                </div>
+
+                <div class="table-footer__page-size">
+
+                    <label for="pageSize">
+                        Mostrar </label>
+                    <div class="fields fields-h-6 fields-w-3 fields-font-3">
+                        <select id="pageSize" class="table-footer__page-size-select">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50" selected>50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+
+                </div>
+
+            </footer>
+        </section>
+
+        <!-- ===================================================== -->
+        <!-- MODAL DETALHES -->
+        <!-- ===================================================== -->
+
+        <div id="detailsModal" class="modal hidden">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h2>
+                        Detalhes da Localização
+                    </h2>
+
+                    <button id="btnCloseModal" class="btn btn-toolbar btn-sm">
+                        ✖
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="details-grid">
+
+                        <div>
+                            <label>Barcode</label>
+                            <input id="detailBarcode" readonly>
+                        </div>
+
+                        <div>
+                            <label>Tipo</label>
+                            <input id="detailType" readonly>
+                        </div>
+
+                        <div>
+                            <label>Local</label>
+                            <input id="detailLocal" readonly>
+                        </div>
+
+                        <div>
+                            <label>Corredor</label>
+                            <input id="detailCorridor" readonly>
+                        </div>
+
+                        <div>
+                            <label>Prateleira</label>
+                            <input id="detailShelf" readonly>
+                        </div>
+
+                        <div>
+                            <label>Bandeja</label>
+                            <input id="detailBin" readonly>
+                        </div>
+
+                        <div>
+                            <label>Posição</label>
+                            <input id="detailPosition" readonly>
+                        </div>
+
+                        <div>
+                            <label>Status</label>
+                            <input id="detailStatus" readonly>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button id="btnPrint" class="btn btn-toolbar btn-sm">
+                        🖨️ Imprimir Etiqueta
+                    </button>
+
+                    <button id="btnDeactivate" class="btn btn-toolbar btn-sm">
+                        🚫 Desativar
+                    </button>
+
+                </div>
+            </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+
+    <script type="module" src="/public/includes/js/core.js"></script>
+    <!-- appFeature PRODUCT_LOCATIONS: LOCATIONS_DISABLED → página bloqueada com aviso -->
+    <script type="module">import { guardProductLocationsPage } from "/public/includes/js/productLocationsFeature.js"; guardProductLocationsPage();</script>
+
+    <script type="module" src="./js/locationsBarCode.init.js"></script>
+</body>
+
+</html>

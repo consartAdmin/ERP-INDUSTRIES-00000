@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>Label Print Configuration</title>
+
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="./labelPrintConfig.css">
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <header class="header header-h-5">
+      <!-- Container for all vertical lines -->
+      <div class="fields-lines fields-gap-3">
+
+        <!-- Line 1: fields side by side -->
+        <div class="fields-inline">
+          <div>
+            <h1 class="font-bold">🏷 Parâmetros Etiqueta Localização</h1>
+            <p class="font-normal">
+              Configurar os parâmetros usados nas etiquetas de Localização.</p>
+          </div>
+
+          <div class="btn btn-inline btn-position-right">
+            <button id="btnSave" class="btn btn-new btn-sm">
+              💾 Save
+            </button>
+
+            <button id="btnReset" class="btn btn-new btn-sm">
+              ↺ Reset
+            </button>
+          </div>
+        </div>
+    </header>
+
+    <!-- ========================================================= -->
+    <!-- CONTENT                                                   -->
+    <!-- ========================================================= -->
+
+    <header class="header">
+      <!-- LABEL SIZE -->
+      <div class="fields">
+        <h2>Label Size</h2>
+      </div>
+
+      <div class="fields-inline fields-gap-3">
+        <div class="fields fields-h-6 fields-w-10 fields-font-3">
+          <label>Width (mm)</label>
+          <input type="number" id="width_mm" min="1">
+        </div>
+
+        <div class="fields fields-h-6 fields-w-10 fields-font-3">
+          <label>Height (mm)</label>
+          <input type="number" id="height_mm" min="1">
+        </div>
+
+        <div class="fields fields-h-6 fields-w-10 fields-font-3">
+          <label>Margin (mm)</label>
+          <input type="number" id="margin_mm" min="0">
+        </div>
+
+        <div class="fields fields-h-6 fields-w-10 fields-font-3">
+          <label>Orientation</label>
+          <select id="orientation">
+            <option value="portrait">Portrait</option>
+            <option value="landscape">Landscape</option>
+          </select>
+        </div>
+
+        <div class="fields fields-h-6 fields-w-10 fields-font-3">
+          <label>Paper</label>
+          <select id="paper">
+            <option value="custom">Custom</option>
+            <option value="a4">A4</option>
+            <option value="letter">Letter</option>
+            <option value="thermal">Thermal</option>
+          </select>
+        </div>
+    </header>
+
+    <!-- BARCODE -->
+    <header class="header">
+      <div class="fields">
+        <h2>Barcode</h2>
+      </div>
+
+      <div class="fields-inline fields-gap-3">
+        <div class="fields fields-h-6 fields-w-10 fields-font-3">
+          <label>Barcode Type</label>
+
+          <select id="barcode_type">
+            <option value="CODE128">CODE128</option>
+            <option value="CODE39">CODE39</option>
+            <option value="EAN13">EAN13</option>
+            <option value="EAN8">EAN8</option>
+            <option value="UPC">UPC</option>
+            <option value="QR">QR</option>
+          </select>
+        </div>
+
+        <div class="fields fields-h-6 fields-w-10 fields-font-3">
+          <label>Barcode Height</label>
+          <input type="number" id="barcode_height" min="1">
+        </div>
+
+        <div class="fields fields-h-6 fields-w-10 fields-font-3">
+          <label>Font Size (pt)</label>
+          <input type="number" id="font_size_pt" min="1">
+        </div>
+
+        <div class="fields fields-h-6 fields-w-10 fields-font-3">
+          <label>Copies</label>
+          <input type="number" id="copies" min="1">
+        </div>
+
+      </div>
+    </header>
+
+    <!-- DISPLAY -->
+    <header class="header">
+      <div class="fields">
+        <h2>Display Options</h2>
+      </div>
+
+      <div class="fields-inline fields-gap-3">
+        <div class="fields fields-h-6 fields-w-10 fields-font-3">
+          <input type="checkbox" id="show_label_text">
+          <label for="show_label_text">
+            Show Product Name
+          </label>
+        </div>
+
+        <div class="fields fields-h-6 fields-w-10 fields-font-3">
+          <input type="checkbox" id="show_location">
+          <label for="show_location">
+            Show Location
+          </label>
+        </div>
+
+        <div class="fields fields-h-6 fields-w-10 fields-font-3">
+          <input type="checkbox" id="show_id">
+          <label for="show_id">
+            Show Internal ID
+          </label>
+        </div>
+
+        <div class="fields fields-h-6 fields-w-10 fields-font-3">
+          <label>Location Font Size</label>
+          <input type="number" id="location_font_size" min="1">
+        </div>
+
+      </div>
+
+    </header>
+
+    <!-- ===================================================== -->
+    <!-- RIGHT COLUMN                                           -->
+    <!-- ===================================================== -->
+
+    <div class="preview-column">
+
+      <div class="card sticky">
+
+        <div class="card-header">
+          <h2>Live Preview</h2>
+        </div>
+
+        <div class="card-body">
+
+          <div id="labelPreview">
+
+            <div id="previewBarcode">
+              ████████████████████████████
+            </div>
+
+            <div id="previewName">
+              PRODUCT DESCRIPTION
+            </div>
+
+            <div id="previewLocation">
+              Location A-01-B-03
+            </div>
+
+            <div id="previewId">
+              ID: 12345
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+  <!-- ============================================================= -->
+  <!-- SCRIPTS                                                       -->
+  <!-- ============================================================= -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <!-- appFeature PRODUCT_LOCATIONS: LOCATIONS_DISABLED → página bloqueada com aviso -->
+  <script type="module">import { guardProductLocationsPage } from "/public/includes/js/productLocationsFeature.js"; guardProductLocationsPage();</script>
+
+  <script type="module" src="./js/labelPrintConfig.init.js"></script>
+
+</body>
+
+</html>

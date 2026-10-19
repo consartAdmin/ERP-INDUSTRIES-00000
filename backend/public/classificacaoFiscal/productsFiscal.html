@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Classificação Fiscal</title>
+
+  <link rel="stylesheet" href="/public/includes/theme-consart.css">
+  <link rel="stylesheet" href="/public/includes/home.css">
+  <link rel="stylesheet" href="/public/includes/menu.css">
+  <link rel="stylesheet" href="/public/statusUsuario/statusUsuario.css" />
+  <link rel="stylesheet" href="classificacaoFiscal.css"> <!-- por último -->
+
+</head>
+<body class="consart-theme c-page">
+    <main class="c-main">
+    <div class="c-container c-container--2xl">
+    <h1>📋 Classificação Fiscal</h1>
+
+    <!-- 🔍 Autocomplete de Busca -->
+    <div class="busca-autocomplete">
+      <label for="buscaDescricao">🔍 Buscar Classificação</label>
+      <input type="text" id="buscaDescricao" placeholder="Digite a descrição ou NCM..." list="sugestoesDescricao" autocomplete="off" />
+      <datalist id="sugestoesDescricao"></datalist>
+    </div>
+
+    <!-- 🧾 Formulário de Cadastro -->
+    <form id="formClassificacaoFiscal" class="formulario" autocomplete="off">
+      <input type="hidden" id="id" />
+
+      <!-- 🔹 Linha 1: label à esquerda, campo à direita -->
+      <div class="linha-form cols-label">
+        <label for="descricao">Descrição</label>
+        <input type="text" id="descricao" required />
+      </div>
+
+      <!-- 🔹 Linha única com os quatro campos: NCM, Desc. NCM, CEST, Desc. CEST -->
+      <div class="linha-form linha-ncm-cest">
+        <div>
+          <label for="ncm">NCM</label>
+          <input type="text" id="ncm" maxlength="8" required pattern="^\d{8}$" title="NCM deve ter 8 dígitos numéricos" />
+        </div>
+        <div>
+          <label for="descricao_ncm">Descrição NCM</label>
+          <input type="text" id="descricao_ncm" />
+        </div>
+        <div>
+          <label for="cest">CEST</label>
+          <input type="text" id="cest" maxlength="10" pattern="^\d{7}$|^\d{10}$" title="CEST com 7 ou 10 dígitos numéricos" />
+        </div>
+        <div>
+          <label for="descricao_cest">Descrição CEST</label>
+          <input type="text" id="descricao_cest" />
+        </div>
+      </div>
+
+      <!-- Linha única: Perfil Fiscal + Ativo + Botão Salvar -->
+      <div class="linha-form linha-perfil-ativo">
+        <div class="perfil-fiscal">
+          <label for="perfil_fiscal_id">Perfil Fiscal</label>
+          <select id="perfil_fiscal_id">
+            <option value="">Selecione um perfil...</option>
+          </select>
+        </div>
+        <div class="ativo-checkbox">
+          <label><input type="checkbox" id="ativo" checked /> Ativo</label>
+        </div>
+        <div class="botao-salvar">
+          <button type="submit">💾 Salvar</button>
+        </div>
+      </div>
+    </form>
+
+    <hr />
+
+    <!-- 📋 Tabela de Registros (encapsulada e rolável) -->
+    <div class="c-scroll c-scroll--table" role="region" aria-label="Registros de Classificação Fiscal">
+      <table id="tabelaClassificacoes">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Descrição</th>
+            <th scope="col">NCM</th>
+            <th scope="col">Desc. NCM</th>
+            <th scope="col">CEST</th>
+            <th scope="col">Desc. CEST</th>
+            <th scope="col">Ativo</th>
+            <th scope="col">Ações</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </main>
+
+  <script src="/public/verificarLogin/verificarLogin.js"></script>
+  <script src="/public/statusUsuario/statusUsuario.js" defer></script>
+  <script src="/public/includes/menu.js"></script>
+  <script src="/public/includes/sessionTimeout.js" defer></script>
+
+  <script src="/public/classificacaoFiscal/classificacaoFiscal.js" defer></script>
+
+</body>
+</html>

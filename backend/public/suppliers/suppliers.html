@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>FORNECEDORES | PRODNEX ERP</title>
+
+  <link rel="stylesheet" href="/public/includes/css/style.css">
+  <link rel="stylesheet" href="suppliers.css?v=5">
+  <link rel="stylesheet" href="suppliersModal.css?v=5">
+  <link rel="stylesheet" href="/public/modalsSearch/chartAccountsModalSearch.css">
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <div class="header">
+      <div class="fields fields-inline fields-gap-3">
+        <div class="fields fields-h-6 fields-w-40 fields-font-3">
+
+          <div>
+            <h2 class="page-header__title">Fornecedores</h2>
+            <p class="page-header__subtitle">Consulte, cadastre e gerencie os fornecedores da empresa.</p>
+          </div>
+        </div>
+
+        <div class="btn-position-right">
+          <button type="button" class="btn btn-new btn-sm" id="btnReload">⟳ Atualizar</button>
+          <button type="button" class="btn btn-new btn-sm" id="btnNewSupplier">➕ Novo Fornecedor</button>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- INTEGRATED TABLE                                      -->
+    <!-- ===================================================== -->
+    <section class="table-layout-integrated table-max-height-600">
+      <div class="table-layout-integrated__filter">
+
+        <div class="fields fields-inline fields-gap-3">
+
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <label for="searchInput"> 🔎 Pesquisar</label>
+            <input id="searchInput" type="text" placeholder="Nome, CNPJ/CPF, Email, Website..." autocomplete="off" />
+          </div>
+
+          <div class="fields fields-h-6 fields-w-5 fields-font-3">
+            <div for="supplierStatusFilter">Status</div>
+
+            <select id="supplierStatusFilter" name="supplierStatusFilter" class="form-control"
+              title="Filtrar fornecedores por status">
+              <option value="">Todos</option>
+              <option value="ACTIVE">Ativos</option>
+              <option value="INACTIVE">Inativos</option>
+            </select>
+          </div>
+
+          <div class="btn-position-right">
+            <div class="export-actions">
+              <button id="btnExportPdf" class="btn btn-toolbar btn-sm" type="button" title="Exportar PDF">
+                <img src="/iconsImagens/pdf.png" alt="" width="20" height="20" aria-hidden="true" />
+                <span>Exportar PDF</span>
+              </button>
+
+              <button id="btnExportExcel" class="btn btn-toolbar btn-sm" type="button" title="Exportar Excel">
+                <img src="/iconsImagens/excelIcons.png" alt="" width="20" height="20" aria-hidden="true" />
+                <span>Exportar Excel</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =================================================== -->
+      <!-- TABLE                                               -->
+      <!-- =================================================== -->
+      <div class="table-scroll table-height-flex table-row-h-28" data-table-settings="suppliers.supplierstable">
+        <table id="suppliersTable" class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th class="table-sortable" data-sort-column="supplier_id" aria-sort="ascending">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  # <span data-sort-icon aria-hidden="true">↑</span>
+                </button>
+              </th>
+              <th class="table-sortable" data-sort-column="name" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  Nome <span data-sort-icon aria-hidden="true">↕</span>
+                </button>
+              </th>
+              <th class="table-sortable" data-sort-column="tax_id" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  CNPJ / CPF <span data-sort-icon aria-hidden="true">↕</span>
+                </button>
+              </th>
+              <th class="table-sortable" data-sort-column="city" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  Cidade <span data-sort-icon aria-hidden="true">↕</span>
+                </button>
+              </th>
+              <th class="table-sortable" data-sort-column="state" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  Estado <span data-sort-icon aria-hidden="true">↕</span>
+                </button>
+              </th>
+              <th class="table-sortable" data-sort-column="phone" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  Telefone <span data-sort-icon aria-hidden="true">↕</span>
+                </button>
+              </th>
+              <th class="table-sortable" data-sort-column="email" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  Email <span data-sort-icon aria-hidden="true">↕</span>
+                </button>
+              </th>
+              <th class="col-actions">Ações</th>
+            </tr>
+          </thead>
+
+          <tbody id="suppliersTableBody">
+            <tr>
+              <td colspan="8" class="text-center text-muted">
+                Nenhum fornecedor carregado.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+      <!-- =================================================== -->
+      <!-- TABLE FOOTER                                        -->
+      <!-- =================================================== -->
+
+      <footer class="table-footer">
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill-success summary-width-5 summary-left-space-3">
+            <span id="apTableInfo">
+              0 Registros
+            </span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button id="btnPrevious" type="button" class="btn btn-toolbar btn-sm">
+            Anterior
+          </button>
+
+          <span id="pageInfo">
+            Página 1 de 1
+          </span>
+
+          <button id="btnNext" type="button" class="btn btn-toolbar btn-sm">
+            Próxima
+          </button>
+        </div>
+        <div class="table-footer__page-size">
+          <label for="pageSize">
+            Mostrar
+          </label>
+          <div class="fields fields-h-6 fields-w-3 fields-font-3">
+            <select id="pageSize" class="table-footer__page-size-select">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50" selected>50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <!-- ===================================================== -->
+  <!-- SUPPLIER MODAL — padrão global modals.css             -->
+  <!-- ===================================================== -->
+  <div class="modal" id="supplierModalBackdrop" aria-hidden="true">
+    <div class="modal__backdrop" data-modal-close></div>
+
+    <div class="modal__dialog">
+      <div class="modal__panel modal-width-9 modal-height-10 modal-header-color-2 modal-footer-color-1" role="dialog"
+        aria-modal="true" aria-labelledby="modalTitle">
+        <header class="modal__header">
+          <div class="supplier-modal__heading">
+            <h2 class="modal__title" id="modalTitle">Novo Fornecedor</h2>
+            <p class="supplier-modal__subtitle">
+              Complete o cadastro do fornecedor com informações organizadas de endereço e acesso.
+            </p>
+          </div>
+
+          <button type="button" class="modal__close" id="btnCloseModal" aria-label="Fechar modal"
+            title="Fechar">×</button>
+        </header>
+
+        <form id="supplierForm" class="supplier-modal__form" autocomplete="on">
+          <input type="hidden" id="supplier_id" name="supplier_id" />
+          <input type="hidden" id="address" name="address" />
+
+          <div class="modal__body supplier-modal__body">
+
+            <!-- INFORMAÇÕES PRINCIPAIS -->
+            <section class="modal-section supplier-modal__section">
+              <h3 class="supplier-modal__section-title">Informações Principais</h3>
+
+              <div class="fields-inline fields-gap-3">
+                <div class="fields fields-h-5 fields-w-20 fields-font-3">
+                  <label for="name">Nome *</label>
+                  <input id="name" name="name" type="text" required />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-10 fields-font-3">
+                  <label for="tax_id">CNPJ / CPF</label>
+                  <input id="tax_id" name="tax_id" type="text" inputmode="numeric" autocomplete="off" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-10 fields-font-3">
+                  <label for="state_registration">Inscrição Estadual</label>
+                  <input id="state_registration" name="state_registration" type="text" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-10 fields-font-3">
+                  <label for="phone">Telefone</label>
+                  <input id="phone" name="phone" type="text" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-10 fields-font-3">
+                  <label for="email">Email</label>
+                  <input id="email" name="email" type="email" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-12 fields-font-3">
+                  <label for="website">Website</label>
+                  <input id="website" name="website" type="url" placeholder="https://..." />
+                </div>
+              </div>
+            </section>
+
+            <div class="modal-divider"></div>
+
+            <!-- CONTATO COMERCIAL / FINANCEIRO -->
+            <section class="modal-section supplier-modal__section">
+              <h3 class="supplier-modal__section-title">Contato Comercial / Financeiro</h3>
+
+              <div class="fields-inline fields-gap-3">
+                <div class="fields fields-h-5 fields-w-12 fields-font-3">
+                  <label for="sales_rep">Representante Comercial</label>
+                  <input id="sales_rep" name="sales_rep" type="text" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-12 fields-font-3">
+                  <label for="sales_rep_email">Email Comercial</label>
+                  <input id="sales_rep_email" name="sales_rep_email" type="email" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-12 fields-font-3">
+                  <label for="finance_email">Email Financeiro</label>
+                  <input id="finance_email" name="finance_email" type="email" />
+                </div>
+              </div>
+            </section>
+
+            <div class="modal-divider"></div>
+
+            <!-- CLASSIFICAÇÃO FINANCEIRA PADRÃO -->
+            <section class="modal-section supplier-modal__section">
+              <h3 class="supplier-modal__section-title">Classificação Financeira Padrão</h3>
+              <p class="supplier-modal__section-help">
+                Estes dados poderão ser preenchidos automaticamente em Contas a Pagar e nos demais módulos.
+              </p>
+
+              <div class="fields-inline fields-gap-3">
+                <div class="fields fields-h-5 fields-w-20 fields-font-3">
+                  <label for="chart_account_display">Conta do Plano de Contas</label>
+                  <input id="chart_account_id" name="chart_account_id" type="hidden" />
+                  <div class="supplier-account-search">
+                    <input id="chart_account_display" type="text" readonly
+                      placeholder="Nenhuma conta selecionada" />
+                    <button id="btnSearchChartAccount" type="button"
+                      class="btn btn-toolbar btn-sm" title="Buscar conta contábil"
+                      aria-label="Buscar conta contábil">🔍</button>
+                    <button id="btnClearChartAccount" type="button"
+                      class="btn btn-toolbar btn-sm" title="Limpar conta contábil"
+                      aria-label="Limpar conta contábil">✕</button>
+                  </div>
+                </div>
+
+                <div class="fields fields-h-5 fields-w-15 fields-font-3">
+                  <label for="cash_category_id">Categoria Financeira</label>
+                  <select id="cash_category_id" name="cash_category_id">
+                    <option value="">Selecione...</option>
+                  </select>
+                </div>
+
+                <div class="fields fields-h-5 fields-w-15 fields-font-3">
+                  <label for="cash_subcategory_id">Subcategoria Financeira</label>
+                  <select id="cash_subcategory_id" name="cash_subcategory_id" disabled>
+                    <option value="">Selecione uma categoria...</option>
+                  </select>
+                </div>
+              </div>
+            </section>
+
+            <div class="modal-divider"></div>
+
+            <!-- CREDENCIAIS DE ACESSO -->
+            <section class="modal-section supplier-modal__section">
+              <h3 class="supplier-modal__section-title">Credenciais de Acesso</h3>
+
+              <div class="fields-inline fields-gap-3">
+                <div class="fields fields-h-5 fields-w-12 fields-font-3">
+                  <label for="login">Login</label>
+                  <input id="login" name="login" type="text" autocomplete="username" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-12 fields-font-3">
+                  <label for="password">Senha</label>
+                  <input id="password" name="password" type="text" autocomplete="new-password" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-12 fields-font-3">
+                  <label for="access_website">Website de Acesso</label>
+                  <input id="access_website" name="access_website" type="url" placeholder="https://..." />
+                </div>
+              </div>
+            </section>
+
+            <div class="modal-divider"></div>
+
+            <!-- ENDEREÇO -->
+            <section class="modal-section supplier-modal__section">
+              <h3 class="supplier-modal__section-title">Endereço</h3>
+
+              <div class="fields-inline fields-gap-3">
+                <div class="fields fields-h-5 fields-w-10 fields-font-3">
+                  <label for="postal_code">CEP</label>
+                  <input id="postal_code" name="postal_code" type="text" inputmode="numeric" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-10 fields-font-3">
+                  <label for="address_street_type">Logradouro</label>
+                  <input id="address_street_type" name="address_street_type" type="text" list="streetTypeOptions" maxlength="30" placeholder="RUA, AVENIDA..." />
+                  <datalist id="streetTypeOptions">
+                    <option value="RUA"></option>
+                    <option value="AVENIDA"></option>
+                    <option value="ALAMEDA"></option>
+                    <option value="TRAVESSA"></option>
+                    <option value="PRACA"></option>
+                    <option value="RODOVIA"></option>
+                    <option value="ESTRADA"></option>
+                    <option value="VIA"></option>
+                    <option value="LARGO"></option>
+                    <option value="BECO"></option>
+                    <option value="VIELA"></option>
+                    <option value="QUADRA"></option>
+                  </datalist>
+                </div>
+
+                <div class="fields fields-h-5 fields-w-10 fields-font-3">
+                  <label for="address_street">Endereço</label>
+                  <input id="address_street" name="address_street" type="text" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-10 fields-font-3">
+                  <label for="address_number">Número</label>
+                  <input id="address_number" name="address_number" type="text" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-10 fields-font-3">
+                  <label for="address_complement">Complemento</label>
+                  <input id="address_complement" name="address_complement" type="text" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-10 fields-font-3">
+                  <label for="address_district">Bairro</label>
+                  <input id="address_district" name="address_district" type="text" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-10 fields-font-3">
+                  <label for="city">Cidade</label>
+                  <input id="city" name="city" type="text" />
+                </div>
+
+                <div class="fields fields-h-5 fields-w-10 fields-font-3">
+                  <label for="state">Estado</label>
+                  <input id="state" name="state" type="text" maxlength="2" />
+                </div>
+              </div>
+            </section>
+
+            <div class="modal-divider"></div>
+
+            <!-- OBSERVAÇÕES -->
+            <section class="modal-section supplier-modal__section">
+              <h3 class="supplier-modal__section-title">Observações</h3>
+
+              <div class="modal-form-grid modal-form-grid--6">
+                <div class="fields fields-font-3 modal-field--span-full supplier-modal__observation">
+                  <label for="observations">Observações</label>
+                  <textarea id="observations" name="observations" rows="4"
+                    placeholder="Anotações internas, condições comerciais, credenciais de portais ou detalhes de serviços..."></textarea>
+                </div>
+              </div>
+            </section>
+
+            <div class="modal-divider"></div>
+
+            <!-- ANEXOS -->
+            <section class="modal-section supplier-modal__section" id="attachmentsSection">
+              <h3 class="supplier-modal__section-title">Anexos</h3>
+
+              <div class="modal-upload-grid">
+                <div class="modal-box-column">
+                  <span class="modal-box-title">Enviar arquivo</span>
+
+                  <button type="button" class="modal-dropzone modal-dropzone-font-12 supplier-modal__dropzone"
+                    id="btnUploadAttachment">
+                    <span class="ap-dropzone-content">
+                      <strong>📎 Selecionar arquivos</strong>
+                      <span>PDF, imagens, Excel ou Word</span>
+                      <small>O fornecedor precisa estar salvo para enviar anexos.</small>
+                    </span>
+                  </button>
+                  <input type="file" id="supplierAttachmentInput" hidden multiple />
+                </div>
+
+                <div class="modal-box-column supplier-modal__attachments-column">
+                  <span class="modal-box-title">Arquivos vinculados</span>
+                  <div id="supplierAttachments" class="modal-attachments supplier-modal__attachments">
+                    <div class="attachments-empty">
+                      Salve o fornecedor antes de enviar anexos.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <footer class="modal__footer">
+            <button type="button" class="btn btn-cancel btn-sm" id="btnCancelModal">
+              Cancelar
+            </button>
+
+            <button type="submit" class="btn btn-save btn-sm" id="btnSaveSupplier">
+              💾 Salvar
+            </button>
+          </footer>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <script type="module" src="js/suppliers.init.js?v=4"></script>
+</body>
+
+</html>

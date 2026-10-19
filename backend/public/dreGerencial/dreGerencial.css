@@ -1,0 +1,433 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ dreGerencial.css — DRE Gerencial                                    ║
+   ║ PRODNEX ERP | Frontend                                              ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.dre-page {
+  padding: 24px;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.dre-header,
+.dre-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, .06);
+  margin-bottom: 18px;
+}
+
+.dre-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dre-header h1 {
+  margin: 0;
+  font-size: 1.7rem;
+}
+
+.dre-header p {
+  margin: 4px 0 0;
+  color: #64748b;
+}
+
+.dre-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.dre-actions input,
+.dre-actions button,
+#btnNovaDespesa {
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  padding: 0 14px;
+}
+
+.dre-actions button,
+#btnNovaDespesa {
+  background: #2563eb;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.dre-actions button:hover,
+#btnNovaDespesa:hover {
+  background: #1d4ed8;
+}
+
+.dre-kpis {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.dre-kpi {
+  background: #fff;
+  border-radius: 18px;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, .05);
+}
+
+.dre-kpi span {
+  display: block;
+  color: #64748b;
+  font-size: .85rem;
+  margin-bottom: 8px;
+}
+
+.dre-kpi strong {
+  font-size: 1.35rem;
+  color: #111827;
+}
+
+.dre-kpi.despesas-dedutiveis {
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+}
+
+.dre-kpi.despesas-dedutiveis span {
+  color: #166534;
+}
+
+.dre-kpi.despesas-dedutiveis strong {
+  color: #14532d;
+}
+
+.dre-card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.dre-card-header.between {
+  justify-content: space-between;
+}
+
+.dre-card-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.dre-table-wrapper {
+  overflow-x: auto;
+}
+
+.dre-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dre-table th,
+.dre-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.dre-table th {
+  text-align: left;
+  background: #f8fafc;
+  color: #334155;
+  font-weight: 800;
+}
+
+.dre-table td:last-child {
+  text-align: right;
+  font-weight: 700;
+}
+
+.dre-table tr.highlight {
+  background: #eff6ff;
+}
+
+.dre-table tr.lucro {
+  background: #ecfdf5;
+}
+
+.dre-table tr.lucro-liquido {
+  background: #fef3c7;
+  font-size: 1.05rem;
+}
+
+.dre-table tr.despesas-total {
+  background: #fff7ed;
+  font-weight: 800;
+}
+
+.dre-table tr.linha-resumo-cmv {
+  background: #fff7ed;
+}
+
+.dre-lancamentos-table td:nth-child(5),
+.dre-lancamentos-table th:nth-child(5) {
+  text-align: right;
+}
+
+.dre-lancamentos-table td:last-child {
+  text-align: right;
+  font-weight: 800;
+}
+
+.linha-cmv {
+  background: #fff7ed;
+}
+
+.linha-dedutivel {
+  background: #ffffff;
+}
+
+.linha-nao-dedutivel {
+  background: #fef2f2;
+}
+
+.dre-badge {
+  display: inline-block;
+  min-width: 150px;
+  text-align: center;
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-size: .78rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.badge-cmv {
+  background: #ffedd5;
+  color: #9a3412;
+  border: 1px solid #fed7aa;
+}
+
+.badge-dedutivel {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.badge-nao-dedutivel {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.dre-empty {
+  text-align: center !important;
+  color: #64748b;
+  font-weight: 700;
+  padding: 24px !important;
+}
+
+@media (max-width: 1300px) {
+  .dre-kpis {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1100px) {
+  .dre-kpis {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dre-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+}
+
+@media (max-width: 650px) {
+  .dre-page {
+    padding: 14px;
+  }
+
+  .dre-kpis {
+    grid-template-columns: 1fr;
+  }
+
+  .dre-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .dre-actions input,
+  .dre-actions button {
+    width: 100%;
+  }
+
+  .dre-card-header.between {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  #btnNovaDespesa {
+    width: 100%;
+  }
+}
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ Lançamentos da DRE — Filtros + Scroll + Excel Style                 ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.dre-lancamentos-card {
+  overflow: hidden;
+}
+
+.dre-lancamentos-toolbar {
+  display: grid;
+  grid-template-columns: 2fr 180px 180px 220px 120px;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.dre-lancamentos-toolbar input,
+.dre-lancamentos-toolbar select,
+.dre-lancamentos-toolbar button {
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  padding: 0 12px;
+  background: #fff;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.dre-lancamentos-toolbar input {
+  font-weight: 600;
+}
+
+.dre-lancamentos-toolbar button {
+  background: #0f172a;
+  color: #fff;
+  cursor: pointer;
+}
+
+.dre-lancamentos-toolbar button:hover {
+  background: #1e293b;
+}
+
+.dre-lancamentos-info {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+  color: #64748b;
+  font-size: .85rem;
+  font-weight: 800;
+}
+
+.dre-lancamentos-scroll {
+  max-height: 430px;
+  overflow: auto;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.excel-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 1100px;
+  font-size: .88rem;
+}
+
+.excel-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: #e2e8f0;
+  color: #0f172a;
+  border-bottom: 1px solid #94a3b8;
+  border-right: 1px solid #cbd5e1;
+  white-space: nowrap;
+}
+
+.excel-table td {
+  border-right: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  background: inherit;
+}
+
+.excel-table tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+.excel-table tbody tr:nth-child(odd) {
+  background: #ffffff;
+}
+
+.excel-table tbody tr:hover {
+  background: #dbeafe !important;
+}
+
+.excel-table th:first-child,
+.excel-table td:first-child {
+  min-width: 300px;
+}
+
+.excel-table th:nth-child(2),
+.excel-table td:nth-child(2) {
+  min-width: 180px;
+}
+
+.excel-table th:nth-child(3),
+.excel-table td:nth-child(3),
+.excel-table th:nth-child(4),
+.excel-table td:nth-child(4) {
+  min-width: 180px;
+}
+
+.excel-table th:nth-child(5),
+.excel-table td:nth-child(5) {
+  min-width: 130px;
+  text-align: right;
+  font-weight: 900;
+}
+
+.excel-table th:nth-child(6),
+.excel-table td:nth-child(6) {
+  min-width: 120px;
+  text-align: center;
+}
+
+.excel-table th:nth-child(7),
+.excel-table td:nth-child(7) {
+  min-width: 120px;
+  text-align: center;
+}
+
+.dre-lancamentos-scroll::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.dre-lancamentos-scroll::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.dre-lancamentos-scroll::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 999px;
+}
+
+.dre-lancamentos-scroll::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+@media (max-width: 1100px) {
+  .dre-lancamentos-toolbar {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 650px) {
+  .dre-lancamentos-toolbar {
+    grid-template-columns: 1fr;
+  }
+}

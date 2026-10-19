@@ -1,0 +1,390 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════════╗
+     ║ location.html — Warehouse Locations | PRODNEX ERP (Frontend)             ║
+     ║ Path: backend/public/locations/location.html                             ║
+     ║ UI: Hierarquia (Locais→Corredores→Prateleiras→Bandejas→Posições) +        ║
+     ║     Vincular Produto → Localização (localizationProducts)                ║
+     ║ API: /api/locations/*                                                    ║
+     ╚══════════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>LOCALIZAÇÕES • PRODNEX ERP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <!-- 🎨 Design System CONSART -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- Page CSS -->
+  <link rel="stylesheet" href="./locations.css?v=loc-01" />
+</head>
+
+<body>
+  <!-- Top gradient bar -->
+  <div class="topGradientBar"></div>
+
+  <main class="containerConsart">
+    <header class="loc-header">
+      <div class="loc-title">
+        <h1>Localizações</h1>
+        <p>Cadastre a hierarquia do armazém e vincule produtos à localização.</p>
+      </div>
+
+      <div class="loc-actions">
+        <button id="btnReloadAll" class="btn btn-toolbar">
+          🔄 Recarregar
+        </button>
+      </div>
+    </header>
+
+    <!-- Tabs -->
+    <section class="loc-tabs">
+      <button class="loc-tab is-active" data-tab="tabHierarchy">Hierarquia</button>
+      <button class="loc-tab" data-tab="tabProduct">Produto → Localização</button>
+    </section>
+
+    <!-- =========================== TAB: HIERARCHY =========================== -->
+    <section id="tabHierarchy" class="loc-tabpanel is-active">
+      <div class="loc-grid-2">
+        <!-- Left: selectors -->
+        <section class="loc-card">
+          <div class="loc-card-header">
+            <h2>Filtro por Hierarquia</h2>
+            <span class="loc-muted">Selecione para filtrar listas e criar níveis abaixo.</span>
+          </div>
+
+          <div class="loc-form-grid">
+            <div class="field">
+              <label for="selLocal">Local</label>
+              <select id="selLocal"></select>
+            </div>
+
+            <div class="field">
+              <label for="selCorridor">Corredor</label>
+              <select id="selCorridor"></select>
+            </div>
+
+            <div class="field">
+              <label for="selShelf">Prateleira</label>
+              <select id="selShelf"></select>
+            </div>
+
+            <div class="field">
+              <label for="selBin">Bandeja</label>
+              <select id="selBin"></select>
+            </div>
+
+            <div class="field">
+              <label for="selPosition">Posição</label>
+              <select id="selPosition"></select>
+            </div>
+          </div>
+
+          <div class="loc-inline-actions">
+            <label class="loc-check">
+              <input type="checkbox" id="chkOnlyActive" checked />
+              Mostrar apenas ativos
+            </label>
+          </div>
+        </section>
+
+        <!-- Right: CRUD -->
+        <section class="loc-card">
+          <div class="loc-card-header">
+            <h2>Cadastro Rápido</h2>
+            <span class="loc-muted">Crie o nível selecionado no menu abaixo.</span>
+          </div>
+
+          <div class="loc-crud-top">
+            <div class="field">
+              <label for="selEntity">Nível</label>
+              <select id="selEntity">
+                <option value="locals">Local</option>
+                <option value="corridors">Corredor</option>
+                <option value="shelves">Prateleira</option>
+                <option value="bins">Bandeja</option>
+                <option value="positions">Posição</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="txtName">Nome</label>
+              <input id="txtName" type="text" placeholder="Ex: A, 01, PRAT-01, BIN-02..." />
+            </div>
+
+            <div class="field">
+              <label for="txtDesc">Descrição</label>
+              <input id="txtDesc" type="text" placeholder="Opcional" />
+            </div>
+
+            <div class="field field-small">
+              <label for="chkActive">Ativo</label>
+              <div class="loc-switch">
+                <input id="chkActive" type="checkbox" checked />
+                <span>Sim</span>
+              </div>
+            </div>
+
+            <div class="loc-crud-actions">
+              <button id="btnCreate" class="btn btn-primary">➕ Criar</button>
+            </div>
+          </div>
+
+          <div class="loc-note">
+            <strong>Dica:</strong> Para criar níveis abaixo, selecione o pai no filtro:
+            <em>Corredor</em> precisa de <em>Local</em>, <em>Prateleira</em> precisa de <em>Corredor</em>, etc.
+          </div>
+        </section>
+      </div>
+
+      <!-- Lists -->
+      <section class="loc-card loc-card-full">
+        <div class="loc-card-header">
+          <h2>Listas</h2>
+          <span class="loc-muted">Clique em uma linha para editar / inativar / excluir.</span>
+        </div>
+
+        <div class="loc-lists-grid">
+          <div class="loc-list">
+            <div class="loc-list-head">
+              <h3>Locais</h3>
+              <div class="loc-mini-actions">
+                <button class="btn btn-toolbar btn-sm" data-refresh="locals">↻</button>
+              </div>
+            </div>
+            <div class="loc-table-wrap">
+              <table class="tableZebra">
+                <thead>
+                  <tr>
+                    <th style="width:76px;">ID</th>
+                    <th>Nome</th>
+                    <th style="width:90px;">Ativo</th>
+                    <th style="width:160px;">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="tbLocals"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="loc-list">
+            <div class="loc-list-head">
+              <h3>Corredores</h3>
+              <div class="loc-mini-actions">
+                <button class="btn btn-toolbar btn-sm" data-refresh="corridors">↻</button>
+              </div>
+            </div>
+            <div class="loc-table-wrap">
+              <table class="tableZebra">
+                <thead>
+                  <tr>
+                    <th style="width:76px;">ID</th>
+                    <th>Nome</th>
+                    <th style="width:90px;">Ativo</th>
+                    <th style="width:160px;">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="tbCorridors"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="loc-list">
+            <div class="loc-list-head">
+              <h3>Prateleiras</h3>
+              <div class="loc-mini-actions">
+                <button class="btn btn-toolbar btn-sm" data-refresh="shelves">↻</button>
+              </div>
+            </div>
+            <div class="loc-table-wrap">
+              <table class="tableZebra">
+                <thead>
+                  <tr>
+                    <th style="width:76px;">ID</th>
+                    <th>Nome</th>
+                    <th style="width:90px;">Ativo</th>
+                    <th style="width:160px;">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="tbShelves"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="loc-list">
+            <div class="loc-list-head">
+              <h3>Bandejas</h3>
+              <div class="loc-mini-actions">
+                <button class="btn btn-toolbar btn-sm" data-refresh="bins">↻</button>
+              </div>
+            </div>
+            <div class="loc-table-wrap">
+              <table class="tableZebra">
+                <thead>
+                  <tr>
+                    <th style="width:76px;">ID</th>
+                    <th>Nome</th>
+                    <th style="width:90px;">Ativo</th>
+                    <th style="width:160px;">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="tbBins"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="loc-list">
+            <div class="loc-list-head">
+              <h3>Posições</h3>
+              <div class="loc-mini-actions">
+                <button class="btn btn-toolbar btn-sm" data-refresh="positions">↻</button>
+              </div>
+            </div>
+            <div class="loc-table-wrap">
+              <table class="tableZebra">
+                <thead>
+                  <tr>
+                    <th style="width:76px;">ID</th>
+                    <th>Nome</th>
+                    <th style="width:90px;">Ativo</th>
+                    <th style="width:160px;">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="tbPositions"></tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </section>
+
+    <!-- ====================== TAB: PRODUCT -> LOCATION ====================== -->
+    <section id="tabProduct" class="loc-tabpanel">
+      <div class="loc-grid-2">
+        <section class="loc-card">
+          <div class="loc-card-header">
+            <h2>Vincular Produto</h2>
+            <span class="loc-muted">Informe o SKU e a hierarquia (IDs ou textos) e salve.</span>
+          </div>
+
+          <div class="loc-product-form">
+            <div class="field">
+              <label for="txtProductCode">SKU / Código do Produto</label>
+              <div class="loc-input-with-hint">
+                <input id="txtProductCode" type="text" placeholder="Ex: 00001234 (F2 abre busca)" />
+                <button id="btnPickProduct" class="btn btn-toolbar btn-sm" type="button">🔎</button>
+              </div>
+              <small class="loc-muted">Atalho: <strong>F2</strong> abre o modal de produtos (se existir). ENTER busca/carreta localizações.</small>
+            </div>
+
+            <div class="loc-product-grid">
+              <div class="field">
+                <label for="plLocalId">Local (id)</label>
+                <input id="plLocalId" type="number" inputmode="numeric" placeholder="Opcional" />
+              </div>
+              <div class="field">
+                <label for="plCorridorId">Corredor (id)</label>
+                <input id="plCorridorId" type="number" inputmode="numeric" placeholder="Opcional" />
+              </div>
+              <div class="field">
+                <label for="plShelfId">Prateleira (id)</label>
+                <input id="plShelfId" type="number" inputmode="numeric" placeholder="Opcional" />
+              </div>
+              <div class="field">
+                <label for="plBinId">Bandeja (id)</label>
+                <input id="plBinId" type="number" inputmode="numeric" placeholder="Opcional" />
+              </div>
+              <div class="field">
+                <label for="plPositionId">Posição (id)</label>
+                <input id="plPositionId" type="number" inputmode="numeric" placeholder="Opcional" />
+              </div>
+
+              <div class="field">
+                <label for="plLocal">Local (texto)</label>
+                <input id="plLocal" type="text" placeholder="Ex: Depósito" />
+              </div>
+              <div class="field">
+                <label for="plCorridor">Corredor (texto)</label>
+                <input id="plCorridor" type="text" placeholder="Ex: A" />
+              </div>
+              <div class="field">
+                <label for="plShelf">Prateleira (texto)</label>
+                <input id="plShelf" type="text" placeholder="Ex: 01" />
+              </div>
+              <div class="field">
+                <label for="plBin">Bandeja (texto)</label>
+                <input id="plBin" type="text" placeholder="Ex: B02" />
+              </div>
+              <div class="field">
+                <label for="plPosition">Posição (texto)</label>
+                <input id="plPosition" type="text" placeholder="Ex: P03" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="plNotes">Observações</label>
+              <input id="plNotes" type="text" placeholder="Opcional" />
+            </div>
+
+            <div class="loc-product-actions">
+              <button id="btnCreatePL" class="btn btn-primary">💾 Salvar Localização</button>
+              <button id="btnClearPL" class="btn btn-toolbar">🧹 Limpar</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="loc-card">
+          <div class="loc-card-header">
+            <h2>Buscar Localizações do Produto</h2>
+            <span class="loc-muted">Mostra os registros existentes em localizationProducts.</span>
+          </div>
+
+          <div class="loc-search-row">
+            <div class="field">
+              <label for="txtPLSearch">SKU</label>
+              <input id="txtPLSearch" type="text" placeholder="Digite o SKU e pressione ENTER" />
+            </div>
+            <div class="loc-search-actions">
+              <button id="btnSearchPL" class="btn btn-toolbar">🔎 Buscar</button>
+              <button id="btnReloadPL" class="btn btn-toolbar">↻ Recarregar</button>
+            </div>
+          </div>
+
+          <div class="loc-table-wrap">
+            <table class="tableZebra">
+              <thead>
+                <tr>
+                  <th style="width:76px;">ID</th>
+                  <th style="width:120px;">SKU</th>
+                  <th>Descrição</th>
+                  <th style="width:180px;">Localização</th>
+                  <th style="width:160px;">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tbProductLocations"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <footer class="loc-footer">
+      <span class="loc-muted">PRODNEX ERP • Locations</span>
+    </footer>
+  </main>
+
+  <!-- Core -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <!-- appFeature PRODUCT_LOCATIONS: LOCATIONS_DISABLED → página bloqueada com aviso -->
+  <script type="module">import { guardProductLocationsPage } from "/public/includes/js/productLocationsFeature.js"; guardProductLocationsPage();</script>
+
+  <script type="module" src="./locations.js?v=loc-01"></script>
+</body>
+</html>

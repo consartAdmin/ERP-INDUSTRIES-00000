@@ -1,0 +1,216 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════════╗
+     ║ 📍 public/ibgeLocations/ibgeLocations.html — IBGE Locations (CONSART)   ║
+     ║ UI padrão “Grupos & Subgrupos”                                         ║
+     ╚══════════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR" class="page-ibge-locations">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+  <title>IBGE LOCATIONS | PRODNEX ERP</title>
+
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/ibgeLocations/ibgeLocations.css" />
+</head>
+
+<body class="consart-theme c-page page-ibge-locations">
+<noscript>Ative o JavaScript para usar esta página.</noscript>
+
+<header id="topo"></header>
+
+<main class="c-main">
+  <div class="c-container c-container--2xl">
+     <div class="ibge-top__right">
+        <button id="btnEnsure" class="btn btn-flat" type="button">🛠️ Ensure Tabela</button>
+        <button id="btnRefreshAll" class="btn btn-flat" type="button">🔄 Atualizar tudo</button>
+      </div>
+    </section>
+
+    <section class="ibge-grid">
+
+      <!-- COLUNA ESQUERDA: UFs -->
+      <section class="section-card ibge-card">
+        <div class="ibge-card__head">
+          <div>
+            <h2 class="ibge-card__title">Estados (UF)</h2>
+            <p class="ibge-card__subtitle">Selecione uma UF para filtrar as cidades ao lado.</p>
+          </div>
+
+          <div class="ibge-card__headActions">
+            <div class="ibge-search">
+              <input id="ufsQ" type="text" placeholder="Buscar UF (ex: MG)" autocomplete="off" />
+              <button id="btnUfsSearch" class="ibge-search__btn" type="button" title="Buscar">🔎</button>
+            </div>
+
+            <label class="ibge-check">
+              <input id="ufsIncludeInativos" type="checkbox" />
+              <span>Incluir inativos</span>
+            </label>
+
+            <button id="btnNovoUf" class="btn btn-primary" type="button">＋ Nova UF</button>
+          </div>
+        </div>
+
+        <div id="statusArea" class="ibge-status" aria-live="polite"></div>
+
+        <div class="section-card ibge-inner">
+          <div class="table-wrapper">
+            <table class="tbl tbl--hover" id="tblUfs">
+              <thead>
+                <tr>
+                  <th style="width:90px;">UF</th>
+                  <th>Nome</th>
+                  <th style="width:110px;">Status</th>
+                  <th style="width:160px;">Ações</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+
+          <div class="ibge-foot muted">
+            <span id="ufsInfo">—</span>
+            <span>clique em uma UF para carregar cidades.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- COLUNA DIREITA: Cidades -->
+      <!-- ✅ ADICIONADO: ibge-card--cities / ibge-inner--cities / table-wrapper--cities -->
+      <section class="section-card ibge-card ibge-card--cities">
+        <div class="ibge-card__head">
+          <div>
+            <h2 class="ibge-card__title">Cidades / Municípios</h2>
+            <p class="ibge-card__subtitle">
+              Listagem vem de <code>/api/ibge-locations</code> filtrada pela UF selecionada.
+            </p>
+          </div>
+
+          <div class="ibge-card__headActions">
+            <div class="ibge-search">
+              <input id="citiesQ" type="text" placeholder="Buscar cidade (ex: Belo)" autocomplete="off" />
+              <button id="btnCitiesSearch" class="ibge-search__btn" type="button" title="Buscar">🔎</button>
+            </div>
+
+            <label class="ibge-check">
+              <input id="citiesIncludeInativos" type="checkbox" />
+              <span>Incluir inativos</span>
+            </label>
+
+            <select id="citiesLimit" class="ibge-select" aria-label="Registros por página">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50" selected>50</option>
+              <option value="100">100</option>
+            </select>
+
+            <button id="btnImportUf" class="btn btn-secondary" type="button">⬇️ Importar cidades da UF</button>
+            <button id="btnNovoCity" class="btn btn-primary" type="button">＋ Nova Cidade</button>
+          </div>
+        </div>
+
+        <div class="section-card ibge-inner ibge-inner--cities">
+          <div class="ibge-selected muted" id="selectedUfHint">
+            Nenhuma UF selecionada. Clique em uma UF à esquerda para filtrar.
+            <button id="btnClearUf" class="btn btn-flat btn-sm" type="button">Limpar seleção</button>
+          </div>
+
+          <div id="citiesTotalBox" class="ibge-totalBox muted">—</div>
+
+          <div class="table-wrapper table-wrapper--cities">
+            <table class="tbl tbl--hover" id="tblCities">
+              <thead>
+                <tr>
+                  <th style="width:80px;">ID</th>
+                  <th style="width:90px;">UF</th>
+                  <th>Cidade</th>
+                  <th style="width:150px;">IBGE</th>
+                  <th style="width:110px;">Status</th>
+                  <th style="width:170px;">Ações</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+
+          <div id="emptyState" class="ibge-empty" style="display:none;">
+            <div class="ibge-empty__icon">🗂️</div>
+            <div class="ibge-empty__title">Nenhum registro encontrado</div>
+            <div class="ibge-empty__text">Tente ajustar busca/status ou importe a UF.</div>
+          </div>
+
+          <div class="ibge-pagination">
+            <button id="citiesPrev" class="btn btn-flat btn-sm" type="button">◀</button>
+            <span id="citiesPageInfo" class="muted">Página 1</span>
+            <button id="citiesNext" class="btn btn-flat btn-sm" type="button">▶</button>
+          </div>
+        </div>
+      </section>
+
+    </section>
+
+    <div class="rodape row between">
+    </div>
+  </div>
+</main>
+
+<!-- MODAL -->
+<div class="ibge-modal" id="modalCrud" style="display:none;">
+  <div class="ibge-modal__overlay" data-close="1"></div>
+
+  <div class="ibge-modal__card section-card">
+    <div class="ibge-modal__head">
+      <div>
+        <div class="ibge-modal__kicker" id="modalKicker">IBGE</div>
+        <h3 class="ibge-modal__title" id="modalTitle">Novo Registro</h3>
+      </div>
+      <button class="btn btn-flat btn-sm" type="button" data-close="1">✖</button>
+    </div>
+
+    <form id="formCrud" class="ibge-form">
+      <input type="hidden" id="mode" value="city" />
+      <input type="hidden" id="id" />
+
+      <div class="ibge-form__grid">
+        <div class="field">
+          <label for="state">UF</label>
+          <input id="state" maxlength="2" placeholder="MG" autocomplete="off" required />
+        </div>
+
+        <div class="field field--grow">
+          <label for="city">Cidade</label>
+          <input id="city" placeholder="Belo Horizonte" autocomplete="off" />
+        </div>
+
+        <div class="field">
+          <label for="ibge_code">Código IBGE</label>
+          <input id="ibge_code" inputmode="numeric" placeholder="3106200" />
+        </div>
+
+        <div class="field">
+          <label for="status">Status</label>
+          <select id="status">
+            <option value="true" selected>Ativo</option>
+            <option value="false">Inativo</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="ibge-form__actions">
+        <button class="btn btn-primary" type="submit">💾 Salvar</button>
+        <button class="btn btn-flat" type="button" data-close="1">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  window.apiBase = window.apiBase || 'http://localhost:8080';
+</script>
+
+<script type="module" src="/public/includes/js/core.js"></script>
+<script type="module" src="/public/ibgeLocations/ibgeLocations.js"></script>
+</body>
+</html>

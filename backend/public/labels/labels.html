@@ -1,0 +1,178 @@
+<!-- /public/labels/labels.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>IMPRESSÃO DE ETIQUETAS | PRODNEX ERP</title>
+
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/labels/labels.css?v=11" />
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <header class="header header-h-7">
+
+      <!-- DADOS GERAIS -->
+      <h3 class="labels-section-title">Parâmetros gerais</h3>
+      </div>
+
+      <div class="fields-inline fields-gap-3">
+        <div class="fields fields-h-6 fields-w-20 fields-font-3">
+          <label for="labelsTemplate" class="c-label">Template</label>
+          <select id="labelsTemplate" name="template" class="c-input">
+            <option value="default-product-label">Padrão – Etiqueta de Produto</option>
+          </select>
+        </div>
+
+        <div class="fields fields-h-6 fields-w-12 fields-font-3">
+          <label for="labelsQty" class="c-label">Etiquetas por produto</label>
+          <input id="labelsQty" name="labelsQty" type="number" min="1" step="1" value="1" class="c-input" />
+        </div>
+
+        <div class="fields fields-h-6 fields-w-12 fields-font-3">
+          <label for="labelsPriceTable" class="c-label">Tabela de preço</label>
+          <select id="labelsPriceTable" name="priceId" class="c-input">
+            <option value="">Padrão (sem tabela)</option>
+          </select>
+        </div>
+
+        <div class="fields fields-h-6 fields-w-12 fields-font-3">
+          <label for="labelsMode" class="c-label">Alcance</label>
+          <select id="labelsMode" name="labelsMode" class="c-input">
+            <option value="ALL">Todos os produtos</option>
+            <option value="SEARCH">Filtrar por pesquisa</option>
+            <option value="SKU">Lista manual de produtos (código interno / código de barras)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- PESQUISA -->
+      <h3 class="labels-section-title">Seleção de produtos</h3>
+
+      <div class="fields-inline fields-gap-3">
+
+        <div class="fields fields-h-6 fields-w-20 fields-font-3" data-mode-field="SEARCH">
+          <label for="labelsQuery" class="c-label">
+            Buscar Produto
+          </label>
+          <input id="labelsQuery" name="labelsQuery" type="text" placeholder="Busque o produto clicando aqui..." />
+        </div>
+
+        <button id="btnOpenSearchProductModal" type="button" class="btn btn-toolbar btn-sm">
+          Buscar produto
+        </button>
+
+        <div class="fields fields-h-6 fields-w-15 fields-font-3" data-scope-only="SKU">
+          <label for="manualProductCode" class="c-label">
+            Código de barras
+          </label>
+          <input id="manualProductCode" name="manualProductCode" type="text" class="c-input"
+            placeholder="Digite o código interno ou leia o código de barras…" />
+        </div>
+
+        <div class="fields fields-h-6 fields-w-5 fields-font-3">
+          <label for="manualLabelsQty" class="c-label">
+            Qtde. </label>
+          <input id="manualLabelsQty" name="manualLabelsQty" type="number" min="1" step="1" class="c-input" value="1" />
+        </div>
+
+        <div class="fields fields-h-6 fields-w-20 fields-font-3">
+          <label for="labelParametersPreset" class="c-label">
+            Modelo salvo de etiqueta
+          </label>
+          <select id="labelParametersPreset" name="labelParametersPreset" class="c-input">
+            <option value="">Selecione um modelo salvo…</option>
+          </select>
+        </div>
+
+        <button id="btnAddProductToList" type="button" class="btn btn-new btn-sm">
+          Adicionar à lista
+        </button>
+      </div>
+
+      <!-- CONFIGURAÇÃO DA ETIQUETA 
+      <h3 class="labels-section-title">Configuração da etiqueta</h3>
+
+      <div class="fields-inline fields-gap-3">
+
+
+               <div class="fields fields-h-6 fields-w-12 fields-font-3">
+          <label for="labelWidth" class="c-label">Largura (mm)</label>
+          <input id="labelWidth" name="labelWidth" type="number" min="0" step="0.1" class="c-input"
+            placeholder="Ex: 50" />
+        </div>
+
+        <div class="fields fields-h-6 fields-w-12 fields-font-3">
+          <label for="labelHeight" class="c-label">Altura (mm)</label>
+          <input id="labelHeight" name="labelHeight" type="number" min="0" step="0.1" class="c-input"
+            placeholder="Ex: 30" />
+        </div>
+
+        <div class="fields fields-h-6 fields-w-12 fields-font-3">
+          <label for="labelCols" class="c-label">Colunas por página</label>
+          <input id="labelCols" name="labelCols" type="number" min="1" step="1" class="c-input" placeholder="Ex: 3" />
+        </div>
+
+        <div class="fields fields-h-6 fields-w-12 fields-font-3">
+          <label for="labelRows" class="c-label">Linhas por página</label>
+          <input id="labelRows" name="labelRows" type="number" min="1" step="1" class="c-input" placeholder="Ex: 8" />
+        </div>
+
+        <div class="fields fields-h-6 fields-w-12 fields-font-3">
+          <label for="labelFontPreset" class="c-label">Tamanho da fonte</label>
+          <select id="labelFontPreset" name="labelFontPreset" class="c-input">
+            <option value="S">Pequena</option>
+            <option value="M" selected>Média (padrão)</option>
+            <option value="L">Grande</option>
+          </select>
+        </div>   -->
+
+      </div>
+    </header>
+
+    <section class="table-layout">
+      <div class="table-scroll table-height-flex table-row-h-28" data-table-settings="labels.tablebody">
+        <table class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th>Código interno</th>
+              <th>Unidade</th>
+              <th>Código de barras</th>
+              <th>Descrição</th>
+              <th>Etiquetas</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <td colspan="6">Nenhum produto selecionado ainda.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- AÇÕES -->
+      <footer class="table-footer">
+        <div class="btn-inline btn-p-5">
+          <button id="btnGenerateLabels" type="submit" class="btn btn-new btn-sm">
+            Gerar etiquetas
+          </button>
+        </div>
+      </footer>
+  </main>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="./js/labels.init.js"></script>
+</body>
+
+</html>

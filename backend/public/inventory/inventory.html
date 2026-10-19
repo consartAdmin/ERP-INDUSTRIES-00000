@@ -1,0 +1,559 @@
+<!-- ╔══════════════════════════════════════════════════════════════╗
+     ║ FILE: inventory.html — Módulo de Inventário — PRODNEX ERP   ║
+     ║ ✅ Padrão containerConsart (altura fixa real + scroll)       ║
+     ║ ✅ Botão Importar XLS/XLSX                                   ║
+     ║ ✅ Botão Baixar Modelo CSV                                   ║
+     ╚══════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>INVENTÁRIO | PRODNEX ERP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Design System global -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- Estilos específicos do módulo de inventário -->
+  <style>
+    /* Modal de senha (estrutura base vem do modals.css) */
+    #passwordModal {
+      /* acima do menu fixo (menuConsart.css usa até 20060) */
+      --modal-z-index: 99998;
+    }
+
+    .inv-modal-subtitle {
+      margin: 4px 0 0;
+      font-size: 12px;
+      font-weight: 500;
+      color: #64748b;
+    }
+
+    .inv-modal-error {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(220, 38, 38, .25);
+      background: rgba(220, 38, 38, .08);
+      color: #991b1b;
+      font-size: 12px;
+    }
+
+    .inv-modal-error[hidden] {
+      display: none;
+    }
+  </style>
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <!-- ░░░ ABA 1 — RELAÇÃO DE INVENTÁRIOS ░░░ -->
+    <div class="tab-panel is-active" id="tab-list">
+      <header class="header">
+
+        <!-- ✅ Importar XLS -->
+        <div class="fields-inline fields-gap-3">
+
+          <!-- Botões e campos lado a lado no .fields-inline (alinha pela base, todos com 30px) -->
+          <button type="button" class="btn btn-toolbar btn-sm" id="btnNewInventory" data-tab="tab-edit">
+              Novo inventário
+            </button>
+
+            <button type="button" class="btn btn-toolbar btn-sm" id="btnImportInventory">
+              Importar XLS
+            </button>
+
+            <button type="button" class="btn btn-toolbar btn-sm" id="btnDownloadInventoryModel">
+              Baixar modelo CSV
+            </button>
+
+            <button type="button" class="btn btn-toolbar btn-sm" id="btnInventoryList" data-tab="tab-list">
+              Relação de inventários
+            </button>
+
+            <div class="fields fields-h-6 fields-w-20 fields-font-3">
+              <label for="searchInventory" class="field-label">Pesquisar</label>
+              <input id="searchInventory" type="text" placeholder="Código ou descrição" />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-20 fields-font-3">
+              <label for="statusFilter" class="field-label">Status</label>
+              <select id="statusFilter">
+                <option value="">Todos</option>
+                <option value="OPEN">Aberto</option>
+                <option value="COUNTING">Em contagem</option>
+                <option value="FINALIZED">Finalizado</option>
+                <option value="CANCELLED">Cancelado</option>
+              </select>
+            </div>
+
+            <button id="btnSearchInventories" class="btn btn-toolbar btn-sm" type="button">
+              Buscar
+            </button>
+
+          <button type="button" class="btn btn-toolbar btn-sm btn-position-right" id="tabLogsBtn" data-tab="tab-logs">
+            Registros (Auditoria)
+          </button>
+        </div>
+
+      </header>
+
+      <!-- ✅ Scroll da tabela -->
+      <section class="table-layout">
+        <div class="table-scroll table-height-600 table-row-h-20" data-table-settings="inventory.inventorytablebody">
+          <table class="table table-zebra table-zebra-hover table-sticky-head">
+            <thead>
+              <tr>
+                <th>Descrição</th>
+                <th>Observações</th>
+                <th>Tipo</th>
+                <th>Status</th>
+                <th>Data de referência</th>
+                <th class="col-actions">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="inventoryTableBody"></tbody>
+          </table>
+        </div>
+
+        <footer class="table-footer">
+
+          <div class="table-footer__info">
+            <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+              <span id="apTableInfo">0 registros</span>
+            </div>
+          </div>
+
+          <div class="table-footer__pagination">
+
+            <button type="button" id="pagAnterior" class="btn btn-clean btn-sm">
+              Anterior
+            </button>
+
+            <span id="infoPagina">Página 1 de 1</span>
+
+            <button type="button" id="pagProxima" class="btn btn-new btn-sm">
+              Próxima
+            </button>
+
+          </div>
+
+          <div class="table-footer__page-size">
+            <label for="apRowsPerPage">Mostrar</label>
+
+            <select id="apRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+              <option value="10">10 linhas</option>
+              <option value="20">20 linhas</option>
+              <option value="30">30 linhas</option>
+              <option value="50" selected>50 linhas</option>
+              <option value="100">100 linhas</option>
+            </select>
+          </div>
+
+        </footer>
+      </section>
+    </div>
+
+
+    <!-- ░░░ ABA 2 — EDIÇÃO / CRIAÇÃO ░░░ -->
+    <div class="tab-panel" id="tab-edit" hidden>
+      <header class="header">
+        <div class="fields-inline fields-gap-3">
+          <form id="inventoryForm" class="fields-inline">
+
+            <div class="fields fields-h-5 fields-w-15 fields-font-3">
+              <label for="inventoryCode" class="field-label">Descrição</label>
+              <input id="inventoryCode" type="text" required />
+            </div>
+
+            <div class="fields fields-h-5 fields-w-15 fields-font-3">
+              <label for="inventoryType" class="field-label">Tipo</label>
+              <select id="inventoryType">
+                <option value="GENERAL">Geral</option>
+                <option value="PARTIAL">Parcial</option>
+                <option value="CYCLE">Cíclico</option>
+              </select>
+            </div>
+
+            <div class="fields fields-h-5 fields-w-15 fields-font-3">
+              <label for="inventoryStatus" class="field-label">Status</label>
+              <select id="inventoryStatus">
+                <option value="OPEN">Aberto</option>
+                <option value="COUNTING">Em contagem</option>
+                <option value="FINALIZED">Finalizado</option>
+                <option value="CANCELLED">Cancelado</option>
+              </select>
+            </div>
+
+            <div class="fields fields-h-5 fields-w-15 fields-font-3">
+              <label for="referenceDate" class="field-label">Data de referência</label>
+              <input id="referenceDate" type="date" required />
+            </div>
+
+            <!-- ✅ AÇÕES ao lado da data -->
+            <div class="btn-inline">
+              <button type="button" id="btnSaveInventoryInline" class="btn btn-toolbar btn-sm">
+                Salvar inventário
+              </button>
+              <button type="button" id="btnFinalizeInventoryInline" class="btn btn-toolbar btn-sm">
+                Finalizar e aplicar estoque
+              </button>
+            </div>
+
+            <div class="btn-inline">
+              <label class="field-label">&nbsp;</label>
+              <button type="button" id="btnOpenInventoryNotes" class="btn btn-toolbar btn-sm">
+                Obs.
+              </button>
+              <textarea id="inventoryNotes" hidden></textarea>
+            </div>
+
+            <button type="button" class="btn btn-toolbar btn-sm btn-position-right" data-tab="tab-list">
+              Relação de inventários
+            </button>
+          </form>
+        </div>
+      </header>
+
+      <header class="header">
+        <div>
+          <h2>Itens</h2>
+        </div>
+
+        <div class="fields">
+          <div class="fields-inline fields-gap-3">
+
+            <div class="fields fields-h-5 fields-w-20 fields-font-3">
+              <label class="field-label" for="itemProductCode">Produto</label>
+              <input id="itemProductCode" type="text" placeholder="Código - Produto" readonly />
+              <input id="itemProductCodeValue" type="hidden" />
+            </div>
+
+            <div class="btn-inline">
+              <button type="button" id="btnSearchProduct" class="btn btn-toolbar btn-sm">🔍</button>
+              <small id="itemProductName" class="field-help"></small>
+            </div>
+
+            <div class="fields fields-h-5 fields-w-15 fields-font-3">
+              <label class="field-label" for="itemUnit">Unidade</label>
+              <select id="itemUnit">
+                <option value="">Selecione...</option>
+              </select>
+            </div>
+
+            <div class="fields fields-h-5 fields-w-15 fields-font-3" data-feature="PRODUCT_LOCATIONS">
+              <label class="field-label" for="itemLocation">Localização</label>
+              <select id="itemLocation">
+                <option value="">Selecione...</option>
+              </select>
+            </div>
+
+            <!-- ✅ NOVO: LOTE / VALIDADE (productsStockLots) -->
+            <div class="fields fields-h-5 fields-w-20 fields-font-3">
+              <label class="field-label" for="lotSelect">Lote / Validade</label>
+              <select id="lotSelect">
+                <option value="">Selecione o lote...</option>
+              </select>
+              <small id="lotHint" class="field-help"></small>
+            </div>
+
+            <div class="fields fields-h-5 fields-w-15 fields-font-3">
+              <label class="field-label" for="itemCountedQty">Qtd. contada</label>
+              <input id="itemCountedQty" type="number" step="0.001" />
+            </div>
+
+            <div class="fields fields-h-5 fields-w-15 fields-font-3">
+              <label class="field-label">&nbsp;</label>
+              <button id="btnSaveItem" type="button" class="btn btn-toolbar btn-sm">
+                Salvar item
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </header>
+
+
+      <!-- ✅ Scroll tabela itens -->
+      <section class="table-layout">
+        <div class="table-scroll table-scroll--flex" data-table-settings="inventory.inventoryitemstablebody">
+          <table class="table table-fixed table-zebra table-zebra-hover table-sticky-head">
+            <thead>
+              <tr>
+                <th>Código do produto</th>
+                <th>Produto</th>
+                <th>Unidade</th>
+                <th data-feature="PRODUCT_LOCATIONS">Localização</th>
+                <th class="col-number">Sistema</th>
+                <th class="col-number">Contado</th>
+                <th class="col-number">Total</th>
+                <th class="col-number">Diferença</th>
+                <th>Status</th>
+                <th class="col-actions">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="inventoryItemsTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- ░░░ ABA 3 — REGISTROS (AUDITORIA) ░░░ -->
+    <div class="tab-panel" id="tab-logs" hidden>
+      <!-- Mesmo padrão da aba "Relação de inventários": header com fields-inline + table-layout -->
+      <header class="header">
+        <div class="fields-inline fields-gap-3">
+          <button type="button" class="btn btn-toolbar btn-sm" data-tab="tab-list">
+            Relação de inventários
+          </button>
+
+          <div class="fields fields-h-6 fields-w-12 fields-font-3">
+            <label for="logDateFrom" class="field-label">Data inicial</label>
+            <input id="logDateFrom" type="date" />
+          </div>
+
+          <div class="fields fields-h-6 fields-w-12 fields-font-3">
+            <label for="logDateTo" class="field-label">Data final</label>
+            <input id="logDateTo" type="date" />
+          </div>
+
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <label for="logUserName" class="field-label">Usuário</label>
+            <input id="logUserName" type="text" placeholder="Nome do usuário" />
+          </div>
+
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <label for="logProductCode" class="field-label">Produto</label>
+            <input id="logProductCode" type="text" placeholder="Código do produto" />
+          </div>
+
+          <button id="btnSearchLogs" class="btn btn-toolbar btn-sm" type="button">Filtrar</button>
+
+          <div class="btn-position-right" title="Histórico de operações realizadas no inventário selecionado.">
+            <strong>📋 Registros (Auditoria)</strong>
+          </div>
+        </div>
+      </header>
+
+        <!-- ✅ Scroll tabela logs -->
+        <section class="table-layout">
+          <div class="table-scroll table-height-600 table-row-h-20" data-table-settings="inventory.inventorylogstablebody">
+            <table class="table table-zebra table-zebra-hover table-sticky-head">
+              <thead>
+                <tr>
+                  <th>Data / Hora</th>
+                  <th>Usuário</th>
+                  <th>Ação</th>
+                  <th>Cód. Produto</th>
+                  <th>Produto</th>
+                  <th>Unidade</th>
+                  <th class="col-number">Sistema (antes)</th>
+                  <th class="col-number">Contado</th>
+                  <th class="col-number">Sistema (depois)</th>
+                </tr>
+              </thead>
+              <tbody id="inventoryLogsTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+    </div>
+
+  </main>
+
+  <!-- ✅ MODAL: Senha de alçada (Finalizar / Estornar Inventário) -->
+  <div id="passwordModal" class="modal" aria-hidden="true">
+    <div class="modal__backdrop" data-password-modal-close></div>
+
+    <div class="modal__dialog">
+      <div class="modal__panel modal-width-3 modal-header-color-2 modal-footer-color-1" role="dialog" aria-modal="true"
+        aria-labelledby="passwordModalTitle" aria-describedby="passwordModalSubtitle">
+        <header class="modal__header">
+          <div>
+            <h2 class="modal__title" id="passwordModalTitle">🔒 Senha requerida</h2>
+            <p class="inv-modal-subtitle" id="passwordModalSubtitle">Digite a senha para continuar.</p>
+          </div>
+          <button type="button" class="modal__close" id="passwordModalClose" aria-label="Fechar modal"
+            title="Fechar">×</button>
+        </header>
+
+        <div class="modal__body">
+          <section class="modal-section">
+            <div class="fields fields-h-6 fields-w-full fields-font-3">
+              <label for="passwordModalInput">Senha</label>
+              <!-- autocomplete off: é senha de alçada, não login — evita o navegador sugerir contas salvas -->
+              <input id="passwordModalInput" name="approval-password" type="password" placeholder="••••••••"
+                autocomplete="off" data-lpignore="true" data-1p-ignore />
+            </div>
+
+            <div id="passwordModalError" class="inv-modal-error" hidden></div>
+          </section>
+        </div>
+
+        <footer class="modal__footer">
+          <button type="button" class="btn btn-cancel btn-sm" id="passwordModalCancel">Cancelar</button>
+          <button type="button" class="btn btn-save btn-sm" id="passwordModalOk">OK</button>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <div id="inventoryNotesModal" class="modal" hidden aria-hidden="true">
+    <div class="modal-content" style="width:min(620px,95vw); padding:0; overflow:hidden;">
+      <div
+        style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #e5e7eb;background:#f8fafc;">
+        <strong>Observações do Inventário</strong>
+        <button type="button" id="btnCloseInventoryNotes" class="btn btn-sm">✕</button>
+      </div>
+
+      <div style="padding:14px 16px;">
+        <textarea id="inventoryNotesModalText" rows="7" style="width:100%;resize:vertical;"></textarea>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;gap:10px;padding:12px 16px 16px;border-top:1px solid #e5e7eb;">
+        <button type="button" id="btnCancelInventoryNotes" class="btn">Cancelar</button>
+        <button type="button" id="btnSaveInventoryNotes" class="btn btn-primary">Salvar observação</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const hiddenNotes = document.getElementById('inventoryNotes');
+      const modal = document.getElementById('inventoryNotesModal');
+      const modalText = document.getElementById('inventoryNotesModalText');
+
+      const openBtn = document.getElementById('btnOpenInventoryNotes');
+      const closeBtn = document.getElementById('btnCloseInventoryNotes');
+      const cancelBtn = document.getElementById('btnCancelInventoryNotes');
+      const saveBtn = document.getElementById('btnSaveInventoryNotes');
+
+      const tabPanels = Array.from(document.querySelectorAll('.tab-panel'));
+
+      function activateTab(tabId) {
+        const target = document.getElementById(tabId);
+        if (!target || !target.classList.contains('tab-panel')) return;
+
+        tabPanels.forEach((panel) => {
+          const isTarget = panel === target;
+          panel.hidden = !isTarget;
+          panel.classList.toggle('is-active', isTarget);
+        });
+      }
+
+      document.querySelectorAll('[data-tab]').forEach((button) => {
+        button.addEventListener('click', () => activateTab(button.dataset.tab));
+      });
+
+      function isModalOpen() {
+        return (
+          modal &&
+          !modal.hidden &&
+          modal.getAttribute('aria-hidden') === 'false'
+        );
+      }
+
+      function openNotesModal() {
+        modalText.value = hiddenNotes.value || '';
+
+        modal.hidden = false;
+        modal.setAttribute('aria-hidden', 'false');
+
+        setTimeout(() => {
+          modalText.focus();
+          modalText.setSelectionRange(
+            modalText.value.length,
+            modalText.value.length
+          );
+        }, 50);
+      }
+
+      function closeNotesModal() {
+        modal.hidden = true;
+        modal.setAttribute('aria-hidden', 'true');
+      }
+
+      function saveNotesModal() {
+        hiddenNotes.value = modalText.value || '';
+        closeNotesModal();
+      }
+
+      // ==========================
+      // Botões
+      // ==========================
+
+      openBtn?.addEventListener('click', openNotesModal);
+
+      closeBtn?.addEventListener('click', closeNotesModal);
+
+      cancelBtn?.addEventListener('click', closeNotesModal);
+
+      saveBtn?.addEventListener('click', saveNotesModal);
+
+      // ==========================
+      // Clique fora do modal
+      // ==========================
+
+      modal?.addEventListener('click', (ev) => {
+        if (ev.target === modal) {
+          closeNotesModal();
+        }
+      });
+
+      // ==========================
+      // Teclas de atalho
+      // ESC = Fechar
+      // CTRL + ENTER = Salvar
+      // ==========================
+
+      document.addEventListener('keydown', (ev) => {
+        if (!isModalOpen()) return;
+
+        // ESC
+        if (ev.key === 'Escape') {
+          ev.preventDefault();
+          closeNotesModal();
+          return;
+        }
+
+        // CTRL + ENTER
+        if (ev.ctrlKey && ev.key === 'Enter') {
+          ev.preventDefault();
+          saveNotesModal();
+          return;
+        }
+      });
+
+      // ==========================
+      // Fecha ao perder foco da janela
+      // (opcional)
+      // ==========================
+
+      window.addEventListener('blur', () => {
+        if (!isModalOpen()) return;
+
+        // Apenas mantém preparado para futuras ações
+        // sem fechar automaticamente.
+      });
+    });
+  </script>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <script type="module" src="/public/inventory/js/inventory.index.js"></script>
+  <!-- appFeature PRODUCT_LOCATIONS: LOCATIONS_DISABLED → oculta [data-feature="PRODUCT_LOCATIONS"] -->
+  <script type="module">import { initProductLocationsFeature } from "/public/includes/js/productLocationsFeature.js"; initProductLocationsFeature();</script>
+
+  <!-- ✅ Importador XLS + download do modelo CSV -->
+  <script type="module" src="/public/inventory/inventoryImportXls.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>PARÂMETROS DE ETIQUETA | PRODNEX ERP</title>
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <link rel="stylesheet" href="./labelParameters.modal.css">
+
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <header class="header header-h-5">
+      <!-- Container for all vertical lines -->
+      <div class="fields-lines fields-gap-3">
+
+        <!-- Line 1: fields side by side -->
+        <div class="fields-inline">
+          <div>
+            <h2>Parâmetros Etiquetas de Produtos</h2>
+            <p>Configure o tamanho da etiqueta e monte visualmente o layout com arrastar e soltar.</p>
+          </div>
+
+          <div class="btn btn-inline btn-position-right">
+            <button id="btnNewParameter" class="btn btn-primary btn-sm btn-position-right" type="button">
+              + Novo parâmetro
+            </button>
+          </div>
+        </div>
+    </header>
+
+    <!-- ===================================================== -->
+    <!-- INTEGRATED TABLE                                      -->
+    <!-- ===================================================== -->
+
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter">
+        <!-- LISTA -->
+        <div>
+          <h2>Parâmetros salvos</h2>
+        </div>
+
+        <div class="fields-inline fields-gap-3">
+
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <label for="filterLabelName">Buscar etiqueta</label>
+            <input type="search" id="filterLabelName"
+              placeholder="Digite o nome da etiqueta..." autocomplete="off" />
+          </div>
+
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <span>Apenas ativos</span>
+            <select id="filterActive">
+              <option value="">Todos</option>
+              <option value="true" selected>Sim</option>
+              <option value="false">Não</option>
+            </select>
+          </div>
+
+          <div class="btn btn-inline">
+            <button id="btnApplyFilters" class="btn btn-new btn-sm" type="button">
+              Aplicar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-scroll--rounded table-height-flex table-row-h-28" data-table-settings="labelparameters.labelparameterstbody">
+        <table class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Página (L × A mm)</th>
+              <th>Etiqueta (L × A mm)</th>
+              <th>Elementos</th>
+              <th>Ativo</th>
+              <th class="lp-col-actions">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="labelParametersTbody"></tbody>
+        </table>
+      </div>
+
+
+      <div class="lp-empty-state" id="labelParametersEmpty">
+        Nenhum parâmetro encontrado. Clique em <strong>+ Novo parâmetro</strong> para criar o primeiro.
+      </div>
+
+      <footer class="table-footer">
+
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+            <span id="apTableInfo">0 Registros </span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button type="button" id="btnPreviousPage" class="btn btn-clean btn-sm">
+            Anterior
+          </button>
+
+          <span id="apPageInfo">Página 1 de 1</span>
+
+          <button type="button" id="btnNextPage" class="btn btn-new btn-sm">
+            Próxima
+          </button>
+        </div>
+
+        <div class="table-footer__page-size">
+          <label for="apRowsPerPage">Mostrar</label>
+
+          <select id="apRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+            <option value="10">10 linhas</option>
+            <option value="20">20 linhas</option>
+            <option value="30">30 linhas</option>
+            <option value="50" selected>50 linhas</option>
+            <option value="100">100 linhas</option>
+          </select>
+        </div>
+
+      </footer>
+
+    </section>
+
+
+
+
+    <!-- FORMULÁRIO: fica oculto e é movido para o modal ao criar/editar -->
+        <article id="labelParameterEditor" class="lp-card lp-form-card" hidden aria-hidden="true">
+          <header class="lp-card-header">
+            <div>
+              <h2 id="formTitle">Novo parâmetro</h2>
+              <p id="formSubtitle">
+                Preencha os dados básicos e monte o layout visual da etiqueta.
+              </p>
+            </div>
+          </header>
+
+          <form id="labelParametersForm" class="lp-form">
+            <input type="hidden" id="paramId" name="id" />
+            <input type="hidden" id="layout_json" name="layout_json" />
+
+            <!-- GERAL -->
+            <fieldset class="lp-fieldset">
+              <legend>Geral</legend>
+
+              <div class="fields-inline">
+                <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                  <label for="name">Nome</label>
+                  <input type="text" id="name" name="name" required maxlength="80" placeholder="Ex.: ETIQUETA 60x30" />
+                </div>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                <div class="lp-switch-field">
+                  <label class="lp-switch">
+                    <input type="checkbox" id="active" name="active" checked />
+                    <span>Ativo</span>
+                  </label>
+                </div>
+              </div>
+            </fieldset>
+
+    <!-- TAMANHO -->
+    <!-- <legend>Tamanho da Página &amp; Etiqueta (mm)</legend>-->
+
+            <div class="fields-inline fields-gap-3">
+              <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                <label for="page_width_mm">Largura Página (mm)</label>
+                <input type="number" step="0.01" id="page_width_mm" name="page_width_mm" required />
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                <label for="page_height_mm">Altura Página (mm)</label>
+                <input type="number" step="0.01" id="page_height_mm" name="page_height_mm" required />
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                <label for="label_width_mm">Largura Etiqueta (mm)</label>
+                <input type="number" step="0.01" id="label_width_mm" name="label_width_mm" required />
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                <label for="label_height_mm">Altura Etiqueta (mm)</label>
+                <input type="number" step="0.01" id="label_height_mm" name="label_height_mm" required />
+              </div>
+            </div>
+
+    <!-- DESIGNER -->
+    <fieldset class="lp-fieldset">
+      <legend>Designer da Etiqueta</legend>
+
+      <div class="btn btn-inline">
+        <button type="button" class="btn btn-primary btn-sm" id="btnAddTitle">+ Título</button>
+        <button type="button" class="btn btn-primary btn-sm" id="btnAddCode">+ Código</button>
+        <button type="button" class="btn btn-primary btn-sm" id="btnAddPrice">+ Preço</button>
+        <button type="button" class="btn btn-primary btn-sm" id="btnAddBarcode">+ Código de
+          Barras</button>
+        <button type="button" class="btn btn-primary btn-sm" id="btnAddBarcodeText">+ Texto
+          Barras</button>
+        <button type="button" class="btn btn-primary btn-sm" id="btnAddUnit">+ Unidade</button>
+        <button type="button" class="btn btn-primary btn-sm" id="btnAddCustomText">+ Texto
+          Livre</button>
+        <button type="button" class="btn btn-primary btn-sm" id="btnDuplicateSelectedElement">Duplicar
+          selecionado</button>
+        <button type="button" class="btn btn-primary btn-sm" id="btnRemoveSelectedElement">Remover
+          selecionado</button>
+      </div>
+
+      <div class="lp-designer-layout">
+        <div class="lp-designer-left">
+          <div class="lp-preview-shell">
+            <div class="lp-preview-ruler">
+              <span id="previewSizeInfo">Etiqueta: 60 × 30 mm</span>
+              <span id="previewHint">Arraste os elementos dentro da área</span>
+            </div>
+
+            <div class="lp-preview-stage" id="labelPreviewStage">
+              <div class="lp-preview-canvas" id="labelPreviewCanvas"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fields fields-h-6 fields-w-12 fields-font-3">
+          Elementos da etiqueta</div>
+        <div class="lp-elements-list" id="designerElementsList"></div>
+      </div>
+
+      <div class="lp-panel-title">Propriedades do elemento</div>
+
+      <div class="fields-inline fields-gap-3">
+
+        <div class="fields fields-h-6 fields-w-12 fields-font-3">
+          <label for="designerElementType">Tipo</label>
+          <input type="text" id="designerElementType" readonly />
+        </div>
+
+        <div class="fields fields-h-6 fields-w-12 fields-font-3">
+          <label for="designerElementKey">Chave</label>
+          <input type="text" id="designerElementKey" readonly />
+        </div>
+
+        <div class="fields fields-h-6 fields-w-12 fields-font-3">
+          <label for="designerElementText">Texto</label>
+          <input type="text" id="designerElementText" placeholder="Conteúdo do elemento" />
+        </div>
+
+        <div class="fields fields-h-6 fields-w-12 fields-font-3">
+          <label for="designerElementX">X (mm)</label>
+          <input type="number" step="0.1" id="designerElementX" />
+        </div>
+
+        <div class="fields fields-h-6 fields-w-12 fields-font-3">
+          <label for="designerElementY">Y (mm)</label>
+          <input type="number" step="0.1" id="designerElementY" />
+        </div>
+      </div>
+
+      <div class="fields-inline fields-gap-3">
+        <div class="fields fields-h-6 fields-w-12 fields-font-3">
+          <label for="designerElementW">Largura (mm)</label>
+          <input type="number" step="0.1" id="designerElementW" />
+        </div>
+
+        <div class="fields fields-h-6 fields-w-12 fields-font-3">
+          <label for="designerElementH">Altura (mm)</label>
+          <input type="number" step="0.1" id="designerElementH" />
+        </div>
+
+        <div class="fields fields-h-6 fields-w-12 fields-font-3">
+          <label for="designerElementFontSize">Fonte (pt)</label>
+          <input type="number" step="0.1" id="designerElementFontSize" />
+        </div>
+
+        <div class="fields fields-h-6 fields-w-12 fields-font-3">
+          <label for="designerElementAlign">Alinhamento</label>
+          <select id="designerElementAlign">
+            <option value="left">Esquerda</option>
+            <option value="center">Centro</option>
+            <option value="right">Direita</option>
+          </select>
+        </div>
+
+        <div class="fields fields-h-6 fields-w-12 fields-font-3">
+          <label for="designerElementWeight">Peso</label>
+          <select id="designerElementWeight">
+            <option value="400">Normal</option>
+            <option value="600">Semibold</option>
+            <option value="700">Bold</option>
+          </select>
+        </div>
+
+        <div class="fields fields-h-6 fields-w-12 fields-font-3">
+          <label for="designerElementVisible">Visível</label>
+          <select id="designerElementVisible">
+            <option value="true">Sim</option>
+            <option value="false">Não</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="btn-inline btn-gap-3 btn-p-5">
+        <button type="submit" class="btn btn-new btn-sm" id="btnSaveParameter">
+          Salvar
+        </button>
+        <button type="button" class="btn btn-new btn-sm" id="btnResetForm">
+          Limpar
+        </button>
+        <button type="button" class="btn btn-new btn-sm" id="btnDeleteParameter" disabled>
+          Excluir
+        </button>
+      </div>
+    </fieldset>
+          </form>
+        </article>
+  </main>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <script type="module" src="./js/labelParameters.init.js"></script>
+</body>
+
+</html>

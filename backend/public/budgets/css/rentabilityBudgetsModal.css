@@ -1,0 +1,340 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ rentabilityBudgetsModal.css — Modal de Rentabilidade (PRODNEX ERP)   ║
+   ║ ✅ Modal maior + tabela mais alta + mini-info do custo               ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.rb-backdrop{
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 14, 22, .52);
+  z-index: 9998;
+}
+
+.rb-modal{
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 14px;
+}
+
+.rb-hidden{ display:none !important; }
+
+.rb-card{
+  width: min(1480px, 98vw);
+  max-height: min(92vh, 980px);
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 22px 70px rgba(16,24,40,.22);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.rb-header{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #eef2f7;
+  background: linear-gradient(180deg, #fbfdff, #ffffff);
+}
+
+.rb-title{
+  margin:0;
+  font-size: 1.08rem;
+  font-weight: 900;
+  color: #0f172a;
+  letter-spacing: .2px;
+}
+
+.rb-subtitle{
+  margin: 2px 0 0;
+  font-size: .84rem;
+  color: #64748b;
+  font-weight: 700;
+}
+
+.rb-header-left{
+  display:flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rb-header-actions{
+  display:flex;
+  gap: 8px;
+  align-items:center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.rb-btn{
+  appearance: none;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  color: #0f172a;
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-weight: 900;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 1px 0 rgba(16,24,40,.04);
+  transition: transform .06s ease, box-shadow .12s ease, border-color .12s ease;
+  white-space: nowrap;
+}
+
+.rb-btn:hover{
+  border-color: #cbd5e1;
+  box-shadow: 0 10px 24px rgba(16,24,40,.10);
+}
+
+.rb-btn:active{ transform: translateY(1px); }
+
+.rb-btn--danger{
+  border-color: #fecaca;
+  background: #fff;
+  color: #991b1b;
+}
+
+.rb-btn--primary{
+  border-color: #c7d2fe;
+  background: #f5f7ff;
+  color: #1e3a8a;
+}
+
+.rb-body{
+  padding: 12px 14px 14px;
+  overflow: auto;
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 12px;
+}
+
+@media (max-width: 1100px){
+  .rb-body{ grid-template-columns: 1fr; }
+}
+
+.rb-panel{
+  border: 1px solid #eef2f7;
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.rb-panel__head{
+  padding: 10px 12px;
+  border-bottom: 1px solid #eef2f7;
+  background: #fbfdff;
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+}
+
+.rb-panel__head h4{
+  margin:0;
+  font-size: .92rem;
+  font-weight: 950;
+  color: #0f172a;
+}
+
+.rb-panel__head .rb-muted{
+  font-size: .78rem;
+  color:#64748b;
+  font-weight: 800;
+}
+
+.rb-table-wrap{
+  overflow:auto;
+  max-height: 64vh;
+}
+
+.rb-table{
+  width:100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.rb-table th,
+.rb-table td{
+  border-bottom: 1px solid #eef2f7;
+  padding: 8px 10px;
+  vertical-align: middle;
+}
+
+.rb-table th{
+  position: sticky;
+  top: 0;
+  background: #ffffff;
+  z-index: 2;
+  text-align: left;
+  color: #0f172a;
+  font-weight: 950;
+}
+
+.rb-table td.num,
+.rb-table th.num{
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.rb-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  font-weight: 950;
+  font-size: 12px;
+  color: #0f172a;
+}
+
+.rb-cost-input{
+  width: 140px;
+  padding: 7px 10px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  outline: none;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 900;
+  background: #fff;
+}
+
+.rb-cost-input:focus{
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 3px rgba(59,130,246,.16);
+}
+
+.rb-mini{
+  margin-top: 4px;
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 800;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.rb-side{
+  display:flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rb-kpis{
+  padding: 12px;
+  display:flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rb-kpi{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 10px;
+  border: 1px solid #eef2f7;
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: #ffffff;
+}
+
+.rb-kpi span{
+  color: #64748b;
+  font-weight: 850;
+  font-size: 12px;
+}
+
+.rb-kpi strong{
+  color: #0f172a;
+  font-weight: 950;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.rb-kpi .accent{ color: #1d4ed8; }
+.rb-kpi .good{ color: #047857; }
+.rb-kpi .bad{  color: #b91c1c; }
+
+.rb-note{
+  padding: 12px;
+  font-size: 12px;
+  color: #475569;
+  font-weight: 750;
+  line-height: 1.38;
+}
+
+.rb-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  font-weight: 900;
+  font-size: 12px;
+  color: #0f172a;
+}
+
+.rb-chip.ok{
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+  color: #14532d;
+}
+
+.rb-chip.bad{
+  border-color: #fecaca;
+  background: #fff1f2;
+  color: #7f1d1d;
+}
+
+.rb-foot{
+  padding: 10px 12px;
+  border-top: 1px solid #eef2f7;
+  background: #fbfdff;
+  display:flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items:center;
+  flex-wrap: wrap;
+}
+
+.rb-foot .rb-muted{
+  color:#64748b;
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.rb-btn--icon{
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 12px;
+  display: inline-grid;
+  place-items: center;
+  font-size: 16px;
+  font-weight: 1000;
+  border-color: #fecaca;
+  background: #fff;
+  color: #991b1b;
+}
+
+/* ✅ Zebra striping (tbody) */
+.rb-table tbody tr:nth-child(odd) td{
+  background: #ffffff;
+}
+
+.rb-table tbody tr:nth-child(even) td{
+  background: #fbfdff;
+}
+
+/* ✅ Hover suave (não atrapalha sticky header) */
+.rb-table tbody tr:hover td{
+  background: #f1f5ff;
+}

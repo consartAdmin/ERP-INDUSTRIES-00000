@@ -1,0 +1,307 @@
+<!-- ╔══════════════════════════════════════════════════════════════╗
+     ║ 📝 editClients.html – Edição de Clientes – PRODNEX ERP     ║
+     ╚══════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>✏️ Editar Cliente</title>
+  <link rel="stylesheet" href="/public/includes/theme-consart.css" />
+  <link rel="stylesheet" href="/public/includes/menu.css" />
+  <link rel="stylesheet" href="/public/includes/home.css">
+  <link rel="stylesheet" href="/public/statusUsuario/statusUsuario.css" />
+  <link rel="stylesheet" href="editClients.css">
+  <style>
+    #modalObservacoes {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 60%;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    .modal-content h2 { margin-top: 0; }
+    .modal-content textarea {
+      width: 100%;
+      height: 200px;
+      margin-bottom: 10px;
+      padding: 10px;
+      resize: vertical;
+    }
+    .modal-content .close { float: right; font-size: 22px; font-weight: bold; cursor: pointer; }
+
+    /* ⬇️ Layout inline para o campo ASAAS ID + botão */
+    .inline-field { display: flex; gap: 8px; align-items: center; }
+    .inline-field input { flex: 1; }
+    .hint { color: #6b7280; font-size: .85rem; }
+  </style>
+</head>
+<body>
+<main class="container">
+  <h1>🧾 Editar Cliente</h1>
+
+  <form id="formEditarCliente" class="form-shell" novalidate>
+
+    <!-- ╔═══════════════════╗ -->
+    <!-- ║ 1️⃣ DADOS CLIENTE ║ -->
+    <!-- ╚═══════════════════╝ -->
+    <section class="card section">
+      <h2 class="section-title">1️⃣ Dados do Cliente</h2>
+      <div class="grid-3col">
+
+        <label class="span-6" for="nome_fantasia"><span>Nome Fantasia</span>
+          <input type="text" id="nome_fantasia" name="nome_fantasia" placeholder="Ex: Minha Empresa Ltda">
+        </label>
+
+        <label class="span-6" for="razao_social"><span>Razão Social</span>
+          <input type="text" id="razao_social" name="razao_social" placeholder="Razão Social">
+        </label>
+
+        <label class="span-4" for="tipoPessoa">Tipo de Pessoa
+          <select id="tipoPessoa" name="tipoPessoa">
+            <option value="juridica" selected>Pessoa Jurídica</option>
+            <option value="fisica">Pessoa Física</option>
+          </select>
+        </label>
+
+        <label class="span-4" for="cnpj_cpf"><span>CNPJ/CPF</span>
+          <input type="text" id="cnpj_cpf" name="cnpj_cpf" placeholder="Ex: 12.345.678/0001-00" inputmode="numeric" autocomplete="off">
+        </label>
+
+        <label class="span-4" for="inscricao_estadual">Inscrição Estadual
+          <input type="text" id="inscricao_estadual" name="inscricao_estadual" placeholder="Ex: ISENTO ou 123.456.789.000" autocomplete="off">
+        </label>
+
+        <label class="span-6" for="inscricao_municipal">Inscrição Municipal
+          <input type="text" id="inscricao_municipal" name="inscricao_municipal" placeholder="Ex: 987654321" autocomplete="off">
+        </label>
+
+      </div>
+    </section>
+
+    <!-- ╔══════════════════╗ -->
+    <!-- ║ 2️⃣ CONTATO       ║ -->
+    <!-- ╚══════════════════╝ -->
+    <section class="card section">
+      <h2 class="section-title">2️⃣ Contato</h2>
+      <div class="grid-4col">
+
+        <label for="contato">Nome do Contato
+          <input type="text" id="contato" name="contato" placeholder="Nome do responsável">
+        </label>
+
+        <label for="email">E-mail
+          <input type="email" id="email" name="email" placeholder="Ex: contato@empresa.com.br" autocomplete="email">
+        </label>
+
+        <label for="telefone">Telefone Fixo
+          <input type="text" id="telefone" name="telefone" placeholder="(31) 3566-0000" inputmode="tel" autocomplete="tel">
+        </label>
+
+        <label for="celular">Celular
+          <input type="text" id="celular" name="celular" placeholder="(31) 99999-9999" inputmode="tel" autocomplete="tel">
+        </label>
+
+      </div>
+    </section>
+
+    <!-- ╔══════════════════╗ -->
+    <!-- ║ 3️⃣ ENDEREÇO      ║ -->
+    <!-- ╚══════════════════╝ -->
+    <section class="card section">
+      <h2 class="section-title">3️⃣ Endereço</h2>
+      <div class="grid-3col">
+
+        <!-- CEP -->
+        <label class="span-3" for="cep">CEP
+          <input type="text" id="cep" name="cep" placeholder="00000-000" maxlength="9" inputmode="numeric" autocomplete="postal-code">
+        </label>
+
+        <!-- Tipo de Logradouro -->
+        <label class="span-3" for="tipo_logradouro">Tipo de Logradouro
+          <input type="text" id="tipo_logradouro" name="tipo_logradouro" placeholder="Rua, Av., Alameda...">
+        </label>
+
+        <label class="span-6" for="nome_logradouro">Nome Logradouro
+          <input type="text" id="nome_logradouro" name="nome_logradouro" placeholder="Ex: dos Andradas">
+        </label>
+
+        <label class="span-2" for="numero">Número
+          <input type="text" id="numero" name="numero" placeholder="Ex: 123">
+        </label>
+
+        <label class="span-4" for="complemento">Complemento
+          <input type="text" id="complemento" name="complemento" placeholder="Sala, Loja, Andar...">
+        </label>
+
+        <label class="span-6" for="bairro">Bairro
+          <input type="text" id="bairro" name="bairro" placeholder="Ex: Lourdes">
+        </label>
+
+        <label class="span-4" for="cidade">Cidade
+          <input type="text" id="cidade" name="cidade" placeholder="Ex: Belo Horizonte">
+        </label>
+
+        <label class="span-2" for="estado">Estado
+          <input type="text" id="estado" name="estado" maxlength="2" placeholder="UF">
+        </label>
+
+      </div>
+    </section>
+
+    <!-- ╔══════════════════════════════════╗ -->
+    <!-- ║ 4️⃣ INFORMAÇÕES COMPLEMENTARES   ║ -->
+    <!-- ╚══════════════════════════════════╝ -->
+    <section class="card section">
+      <h2 class="section-title">4️⃣ Informações Complementares</h2>
+      <div class="grid-5col">
+
+        <label class="span-4" for="segmento">Segmento
+          <select id="segmento" name="segmento"></select>
+        </label>
+
+        <label class="span-4" for="classificacao">Classificação
+          <select id="classificacao" name="classificacao"></select>
+        </label>
+
+        <label class="span-4" for="ativo">Ativo
+          <select id="ativo" name="ativo">
+            <option value="true">Sim</option>
+            <option value="false">Não</option>
+          </select>
+        </label>
+
+        <label class="span-4" for="asaas_id">ASAAS ID
+          <div class="inline-field">
+            <input type="text" id="asaas_id" name="asaas_id" placeholder="">
+            <button type="button" id="btnGerarAsaasId">Gerar ID</button>
+          </div>
+        </label>
+
+      </div>
+    </section>
+
+    <!-- BARRA DE BOTÕES -->
+    <div class="botoes">
+      <button class="primary" type="submit"><i class="fa-solid fa-floppy-disk"></i>Salvar Dados Gerais</button>
+      <button class="cancelar" type="button" onclick="history.back()"><i class="fa-solid fa-xmark"></i>Cancelar</button>
+      <button class="btn-warning" type="button" onclick="document.getElementById('modalObservacoes').style.display='block'"><i class="fa-solid fa-note-sticky"></i>Observações</button>
+    </div>
+  </form>
+</main>
+
+  <!-- 🔒 Modal de Observações -->
+  <div id="modalObservacoes">
+    <div class="modal-content">
+      <span class="close" id="fecharModal" onclick="document.getElementById('modalObservacoes').style.display='none'">&times;</span>
+      <h2>Observações do Cliente</h2>
+      <textarea id="campoObservacoes" placeholder="Digite aqui as observações sobre o cliente..."></textarea>
+      <br />
+      <button class="btn btn-success" onclick="salvarObservacoes()">💾 Salvar Observações</button>
+    </div>
+  </div>
+
+  <!-- ✅ Script final -->
+  <script src="/public/includes/SecurityModules.js" defer></script>
+  <script src="/public/verificarLogin/verificarLogin.js"></script>
+  <script src="/public/statusUsuario/statusUsuario.js" defer></script>
+  <script src="/public/includes/menu.js"></script>
+  <script src="/public/includes/sessionTimeout.js" defer></script>
+  <script src="/public/config/apiBase.js"></script>
+  <script src="editClients.js"></script>
+
+  <!-- 🔧 Botão “Gerar ID” usando a rota correta: /api/integracoes/asaas/clientes/:id/sync -->
+  <script>
+    (function(){
+      const params = new URLSearchParams(location.search);
+      const clienteId = params.get('id');
+
+      const btn   = document.getElementById('btnGerarAsaasId');
+      const input = document.getElementById('asaas_id');
+      const api = (p='') => ((window.apiBase || '') + p);
+
+      if (!btn || !input) return;
+
+      if (!clienteId) {
+        btn.disabled = true;
+        btn.title = 'Salve o cliente para gerar o ASAAS ID.';
+      }
+
+      btn.addEventListener('click', async () => {
+        const atual = (input.value || '').trim();
+        if (atual) {
+          const ok = confirm('Este cliente já possui um ASAAS ID.\nDeseja gerar/vincular novamente?');
+          if (!ok) return;
+        }
+
+        const oldTxt = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'Gerando...';
+
+        try {
+          // ▶️ ROTA conforme backend/routes/asaasRoutes.js
+          const url = api(`/api/integracoes/asaas/clientes/${clienteId}/sync`);
+          const res = await fetch(url, {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Accept': 'application/json' }
+          });
+
+          const ct = res.headers.get('content-type') || '';
+          const text = await res.text();
+
+          if (!res.ok) {
+            console.error('Falha ao sincronizar Asaas:', res.status, text);
+            alert(`Falha (${res.status}) ao gerar/vincular ASAAS ID.`);
+            return;
+          }
+
+          let js = {};
+          if (ct.includes('application/json')) {
+            try { js = JSON.parse(text); } catch (e) {}
+          }
+
+          // Tenta extrair o ID de diferentes formatos de resposta
+          const novoId =
+            js.asaas_id ||
+            js.id ||
+            (js.cliente && js.cliente.asaas_id) ||
+            (js.data && js.data.asaas_id) ||
+            '';
+
+          if (!novoId) {
+            console.warn('Resposta sem asaas_id claro:', js || text);
+            alert('Operação concluída, mas não encontrei o ASAAS ID na resposta.');
+          } else {
+            input.value = novoId;
+            alert('ASAAS ID gerado e vinculado com sucesso!');
+          }
+        } catch (err) {
+          console.error(err);
+          alert('Erro de rede ao gerar/vincular ASAAS ID.');
+        } finally {
+          btn.disabled = false;
+          btn.textContent = oldTxt;
+        }
+      });
+    })();
+  </script>
+
+  <!-- 🔔 Área de toasts -->
+  <div id="toast-root" aria-live="polite" aria-atomic="true"></div>
+
+</body>
+</html>

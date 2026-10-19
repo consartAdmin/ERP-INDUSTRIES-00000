@@ -1,0 +1,286 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ groupsAndSubgroupsBatch.css — Grupos/Subgrupos em Lote (PRODNEX ERP) ║
+   ║ Padrão visual baseado em productsFiscalBatch.css                     ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.gsb-panel{
+  display:flex;
+  flex-direction:column;
+  min-height: 0;
+}
+
+.gsb-panel-header{
+  padding: 12px 12px 8px 12px;
+  border-bottom: 1px solid rgba(0,0,0,.10);
+}
+
+.gsb-title-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
+}
+
+.gsb-title-row h2{
+  margin:0;
+  font-size: 16px;
+}
+
+.gsb-header-actions{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.gsb-page-pill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding: 3px 10px;
+  border: 1px solid rgba(0,0,0,.12);
+  border-radius: 999px;
+  background: rgba(0,0,0,.03);
+  font-size: 12px;
+  min-width: 92px;
+}
+
+.gsb-search-box{
+  margin-top: 10px;
+}
+
+.gsb-search-box label{
+  display:block;
+  font-size: 12px;
+  color: rgba(0,0,0,.75);
+  margin-bottom: 4px;
+}
+
+.gsb-search-input-wrapper{
+  display:flex;
+  gap: 8px;
+  align-items:center;
+}
+
+#gsb-search-input{
+  width: 100%;
+  height: var(--consart-input-h, 30px);
+  border: 1px solid rgba(0,0,0,.12);
+  border-radius: 10px;
+  padding: 6px 10px;
+  outline: none;
+}
+
+.gsb-help{
+  display:block;
+  margin-top: 6px;
+  font-size: 11px;
+  color: rgba(0,0,0,.58);
+}
+
+.gsb-filter-row{
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+  display:flex;
+  flex-direction:column;
+  gap: 6px;
+}
+
+.gsb-filter-row label{
+  font-size: 12px;
+  color: rgba(0,0,0,.75);
+}
+
+#gsb-linked-filter{
+  height: var(--consart-input-h, 30px);
+  border: 1px solid rgba(0,0,0,.12);
+  border-radius: 10px;
+  padding: 4px 10px;
+  background: #fff;
+  outline:none;
+}
+
+.gsb-check{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  font-size: 12px;
+  color: rgba(0,0,0,.75);
+  user-select:none;
+}
+
+.gsb-status-badge{
+  display:inline-flex;
+  align-items:center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: rgba(0,0,0,.02);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.gsb-status-badge.ok{
+  border-color: rgba(46, 204, 113, .35);
+  background: rgba(46, 204, 113, .10);
+}
+.gsb-status-badge.no{
+  border-color: rgba(231, 76, 60, .30);
+  background: rgba(231, 76, 60, .08);
+}
+
+.gsb-footer{
+  padding: 10px 12px;
+  border-top: 1px solid rgba(0,0,0,.10);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.gsb-footer-hint{
+  font-size: 11px;
+  color: rgba(0,0,0,.60);
+}
+
+.gsb-card{
+  margin: 12px;
+  padding: 12px;
+  border: 1px solid rgba(0,0,0,.10);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.gsb-card h2{
+  margin: 0 0 10px 0;
+  font-size: 16px;
+}
+
+.gsb-card h3{
+  margin: 0 0 10px 0;
+  font-size: 14px;
+}
+
+.gsb-field-group{
+  margin-bottom: 12px;
+}
+
+.gsb-field-group label{
+  display:block;
+  font-size: 12px;
+  color: rgba(0,0,0,.75);
+  margin-bottom: 6px;
+}
+
+.gsb-inline{
+  display:flex;
+  gap: 8px;
+  align-items:center;
+}
+
+#gsb-group-select, #gsb-subgroup-select{
+  width: 100%;
+  height: var(--consart-input-h, 30px);
+  border: 1px solid rgba(0,0,0,.12);
+  border-radius: 10px;
+  padding: 4px 10px;
+  background: #fff;
+  outline:none;
+}
+
+.gsb-alert-box{
+  border: 1px dashed rgba(0,0,0,.18);
+  background: rgba(0,0,0,.02);
+  border-radius: 12px;
+  padding: 10px;
+  margin: 12px 0;
+  font-size: 12px;
+  color: rgba(0,0,0,.72);
+}
+
+.gsb-btn-full{
+  width: 100%;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.gsb-btn-danger{
+  border-color: rgba(231, 76, 60, .35) !important;
+}
+
+.gsb-summary-card ul{
+  margin: 0;
+  padding-left: 18px;
+  font-size: 12px;
+  color: rgba(0,0,0,.75);
+}
+
+/* Confirm modal overlay (igual referência) */
+.gsb-confirm-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.35);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index: 9999;
+  padding: 18px;
+}
+
+.gsb-confirm-card{
+  width: min(520px, 96vw);
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,.12);
+  overflow:hidden;
+  box-shadow: 0 18px 48px rgba(0,0,0,.25);
+}
+
+.gsb-confirm-body{
+  padding: 12px;
+  font-size: 13px;
+  color: rgba(0,0,0,.80);
+}
+
+.gsb-confirm-foot{
+  padding: 10px 12px 12px;
+  display:flex;
+  gap: 8px;
+  justify-content:flex-end;
+  border-top: 1px solid rgba(0,0,0,.08);
+}
+
+/* Configuração de Grupo/Subgrupo — faixa abaixo dos filtros de Produtos */
+.gsb-config{
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px solid rgba(0,0,0,.10);
+  border-radius: 12px;
+  background: rgba(0,0,0,.02);
+}
+
+.gsb-config__title{
+  margin: 0 0 8px 0;
+  font-size: 14px;
+}
+
+.gsb-config__info{
+  display:flex;
+  align-items:center;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: rgba(0,0,0,.75);
+}
+
+.gsb-config__info .gsb-help{
+  margin-top: 0;
+}
+
+/* Área da tabela branca: sem isso o fundo azul do card (--table-shell-bg)
+   aparece quando a lista está vazia ou tem poucas linhas */
+.table-layout-integrated > .table-scroll--flex{
+  background-color: var(--table-row-even-bg, #fff);
+}

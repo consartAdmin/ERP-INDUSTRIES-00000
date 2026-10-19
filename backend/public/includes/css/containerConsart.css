@@ -1,0 +1,250 @@
+/* ╔══════════════════════════════════════════════════════════════════╗
+ * ║ containerConsart.css — Container padrão do sistema PRODNEX ERP   ║
+ * ║ Layout responsivo, fullscreen e compatível com menu superior     ║
+ * ║ ✅ Controle fino de altura (vh/offset/min/max) + presets          ║
+ * ║ ✅ Altura fixa REAL via --consart-container-h + presets h-xxx      ║
+ * ║ ✅ Controle de largura via variável + presets (center/compact)    ║
+ * ║ ✅ Helpers genéricos p/ layout/scroll sem depender do products.css ║
+ * ║ ✅ Form Controls globais (inputs/selects/textarea) com tokens      ║
+ * ║ ✅ Table header sticky (thead) com cinza igual toolbar             ║
+ * ╚══════════════════════════════════════════════════════════════════╝ */
+
+/*     HOW TO USE:
+     <body class="consart-theme">
+     <div class="consart-container--full"></div> */
+
+/* ===== Reset base ===== */
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== Variáveis globais ===== */
+:root {
+  /* Header (menu superior) */
+  --consart-header-height: 80px;
+
+  /* Layout/padding */
+  --consart-container-padding: 20px;
+  --consart-bg: #f1f5f9;
+
+  /* ✅ Controle fino de altura */
+  --consart-vh: 100vh;
+  /* ex: 92vh, 90vh */
+  --consart-height-offset: 0px;
+  /* desconto extra além do header */
+  --consart-container-minh: 0px;
+  /* mínimo opcional */
+  --consart-container-maxh: none;
+  /* máximo opcional */
+
+  /* ✅ Controle fino de largura */
+  --consart-container-maxw: none;
+  /* default: full width */
+
+  /* ✅ Altura fixa real (opcional) — quando definido, substitui a altura útil
+     IMPORTANTE: deixe unset por padrão para o fallback funcionar. */
+  --consart-container-h: unset;
+}
+
+/* Placeholder */
+.consart-theme input::placeholder {
+  color: var(--consart-input-placeholder);
+}
+
+/* Focus */
+.consart-theme input:focus,
+.consart-theme select:focus {
+  border-color: rgba(59, 130, 246, 0.45);
+  box-shadow: 0 0 0 4px var(--consart-input-focus);
+}
+
+/* Textarea */
+.consart-theme textarea {
+  padding: 10px var(--consart-input-pad-x);
+  border-radius: var(--consart-input-radius);
+  border: 1px solid var(--consart-input-border);
+  background: var(--consart-input-bg);
+  color: var(--consart-input-tx);
+  outline: none;
+  box-sizing: border-box;
+
+  transition: box-shadow .15s ease, border-color .15s ease;
+}
+
+.consart-theme textarea:focus {
+  border-color: rgba(59, 130, 246, 0.45);
+  box-shadow: 0 0 0 4px var(--consart-input-focus);
+}
+
+/* ===== Container base ===== */
+.consart-container {
+  /* área útil: viewport - header - offset extra */
+  --_consart-usable-height: calc(var(--consart-vh) - var(--consart-header-height) - var(--consart-height-offset));
+
+  width: 100%;
+
+  /* ✅ base: não trava min-height pela área útil (quem manda é o --fixed) */
+  min-height: 0;
+
+  padding: var(--consart-container-padding);
+  box-sizing: border-box;
+  background: var(--consart-bg);
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  /* 🔥 evita bug de overflow/flex */
+  min-width: 0;
+}
+
+/* ===== Container com altura definida + scroll interno ===== */
+.consart-container--fixed {
+  /* ✅ Se existir --consart-container-h, usa; senão usa altura útil */
+  height: var(--consart-container-h, var(--_consart-usable-height));
+
+  /* ✅ agora min/max funcionam de verdade */
+  min-height: var(--consart-container-minh);
+  max-height: var(--consart-container-maxh);
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  /* 🔥 necessário em layouts flex/overflow */
+  min-width: 0;
+}
+
+/* ===== Largura: centralizado via variável ===== */
+.consart-container--center,
+.consart-container--compact {
+  max-width: var(--consart-container-maxw);
+  margin: 0 auto;
+}
+
+/* Presets de largura */
+.consart-container--center {
+  --consart-container-maxw: 1400px;
+}
+
+.consart-container--compact {
+  --consart-container-maxw: 1000px;
+  gap: 12px;
+}
+
+/* ===== Container sem padding (ex: tabelas grandes / grid full) ===== */
+.consart-container--flush {
+  padding: 0;
+}
+
+/* ===== Container FULL SIZE (ocupa 100% da largura) ===== */
+.consart-container--full {
+  --consart-container-maxw: none;
+  max-width: none;
+  width: 100%;
+  margin: 0;
+}
+
+/* Variante: full + sem padding */
+.consart-container--full.consart-container--flush {
+  padding: 0;
+}
+
+/* ===== Presets de altura por viewport (atalhos práticos) ===== */
+.consart-container--vh-95 {
+  --consart-vh: 95vh;
+}
+
+.consart-container--vh-92 {
+  --consart-vh: 92vh;
+}
+
+.consart-container--vh-90 {
+  --consart-vh: 90vh;
+}
+
+.consart-container--vh-88 {
+  --consart-vh: 88vh;
+}
+
+.consart-container--vh-85 {
+  --consart-vh: 85vh;
+}
+
+/* ===== Presets de offset (para páginas com barra extra) ===== */
+.consart-container--offset-sm {
+  --consart-height-offset: 24px;
+}
+
+.consart-container--offset-md {
+  --consart-height-offset: 48px;
+}
+
+.consart-container--offset-lg {
+  --consart-height-offset: 72px;
+}
+
+/* ===== Presets de limites (min/max) ===== */
+.consart-container--max-900 {
+  --consart-container-maxh: 900px;
+}
+
+.consart-container--max-820 {
+  --consart-container-maxh: 820px;
+}
+
+.consart-container--max-740 {
+  --consart-container-maxh: 740px;
+}
+
+.consart-container--min-520 {
+  --consart-container-minh: 520px;
+}
+
+.consart-container--min-420 {
+  --consart-container-minh: 420px;
+}
+
+/* ===== ✅ Presets de ALTURA FIXA REAL (step 50px) ===== */
+.consart-container--h-500 {
+  --consart-container-h: 500px;
+}
+
+.consart-container--h-550 {
+  --consart-container-h: 550px;
+}
+
+.consart-container--h-600 {
+  --consart-container-h: 600px;
+}
+
+.consart-container--h-650 {
+  --consart-container-h: 650px;
+}
+
+.consart-container--h-700 {
+  --consart-container-h: 700px;
+}
+
+.consart-container--h-750 {
+  --consart-container-h: 750px;
+}
+
+.consart-container--h-800 {
+  --consart-container-h: 800px;
+}
+
+.consart-container--h-850 {
+  --consart-container-h: 850px;
+}
+
+.consart-container--h-900 {
+  --consart-container-h: 900px;
+}
+
+.consart-container--h-950 {
+  --consart-container-h: 950px;
+}

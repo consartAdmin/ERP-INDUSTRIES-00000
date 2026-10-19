@@ -1,0 +1,150 @@
+/* ╔════════════════════════════════════════════════════════════════════╗
+   ║ tabs.css — Standard Tabs | PRODNEX ERP                            ║
+   ║ Reusable tab component for all system pages                       ║
+   ╚════════════════════════════════════════════════════════════════════╝ */
+
+/* ====================================================================
+   Variables
+==================================================================== */
+
+:root {
+  --tab-height: 36px;
+
+  --tab-padding-x: 16px;
+
+  --tab-radius: 10px 10px 0 0;
+
+  --tab-font-size: 13px;
+  --tab-font-weight: 500;
+
+  --tab-gap: 4px;
+
+  --tab-text: #4b5563;
+  --tab-text-active: #111827;
+
+  --tab-bg: transparent;
+  --tab-bg-active: #ffffff;
+
+  --tab-border: #d5dbe5;
+
+  --tab-transition: .18s ease;
+}
+
+/* ====================================================================
+   Tabs Container
+==================================================================== */
+
+.tabs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.tab-list {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: var(--tab-gap);
+  width: 100%;
+  border-bottom: 1px solid var(--tab-border);
+
+  margin-bottom: 0;
+}
+
+/* ====================================================================
+   Tab Button
+==================================================================== */
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  height: var(--tab-height);
+
+  padding: 0 var(--tab-padding-x);
+
+  border: none;
+  outline: none;
+
+  background: var(--tab-bg);
+
+  color: var(--tab-text);
+
+  border-radius: var(--tab-radius);
+
+  font-size: var(--tab-font-size);
+  font-weight: var(--tab-font-weight);
+
+  cursor: pointer;
+
+  transition: all var(--tab-transition);
+
+  user-select: none;
+
+  white-space: nowrap;
+}
+
+/* Hover */
+
+.tab:hover {
+  background: #f6f7f9;
+}
+
+/* Active */
+
+.tab.is-active,
+.tab[aria-selected="true"] {
+
+  background: var(--tab-bg-active);
+
+  color: var(--tab-text-active);
+
+  border: 1px solid var(--tab-border);
+  border-bottom-color: var(--tab-bg-active);
+
+  font-weight: 600;
+}
+
+/* Disabled */
+
+.tab:disabled {
+  opacity: .45;
+  cursor: default;
+}
+
+/* Focus */
+
+.tab:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* ====================================================================
+   Tab Panels
+==================================================================== */
+
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.is-active {
+  display: block;
+}
+
+/* ====================================================================
+   Responsive
+==================================================================== */
+
+@media (max-width: 768px) {
+
+  .tab-list {
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .tab {
+    flex-shrink: 0;
+  }
+
+}

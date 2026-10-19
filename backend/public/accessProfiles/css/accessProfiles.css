@@ -1,0 +1,114 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ accessProfiles.css — Estilos do Cadastro de Perfis                  ║
+   ║ Modal: classes globais de /public/includes/css/modals.css           ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.apf-button-field {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.apf-col-flag {
+  width: 64px;
+  text-align: center;
+}
+
+.apf-col-actions {
+  width: 150px;
+  text-align: center;
+}
+
+.apf-empty,
+.apf-loading,
+.apf-error {
+  padding: 14px;
+  text-align: center;
+  color: #64748b;
+}
+
+.apf-error {
+  color: #b91c1c;
+}
+
+.apf-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.apf-badge.on {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.apf-badge.off {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.apf-badge.system {
+  background: #e0e7ff;
+  color: #3730a3;
+  margin-left: 4px;
+}
+
+.apf-flag-yes {
+  color: #166534;
+  font-weight: 700;
+}
+
+.apf-flag-no {
+  color: #cbd5e1;
+}
+
+.apf-flag-custom {
+  color: #64748b;
+  font-style: italic;
+  font-size: 11px;
+}
+
+.apf-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+/* ── Modal ─────────────────────────────────────────────────────────── */
+
+.apf-permissions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin: 12px 0;
+  padding: 10px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.apf-permissions legend {
+  padding: 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.apf-permissions label,
+.apf-active {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.apf-permissions input:disabled {
+  cursor: not-allowed;
+}
+
+.apf-note {
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: #475569;
+}

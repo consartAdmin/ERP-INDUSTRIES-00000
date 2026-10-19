@@ -1,0 +1,23 @@
+/* ╔══════════════════════════════════════════════════════╗
+   ║ balancoPatrimonial.css — PRODNEX ERP                 ║
+   ╚══════════════════════════════════════════════════════╝ */
+.hidden { display: none !important; }
+.muted  { color: #6b7280; }
+.table-wrapper { overflow-x: auto; }
+.table td, .table th { white-space: nowrap; }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 8px;
+}
+
+#anexos .anexo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  margin-top: 6px;
+}

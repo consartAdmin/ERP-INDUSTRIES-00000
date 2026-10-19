@@ -1,0 +1,38 @@
+#.dockerignore
+# Node
+node_modules
+npm-debug.log*
+yarn.lock
+pnpm-lock.yaml
+
+# VCS / IDE
+.git
+.gitignore
+.vscode
+.idea
+
+# Builds e temporários
+dist
+build
+coverage
+*.log
+logs
+tmp
+.cache
+
+# SO
+.DS_Store
+Thumbs.db
+
+# Dados locais
+.env
+.env.*
+.secrets
+/private
+/public/uploads
+/public/pdfs
+
+!.env.example
+
+# Chaves locais de service account
+keys/

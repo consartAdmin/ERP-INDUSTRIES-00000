@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DEVOLUÇÃO AO FORNECEDOR | PRODNEX ERP</title>
+
+    <!-- 🟦 Favicons CONSART -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+    <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+    <!-- 🎨 CSS — Design System CONSART -->
+    <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+    <link rel="stylesheet" href="./supplierReturns.css" />
+</head>
+
+<body class="consart-theme">
+    <main class="consart-container --fixed --full --h-800 supplier-return-page">
+
+        <header class="header supplier-return-page-header">
+            <div>
+                <h1>Devolução de Mercadoria ao Fornecedor</h1>
+                <p>Importe a NF-e de entrada, escolha os itens e gere a devolução.</p>
+            </div>
+            <button id="btnEnsure" class="btn btn-toolbar btn-sm" type="button">Verificar Tabelas</button>
+        </header>
+
+        <section class="table-layout-integrated">
+            <div class="table-layout-integrated__filter table-max-height-500">
+
+                <div class="supplier-return-toolbar">
+                    <input id="searchInput" class="supplier-input" type="search"
+                        placeholder="Buscar por fornecedor, chave ou número da NF-e" />
+                    <select id="statusFilter" class="supplier-input supplier-select">
+                        <option value="">Todos</option>
+                        <option value="DRAFT">Rascunho</option>
+                        <option value="READY">Pronta</option>
+                        <option value="AUTHORIZED">Autorizada</option>
+                        <option value="REJECTED">Rejeitada</option>
+                        <option value="CANCELLED">Cancelada</option>
+                    </select>
+                    <button id="btnReload" class="btn btn-toolbar btn-sm" type="button">Recarregar</button>
+
+                    <section class="import-box">
+                        <label for="xmlFile" class="import-box__title">1. Importar XML da NF-e de entrada</label>
+                        <div class="import-box__row">
+                            <input id="xmlFile" type="file" accept=".xml,text/xml,application/xml" />
+                            <button id="btnImportXml" class="btn btn-primary btn-sm" type="button">Importar
+                                NF-e</button>
+                            <button id="btnClearImport" class="btn btn-toolbar btn-sm" type="button">Limpar</button>
+                        </div>
+                </div>
+
+                <div id="importMessage" class="supplier-message"></div>
+            </div>
+
+            <section id="draftBox" class="draft-box is-hidden">
+                <div class="draft-grid">
+                    <label>
+                        Fornecedor
+                        <input id="supplierName" class="supplier-input" readonly />
+                    </label>
+                    <label>
+                        ID Fornecedor
+                        <input id="supplierId" class="supplier-input" readonly />
+                    </label>
+                    <label>
+                        Documento
+                        <input id="supplierDocument" class="supplier-input" readonly />
+                    </label>
+                    <label>
+                        Chave NF-e original
+                        <input id="originalNfeKey" class="supplier-input" readonly />
+                    </label>
+                    <label>
+                        Número
+                        <input id="originalDocumentNumber" class="supplier-input" readonly />
+                    </label>
+                    <label>
+                        Série
+                        <input id="originalSeries" class="supplier-input" readonly />
+                    </label>
+                </div>
+
+                <label class="reason-label">
+                    Motivo da devolução
+                    <textarea id="returnReason" class="supplier-textarea" rows="2"
+                        placeholder="Ex.: Devolução parcial de mercadoria em desacordo com o pedido."></textarea>
+                </label>
+
+                <div class="items-header">
+                    <div>
+                        <strong>2. Escolher itens da NF-e importada</strong>
+                        <span id="itemsSummary"></span>
+                    </div>
+                    <button id="btnCreateReturn" class="btn btn-success btn-sm" type="button">Gerar
+                        Devolução</button>
+                </div>
+
+                <div class="table-scroll--rounded table-height-flex table-row-h-28" data-table-settings="supplierreturns.importeditemsbody">
+                    <table class="table table-zebra table-zebra-hover table-sticky-head">
+                        <thead>
+                            <tr>
+                                <th class="center">Sel.</th>
+                                <th>#</th>
+                                <th>Cód. XML</th>
+                                <th>Cód. ERP</th>
+                                <th>Descrição</th>
+                                <th class="right">Qtd. NF-e</th>
+                                <th class="right">Qtd. Devolver</th>
+                                <th>UN</th>
+                                <th class="right">Vlr. Unit.</th>
+                                <th class="right">Total Dev.</th>
+                                <th>CFOP Ent.</th>
+                                <th>CFOP Dev.</th>
+                                <th>NCM</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="importedItemsBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <div class="table-scroll table-height-flex table-row-h-28" data-table-settings="supplierreturns.returnsbody">
+                <table class="table table-zebra table-zebra-hover table-sticky-head">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fornecedor</th>
+                            <th>NF-e Origem</th>
+                            <th>Chave</th>
+                            <th class="right">Total</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="returnsBody"></tbody>
+                </table>
+            </div>
+
+            <!-- ✅ FOOTER INTERNO -->
+            <footer class="table-footer">
+
+                <div class="table-footer__info">
+                    <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+                        <span id="limit">0 registros</span>
+                    </div>
+                </div>
+
+                <div class="table-footer__pagination">
+
+                    <button type="button" id="pagAnterior" class="btn btn-clean btn-sm">
+                        Anterior
+                    </button>
+
+                    <span id="infoPagina">Página 1 de 1</span>
+
+                    <button type="button" id="pagProxima" class="btn btn-new btn-sm">
+                        Próxima
+                    </button>
+
+                </div>
+
+                <div class="table-footer__page-size">
+                    <label for="apRowsPerPage">Mostrar</label>
+
+                    <select id="apRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+                        <option value="10">10 linhas</option>
+                        <option value="20">20 linhas</option>
+                        <option value="30">30 linhas</option>
+                        <option value="50" selected>50 linhas</option>
+                        <option value="100">100 linhas</option>
+                    </select>
+                </div>
+            </footer>
+        </section>
+    </main>
+
+    <script type="module" src="/public/includes/js/core.js"></script>
+
+    <script type="module" src="./js/supplierReturns.init.js"></script>
+
+</body>
+
+</html>

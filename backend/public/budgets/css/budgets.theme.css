@@ -1,0 +1,32 @@
+/* budgets.theme.css */
+.badge{
+  display:inline-block;
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:8px;
+  line-height:1;
+  font-weight:600;
+}
+.badge--open{ color:#065f46; background:#d1fae5; }
+.badge--approved{ color:#1e3a8a; background:#dbeafe; }
+.badge--canceled{ color:#7f1d1d; background:#fee2e2; }
+
+:root{
+  --zebra-odd:#fff;
+  --zebra-even:#f8fafc;
+}
+.table--itens.table-zebra tbody tr:nth-child(odd) td{ background:var(--zebra-odd) !important; }
+.table--itens.table-zebra tbody tr:nth-child(even) td{ background:var(--zebra-even) !important; }
+.table--itens.table-zebra-hover tbody tr:hover td{ background:#eef6ff !important; }
+
+.table--budgets.table-zebra tbody tr:nth-child(odd) td{ background:var(--zebra-odd) !important; }
+.table--budgets.table-zebra tbody tr:nth-child(even) td{ background:var(--zebra-even) !important; }
+.table--budgets.table-zebra-hover tbody tr:hover td{ background:#eef6ff !important; }
+
+/* scrollbars gerais */
+.table-wrapper--scrollable::-webkit-scrollbar,
+.table-wrapper::-webkit-scrollbar{ height:10px; width:10px; }
+.table-wrapper--scrollable::-webkit-scrollbar-thumb,
+.table-wrapper::-webkit-scrollbar-thumb{ background:#cbd5e1; border-radius:8px; }
+.table-wrapper--scrollable::-webkit-scrollbar-thumb:hover,
+.table-wrapper::-webkit-scrollbar-thumb:hover{ background:#94a3b8; }

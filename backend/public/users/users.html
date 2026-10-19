@@ -1,0 +1,186 @@
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ users.html — Gestão de Usuários do Sistema (Frontend)           ║
+     ║ PRODNEX ERP                                                     ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/public/imagens/brasaoConsartInfinity.png" />
+  <title>USUÁRIOS | PRODNEX ERP</title>
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/users/users.css" />
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter">
+        <div class="fields-inline fields-gap-3">
+          <div class="fields fields-h-6 fields-w-40 fields-font-3">
+            <h1>Usuários do Sistema</h1>
+            <p class="users-subtitle">Gerencie contas de acesso, níveis de permissão e status de ativação.</p>
+          </div>
+          <div class="fields-inline fields-gap-3">
+            <div class="fields fields-h-6 fields-w-20 fields-font-3">
+              <label for="filtroBusca">Buscar</label>
+              <input type="text" id="filtroBusca" placeholder="Nome ou e-mail..." />
+            </div>
+            <div class="fields fields-h-6 fields-w-12 fields-font-3">
+              <label for="filtroAccessLevel">Nível de acesso</label>
+              <select id="filtroAccessLevel">
+                <option value="">Todos</option>
+                <option value="Admin">Admin</option>
+                <option value="User">User</option>
+                <option value="Viewer">Viewer</option>
+              </select>
+            </div>
+            <div class="fields fields-h-6 fields-w-12 fields-font-3">
+              <label for="filtroAtivo">Ativo</label>
+              <select id="filtroAtivo">
+                <option value="">Todos</option>
+                <option value="true">Ativos</option>
+                <option value="false">Inativos</option>
+              </select>
+            </div>
+            <div class="btn-inline btn-gap-3">
+              <button type="button" id="btnAplicarFiltros" class="btn btn-new btn-sm">Filtrar</button>
+              <button type="button" id="btnLimparFiltros" class="btn btn-new btn-sm">Limpar</button>
+              <button type="button" id="btnNovoUsuario" class="btn btn-new btn-sm">➕ Novo Usuário</button>
+            </div>
+          </div>
+        </div>
+        <div class="row between center">
+          <h2>Lista de Usuários</h2>
+          <span id="usersResumo" class="users-resumo">0 usuário(s)</span>
+        </div>
+      </div>
+
+      <div class="table-scroll table-height-flex table-row-h-20" data-table-settings="users.tablebody">
+        <table class="table users-table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th data-sort="user_id">ID</th>
+              <th data-sort="name">Nome</th>
+              <th data-sort="email">E-mail</th>
+              <th data-sort="access_level">Nível</th>
+              <th data-sort="is_active">Ativo</th>
+              <th data-sort="created_at">Criado em</th>
+              <th class="col-acoes">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+
+      <footer class="table-footer">
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+            <span id="apTableInfo">Página 1 de 1</span>
+          </div>
+        </div>
+        <div class="table-footer__pagination">
+          <button type="button" id="btnPreviousPage" class="btn btn-clean btn-sm">Anterior</button>
+          <span id="apPageInfo">Página 1 de 1</span>
+          <button type="button" id="btnNextPage" class="btn btn-new btn-sm">Próxima</button>
+        </div>
+        <div class="table-footer__page-size">
+          <label for="apRowsPerPage">Mostrar</label>
+          <select id="apRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+            <option value="10" selected>10 linhas</option>
+            <option value="20">20 linhas</option>
+            <option value="30">30 linhas</option>
+            <option value="50">50 linhas</option>
+            <option value="100">100 linhas</option>
+          </select>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <div id="modalUsuario" class="modal modal-width-5" aria-hidden="true">
+    <div class="modal__backdrop"></div>
+
+    <div class="modal__dialog">
+      <section class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
+        <header class="modal__header modal-header-color-3">
+          <h2 id="modalTitulo" class="modal__title">
+            Novo Usuário
+          </h2>
+
+          <button type="button" id="btnCloseForm" data-modal-close class="modal__close" aria-label="Fechar">
+            ✕
+          </button>
+        </header>
+
+        <form id="formUsuario" class="modal__body stack">
+          <input type="hidden" id="usuarioId" />
+
+          <div class="fields-inline fields-gap-3">
+            <div class="fields fields-w-25 fields-h-5">
+              <label for="usuarioNome">Nome</label>
+              <input type="text" id="usuarioNome" required />
+            </div>
+
+            <div class="fields fields-w-25 fields-h-5">
+              <label for="usuarioEmail">E-mail</label>
+              <input type="email" id="usuarioEmail" required />
+            </div>
+          </div>
+
+          <div class="fields-inline fields-gap-3">
+            <div class="fields fields-w-25 fields-h-5">
+              <label for="usuarioAccessLevel">
+                Nível de acesso
+              </label>
+
+              <select id="usuarioAccessLevel" required>
+                <option value="User">User</option>
+                <option value="Admin">Admin</option>
+                <option value="Viewer">Viewer</option>
+              </select>
+            </div>
+
+            <div class="fields fields-w-12 fields-h-5">
+              <label for="usuarioAtivo">Ativo</label>
+
+              <select id="usuarioAtivo">
+                <option value="true">Sim</option>
+                <option value="false">Não</option>
+              </select>
+            </div>
+
+            <div class="fields fields-w-12 fields-h-5">
+              <label for="usuarioSenha">Senha</label>
+              <input type="password" id="usuarioSenha" />
+            </div>
+          </div>
+
+          <small class="hint">
+            ➤ No cadastro: obrigatório. Na edição: deixe em branco para manter
+            a senha atual.
+          </small>
+        </form>
+
+        <!-- Direct child of modal__panel -->
+        <footer class="modal__footer modal-footer-color-3">
+          <button type="button" id="btnCancelForm" data-modal-close class="btn btn-new btn-sm">
+            Cancelar
+          </button>
+
+          <button type="submit" id="arForm" class="btn btn-new btn-sm">
+            Salvar Conta
+          </button>
+        </footer>
+      </section>
+    </div>
+  </div>
+
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="/public/users/js/userModules.init.js"></script>
+</body>
+
+</html>

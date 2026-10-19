@@ -1,0 +1,600 @@
+// ╔══════════════════════════════════════════════════════════════════════╗
+// ║ FILE: shortCutsProgramation.js                                      ║
+// ║ MODULE: Programming Shortcuts                                       ║
+// ║ ✅ Category/Subcategory selects                                      ║
+// ╚══════════════════════════════════════════════════════════════════════╝
+
+'use strict';
+
+import {
+    openShortCutsProgramationCategoriesModal,
+} from './shortCutsProgramationCategoriesModal.js';
+
+const API_BASE =
+    (typeof window !== 'undefined' && window.apiBase)
+    || window.location.origin;
+
+const ROUTES = Object.freeze({
+    base: `${API_BASE}/api/shortcuts-programation`,
+    byId: (id) => `${API_BASE}/api/shortcuts-programation/${encodeURIComponent(id)}`,
+    restore: (id) => `${API_BASE}/api/shortcuts-programation/${encodeURIComponent(id)}/restore`,
+
+    categories: `${API_BASE}/api/shortcuts-programation/categories`,
+    subcategories: (categoryId = '') =>
+        `${API_BASE}/api/shortcuts-programation/subcategories?category_id=${encodeURIComponent(categoryId)}`,
+});
+
+const state = {
+    page: 1,
+    limit: 50,
+    total: 0,
+    rows: [],
+    categories: [],
+    subcategories: [],
+    selectedId: null,
+};
+
+const $ = (sel) => document.querySelector(sel);
+
+const els = {};
+
+function bindEls() {
+    Object.assign(els, {
+        btnNew: $('#btnNew'),
+        btnReload: $('#btnReload'),
+        btnSearch: $('#btnSearch'),
+        btnPrev: $('#btnPrev'),
+        btnNext: $('#btnNext'),
+
+        filterQ: $('#filterQ'),
+        filterCategoryId: $('#filterCategoryId'),
+        filterLanguage: $('#filterLanguage'),
+        filterActive: $('#filterActive'),
+
+        tbody: $('#tableBody'),
+        lblPage: $('#lblPage'),
+        lblTotal: $('#lblTotal'),
+
+        form: $('#shortcutForm'),
+        formTitle: $('#formTitle'),
+        selectedId: $('#selectedId'),
+
+        shortcut_id: $('#shortcut_id'),
+
+        category_id: $('#category_id'),
+        subcategory_id: $('#subcategory_id'),
+
+        category: $('#category'),
+        subcategory: $('#subcategory'),
+
+        title: $('#title'),
+        shortcut_key: $('#shortcut_key'),
+        shortcut_type: $('#shortcut_type'),
+        language: $('#language'),
+        description: $('#description'),
+        code: $('#code'),
+        code_template: $('#code_template'),
+        example: $('#example'),
+        observations: $('#observations'),
+        tags: $('#tags'),
+        difficulty: $('#difficulty'),
+        favorite: $('#favorite'),
+        active: $('#active'),
+        sort_order: $('#sort_order'),
+
+        btnSave: $('#btnSave'),
+        btnClear: $('#btnClear'),
+        btnCopyCode: $('#btnCopyCode'),
+        btnDelete: $('#btnDelete'),
+        btnRestore: $('#btnRestore'),
+        btnOpenCategoriesModal: $('#btnOpenCategoriesModal'),
+    });
+}
+
+async function api(url, options = {}) {
+    const res = await fetch(url, {
+        headers: {
+            'Content-Type': 'application/json',
+            ...(options.headers || {}),
+        },
+        ...options,
+    });
+
+    const data = await res.json().catch(() => ({}));
+
+    if (!res.ok || data.ok === false) {
+        throw new Error(data.error || `HTTP ${res.status}`);
+    }
+
+    return data;
+}
+
+function escapeHtml(value) {
+    return String(value ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+}
+
+function asRows(data) {
+    if (Array.isArray(data)) return data;
+    if (Array.isArray(data.rows)) return data.rows;
+    if (Array.isArray(data.data)) return data.data;
+    if (Array.isArray(data.items)) return data.items;
+    return [];
+}
+
+function selectedText(selectEl) {
+    const opt = selectEl?.selectedOptions?.[0];
+    if (!opt || !opt.value) return null;
+    return opt.textContent.trim();
+}
+
+function buildQuery() {
+    const params = new URLSearchParams();
+
+    params.set('page', state.page);
+    params.set('limit', state.limit);
+
+    const q = els.filterQ.value.trim();
+    const categoryId = els.filterCategoryId.value.trim();
+    const language = els.filterLanguage.value.trim();
+    const active = els.filterActive.value;
+
+    if (q) params.set('q', q);
+    if (categoryId) params.set('category_id', categoryId);
+    if (language) params.set('language', language);
+    if (active !== '') params.set('active', active);
+
+    return params.toString();
+}
+
+async function loadCategories() {
+    try {
+        const data = await api(ROUTES.categories);
+        state.categories = asRows(data);
+
+        const options = state.categories.map((row) => `
+            <option value="${escapeHtml(row.category_id)}">
+                ${escapeHtml(row.name)}
+            </option>
+        `).join('');
+
+        if (els.category_id) {
+            els.category_id.innerHTML = `
+                <option value="">Selecione a categoria...</option>
+                ${options}
+            `;
+        }
+
+        if (els.filterCategoryId) {
+            els.filterCategoryId.innerHTML = `
+                <option value="">Todas categorias</option>
+                ${options}
+            `;
+        }
+
+        // ✅ Debug — remove after fixing
+        console.log('[loadCategories] filter options after set:', els.filterCategoryId?.options?.length);
+
+    } catch (err) {
+        console.error('[shortCutsProgramation] loadCategories:', err);
+    }
+}
+
+async function loadSubCategories(categoryId, selectedSubcategoryId = '') {
+    els.subcategory_id.innerHTML = `
+    <option value="">Selecione a subcategoria...</option>
+  `;
+
+    state.subcategories = [];
+
+    if (!categoryId) return;
+
+    try {
+        const data = await api(ROUTES.subcategories(categoryId));
+        state.subcategories = asRows(data);
+
+        els.subcategory_id.innerHTML = `
+      <option value="">Selecione a subcategoria...</option>
+      ${state.subcategories.map((row) => `
+        <option value="${escapeHtml(row.subcategory_id)}">
+          ${escapeHtml(row.name)}
+        </option>
+      `).join('')}
+    `;
+
+        if (selectedSubcategoryId) {
+            els.subcategory_id.value = String(selectedSubcategoryId);
+        }
+    } catch (err) {
+        console.error('[shortCutsProgramation] loadSubCategories:', err);
+
+        els.subcategory_id.innerHTML = `
+      <option value="">Erro ao carregar subcategorias</option>
+    `;
+    }
+}
+
+async function loadRows() {
+    els.tbody.innerHTML = `
+    <tr>
+      <td colspan="7" class="sc-empty">Carregando...</td>
+    </tr>
+  `;
+
+    try {
+        const data = await api(`${ROUTES.base}?${buildQuery()}`);
+
+        state.rows = Array.isArray(data.rows) ? data.rows : [];
+        state.total = Number(data.total || 0);
+
+        renderRows();
+        renderFooter();
+    } catch (err) {
+        console.error(err);
+        els.tbody.innerHTML = `
+      <tr>
+        <td colspan="7" class="sc-empty">Erro: ${escapeHtml(err.message)}</td>
+      </tr>
+    `;
+    }
+}
+
+function renderRows() {
+    if (!state.rows.length) {
+        els.tbody.innerHTML = `
+      <tr>
+        <td colspan="7" class="sc-empty">Nenhum shortcut encontrado.</td>
+      </tr>
+    `;
+        return;
+    }
+
+    els.tbody.innerHTML = state.rows.map((row) => {
+        const selected = String(row.shortcut_id) === String(state.selectedId)
+            ? 'selected'
+            : '';
+
+        const categoryName = row.category_name || row.category || '';
+        const subcategoryName = row.subcategory_name || row.subcategory || '';
+
+        return `
+      <tr class="${selected}" data-id="${escapeHtml(row.shortcut_id)}">
+        <td>${escapeHtml(row.shortcut_id)}</td>
+        <td title="${escapeHtml(row.title)}">${escapeHtml(row.title)}</td>
+        <td>${escapeHtml(row.shortcut_key)}</td>
+        <td>${escapeHtml(categoryName)}</td>
+        <td>${escapeHtml(subcategoryName)}</td>
+        <td>${escapeHtml(row.language)}</td>
+        <td>
+          <span class="badge ${row.active ? 'active' : 'inactive'}">
+            ${row.active ? 'Ativo' : 'Inativo'}
+          </span>
+        </td>
+      </tr>
+    `;
+    }).join('');
+}
+
+function renderFooter() {
+    const totalPages = Math.max(Math.ceil(state.total / state.limit), 1);
+
+    els.lblPage.textContent = `Página ${state.page} de ${totalPages}`;
+    els.lblTotal.textContent = `${state.total} registros`;
+
+    els.btnPrev.disabled = state.page <= 1;
+    els.btnNext.disabled = state.page >= totalPages;
+}
+
+async function clearForm() {
+    state.selectedId = null;
+
+    els.form.reset();
+
+    els.shortcut_id.value = '';
+
+    // ✅ Re-apply categories after reset() wiped them
+    await loadCategories();  // ← ADD THIS
+
+    els.category_id.value = '';
+    els.subcategory_id.innerHTML = `
+        <option value="">Selecione a subcategoria...</option>
+    `;
+
+    els.category.value = '';
+    els.subcategory.value = '';
+
+    els.difficulty.value = '1';
+    els.sort_order.value = '0';
+    els.active.checked = true;
+    els.favorite.checked = false;
+
+    els.formTitle.textContent = 'Novo Shortcut';
+    els.selectedId.textContent = 'Nenhum selecionado';
+
+    renderRows();
+}
+
+async function fillForm(row) {
+    state.selectedId = row.shortcut_id;
+
+    els.shortcut_id.value = row.shortcut_id ?? '';
+
+    els.category_id.value = row.category_id ? String(row.category_id) : '';
+    await loadSubCategories(row.category_id, row.subcategory_id);
+
+    els.category.value = row.category_name || row.category || '';
+    els.subcategory.value = row.subcategory_name || row.subcategory || '';
+
+    els.title.value = row.title ?? '';
+    els.shortcut_key.value = row.shortcut_key ?? '';
+    els.shortcut_type.value = row.shortcut_type ?? '';
+    els.language.value = row.language ?? '';
+    els.description.value = row.description ?? '';
+    els.code.value = row.code ?? '';
+    els.code_template.value = row.code_template ?? '';
+    els.example.value = row.example ?? '';
+    els.observations.value = row.observations ?? '';
+    els.tags.value = row.tags ?? '';
+    els.difficulty.value = row.difficulty ?? 1;
+    els.favorite.checked = Boolean(row.favorite);
+    els.active.checked = Boolean(row.active);
+    els.sort_order.value = row.sort_order ?? 0;
+
+    els.formTitle.textContent = 'Editar Shortcut';
+    els.selectedId.textContent = `ID ${row.shortcut_id}`;
+
+    renderRows();
+}
+
+function getPayload() {
+    const categoryId = els.category_id.value || null;
+    const subcategoryId = els.subcategory_id.value || null;
+
+    const categoryName = selectedText(els.category_id);
+    const subcategoryName = selectedText(els.subcategory_id);
+
+    return {
+        category_id: categoryId,
+        subcategory_id: subcategoryId,
+
+        category: categoryName,
+        subcategory: subcategoryName,
+
+        title: els.title.value.trim(),
+        shortcut_key: els.shortcut_key.value.trim(),
+        shortcut_type: els.shortcut_type.value.trim(),
+        language: els.language.value.trim(),
+        description: els.description.value.trim(),
+        code: els.code.value,
+        code_template: els.code_template.value,
+        example: els.example.value,
+        observations: els.observations.value,
+        tags: els.tags.value.trim(),
+        difficulty: Number(els.difficulty.value || 1),
+        favorite: els.favorite.checked,
+        active: els.active.checked,
+        sort_order: Number(els.sort_order.value || 0),
+    };
+}
+
+function validatePayload(payload) {
+    if (!payload.category_id) throw new Error('Categoria é obrigatória.');
+    if (!payload.title) throw new Error('Título é obrigatório.');
+    if (!payload.shortcut_key) throw new Error('Shortcut Key é obrigatório.');
+    if (!payload.language) throw new Error('Linguagem é obrigatória.');
+    if (!payload.code) throw new Error('Código é obrigatório.');
+}
+
+async function saveShortcut(event) {
+    event.preventDefault();
+
+    try {
+        const payload = getPayload();
+        validatePayload(payload);
+
+        const id = els.shortcut_id.value.trim();
+
+        if (id) {
+            const data = await api(ROUTES.byId(id), {
+                method: 'PUT',
+                body: JSON.stringify(payload),
+            });
+
+            if (data.row?.shortcut_id) {
+                state.selectedId = data.row.shortcut_id;
+            }
+        } else {
+            const data = await api(ROUTES.base, {
+                method: 'POST',
+                body: JSON.stringify(payload),
+            });
+
+            if (data.row?.shortcut_id) {
+                state.selectedId = data.row.shortcut_id;
+            }
+        }
+
+        await loadRows();
+
+        if (state.selectedId) {
+            const selected = state.rows.find(
+                (r) => String(r.shortcut_id) === String(state.selectedId)
+            );
+
+            if (selected) await fillForm(selected);
+        }
+
+        alert('Shortcut salvo com sucesso.');
+    } catch (err) {
+        console.error(err);
+        alert(err.message);
+    }
+}
+
+async function deleteShortcut() {
+    const id = els.shortcut_id.value.trim();
+
+    if (!id) {
+        alert('Selecione um shortcut para inativar.');
+        return;
+    }
+
+    if (!confirm('Deseja inativar este shortcut?')) return;
+
+    try {
+        await api(ROUTES.byId(id), { method: 'DELETE' });
+        await loadRows();
+
+        const selected = state.rows.find((r) => String(r.shortcut_id) === String(id));
+
+        if (selected) {
+            await fillForm(selected);
+        } else {
+            await clearForm();
+        }
+    } catch (err) {
+        console.error(err);
+        alert(err.message);
+    }
+}
+
+async function restoreShortcut() {
+    const id = els.shortcut_id.value.trim();
+
+    if (!id) {
+        alert('Selecione um shortcut para restaurar.');
+        return;
+    }
+
+    try {
+        await api(ROUTES.restore(id), { method: 'PATCH' });
+        await loadRows();
+
+        const selected = state.rows.find((r) => String(r.shortcut_id) === String(id));
+
+        if (selected) await fillForm(selected);
+
+        alert('Shortcut restaurado.');
+    } catch (err) {
+        console.error(err);
+        alert(err.message);
+    }
+}
+
+async function copyCode() {
+    const code = els.code.value;
+
+    if (!code) {
+        alert('Não existe código para copiar.');
+        return;
+    }
+
+    try {
+        await navigator.clipboard.writeText(code);
+        alert('Código copiado.');
+    } catch {
+        els.code.select();
+        document.execCommand('copy');
+        alert('Código copiado.');
+    }
+}
+
+function bindEvents() {
+    els.btnNew.addEventListener('click', () => {
+        clearForm();
+    });
+
+    els.btnReload.addEventListener('click', async () => {
+        state.page = 1;
+        await loadCategories();
+        await loadRows();
+    });
+
+    els.btnSearch.addEventListener('click', () => {
+        state.page = 1;
+        loadRows();
+    });
+
+    els.filterQ.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            state.page = 1;
+            loadRows();
+        }
+    });
+
+    els.filterCategoryId.addEventListener('change', () => {
+        state.page = 1;
+        loadRows();
+    });
+
+    els.filterLanguage.addEventListener('change', () => {
+        state.page = 1;
+        loadRows();
+    });
+
+    els.filterActive.addEventListener('change', () => {
+        state.page = 1;
+        loadRows();
+    });
+
+    els.category_id.addEventListener('change', async () => {
+        els.category.value = selectedText(els.category_id) || '';
+        els.subcategory.value = '';
+
+        await loadSubCategories(els.category_id.value);
+    });
+
+    els.subcategory_id.addEventListener('change', () => {
+        els.subcategory.value = selectedText(els.subcategory_id) || '';
+    });
+
+    els.btnPrev.addEventListener('click', () => {
+        if (state.page > 1) {
+            state.page -= 1;
+            loadRows();
+        }
+    });
+
+    els.btnNext.addEventListener('click', () => {
+        const totalPages = Math.max(Math.ceil(state.total / state.limit), 1);
+
+        if (state.page < totalPages) {
+            state.page += 1;
+            loadRows();
+        }
+    });
+
+    els.tbody.addEventListener('click', async (event) => {
+        const tr = event.target.closest('tr[data-id]');
+        if (!tr) return;
+
+        const id = tr.dataset.id;
+        const row = state.rows.find((r) => String(r.shortcut_id) === String(id));
+
+        if (row) await fillForm(row);
+    });
+
+    els.btnOpenCategoriesModal.addEventListener('click', () => {
+        openShortCutsProgramationCategoriesModal();
+    });
+
+    els.form.addEventListener('submit', saveShortcut);
+    els.btnClear.addEventListener('click', () => clearForm());
+    els.btnDelete.addEventListener('click', deleteShortcut);
+    els.btnRestore.addEventListener('click', restoreShortcut);
+    els.btnCopyCode.addEventListener('click', copyCode);
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    bindEls();
+    bindEvents();
+
+    await loadCategories();
+    await clearForm();
+    await loadRows();
+});

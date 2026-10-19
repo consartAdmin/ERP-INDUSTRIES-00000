@@ -1,0 +1,138 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ parametrosFiscais.html – Sequência & Ambiente da NF-e               ║
+     ║ • Usa theme-consart.css                                             ║
+     ║ • Edita as tabelas "sequenciaNf-e" e "nfeAmbiente"                  ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR" class="with-aurora">
+<head>
+  <meta charset="UTF-8" />
+  <title>Parâmetros Fiscais – NF-e (Sequência & Ambiente)</title>
+
+  <!-- Tema/Globais -->
+  <link rel="stylesheet" href="/public/includes/theme-consart.css" />
+  <link rel="stylesheet" href="/public/includes/home.css">
+  <link rel="stylesheet" href="/public/includes/menu.css">
+  <link rel="stylesheet" href="/public/statusUsuario/statusUsuario.css" />
+   
+  <!-- Estilos específicos da página -->
+  <link rel="stylesheet" href="parametrosFiscais.css" />
+
+</head>
+<body class="consart-theme c-page">
+  <!-- Header -->
+  <header class="c-container c-container--lg" style="padding-block:16px;">
+    <h1 style="margin:0; font-size:20px;">📄 Parâmetros Fiscais – NF-e</h1>
+    <p class="muted">Configure a sequência de numeração e o ambiente (Homologação/Produção).</p>
+  </header>
+
+  <!-- Conteúdo -->
+  <main class="c-container c-container--lg c-main">
+    <div class="c-grid c-grid-2">
+
+      <!-- Card: Sequência NF-e -->
+      <section class="card">
+        <div class="card__header">
+          <h2>Sequência NF-e</h2>
+          <small class="muted">Tabela: <code>"sequenciaNf-e"</code></small>
+        </div>
+
+        <form id="formSequencia" class="form-grid">
+          <div class="field">
+            <label for="empresa_id">Empresa ID</label>
+            <input type="number" id="empresa_id" name="empresa_id" min="1" placeholder="1" />
+          </div>
+
+          <div class="field">
+            <label for="filial_id">Filial ID</label>
+            <input type="number" id="filial_id" name="filial_id" min="1" placeholder="1" />
+          </div>
+
+          <div class="field">
+            <label for="modelo">Modelo</label>
+            <input type="text" id="modelo" name="modelo" maxlength="2" placeholder="55" />
+          </div>
+
+          <div class="field">
+            <label for="serie">Série</label>
+            <input type="number" id="serie" name="serie" min="1" placeholder="1" />
+          </div>
+
+          <div class="field">
+            <label for="proximo_numero">Próximo Número</label>
+            <input type="number" id="proximo_numero" name="proximo_numero" min="1" placeholder="1" />
+          </div>
+
+          <div class="field">
+            <label for="ultimo_autorizado">Último Autorizado</label>
+            <input type="number" id="ultimo_autorizado" name="ultimo_autorizado" min="0" placeholder="(opcional)" />
+          </div>
+
+          <div class="field field--full">
+            <label>Atualizado em</label>
+            <input type="text" id="ultimo_atualizado" disabled />
+          </div>
+
+          <div class="actions">
+            <button type="button" class="btn btn--outline-primary" id="btnRecarregarSequencia">Recarregar</button>
+            <button type="submit" class="btn btn--solid-primary" id="btnSalvarSequencia">Salvar Sequência</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Card: Ambiente NF-e -->
+      <section class="card">
+        <div class="card__header">
+          <h2>Ambiente NF-e</h2>
+          <small class="muted">Tabela: <code>"nfeAmbiente"</code></small>
+        </div>
+
+        <form id="formAmbiente" class="form-grid">
+          <div class="field">
+            <label for="empresa_id_amb">Empresa ID</label>
+            <input type="number" id="empresa_id_amb" name="empresa_id_amb" min="1" placeholder="1" />
+          </div>
+
+          <div class="field field--full">
+            <label>Ambiente</label>
+            <div class="radio-row">
+              <label class="radio">
+                <input type="radio" name="tp_amb" value="2" />
+                <span>2 – Homologação</span>
+              </label>
+              <label class="radio">
+                <input type="radio" name="tp_amb" value="1" />
+                <span>1 – Produção</span>
+              </label>
+            </div>
+            <small class="muted">Padrão da SEFAZ: <strong>1=Produção</strong>, <strong>2=Homologação</strong>.</small>
+          </div>
+
+          <div class="field field--full">
+            <label for="motivo">Motivo/Observação</label>
+            <input type="text" id="motivo" name="motivo" placeholder="Ex.: Processo de Homologação" />
+          </div>
+
+          <div class="field field--full">
+            <label>Atualizado em</label>
+            <input type="text" id="updated_at" disabled />
+          </div>
+
+          <div class="actions">
+            <button type="button" class="btn btn--outline-primary" id="btnRecarregarAmbiente">Recarregar</button>
+            <button type="submit" class="btn btn--solid-primary" id="btnSalvarAmbiente">Salvar Ambiente</button>
+          </div>
+        </form>
+      </section>
+
+    </div>
+  </main>
+
+  <script src="/public/verificarLogin/verificarLogin.js"></script>
+  <script src="/public/statusUsuario/statusUsuario.js" defer></script>
+  <script src="/public/includes/menu.js"></script>
+  <script src="/public/includes/sessionTimeout.js" defer></script>
+
+  <script src="/public/parametrosFiscais/parametrosFiscais.js"></script>
+</body>
+</html>

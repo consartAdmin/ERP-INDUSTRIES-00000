@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>IA BUDGETS | PRODNEX ERP</title>
+
+  <!-- Globais do tema -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- Estilo específico -->
+  <link rel="stylesheet" href="iaBudgets.css" />
+</head>
+<body class="consart-theme c-page">
+  <main class="c-main">
+    <div class="c-container">
+
+      <!-- Título + Toolbar -->
+      <header class="c-toolbar">
+        <div class="c-toolbar__title">
+          <h1 class="c-h1">🤖 IA Budgets</h1>
+          <p class="c-subtle">
+            Digite descrições livres ou envie uma imagem da lista de itens. A IA sugerirá SKUs, preços e condições.
+          </p>
+        </div>
+        <div class="c-toolbar__actions">
+          <a href="/public/home/home.html" class="btn btn-outline">↩ Voltar</a>
+        </div>
+      </header>
+
+      <!-- Card principal: Entrada + Combos -->
+      <section class="c-card">
+        <div class="c-card__body">
+          <form id="formIaBudgets" class="form-grid" autocomplete="off">
+            <!-- Upload/Imagem -->
+            <div class="form-field form-field--full">
+              <label for="imagemUpload" class="label">📷 Imagem do Pedido</label>
+              <input type="file" id="imagemUpload" accept="image/*" class="input" />
+              <div id="previewImagem" style="margin-top:8px;"></div>
+              <small class="help">Você também pode colar uma imagem (Ctrl+V) diretamente aqui.</small>
+            </div>
+
+            <!-- Itens livres -->
+            <div class="form-field form-field--full">
+              <label for="itensLivres" class="label">
+                Itens (um por linha)
+                <span class="hint">Ex.: “detergente neutro 5L cx 12”, “água sanitária 5L”</span>
+              </label>
+              <textarea id="itensLivres" rows="7" class="input textarea"
+                placeholder="Ex.:&#10;detergente neutro 5L cx com 12&#10;água sanitária 5L"></textarea>
+              <div class="help">
+                Dica: informe unidade, volume ou embalagem para sugestões mais precisas.
+              </div>
+            </div>
+
+            <!-- Linha de parâmetros -->
+            <div class="form-field">
+              <label for="tabelaPrecoId" class="label">Tabela de Preço</label>
+              <select id="tabelaPrecoId" class="input select"></select>
+            </div>
+
+            <div class="form-field">
+              <label for="unidadeVenda" class="label">Unidade de Venda</label>
+              <select id="unidadeVenda" class="input select"></select>
+            </div>
+
+            <div class="form-field form-field--actions">
+              <button type="button" id="btnSugerir" class="btn btn-primary">⚙️ Sugerir Itens</button>
+              <button type="button" id="btnLimpar" class="btn btn-ghost">🧹 Limpar</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Resultados / Sugestões (em TABELA) -->
+      <section class="c-card">
+        <div class="c-card__header">
+          <h2 class="c-h2">Sugestões</h2>
+          <div class="c-actions-inline">
+            <span class="c-subtle">Ajuste quantidade antes de confirmar.</span>
+          </div>
+        </div>
+        <div class="c-card__body">
+          <div class="table-responsive">
+            <!-- usa também a classe de tema "table" p/ herdar estilos -->
+            <table class="table sug-table">
+              <thead>
+                <tr>
+                  <th style="width:110px">SKU</th>
+                  <th>Descrição</th>
+                  <th style="width:90px">Unid.</th>
+                  <th style="width:110px">Qtd</th>
+                  <th style="width:130px">Unitário</th>
+                  <th style="width:130px">Total</th>
+                </tr>
+              </thead>
+              <tbody id="sugestoes"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="c-card__footer right">
+          <button id="btnConfirmar" class="btn btn-success">✅ Confirmar e Gerar Budget</button>
+        </div>
+      </section>
+
+      <!-- GERENCIAMENTO DE PALAVRAS-CHAVE (iaBudgetsVinculos) -->
+      <section class="c-card">
+        <div class="c-card__header">
+          <h2 class="c-h2">Palavras-chave → Produto (Vínculos)</h2>
+        <div class="c-actions-inline">
+            <input id="filtroVinculos" class="input" placeholder="🔎 Filtrar por palavra..." style="width:260px">
+            <button id="btnRecarregarVinculos" class="btn btn-outline">↻ Recarregar</button>
+          </div>
+        </div>
+
+        <div class="c-card__body">
+          <!-- Busca de produto no banco (preenche ID/SKU) -->
+          <div class="form-field form-field--full">
+            <label class="label">🔎 Pesquisar produto (SKU ou descrição)</label>
+            <input id="busca_produto" class="input" type="text" placeholder="ex: DET-500ML ou 'papel toalha'">
+            <div id="busca_resultados" class="busca-lista"></div>
+            <small class="help">Digite 2+ caracteres e clique no resultado para preencher o vínculo.</small>
+          </div>
+
+          <form id="formNovoVinculo" class="form-grid" autocomplete="off">
+            <div class="form-field">
+              <label class="label">Produto por ID</label>
+              <input id="novo_produto_id" class="input" type="number" min="1" placeholder="ex: 123">
+            </div>
+            <div class="form-field">
+              <label class="label">Produto por SKU</label>
+              <input id="novo_produto_sku" class="input" type="text" placeholder="ex: DET-500ML">
+            </div>
+            <div class="form-field form-field--full">
+              <label class="label">Palavras-chave (separadas por vírgula)</label>
+              <input id="novo_palavras" class="input" type="text" placeholder="detergente, cozinha, restaurante">
+            </div>
+            <div class="form-field form-field--actions">
+              <button type="submit" class="btn btn-primary">➕ Adicionar vínculo</button>
+              <button type="button" id="btnLimparNovo" class="btn btn-ghost">🧹 Limpar</button>
+            </div>
+          </form>
+
+          <div class="divider"></div>
+
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width:90px">ID</th>
+                  <th>Produto ID</th>
+                  <th>Produto SKU</th>
+                  <th>Palavras-chave</th>
+                  <th style="width:160px" class="right">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="gridVinculos"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Rodapé -->
+      <section class="c-help">
+        <ul>
+          <li><strong>Enter</strong> confirma a edição de quantidade na <em>linha</em>.</li>
+          <li>Prefira descrever volume/embalagem (ex.: “5L”, “cx 12”, “refil 700ml”).</li>
+          <li>Os preços consideram a <em>Tabela de Preço</em> e a <em>Unidade de Venda</em> selecionadas.</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <!-- Scripts globais -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+ 
+  <!-- Script -->
+  <script src="iaBudgets.js"></script>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ FILE: paymentMethods.html                                           ║
+     ║ MODULE: Payment Methods                                             ║
+     ║ DESCRIPTION: Parametrização de Formas de Pagamento                  ║
+     ║ PRODNEX ERP · Frontend                                              ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>MÉTODOS DE PAGAMENTO – PRODNEX ERP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="icon" type="image/png" href="/public/imagens/brasaoConsartInfinity.png" />
+
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="./paymentMethods.css?v=2" />
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <!-- ===================================================== -->
+    <!-- INTEGRATED TABLE                                      -->
+    <!-- ===================================================== -->
+
+    <section class="table-layout-integrated table-max-height-700">
+      <div class="table-layout-integrated__filter">
+
+        <!-- ===================================================== -->
+        <!-- TPAG INFO                                              -->
+        <!-- ===================================================== -->
+
+        <div class="tpag-help">
+          <button type="button" class="tpag-help__button" aria-label="Consultar códigos tPag da NF-e">
+            ⓘ
+          </button>
+
+          <div class="tpag-help__tooltip" role="tooltip">
+            <div class="tpag-help__title">Códigos NF-e — tPag</div>
+
+            <div class="tpag-help__row">
+              <strong>01</strong>
+              <span>Dinheiro</span>
+            </div>
+
+            <div class="tpag-help__row">
+              <strong>03</strong>
+              <span>Cartão de Crédito</span>
+            </div>
+
+            <div class="tpag-help__row">
+              <strong>04</strong>
+              <span>Cartão de Débito</span>
+            </div>
+
+            <div class="tpag-help__row">
+              <strong>15</strong>
+              <span>Boleto Bancário</span>
+            </div>
+
+            <div class="tpag-help__row">
+              <strong>16</strong>
+              <span>Depósito Bancário</span>
+            </div>
+
+            <div class="tpag-help__row">
+              <strong>17</strong>
+              <span>PIX</span>
+            </div>
+
+            <div class="tpag-help__row">
+              <strong>18</strong>
+              <span>Transferência Bancária</span>
+            </div>
+
+            <div class="tpag-help__row">
+              <strong>90</strong>
+              <span>Sem Pagamento</span>
+            </div>
+
+            <div class="tpag-help__row">
+              <strong>99</strong>
+              <span>Outros</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="fields fields-h-6 fields-w-30 fields-font-3">
+          <div>
+            <h2>Formas Cadastradas</h2>
+            <p>Listagem com rolagem interna e linhas alternadas.</p>
+          </div>
+
+          <div class="fields-inline fields-gap-3">
+            <div class="fields fields-h-6 fields-w-30 fields-font-3">
+              <form id="formPagamento" autocomplete="off" role="search">
+                <label for="filtro">Buscar</label>
+                <input id="filtro" class="input" type="search" placeholder="Nome, tipo ou tPag..."
+                  aria-label="Buscar formas de pagamento" />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-15 fields-font-3">
+              <label for="filtroTipo">Tipo</label>
+              <select id="filtroTipo" aria-label="Filtrar por tipo">
+                <option value="">Todos</option>
+              </select>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-15 fields-font-3">
+              <label for="filtroParcelas">Parcelas</label>
+              <select id="filtroParcelas" aria-label="Filtrar por número de parcelas">
+                <option value="">Todas</option>
+              </select>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-15 fields-font-3">
+              <label for="filtroStatus">Status</label>
+              <select id="filtroStatus" aria-label="Filtrar por status">
+                <option value="">Todos</option>
+                <option value="active">Ativo</option>
+                <option value="inactive">Inativo</option>
+              </select>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-15 fields-font-3">
+              <label for="filtroTpag">tPag</label>
+              <select id="filtroTpag" aria-label="Filtrar por código tPag">
+                <option value="">Todos</option>
+              </select>
+            </div>
+
+            <button id="btnLimparFiltros" type="button" class="btn btn-toolbar btn-sm">
+              Limpar filtros
+            </button>
+            </form>
+
+            <div class="btn-position-right">
+              <button id="btnNovo" type="button" class="btn btn-toolbar btn-sm">
+                Novo
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =================================================== -->
+      <!-- TABLE                                               -->
+      <!-- =================================================== -->
+
+      <div class="table-scroll table-height-flex table-row-h-28" data-table-settings="paymentmethods.bodytablelist">
+        <table class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Tipo</th>
+              <th>Parcelas</th>
+              <th>tPag</th>
+              <th>gap1</th>
+              <th>gap2</th>
+              <th>gap3</th>
+              <th>gap4</th>
+              <th>gap5</th>
+              <th>gap6</th>
+              <th>gap7</th>
+              <th>gap8</th>
+              <th>gap9</th>
+              <th>gap10</th>
+              <th>Ativo</th>
+              <th>Atualizado</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="bodyTableList">
+            <tr>
+              <td colspan="18" class="loading-cell">Carregando...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- =================================================== -->
+      <!-- TABLE FOOTER                                        -->
+      <!-- =================================================== -->
+
+      <footer class="table-footer">
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill-success summary-width-5 summary-left-space-3">
+            <span id="apTableInfo">0 Registros</span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button id="btnPrevious" type="button" class="btn btn-toolbar btn-sm" disabled>
+            Anterior
+          </button>
+
+          <span id="pageInfo" aria-live="polite">Página 1 de 1</span>
+
+          <button id="btnNext" type="button" class="btn btn-toolbar btn-sm" disabled>
+            Próxima
+          </button>
+        </div>
+
+        <div class="table-footer__page-size">
+          <label for="pageSize">Mostrar</label>
+          <div class="fields fields-h-6 fields-w-3 fields-font-3">
+            <select id="pageSize" class="table-footer__page-size-select">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50" selected>50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
+      </footer>
+    </section>
+
+
+    <!-- ===================================================== -->
+    <!-- PAYMENT METHODS MODAL                                 -->
+    <!-- ===================================================== -->
+
+    <div id="paymentMethodsModal" class="modal modal-width-5 modal-height-5" aria-hidden="true">
+      <div class="modal__backdrop" data-modal-close data-shortcut-modal-close></div>
+      <div class="modal__dialog">
+        <section class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="cpmTitle">
+          <header class="modal__header modal-header-color-3">
+            <h3 id="cpmTitle">Nova Forma de Pagamento</h3>
+            <button id="btnCloseShortcutModal" type="button" data-modal-close data-shortcut-modal-close
+              class="btn btn-new btn-sm btn-icon" aria-label="Fechar">
+              ✕
+            </button>
+          </header>
+
+          <div class="modal__body">
+            <form id="cpmForm" autocomplete="off">
+              <input type="hidden" id="cpm_id">
+
+              <div class="fields-inline fields-gap-2 cpm-main-fields">
+                <div class="fields fields-w-16 fields-h-5 fields-p-left-10">
+                  <label for="cpm_name">Nome</label>
+                  <input type="text" id="cpm_name" required maxlength="100">
+                </div>
+
+                <div class="fields fields-w-10 fields-h-5">
+                  <label for="cpm_type">Tipo</label>
+                  <select id="cpm_type" required>
+                    <option value="">Selecione...</option>
+                    <option value="AVISTA">À vista</option>
+                    <option value="PRAZO">Prazo</option>
+                    <option value="PARCELADO">Parcelado</option>
+                    <option value="CARTAO">Cartão</option>
+                    <option value="BOLETO">Boleto</option>
+                    <option value="PIX">PIX</option>
+                    <option value="DINHEIRO">Dinheiro</option>
+                    <option value="CHEQUE">Cheque</option>
+                    <option value="OUTROS">Outros</option>
+                  </select>
+                </div>
+
+                <div class="fields fields-w-8 fields-h-5">
+                  <label for="cpm_installments">Parcelas</label>
+                  <input type="number" id="cpm_installments" min="1" max="10" step="1" value="1" required>
+                </div>
+
+                <div class="fields fields-w-10 fields-h-5">
+                  <label for="cpm_nfe_tpag">Cód. NF-e tPag</label>
+                  <input type="text" id="cpm_nfe_tpag" maxlength="2" inputmode="numeric" pattern="[0-9]{2}"
+                    placeholder="01, 03, 14, 17">
+                </div>
+
+                <div class="fields fields-w-5 fields-h-5 cpm-active-field">
+                  <label for="cpm_active">Ativo</label>
+                  <input type="checkbox" id="cpm_active" checked>
+                </div>
+              </div>
+
+              <fieldset class="cpm-gaps">
+                <legend>Cronograma das parcelas</legend>
+                <div class="fields-inline fields-gap-2">
+                  <div class="fields fields-w-10 fields-h-5"><label for="cpm_gap_one">gap_one</label><input
+                      type="number" id="cpm_gap_one" min="0" step="1" value="0"></div>
+                  <div class="fields fields-w-10 fields-h-5"><label for="cpm_gap_two">gap_two</label><input
+                      type="number" id="cpm_gap_two" min="0" step="1" value="0"></div>
+                  <div class="fields fields-w-10 fields-h-5"><label for="cpm_gap_three">gap_three</label><input
+                      type="number" id="cpm_gap_three" min="0" step="1" value="0"></div>
+                  <div class="fields fields-w-10 fields-h-5"><label for="cpm_gap_four">gap_four</label><input
+                      type="number" id="cpm_gap_four" min="0" step="1" value="0"></div>
+                  <div class="fields fields-w-10 fields-h-5"><label for="cpm_gap_five">gap_five</label><input
+                      type="number" id="cpm_gap_five" min="0" step="1" value="0"></div>
+                  <div class="fields fields-w-10 fields-h-5"><label for="cpm_gap_six">gap_six</label><input
+                      type="number" id="cpm_gap_six" min="0" step="1" value="0"></div>
+                  <div class="fields fields-w-10 fields-h-5"><label for="cpm_gap_seven">gap_seven</label><input
+                      type="number" id="cpm_gap_seven" min="0" step="1" value="0"></div>
+                  <div class="fields fields-w-10 fields-h-5"><label for="cpm_gap_eight">gap_eight</label><input
+                      type="number" id="cpm_gap_eight" min="0" step="1" value="0"></div>
+                  <div class="fields fields-w-10 fields-h-5"><label for="cpm_gap_nine">gap_nine</label><input
+                      type="number" id="cpm_gap_nine" min="0" step="1" value="0"></div>
+                  <div class="fields fields-w-10 fields-h-5"><label for="cpm_gap_ten">gap_ten</label><input
+                      type="number" id="cpm_gap_ten" min="0" step="1" value="0"></div>
+                </div>
+              </fieldset>
+
+              <div class="fields-inline fields-gap-2 cpm-audit-fields">
+                <div><strong>Criado em:</strong> <span id="cpm_created_at">—</span></div>
+                <div><strong>Atualizado em:</strong> <span id="cpm_updated_at">—</span></div>
+              </div>
+            </form>
+          </div>
+
+          <footer class="modal__footer modal-footer-color-3">
+            <button type="button" id="btnCancelForm" data-modal-close data-shortcut-modal-close
+              class="btn btn-new btn-sm">Cancelar</button>
+            <button type="submit" form="cpmForm" class="btn btn-new btn-sm">Salvar Forma</button>
+          </footer>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <script type="module" src="/paymentMethods/js/paymentMethods.init.js"></script>
+
+</body>
+
+</html>

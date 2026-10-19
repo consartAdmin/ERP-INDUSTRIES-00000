@@ -1,0 +1,211 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ productsLocationsModals.css — Modal de busca de localizações        ║
+   ║ PRODNEX ERP                                                         ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.plm-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.plm-field input[type="text"] {
+  flex: 1;
+}
+
+.plm-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.plm-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.46);
+  backdrop-filter: blur(2px);
+}
+
+.plm-modal {
+  position: relative;
+  z-index: 2;
+  width: min(1100px, 96vw);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 18px;
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  box-shadow:
+    0 20px 60px rgba(15, 23, 42, 0.22),
+    0 4px 14px rgba(15, 23, 42, 0.10);
+  overflow: hidden;
+}
+
+.plm-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+}
+
+.plm-title {
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.plm-close {
+  border: none;
+  background: transparent;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 10px;
+}
+
+.plm-close:hover {
+  background: rgba(15, 23, 42, 0.06);
+}
+
+.plm-body {
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 0;
+}
+
+.plm-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: end;
+}
+
+.plm-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 180px;
+  flex: 1;
+}
+
+.plm-group label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+.plm-group input,
+.plm-group select {
+  width: 100%;
+}
+
+.plm-table-wrap {
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 14px;
+  overflow: auto;
+  min-height: 260px;
+  max-height: 48vh;
+  background: #fff;
+}
+
+.plm-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 860px;
+}
+
+.plm-table th,
+.plm-table td {
+  padding: 11px 12px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.07);
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.plm-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #f8fafc;
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.plm-table tbody tr:hover {
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.plm-empty {
+  padding: 22px;
+  text-align: center;
+  color: #64748b;
+  font-weight: 700;
+}
+
+.plm-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+  background: #f8fafc;
+}
+
+.plm-meta {
+  color: #64748b;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.plm-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.plm-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  background: rgba(15, 23, 42, 0.06);
+  color: #334155;
+}
+
+.plm-btn-select {
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .plm-modal {
+    width: 98vw;
+    max-height: 94vh;
+    border-radius: 14px;
+  }
+
+  .plm-head,
+  .plm-body,
+  .plm-foot {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .plm-table {
+    min-width: 760px;
+  }
+}

@@ -1,0 +1,174 @@
+<!-- ╔══════════════════════════════════════════════════════════════╗
+     ║ salesDashboard.html — Painel Dark de Vendas (PRODNEX ERP)   ║
+     ║ KPIs: NF-e, NFC-e, E-commerce (dia/mês) + Gráficos          ║
+     ╚══════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR" class="page-sales-dashboard-dark">
+<head>
+  <meta charset="UTF-8" />
+  <title>Painel de Vendas | PRODNEX ERP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <!-- CSS Dark -->
+  <link rel="stylesheet" href="/public/salesDashboard/salesDashboard.css" />
+</head>
+<body>
+  <div class="sd-page">
+    <!-- Topbar -->
+    <header class="sd-header">
+      <div class="sd-header-left">
+        <button type="button" class="sd-back-btn" onclick="window.location.href='/home/home.html'">
+          ← Voltar ao ERP
+        </button>
+        <div class="sd-title-block">
+          <h1>Painel de Vendas</h1>
+          <p>Visão consolidada: NF-e, NFC-e e E-commerce (dia e mês)</p>
+        </div>
+      </div>
+      <div class="sd-header-right">
+        <span class="sd-env-badge">Ambiente: <strong id="sd-env-label">produção</strong></span>
+        <span class="sd-date" id="sd-today-label">—</span>
+      </div>
+    </header>
+
+    <!-- Conteúdo principal -->
+    <main class="sd-main">
+      <!-- Linha 1: KPIs do DIA (4 colunas) -->
+      <section class="sd-row">
+        <article class="sd-card sd-card-primary">
+          <header>
+            <h2>NFC-e do Dia</h2>
+            <!-- NFC-e (PDV) → VERDE -->
+            <span class="sd-tag sd-tag-nfce">AUTORIZADAS (PDV)</span>
+          </header>
+          <div class="sd-value" id="kpi-nfce-dia-valor">R$ 0,00</div>
+          <footer>
+            <span id="kpi-nfce-dia-info">Referente a — · 0 doc(s)</span>
+          </footer>
+        </article>
+
+        <article class="sd-card">
+          <header>
+            <h2>Vendas do Dia (NF-e)</h2>
+            <!-- NF-e (Pedidos) → AZUL -->
+            <span class="sd-tag sd-tag-nfe">Pedidos</span>
+          </header>
+          <div class="sd-value" id="kpi-vendas-dia-valor">R$ 0,00</div>
+          <footer>
+            <span id="kpi-vendas-dia-info">Referente a —</span>
+          </footer>
+        </article>
+
+        <article class="sd-card">
+          <header>
+            <h2>E-commerce · Dia</h2>
+            <!-- E-commerce → LARANJA -->
+            <span class="sd-tag sd-tag-ecom">Loja Online</span>
+          </header>
+          <div class="sd-value" id="kpi-ecom-dia-valor">R$ 0,00</div>
+          <footer>
+            <span id="kpi-ecom-dia-info">Referente a —</span>
+          </footer>
+        </article>
+
+        <article class="sd-card">
+          <header>
+            <h2>Total Consolidado · Dia</h2>
+          </header>
+          <div class="sd-value" id="kpi-total-dia-valor">R$ 0,00</div>
+          <footer>
+            <span id="kpi-total-dia-info">NF-e + NFC-e + E-commerce</span>
+          </footer>
+        </article>
+      </section>
+
+      <!-- Linha 2: KPIs do MÊS (4 colunas) -->
+      <section class="sd-row">
+        <article class="sd-card">
+          <header>
+            <h2>NFC-e Autorizadas · Mês</h2>
+            <!-- NFC-e (PDV) → VERDE -->
+            <span class="sd-tag sd-tag-nfce">PDV</span>
+          </header>
+          <div class="sd-value" id="kpi-nfce-mes-valor">R$ 0,00</div>
+          <footer>
+            <span id="kpi-nfce-mes-info">Mês —/— · 0 doc(s)</span>
+          </footer>
+        </article>
+
+        <article class="sd-card">
+          <header>
+            <h2>Vendas do Mês (NF-e)</h2>
+            <!-- NF-e (Pedidos) → AZUL -->
+            <span class="sd-tag sd-tag-nfe">Pedidos</span>
+          </header>
+          <div class="sd-value" id="kpi-vendas-mes-valor">R$ 0,00</div>
+          <footer>
+            <span id="kpi-vendas-mes-info">Mês —/—</span>
+          </footer>
+        </article>
+
+        <article class="sd-card">
+          <header>
+            <h2>E-commerce · Mês</h2>
+            <!-- E-commerce → LARANJA -->
+            <span class="sd-tag sd-tag-ecom">Loja Online</span>
+          </header>
+          <div class="sd-value" id="kpi-ecom-mes-valor">R$ 0,00</div>
+          <footer>
+            <span id="kpi-ecom-mes-info">Mês —/—</span>
+          </footer>
+        </article>
+
+        <article class="sd-card">
+          <header>
+            <h2>Total Consolidado · Mês</h2>
+          </header>
+          <div class="sd-value" id="kpi-total-mes-valor">R$ 0,00</div>
+          <footer>
+            <span id="kpi-total-mes-info">NF-e + NFC-e + E-commerce</span>
+          </footer>
+        </article>
+      </section>
+
+      <!-- Linha 3: GRÁFICOS -->
+      <section class="sd-charts-row">
+        <article class="sd-chart-card">
+          <header>
+            <h2>Participação no Dia</h2>
+            <p>NF-e (Pedidos) x NFC-e (PDV) x E-commerce</p>
+          </header>
+          <div class="sd-chart-wrapper">
+            <canvas id="chart-dia"></canvas>
+          </div>
+        </article>
+
+        <article class="sd-chart-card">
+          <header>
+            <h2>Participação no Mês</h2>
+            <p>NF-e (Pedidos) x NFC-e (PDV) x E-commerce</p>
+          </header>
+          <div class="sd-chart-wrapper">
+            <canvas id="chart-mes"></canvas>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="sd-footer">
+      <span>PRODNEX ERP · Painel de Vendas</span>
+    </footer>
+  </div>
+
+  <!-- Chart.js (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- JS do painel -->
+  <script src="/public/salesDashboard/salesDashboard.js" type="module"></script>
+</body>
+</html>

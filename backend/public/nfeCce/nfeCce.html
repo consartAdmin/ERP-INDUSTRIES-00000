@@ -1,0 +1,613 @@
+<!-- ╔════════════════════════════════════════════════════════════════════╗ -->
+<!-- ║ FILE: nfeCce.html                                                ║ -->
+<!-- ║ MODULE: NF-e | Carta de Correção Eletrônica (CC-e)               ║ -->
+<!-- ║ PRODNEX ERP                                                       ║ -->
+<!-- ║ Emissão, consulta, documentos e histórico de eventos da CC-e      ║ -->
+<!-- ╚════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>CC-e | PRODNEX ERP</title>
+
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/nfeCce/nfeCce.css" />
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <!-- =============================================================== -->
+    <!-- HEADER                                                          -->
+    <!-- =============================================================== -->
+    <header class="header header-h-7">
+      <div class="fields-inline fields-gap-3">
+        <div class="fields fields-h-6 fields-w-full fields-font-3">
+          <div>
+            <h1 class="font-bold">Carta de Correção Eletrônica (CC-e)</h1>
+            <p class="font-normal">
+              Emita, consulte, baixe PDF/XML e acompanhe o histórico de eventos da CC-e.
+            </p>
+          </div>
+
+          <div class="btn-inline btn-position-right">
+            <button id="btnLimparTela" class="btn btn-new btn-sm" type="button">
+              Limpar tela
+            </button>
+
+            <button id="btnAtualizarHistorico" class="btn btn-new btn-sm" type="button">
+              Atualizar histórico
+            </button>
+
+            <button id="btnAbrirConsultaStatus" class="btn btn-new btn-sm" type="button">
+              Consultar Status
+            </button>
+
+            <button id="btnNovaCce" class="btn btn-new btn-sm" type="button">
+              Nova CC-e
+            </button>
+          </div>
+        </div>
+    </header>
+
+    <!-- =============================================================== -->
+    <!-- MODAL: NOVA CARTA DE CORREÇÃO                                   -->
+    <!-- =============================================================== -->
+    <div id="modalNovaCce" class="modal modal-width-7" aria-hidden="true">
+      <div class="modal__backdrop" data-modal-cce-close></div>
+
+      <div class="modal__dialog">
+        <section class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modalNovaCceTitle">
+
+          <header class="modal__header modal-header-color-3">
+            <h2 id="modalNovaCceTitle" class="modal__title">
+              Nova Carta de Correção
+            </h2>
+
+            <button class="modal__close" type="button" aria-label="Fechar modal" title="Fechar" data-modal-cce-close>
+              &times;
+            </button>
+          </header>
+
+          <div class="modal__body">
+            <div class="fields-inline fields-gap-3">
+              <div class="fields fields-h-6 fields-w-10 fields-font-3">
+                <label>NF-e emitida</label>
+                <button id="btnBuscarNfeEmitida" class="btn btn-secondary btn-sm" type="button">
+                  Buscar em NF-e
+                </button>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-10 fields-font-3" hidden>
+                <label for="invoiceId">ID da NF-e</label>
+                <input id="invoiceId" type="text" readonly placeholder="Selecionado automaticamente" />
+              </div>
+
+              <div class="fields fields-h-6 fields-w-15 fields-font-3">
+                <label for="nfeNumber">Nº NF-e</label>
+                <input id="nfeNumber" type="text" readonly placeholder="Selecionado automaticamente" />
+              </div>
+
+              <div class="fields fields-h-6 fields-w-10 fields-font-3">
+                <label for="orderId">Pedido</label>
+                <input id="orderId" type="number" min="1" step="1" readonly placeholder="Selecionado automaticamente" />
+              </div>
+
+              <div class="fields fields-h-6 fields-w-35 fields-font-3">
+                <label for="nfeKey">Chave da NF-e</label>
+                <input id="nfeKey" type="text" maxlength="60" readonly placeholder="44 dígitos" />
+              </div>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-10 fields-font-3" hidden>
+              <label for="nfePlugnotasId">ID do provedor</label>
+              <input id="nfePlugnotasId" type="text" readonly placeholder="nfe_provider_id" />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-10 fields-font-3" hidden>
+              <label for="idOuChave">ID / Chave / Identificador</label>
+              <input id="idOuChave" type="text" readonly />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-10 fields-font-3" hidden>
+              <label for="createdBy">Criado por</label>
+              <input id="createdBy" type="text" placeholder="Ex.: Renato" />
+            </div>
+
+            <div class="modal-field--span-full">
+              <div class="fields fields-h-6 fields-w-full fields-font-3">
+                <label for="correcao">Texto da correção</label>
+                <textarea id="correcao"
+                  class="textarea textarea-border-1 textarea-radius-4 textarea-h-3 textarea-w-20 textarea-resize-vertical"
+                  maxlength="1000" minlength="15" required
+                  placeholder="Digite o texto da Carta de Correção Eletrônica..."></textarea>
+
+                <div class="fields-inline fields-gap-3">
+                  <span id="contadorCorrecao">0 / 1000</span>
+                  <span>Mínimo exigido: 15 caracteres</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <footer class="modal__footer modal-footer-color-3">
+            <button class="btn btn-secondary btn-sm" type="button" data-modal-cce-close>
+              Cancelar
+            </button>
+
+            <button id="btnValidarCampos" class="btn btn-secondary btn-sm" type="button">
+              Validar campos
+            </button>
+
+            <button id="btnEmitirCce" class="btn btn-new btn-sm" type="button">
+              Emitir CC-e
+            </button>
+          </footer>
+        </section>
+      </div>
+    </div>
+
+    <!-- =============================================================== -->
+    <!-- MODAL: BUSCAR NF-e EMITIDA                                     -->
+    <!-- =============================================================== -->
+    <div id="modalBuscarNfeEmitida" class="modal modal-width-10" aria-hidden="true">
+      <div class="modal__backdrop" data-modal-nfe-emitida-close></div>
+
+      <div class="modal__dialog">
+        <section class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modalBuscarNfeEmitidaTitle">
+          <header class="modal__header modal-header-color-3">
+            <h2 id="modalBuscarNfeEmitidaTitle" class="modal__title">Selecionar NF-e Emitida</h2>
+            <button class="modal__close" type="button" aria-label="Fechar modal" title="Fechar"
+              data-modal-nfe-emitida-close>
+              &times;
+            </button>
+          </header>
+
+          <div class="modal__body">
+            <div class="fields-inline fields-gap-3">
+              <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                <label for="buscaNfeEmitida">Pesquisar NF-e</label>
+                <input id="buscaNfeEmitida" type="text"
+                  placeholder="NF-e, chave, pedido, protocolo ou ID do provedor" />
+              </div>
+
+              <div class="btn-inline">
+                <button id="btnExecutarBuscaNfeEmitida" class="btn btn-new btn-sm" type="button">
+                  Pesquisar
+                </button>
+              </div>
+            </div>
+
+            <div class="table-scroll table-height-flex table-row-h-28" data-table-settings="nfecce.tbodynfesemitidas">
+              <table class="table table-zebra table-zebra-hover table-sticky-head">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>NF-e</th>
+                    <th>Pedido</th>
+                    <th>Chave</th>
+                    <th>Status</th>
+                    <th>Emissão</th>
+                    <th>Valor</th>
+                    <th>Ação</th>
+                  </tr>
+                </thead>
+                <tbody id="tbodyNfesEmitidas">
+                  <tr>
+                    <td colspan="8" class="text-center">Carregando...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div id="nfesEmitidasInfo" class="font-normal">0 NF-e encontrada</div>
+          </div>
+
+          <footer class="modal__footer modal-footer-color-3">
+            <button class="btn btn-secondary btn-sm" type="button" data-modal-nfe-emitida-close>Fechar</button>
+          </footer>
+        </section>
+      </div>
+    </div>
+
+    <!-- =============================================================== -->
+    <!-- MODAL: CONSULTAR STATUS DA CC-e                                 -->
+    <!-- =============================================================== -->
+    <div id="modalConsultaStatus" class="modal modal-width-6" aria-hidden="true">
+      <div class="modal__backdrop" data-modal-status-close></div>
+
+      <div class="modal__dialog">
+        <section class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modalConsultaStatusTitle">
+
+          <header class="modal__header modal-header-color-3">
+            <h2 id="modalConsultaStatusTitle" class="modal__title">
+              Consultar Status da CC-e
+            </h2>
+
+            <button class="modal__close" type="button" aria-label="Fechar modal" title="Fechar" data-modal-status-close>
+              &times;
+            </button>
+          </header>
+
+          <div class="modal__body">
+            <div class="modal-section">
+              <div class="modal-form-grid modal-form-grid--2">
+                <div class="fields fields-h-6 fields-font-3">
+                  <label for="consultaIdentificador">Identificador</label>
+                  <input id="consultaIdentificador" type="text" placeholder="Informe ID, chave ou protocolo" />
+                </div>
+
+                <label class="checkbox-wrap">
+                  <input id="consultaListaCce" type="checkbox" />
+                  <span>Listar todas as CC-e vinculadas</span>
+                </label>
+              </div>
+
+              <div class="modal-divider"></div>
+
+              <div class="fields fields-font-3">
+                <label for="jsonConsultaStatus">Retorno do status</label>
+                <pre id="jsonConsultaStatus" class="json-preview">{}</pre>
+              </div>
+            </div>
+          </div>
+
+          <footer class="modal__footer modal-footer-color-3">
+            <button class="btn btn-secondary btn-sm" type="button" data-modal-status-close>
+              Cancelar
+            </button>
+
+            <button id="btnConsultarStatus" class="btn btn-new btn-sm" type="button">
+              Consultar Status
+            </button>
+          </footer>
+        </section>
+      </div>
+    </div>
+
+    <!-- =============================================================== -->
+    <!-- TABS                                                            -->
+    <!-- =============================================================== 
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter">
+        <div class="fields-lines fields-gap-3">
+          <div class="fields-inline fields-gap-3">
+            <h2>Módulo fiscal</h2>
+            <span class="nfei-badge">CC-e</span>
+          </div>
+
+          <div class="cce-tabs" role="tablist" aria-label="Seções da Carta de Correção">
+            <button class="cce-tab active" type="button" role="tab" aria-selected="true" aria-controls="tab-emissao"
+              data-tab="tab-emissao">
+              Emitir CC-e
+            </button>
+
+            <button class="cce-tab" type="button" role="tab" aria-selected="false" aria-controls="tab-consultas"
+              data-tab="tab-consultas">
+              Consultas
+            </button>
+
+            <button class="cce-tab" type="button" role="tab" aria-selected="false" aria-controls="tab-historico"
+              data-tab="tab-historico">
+              Histórico
+            </button>
+          </div>
+        </div>
+      </div>
+    </section> -->
+
+    <!-- =============================================================== -->
+    <!-- TAB: EMISSÃO                                                    -->
+    <!-- =============================================================== 
+    <section id="tab-emissao" class="cce-tab-panel active" role="tabpanel">
+      <section class="table-layout-integrated">
+        <div class="table-layout-integrated__filter">
+          <div class="fields-lines fields-gap-3">
+            <div class="fields-inline fields-gap-3">
+              <h2>Retorno da emissão</h2>
+              <span class="nfei-badge">Último evento</span>
+            </div>
+
+            <div class="fields-inline fields-gap-3">
+              <div class="summary-pill summary-pill-success">
+                <div><strong>Status:</strong> <span id="retornoStatus">—</span></div>
+              </div>
+
+              <div class="summary-pill summary-pill-success">
+                <div><strong>Protocolo:</strong> <span id="retornoProtocolo">—</span></div>
+              </div>
+
+              <div class="summary-pill summary-pill-success">
+                <div><strong>Sequência:</strong> <span id="retornoSequencia">—</span></div>
+              </div>
+
+              <div class="summary-pill summary-pill-success">
+                <div><strong>cStat:</strong> <span id="retornoCstat">—</span></div>
+              </div>
+            </div>
+
+            <div class="btn-inline">
+              <button id="btnAbrirPdfUltimo" class="btn btn-secondary btn-sm" type="button" disabled>
+                Abrir PDF da última CC-e
+              </button>
+
+              <button id="btnAbrirXmlUltimo" class="btn btn-secondary btn-sm" type="button" disabled>
+                Abrir XML da última CC-e
+              </button>
+            </div>
+
+            <div class="fields fields-font-3">
+              <label for="jsonRetorno">Resposta JSON</label>
+              <pre id="jsonRetorno" class="json-preview">{}</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section> -->
+
+    <!-- =============================================================== -->
+    <!-- TAB: CONSULTAS                                                  -->
+    <!-- =============================================================== 
+    <section id="tab-consultas" class="cce-tab-panel" role="tabpanel">
+      <section class="table-layout-integrated">
+        <div class="table-layout-integrated__filter">
+          <div class="fields-lines fields-gap-3">
+            <div class="fields-inline fields-gap-3">
+              <h2>Abrir documentos</h2>
+              <span class="nfei-badge">PDF / XML</span>
+            </div>
+
+            <div class="fields-inline fields-gap-3">
+              <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                <label for="documentoIdentificador">Identificador</label>
+                <input
+                  id="documentoIdentificador"
+                  type="text"
+                  placeholder="Informe ID, chave ou protocolo" />
+              </div>
+
+              <div class="btn-inline">
+                <button id="btnAbrirPdf" class="btn btn-secondary btn-sm" type="button">
+                  Abrir PDF
+                </button>
+
+                <button id="btnAbrirXml" class="btn btn-secondary btn-sm" type="button">
+                  Abrir XML
+                </button>
+              </div>
+            </div>
+
+            <div class="summary-pill summary-pill-success">
+              <div>
+                <strong>Dica:</strong>
+                use a chave da NF-e, o ID da PlugNotas ou o protocolo do evento.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+    -->
+
+    <!-- =============================================================== -->
+    <!-- TAB: HISTÓRICO                                                  -->
+    <!-- =============================================================== -->
+    <section id="tab-historico" class="cce-tab-panel" role="tabpanel">
+      <section class="table-layout-integrated">
+        <div class="table-layout-integrated__filter table-max-height-450">
+          <div class="fields-lines fields-gap-3">
+            <div class="fields-inline fields-gap-3">
+              <div>
+                <h2>Filtros e histórico</h2>
+              </div>
+            </div>
+
+            <div class="fields fields-inline">
+              <div class="fields fields-h-6 fields-w-25 fields-font-3">
+                <label for="filtroNfeNumber">Nº NF-e</label>
+                <input id="filtroNfeNumber" type="number" min="1" step="1" placeholder="Ex.: 8816" />
+              </div>
+
+              <div class="fields fields-h-6 fields-w-30 fields-font-3">
+                <label for="filtroNfeKey">Chave da NF-e</label>
+                <input id="filtroNfeKey" type="text" placeholder="44 dígitos" />
+              </div>
+
+              <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                <label for="filtroIdOuChave">ID / Chave alternativa</label>
+                <input id="filtroIdOuChave" type="text" placeholder="Ex.: ID PlugNotas" />
+              </div>
+
+              <div class="btn-inline">
+                <button id="btnBuscarHistorico" class="btn btn-new btn-sm" type="button">
+                  Buscar histórico
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TABLE -->
+        <div class="table-scroll table-height-flex table-row-h-28" data-table-settings="nfecce.tbodyeventossalvos">
+          <table class="table table-zebra table-zebra-hover table-sticky-head">
+            <thead>
+              <tr>
+                <th>Sequência</th>
+                <th>Nº NF-e</th>
+                <th>Cliente</th>
+                <th>Protocolo</th>
+                <th>Status</th>
+                <th>cStat</th>
+                <th>Criado por</th>
+                <th>Criado em</th>
+                <th>Selecionar</th>
+                <th>Documentos</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyEventosSalvos">
+              <tr>
+                <td colspan="8" class="empty-state">Nenhum evento encontrado.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- =================================================== -->
+        <!-- TABLE FOOTER                                        -->
+        <!-- =================================================== -->
+
+        <footer class="table-footer">
+          <div class="table-footer__info">
+            <div class="summary-pill summary-pill-success summary-width-5 summary-left-space-3">
+              <span id="apTableInfo">
+                0 Registros
+              </span>
+            </div>
+          </div>
+
+          <div class="table-footer__pagination">
+            <button id="btnPrevious" type="button" class="btn btn-toolbar btn-sm">
+              Anterior
+            </button>
+
+            <span id="pageInfo">
+              Página 1 de 1
+            </span>
+
+            <button id="btnNext" type="button" class="btn btn-toolbar btn-sm">
+              Próxima
+            </button>
+          </div>
+          <div class="table-footer__page-size">
+            <label for="pageSize">
+              Mostrar
+            </label>
+            <div class="fields fields-h-6 fields-w-3 fields-font-3">
+              <select id="pageSize" class="table-footer__page-size-select">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50" selected>50</option>
+                <option value="100">100</option>
+              </select>
+            </div>
+          </div>
+        </footer>
+      </section>
+
+      <!-- MODAL: DETALHES DO EVENTO SELECIONADO -->
+      <div id="modalDetalhesEvento" class="modal modal-width-7" aria-hidden="true">
+        <div class="modal__backdrop" data-modal-evento-close></div>
+
+        <div class="modal__dialog">
+          <section class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modalDetalhesEventoTitle">
+
+            <header class="modal__header modal-header-color-3">
+              <h2 id="modalDetalhesEventoTitle" class="modal__title">
+                Detalhes do evento selecionado
+              </h2>
+
+              <button class="modal__close" type="button" aria-label="Fechar modal" title="Fechar"
+                data-modal-evento-close>
+                &times;
+              </button>
+            </header>
+
+            <div class="modal__body">
+              <div class="fields-lines fields-gap-3">
+                <div class="fields-inline fields-gap-3">
+                  <span class="nfei-badge">SEFAZ</span>
+                </div>
+
+                <div class="fields-inline fields-gap-3">
+                  <div class="summary-pill summary-pill-success">
+                    <div><strong>Chave NF-e:</strong> <span id="detNfeKey">—</span></div>
+                  </div>
+
+                  <div class="summary-pill summary-pill-success">
+                    <div><strong>ID PlugNotas:</strong> <span id="detPlugnotasId">—</span></div>
+                  </div>
+                </div>
+
+                <div class="fields-inline fields-gap-3">
+                  <div class="summary-pill summary-pill-success">
+                    <div><strong>Protocolo:</strong> <span id="detProtocolo">—</span></div>
+                  </div>
+
+                  <div class="summary-pill summary-pill-success">
+                    <div><strong>Status:</strong> <span id="detStatus">—</span></div>
+                  </div>
+
+                  <div class="fields fields-font-3">
+                    <label>Resposta SEFAZ</label>
+                    <div id="detRespostaSefaz" class="summary-pill">—</div>
+                  </div>
+                </div>
+
+                <div class="fields fields-h-8 fields-w-full">
+                  <label for="detCorrecao">Texto da correção</label>
+                  <textarea id="detCorrecao"
+                    class="textarea textarea-border-1 textarea-radius-4 textarea-h-3 textarea-w-20 textarea-resize-vertical"
+                    readonly></textarea>
+                </div>
+              </div>
+
+              <div class="btn-inline">
+                <button id="btnAbrirPdfEvento" class="btn btn-secondary btn-sm" type="button" disabled>
+                  Abrir PDF do evento
+                </button>
+
+                <button id="btnAbrirXmlEvento" class="btn btn-secondary btn-sm" type="button" disabled>
+                  Abrir XML do evento
+                </button>
+              </div>
+
+              <div class="fields fields-font-3">
+                <label for="jsonHistoricoRemoto">Retorno remoto</label>
+                <pre id="jsonHistoricoRemoto" class="json-preview">{}</pre>
+              </div>
+            </div>
+        </div>
+
+        <footer class="modal__footer modal-footer-color-3">
+          <button class="btn btn-secondary btn-sm" type="button" data-modal-evento-close>
+            Fechar
+          </button>
+        </footer>
+    </section>
+    </div>
+    </div>
+    </section>
+
+    <!-- =============================================================== -->
+    <!-- FEEDBACK                                                        -->
+    <!-- =============================================================== 
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter">
+        <div class="fields-lines fields-gap-3">
+          <div class="fields-inline fields-gap-3">
+            <h2>Mensagens do módulo</h2>
+            <span class="nfei-badge">Status</span>
+          </div>
+
+          <div id="feedback" class="feedback info" role="status" aria-live="polite">
+            Módulo carregado.
+          </div>
+        </div>
+      </div>
+    </section>
+    -->
+  </main>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="/public/nfeCce/js/nfeCce.init.js"></script>
+</body>
+
+</html>

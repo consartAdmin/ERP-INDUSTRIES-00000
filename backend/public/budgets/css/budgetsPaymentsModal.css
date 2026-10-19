@@ -1,0 +1,262 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ budgetsPaymentsModal.css — Modal de Pagamentos | PRODNEX ERP        ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.u-lock-scroll {
+  overflow: hidden !important;
+}
+
+.budget-payments-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.35);
+  backdrop-filter: blur(2px);
+  z-index: 1400;
+}
+
+.budget-payments-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1401;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+.budget-payments-modal.hidden,
+.budget-payments-modal-backdrop.hidden {
+  display: none !important;
+}
+
+.budget-payments-modal__card {
+  width: min(1540px, 98vw);
+  max-height: 92vh;
+  background: #fff;
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(2, 6, 23, 0.18);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.budget-payments-modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+
+.budget-payments-modal__title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.budget-payments-modal__subtitle {
+  margin: 4px 0 0;
+  font-size: .88rem;
+  color: #64748b;
+}
+
+.budget-payments-modal__body {
+  padding: 16px 18px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.budget-payments-modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 14px 18px;
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+  background: #fff;
+}
+
+.budget-payments-toolbar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.payments-inline-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.payments-inline-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.payments-summary-grid,
+.payments-modal-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.payments-summary-item {
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: #f8fafc;
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.payments-summary-item span {
+  font-size: .82rem;
+  color: #64748b;
+}
+
+.payments-summary-item strong {
+  font-size: 1.05rem;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+#budgetPaymentsBalanceStatus,
+#budgetPaymentsBalanceStatusModal {
+  color: #b91c1c;
+}
+
+#budgetPaymentsBalanceStatus[data-status="balanced"],
+#budgetPaymentsBalanceStatusModal[data-status="balanced"] {
+  color: #15803d;
+}
+
+.budget-payments-installments-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.budget-payments-installments-title {
+  margin: 0;
+  font-size: .96rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+#tblBudgetPayments td,
+#tblBudgetPayments th,
+#tblBudgetPaymentInstallments td,
+#tblBudgetPaymentInstallments th {
+  vertical-align: middle;
+}
+
+#tblBudgetPayments .field-input,
+#tblBudgetPayments .field-select {
+  min-height: 34px;
+  height: 34px;
+}
+
+#tblBudgetPayments .btn.btn-toolbar.btn-sm {
+  min-width: 40px;
+  justify-content: center;
+}
+
+.payments-editor-card {
+  width: 100%;
+}
+
+.payments-summary {
+  display: none;
+}
+
+.payments-installments-wrap {
+  display: none;
+}
+
+@media (max-width: 1100px) {
+  .payments-summary-grid,
+  .payments-modal-summary {
+    grid-template-columns: repeat(2, minmax(160px, 1fr));
+  }
+
+  .budget-payments-modal__card {
+    width: min(98vw, 1200px);
+  }
+}
+
+@media (max-width: 720px) {
+  .budget-payments-modal {
+    padding: 10px;
+  }
+
+  .budget-payments-modal__card {
+    width: 100%;
+    max-height: 96vh;
+    border-radius: 14px;
+  }
+
+  .budget-payments-modal__header,
+  .budget-payments-modal__body,
+  .budget-payments-modal__footer {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .payments-summary-grid,
+  .payments-modal-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .budget-payments-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.budget-payment-bank-account-cell {
+  min-width: 270px;
+}
+
+.budget-payment-provider-cell {
+  min-width: 150px;
+}
+
+.budget-payment-provider {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 26px;
+  padding: 3px 9px;
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  background: #f8fafc;
+  color: #334155;
+  font-size: .76rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.budget-payment-provider--asaas {
+  border-color: #93c5fd;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.budget-payment-provider--manual {
+  border-color: #fcd34d;
+  background: #fffbeb;
+  color: #92400e;
+}
+
+.budget-payment-provider--other_api {
+  border-color: #c4b5fd;
+  background: #f5f3ff;
+  color: #6d28d9;
+}

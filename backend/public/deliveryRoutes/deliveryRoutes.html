@@ -1,0 +1,446 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ deliveryRoutes.html — Rotas de Entrega + Paradas da Rota           ║
+     ║ PRODNEX ERP | Frontend (ESM)                                       ║
+     ║ ✅ Rotas (lista + cadastro)                                        ║
+     ║ ✅ Paradas da rota (entregas/coletas)                              ║
+     ║ ✅ customersModalSearch / suppliersModalSearch                     ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <link rel="stylesheet" href="/public/modalsSearch/customersModalSearch.css?v=1" />
+  <link rel="stylesheet" href="/public/modalsSearch/suppliersModalSearch.css?v=1" />
+
+  <link rel="stylesheet" href="./deliveryRoutes.css?v=100" />
+
+  <title>ROTAS DE ENTREGA | PRODNEX ERP</title>
+</head>
+
+<body class="consart-theme c-page">
+  <div class="consart-container c-container c-container--2xl">
+
+    <section class="tabs mt-4">
+      <div class="tablist" role="tablist" aria-label="Rotas de Entrega">
+        <button class="tab ativa" role="tab" aria-selected="true" aria-controls="tab-lista" data-tab="lista">📄 Rotas</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="tab-cadastro" data-tab="cadastro">➕ Nova / Editar</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="tab-paradas" data-tab="paradas">📍 Paradas da Rota</button>
+      </div>
+
+      <!-- TAB: LISTA -->
+      <div class="tabpanel ativa" id="tab-lista" role="tabpanel" tabindex="0">
+        <section class="card mt-2">
+          <div class="card-header routes-header">
+            <div>
+              <h2 class="card-title">📄 Rotas de Entrega</h2>
+              <div class="routes-subtitle">
+                Cadastro e manutenção das rotas logísticas.
+              </div>
+            </div>
+
+            <div class="routes-header__actions">
+              <button id="btnGoNew" class="btn btn-flat btn-sm">➕ Nova Rota</button>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="linha routes-toolbar">
+              <div class="campo routes-toolbar__search">
+                <label for="searchInput">Buscar</label>
+                <input id="searchInput" type="text" placeholder="Nome, código, cidade, região, motorista, placa..." autocomplete="off" />
+              </div>
+
+              <div class="campo routes-toolbar__type">
+                <label for="typeFilter">Tipo</label>
+                <select id="typeFilter">
+                  <option value="">Todos</option>
+                  <option value="customers">🚚 Clientes (Entrega)</option>
+                  <option value="suppliers">📦 Fornecedores (Coleta)</option>
+                </select>
+              </div>
+
+              <div class="campo routes-toolbar__status">
+                <label for="statusFilter">Status</label>
+                <select id="statusFilter">
+                  <option value="">Todas</option>
+                  <option value="true">Ativas</option>
+                  <option value="false">Inativas</option>
+                </select>
+              </div>
+
+              <div class="campo routes-toolbar__btn">
+                <label>&nbsp;</label>
+                <button id="btnSearch" class="btn btn-flat btn-sm" type="button">Filtrar</button>
+              </div>
+
+              <div class="campo routes-toolbar__btn">
+                <label>&nbsp;</label>
+                <button id="btnClear" class="btn btn-secondary btn-sm" type="button">Limpar</button>
+              </div>
+            </div>
+
+            <div class="tabela-wrapper routes-tablewrap">
+              <table class="tabela tabela-routes" id="tabelaRotas">
+                <thead>
+                  <tr>
+                    <th style="width:90px;">ID</th>
+                    <th style="width:320px;">Nome</th>
+                    <th style="width:220px;">Tipo</th>
+                    <th style="width:220px;">Cidade</th>
+                    <th style="width:220px;">Motorista</th>
+                    <th style="width:140px;">Placa</th>
+                    <th style="width:110px;">Ativa</th>
+                    <th style="width:280px;">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="routesTableBody"></tbody>
+              </table>
+            </div>
+
+            <div class="paginacao mt-3 routes-pager">
+              <button class="btn btn-flat btn-sm" id="btnPrev" disabled>&laquo; Anterior</button>
+              <span id="lblPage" class="mx-2">Página 1</span>
+              <button class="btn btn-flat btn-sm" id="btnNext" disabled>Próxima &raquo;</button>
+
+              <span class="routes-muted routes-pager__count" id="lblCount">0 rotas</span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- TAB: CADASTRO -->
+      <div class="tabpanel" id="tab-cadastro" role="tabpanel" tabindex="0" hidden>
+        <section class="card mt-2">
+          <div class="card-header">
+            <h2 class="card-title" id="formTitle">➕ Nova Rota</h2>
+          </div>
+
+          <div class="card-body">
+            <form id="formRoute" autocomplete="off">
+              <input type="hidden" id="route_id" />
+
+              <input type="hidden" id="customer_id" />
+              <input type="hidden" id="supplier_id" />
+              <input type="hidden" id="linked_name" />
+              <input type="hidden" id="linked_tax_id" />
+
+              <div class="linha">
+                <div class="campo field-name">
+                  <label for="name">Nome da rota *</label>
+                  <input id="name" type="text" placeholder="Ex: ROTA BARREIRO" required />
+                </div>
+
+                <div class="campo field-type">
+                  <label for="route_type">Tipo da rota *</label>
+                  <select id="route_type" required>
+                    <option value="customers">🚚 Clientes (Entrega)</option>
+                    <option value="suppliers">📦 Fornecedores (Coleta)</option>
+                  </select>
+                </div>
+
+                <div class="campo field-code">
+                  <label for="route_code">Código</label>
+                  <input id="route_code" type="text" placeholder="Ex: ROTA-001" />
+                </div>
+
+                <div class="campo field-city">
+                  <label for="city">Cidade</label>
+                  <input id="city" type="text" placeholder="Ex: Belo Horizonte" />
+                </div>
+              </div>
+
+              <div class="linha mt-8">
+                <div class="campo field-linked-display">
+                  <label for="linked_display">Vínculo (Cliente/Fornecedor)</label>
+                  <input id="linked_display" type="text" placeholder="Clique em “Buscar” para vincular..." readonly />
+                </div>
+
+                <div class="campo field-linked-btn">
+                  <label>&nbsp;</label>
+                  <button type="button" class="btn btn-flat btn-sm" id="btnPickLinked">🔎 Buscar</button>
+                </div>
+
+                <div class="campo field-linked-btn">
+                  <label>&nbsp;</label>
+                  <button type="button" class="btn btn-secondary btn-sm" id="btnClearLinked">🧹 Limpar</button>
+                </div>
+              </div>
+
+              <div class="linha mt-8">
+                <div class="campo field-region">
+                  <label for="region">Região</label>
+                  <input id="region" type="text" placeholder="Ex: Zona Sul" />
+                </div>
+
+                <div class="campo field-driver">
+                  <label for="driver_name">Motorista</label>
+                  <input id="driver_name" type="text" placeholder="Nome do motorista" />
+                </div>
+
+                <div class="campo field-plate">
+                  <label for="vehicle_plate">Placa</label>
+                  <input id="vehicle_plate" type="text" placeholder="Ex: ABC-1D23" />
+                </div>
+
+                <div class="campo field-weekdays">
+                  <label>Dias da Semana</label>
+                  <div class="routes-weekdays__chips" role="group" aria-label="Dias da Semana">
+                    <label class="routes-chip"><input type="checkbox" value="1"> <span>Seg</span></label>
+                    <label class="routes-chip"><input type="checkbox" value="2"> <span>Ter</span></label>
+                    <label class="routes-chip"><input type="checkbox" value="3"> <span>Qua</span></label>
+                    <label class="routes-chip"><input type="checkbox" value="4"> <span>Qui</span></label>
+                    <label class="routes-chip"><input type="checkbox" value="5"> <span>Sex</span></label>
+                    <label class="routes-chip"><input type="checkbox" value="6"> <span>Sáb</span></label>
+                    <label class="routes-chip"><input type="checkbox" value="7"> <span>Dom</span></label>
+                  </div>
+                </div>
+
+                <div class="campo field-active">
+                  <label for="is_active">Status</label>
+                  <select id="is_active">
+                    <option value="true">Ativa</option>
+                    <option value="false">Inativa</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="linha mt-8">
+                <div class="campo campo-full">
+                  <label for="notes">Observações</label>
+                  <textarea id="notes" rows="4" placeholder="Observações da rota..."></textarea>
+                </div>
+              </div>
+
+              <div class="linha routes-form-actions mt-10">
+                <button type="button" class="btn btn-secondary btn-sm" id="btnCancelEdit">Cancelar</button>
+                <button type="submit" class="btn btn-flat btn-sm" id="btnSave">Salvar</button>
+                <button type="button" class="btn btn-flat btn-sm" id="btnGoStops" hidden>📍 Ir para Paradas</button>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+
+      <!-- TAB: PARADAS -->
+      <div class="tabpanel" id="tab-paradas" role="tabpanel" tabindex="0" hidden>
+        <section class="card mt-2">
+          <div class="card-header routes-header">
+            <div>
+              <h2 class="card-title">📍 Paradas da Rota</h2>
+              <div class="routes-subtitle" id="stopsRouteInfo">
+                Selecione ou salve uma rota para gerenciar as paradas.
+              </div>
+            </div>
+
+            <div class="routes-header__actions">
+              <button type="button" class="btn btn-secondary btn-sm" id="btnBackToRoute">↩ Voltar para Rota</button>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="routes-stop-alert" id="stopsEmptyState">
+              Para cadastrar paradas, primeiro salve a rota principal.
+            </div>
+
+            <div id="stopsContent" hidden>
+              <form id="formStop" autocomplete="off" class="routes-stop-form">
+                <input type="hidden" id="stop_id" />
+
+                <div class="linha">
+                  <div class="campo stop-field-order">
+                    <label for="stop_order">Ordem *</label>
+                    <input id="stop_order" type="number" min="1" step="1" placeholder="1" />
+                  </div>
+
+                  <div class="campo stop-field-movement">
+                    <label for="movement_type">Movimento *</label>
+                    <select id="movement_type" required>
+                      <option value="delivery">🚚 Entrega</option>
+                      <option value="pickup">📦 Coleta</option>
+                    </select>
+                  </div>
+
+                  <div class="campo stop-field-linked-type">
+                    <label for="linked_type">Vínculo *</label>
+                    <select id="linked_type" required>
+                      <option value="customer">Cliente</option>
+                      <option value="supplier">Fornecedor</option>
+                      <option value="other">Avulso</option>
+                    </select>
+                  </div>
+
+                  <div class="campo stop-field-status">
+                    <label for="stop_status">Status</label>
+                    <select id="stop_status">
+                      <option value="pending">Pendente</option>
+                      <option value="done">Concluído</option>
+                      <option value="canceled">Cancelado</option>
+                    </select>
+                  </div>
+                </div>
+
+                <input type="hidden" id="stop_customer_id" />
+                <input type="hidden" id="stop_supplier_id" />
+
+                <div class="linha mt-8">
+                  <div class="campo stop-field-pick-display">
+                    <label for="stop_linked_display">Cliente/Fornecedor</label>
+                    <input id="stop_linked_display" type="text" readonly placeholder="Clique em Buscar para vincular..." />
+                  </div>
+
+                  <div class="campo stop-field-pick-btn">
+                    <label>&nbsp;</label>
+                    <button type="button" class="btn btn-flat btn-sm" id="btnPickStopLinked">🔎 Buscar</button>
+                  </div>
+
+                  <div class="campo stop-field-pick-btn">
+                    <label>&nbsp;</label>
+                    <button type="button" class="btn btn-secondary btn-sm" id="btnClearStopLinked">🧹 Limpar</button>
+                  </div>
+                </div>
+
+                <div class="linha mt-8">
+                  <div class="campo stop-field-name">
+                    <label for="stop_name">Nome / Razão</label>
+                    <input id="stop_name" type="text" placeholder="Nome da parada" />
+                  </div>
+
+                  <div class="campo stop-field-tax">
+                    <label for="stop_tax_id">CNPJ / CPF</label>
+                    <input id="stop_tax_id" type="text" placeholder="Documento" />
+                  </div>
+
+                  <div class="campo stop-field-contact">
+                    <label for="stop_contact_name">Contato</label>
+                    <input id="stop_contact_name" type="text" placeholder="Nome do contato" />
+                  </div>
+
+                  <div class="campo stop-field-phone">
+                    <label for="stop_phone">Telefone</label>
+                    <input id="stop_phone" type="text" placeholder="Telefone" />
+                  </div>
+                </div>
+
+                <div class="linha mt-8">
+                  <div class="campo stop-field-address">
+                    <label for="stop_address">Endereço</label>
+                    <input id="stop_address" type="text" placeholder="Rua, número, complemento..." />
+                  </div>
+                </div>
+
+                <div class="linha mt-8">
+                  <div class="campo stop-field-city">
+                    <label for="stop_city">Cidade</label>
+                    <input id="stop_city" type="text" placeholder="Cidade" />
+                  </div>
+
+                  <div class="campo stop-field-region">
+                    <label for="stop_region">Região</label>
+                    <input id="stop_region" type="text" placeholder="Região" />
+                  </div>
+
+                  <div class="campo stop-field-date">
+                    <label for="stop_expected_date">Data Prevista</label>
+                    <input id="stop_expected_date" type="date" />
+                  </div>
+
+                  <div class="campo stop-field-time">
+                    <label for="stop_expected_time">Hora Prevista</label>
+                    <input id="stop_expected_time" type="time" />
+                  </div>
+                </div>
+
+                <div class="linha mt-8">
+                  <div class="campo campo-full">
+                    <label for="stop_notes">Observações</label>
+                    <textarea id="stop_notes" rows="3" placeholder="Observações da parada..."></textarea>
+                  </div>
+                </div>
+
+                <div class="linha routes-form-actions mt-10">
+                  <button type="button" class="btn btn-secondary btn-sm" id="btnCancelStop">Cancelar</button>
+                  <button type="submit" class="btn btn-flat btn-sm" id="btnSaveStop">Salvar Parada</button>
+                </div>
+              </form>
+
+              <hr class="routes-divider" />
+
+              <div class="tabela-wrapper routes-tablewrap routes-stops-tablewrap">
+                <table class="tabela tabela-stops" id="tabelaStops">
+                  <thead>
+                    <tr>
+                      <th style="width:90px;">Ordem</th>
+                      <th style="width:150px;">Movimento</th>
+                      <th style="width:160px;">Vínculo</th>
+                      <th style="width:320px;">Nome</th>
+                      <th style="width:180px;">Cidade</th>
+                      <th style="width:160px;">Status</th>
+                      <th style="width:320px;">Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody id="stopsTableBody"></tbody>
+                </table>
+              </div>
+
+              <div class="routes-stops-footer">
+                <span class="routes-muted" id="lblStopsCount">0 parada(s)</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+  </div>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <script>
+    (function abas(){
+      const tabs = document.querySelectorAll('.tabs .tab');
+      const panels = {
+        lista: document.getElementById('tab-lista'),
+        cadastro: document.getElementById('tab-cadastro'),
+        paradas: document.getElementById('tab-paradas')
+      };
+
+      tabs.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const key = btn.dataset.tab;
+
+          tabs.forEach(b => {
+            const active = b === btn;
+            b.classList.toggle('ativa', active);
+            b.setAttribute('aria-selected', active ? 'true' : 'false');
+          });
+
+          Object.entries(panels).forEach(([k, el]) => {
+            const active = (k === key);
+            el.toggleAttribute('hidden', !active);
+            el.classList.toggle('ativa', active);
+          });
+        });
+      });
+
+      window.__routesTabs = {
+        go(key) {
+          const b = document.querySelector(`.tabs .tab[data-tab="${key}"]`);
+          if (b) b.click();
+        }
+      };
+    })();
+  </script>
+
+  <script type="module" src="./deliveryRoutes.js?v=100"></script>
+</body>
+</html>

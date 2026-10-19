@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Central Contábil | CONSART</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- CONSART -->
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <!-- 🌐 Design System CONSART -->
+  <link rel="stylesheet" href="/public/includes/css/style.css">
+
+  <!-- Página -->
+  <link rel="stylesheet" href="counterPanelCustomers.css" />
+</head>
+
+<body class="consart">
+
+  <!-- =========================================================
+       Header / Filtros
+       ========================================================= -->
+  <header class="cp-header" role="banner">
+    <div class="filters">
+      <select id="competenciaMes" aria-label="Mês de competência"></select>
+      <select id="competenciaAno" aria-label="Ano de competência"></select>
+    </div>
+  </header>
+
+  <!-- =========================================================
+       ✅ Resumo + Checklist lado a lado
+       ========================================================= -->
+  <section class="cp-topgrid" aria-label="Resumo e checklist">
+    <!-- Resumo -->
+    <div class="cp-topgrid-left">
+      <section class="cp-summary" aria-label="Resumo de documentos">
+        <div class="summary-card">
+          <span class="label">Total de Arquivos</span>
+          <strong id="totalDocs">0</strong>
+        </div>
+
+        <div class="summary-card highlight">
+          <span class="label">Novos</span>
+          <strong id="novosDocs">0</strong>
+        </div>
+
+        <div class="summary-card">
+          <span class="label">Visualizados</span>
+          <strong id="viewedDocs">0</strong>
+        </div>
+
+        <div class="summary-card">
+          <span class="label">Baixados</span>
+          <strong id="downloadedDocs">0</strong>
+        </div>
+      </section>
+    </div>
+
+    <!-- Checklist -->
+    <div class="cp-topgrid-right">
+      <section class="cp-checklist" aria-label="Checklist da competência">
+        <div class="checklist-header">
+          <div class="checklist-title">
+            <strong>Checklist da Competência</strong>
+            <span id="checklistCompetenceLabel" class="muted">—</span>
+          </div>
+
+          <div class="checklist-actions">
+            <button id="btnRefresh" type="button" class="cp-btn ghost">⟳ Atualizar</button>
+          </div>
+        </div>
+
+        <div id="checklistGrid" class="checklist-grid" aria-live="polite"></div>
+
+        <div id="checklistHint" class="checklist-hint muted">
+          * O checklist é detectado automaticamente por nome/tipo do arquivo.
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       Lista de Arquivos
+       ========================================================= -->
+  <section class="cp-files" aria-label="Arquivos da competência">
+    <div class="files-header">
+      <span>Arquivos da Competência</span>
+      <span id="filesSubtitle" class="files-subtitle muted"></span>
+    </div>
+
+    <!-- Cabeçalho (desktop) -->
+    <div class="files-columns" aria-hidden="true">
+      <span>Documento</span>
+      <span>Tipo</span>
+      <span>Status</span>
+      <span>Ações</span>
+    </div>
+
+    <!-- Preenchido dinamicamente -->
+    <div id="filesList" class="files-list" aria-live="polite"></div>
+  </section>
+
+  <!-- =========================================================
+       ✅ Modal Preview (PDF)
+       ========================================================= -->
+  <div id="previewModal" class="cp-modal" aria-hidden="true">
+    <div class="cp-modal-backdrop" data-close="1"></div>
+
+    <div class="cp-modal-card" role="dialog" aria-modal="true" aria-label="Pré-visualização do documento">
+      <div class="cp-modal-head">
+        <div class="cp-modal-title">
+          <strong id="previewTitle">Pré-visualização</strong>
+          <span id="previewMeta" class="muted">—</span>
+        </div>
+
+        <div class="cp-modal-actions">
+          <button id="previewOpenNew" type="button" class="cp-btn ghost">↗ Abrir em nova guia</button>
+          <button id="previewClose" type="button" class="cp-btn">Fechar</button>
+        </div>
+      </div>
+
+      <div class="cp-modal-body">
+        <iframe id="previewFrame" title="Preview do PDF" loading="lazy"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       Core CONSART
+       ========================================================= -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <!-- Página -->
+  <script type="module" src="counterPanelCustomers.js"></script>
+</body>
+</html>

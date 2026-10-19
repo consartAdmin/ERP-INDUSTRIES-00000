@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>ATIVAR / DESATIVAR PRODUTOS (LOTE) | PRODNEX ERP</title>
+
+  <!-- 🎨 Design System CONSART -->
+  <link rel="stylesheet" href="/public/includes/css/style.css"/>
+
+  <!-- CSS específico desta página -->
+  <link rel="stylesheet" href="./productsActiveBatch.css" />
+</head>
+
+<body class="consart-theme c-page page" style="--consart-input-h: 30px;">
+
+  <main class="consart-container consart-container--fixed consart-container--full consart-container--vh-92 consart-lr">
+
+    <!-- LEFT -->
+    <section class="pab-panel pab-left consart-lr-panel">
+
+      <div class="pab-panel-header">
+        <div class="pab-title-row">
+          <h2>Produtos</h2>
+
+          <div class="pab-header-actions">
+            <button id="pab-prev-page" type="button" class="btn btn-toolbar btn-sm" title="Página anterior">
+              &laquo; Anterior
+            </button>
+
+            <span id="pab-page-info" class="pab-page-pill">Página 1</span>
+
+            <button id="pab-next-page" type="button" class="btn btn-toolbar btn-sm" title="Próxima página">
+              Próxima &raquo;
+            </button>
+          </div>
+        </div>
+
+        <div class="pab-search-box">
+          <label for="pab-search-input">Buscar produtos</label>
+
+          <div class="pab-search-input-wrapper">
+            <input
+              id="pab-search-input"
+              type="text"
+              placeholder="Digite SKU, descrição, código de barras..."
+              autocomplete="off"
+            />
+
+            <button id="pab-search-btn" type="button" class="btn btn-toolbar btn-sm">
+              Buscar
+            </button>
+          </div>
+
+          <small class="pab-help">
+            Dica: mínimo 3 caracteres para buscar. Você pode marcar vários produtos e ativar/desativar em lote.
+          </small>
+        </div>
+      </div>
+
+      <div class="pab-filter-row">
+        <label for="pab-status-filter">Status</label>
+        <select id="pab-status-filter">
+          <option value="all">Todos</option>
+          <option value="active">Somente ativos</option>
+          <option value="inactive">Somente inativos</option>
+        </select>
+      </div>
+
+      <div class="pab-filter-row">
+        <label class="pab-check">
+          <input type="checkbox" id="pab-only-selected-mode" />
+          <span>Modo seleção: operar apenas selecionados (ignorar filtros q/status)</span>
+        </label>
+        <small class="pab-help">
+          Se marcado, os botões do painel direito enviam <strong>apenas product_ids</strong>. Se desmarcado, você pode operar por busca/filtro.
+        </small>
+      </div>
+
+      <div class="consart-lr-scroll">
+        <div class="pab-table-wrapper">
+          <table class="pab-table consart-table-sticky">
+            <thead>
+              <tr>
+                <th><input type="checkbox" id="pab-select-all" /></th>
+                <th>Produto ID</th>
+                <th>SKU</th>
+                <th>Descrição</th>
+                <th>Status</th>
+                <th>Ação</th>
+              </tr>
+            </thead>
+            <tbody id="pab-products-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="pab-footer">
+        <div class="pab-selection-info">
+          <strong id="pab-selected-count">0</strong> produtos selecionados
+        </div>
+
+        <div class="pab-footer-hint">
+          Selecione produtos e use o painel à direita para ativar/desativar em lote.
+        </div>
+      </div>
+
+    </section>
+
+    <!-- RIGHT -->
+    <section class="pab-panel pab-right consart-lr-panel">
+
+      <div class="pab-card">
+        <h2>Ativar / Desativar em Lote</h2>
+
+        <div class="pab-alert-box">
+          <p>
+            <strong>Atenção:</strong> esta ação altera <strong>is_active</strong> em massa.
+            Use com cuidado — principalmente se estiver filtrando por busca/status.
+          </p>
+        </div>
+
+        <div class="pab-field-group">
+          <label>Alvo da operação</label>
+          <div class="pab-kv">
+            <div><strong>Selecionados:</strong> <span id="pab-summary-selected">0</span></div>
+            <div><strong>Status filtro:</strong> <span id="pab-summary-status">-</span></div>
+            <div><strong>Busca (q):</strong> <span id="pab-summary-q">-</span></div>
+          </div>
+        </div>
+
+        <button id="pab-activate-batch" type="button" class="btn btn-toolbar btn-md pab-btn-full">
+          Ativar produtos (lote)
+        </button>
+
+        <button id="pab-deactivate-batch" type="button" class="btn btn-toolbar btn-md pab-btn-full pab-btn-danger">
+          Desativar produtos (lote)
+        </button>
+      </div>
+
+      <div class="pab-card pab-summary-card">
+        <h3>Resumo rápido</h3>
+        <ul>
+          <li><strong>Produtos selecionados:</strong> <span id="pab-summary-selected-2">0</span></li>
+          <li><strong>Status atual (filtro):</strong> <span id="pab-summary-status-2">-</span></li>
+          <li><strong>Operação:</strong> <span id="pab-summary-op">-</span></li>
+        </ul>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="./productsActiveBatch.js"></script>
+</body>
+</html>

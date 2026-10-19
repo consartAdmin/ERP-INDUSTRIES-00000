@@ -1,0 +1,234 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗ */
+/* ║ 🎨 productsFiscalBatch.css – Vínculo Produto Fiscal em Lote         ║ */
+/* ╚══════════════════════════════════════════════════════════════════════╝ */
+
+/* Layout principal */
+.pfb-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2.2fr) minmax(320px, 1.2fr);
+  gap: var(--gap-lg, 24px);
+  margin-top: var(--gap-lg, 24px);
+}
+
+/* Painéis */
+.pfb-panel {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  padding: var(--gap-lg, 24px);
+  display: flex;
+  flex-direction: column;
+  min-height: 480px;
+}
+
+.pfb-panel-header h2 {
+  margin: 0 0 8px;
+  font-size: var(--fs-18, 18px);
+}
+
+.pfb-search-box label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.pfb-search-input-wrapper {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+  align-items: center;
+}
+
+.pfb-help {
+  font-size: 12px;
+  color: var(--muted, #6b7280);
+}
+
+/* Tabela */
+.pfb-table-wrapper {
+  margin-top: 16px;
+  flex: 1;
+  overflow: auto;
+  border-radius: 8px;
+  border: 1px solid var(--border-subtle, #e5e7eb);
+}
+
+.pfb-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.pfb-table thead {
+  background: #f3f4f6;
+}
+
+.pfb-table th,
+.pfb-table td {
+  padding: 6px 8px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.pfb-table th:first-child,
+.pfb-table td:first-child {
+  width: 32px;
+  text-align: center;
+}
+
+.pfb-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 999px;
+}
+
+.pfb-status-badge.ok {
+  background: #ecfdf3;
+  color: #166534;
+}
+
+.pfb-status-badge.no {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+/* Rodapé da lista */
+.pfb-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  font-size: 13px;
+}
+
+.pfb-pagination {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Painel direito */
+.pfb-card {
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 16px 18px;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 16px;
+}
+
+.pfb-card h2,
+.pfb-card h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.pfb-field-group {
+  margin-bottom: 14px;
+}
+
+.pfb-inline input.pfb-readonly { flex: 1; }
+#pfb-fiscal-profile { width: 100%; }
+
+
+#pfb-fiscal-profile {
+  width: 100%;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-subtle, #d1d5db);
+  background: #fff;
+}
+
+.pfb-alert-box {
+  margin: 10px 0 16px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: #fffbeb;
+  border: 1px solid #facc15;
+  font-size: 13px;
+}
+/* Resumo */
+.pfb-summary-card ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.pfb-summary-card li {
+  margin-bottom: 4px;
+}
+
+/* Responsivo */
+@media (max-width: 960px) {
+  .pfb-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pfb-filter-row {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.pfb-filter-row label {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.pfb-filter-row select {
+  min-width: 260px;
+}
+
+/* Coluna Desvincular */
+.pfb-unlink-cell {
+  white-space: nowrap;
+}
+
+.pfb-confirm-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, .45);
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+
+.pfb-confirm-card{
+  width: min(560px, 95vw);
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid rgba(148,163,184,.35);
+  box-shadow: 0 20px 60px rgba(0,0,0,.18);
+  overflow: hidden;
+}
+
+.pfb-confirm-head{
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(148,163,184,.22);
+}
+
+.pfb-confirm-title{
+  font-weight: 800;
+  font-size: 15px;
+  color: #0f172a;
+}
+
+.pfb-confirm-body{
+  padding: 14px 16px;
+  font-size: 14px;
+  color: #0f172a;
+  line-height: 1.45;
+}
+
+.pfb-confirm-foot{
+  padding: 14px 16px;
+  border-top: 1px solid rgba(148,163,184,.22);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}

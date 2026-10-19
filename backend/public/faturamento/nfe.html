@@ -1,0 +1,600 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════════════════╗
+     ║ 📄 backend\public\faturamento\nfe.html – Página de Faturamento de Pedidos/NF     ║
+     ╚══════════════════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>📄 Faturamento – PRODNEX ERP</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <!-- Tema/Globais -->
+  <link rel="stylesheet" href="/public/includes/theme-consart.css" />
+  <link rel="stylesheet" href="/public/includes/home.css">
+  <link rel="stylesheet" href="/public/includes/menu.css">
+  <link rel="stylesheet" href="/public/statusUsuario/statusUsuario.css" />
+
+  <!-- Estilos específicos da página -->
+  <link rel="stylesheet" href="nfe.css" />
+
+  <!-- 🔌 Shim de compatibilidade: consulta status SEFAZ -->
+  <script>
+    window.sefaz = window.sefaz || {
+      async statusServico () {
+        const r = await fetch('/api/nfe/sefaz/status', {
+          headers: { 'Accept': 'application/json' },
+          cache: 'no-store'
+        });
+        if (!r.ok) throw new Error(`Falha ao consultar SEFAZ (HTTP ${r.status})`);
+        return r.json();
+      }
+    };
+  </script>
+</head>
+<body class="consart-theme c-page">
+
+  <style>
+  :root{
+    --h-toprow: 168px;
+    --toprow-title: 1.25rem;
+    --toprow-input-h: 26px;
+    --brand-blue: #2563eb;
+    --brand-cyan: #06b6d4;
+    --brand-sky:  #e0f2fe;
+  }
+  .sticky-toolbar{ display:none !important; }
+  .c-main { margin-top: 0 !important; padding-top: 0 !important; }
+  .c-page .c-container { margin-top: 0 !important; padding-top: 0 !important; }
+  .tabs { margin-top: 0 !important; }
+
+  .linha-top-faturamento{
+    display: grid;
+    grid-template-columns: minmax(360px, 1fr) minmax(480px, 1.35fr);
+    gap: .6rem;
+    align-items: stretch;
+  }
+  @media (max-width: 1100px){ .linha-top-faturamento{ grid-template-columns: 1fr; } }
+  #bloco-txconf, #bloco-nota{ display:flex; flex-direction:column; padding:4px 8px; }
+  #bloco-txconf{ height: var(--h-toprow); overflow: auto; }
+  #bloco-nota{ height: auto; max-height: none; overflow: visible; }
+  #bloco-txconf > h2, #bloco-nota > h2{ font-size: var(--toprow-title); margin:0 0 4px; line-height:1.1; }
+  .txconf-line{ display:flex; align-items:end; justify-content:space-between; gap:8px; flex-wrap:wrap; margin-bottom:4px; }
+  .tx-status{ display:flex; align-items:center; gap:8px; }
+  .tx-status .badge{ padding:2px 6px; font-size:.85rem; }
+  .tx-actions{ display:flex; align-items:end; gap:6px; }
+  .tx-actions label{ display:flex; flex-direction:column; font-size:.9rem; }
+  .tx-actions input{ height: var(--toprow-input-h); padding:2px 6px; font-size:.9rem; }
+  .tx-actions .btn{ height: var(--toprow-input-h); padding: 0 10px; font-size:.9rem; }
+  #stepper .step{ padding:4px 8px; font-size:.9rem; margin:2px 6px 2px 0; display:inline-block; }
+  #timeline{ flex:1 1 auto; overflow:auto; margin-top:.25rem; }
+
+  #bloco-nota .grid-2{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(180px, 1fr));
+    gap: 4px 8px;
+    align-items: end;
+  }
+  @media (max-width: 1100px){ #bloco-nota .grid-2{ grid-template-columns: repeat(2, minmax(160px,1fr)); } }
+  @media (max-width: 720px){ #bloco-nota .grid-2{ grid-template-columns: 1fr; } }
+  #bloco-nota label{ font-size:.9rem; line-height:1.1; }
+  #bloco-nota input, #bloco-nota select{ height:26px; padding:2px 6px; font-size:.9rem; }
+  #bloco-nota .span-2{ grid-column:1 / -1; }
+
+  .grid-bottom-2{
+    display:grid; grid-template-columns: repeat(2, minmax(320px, 1fr)); gap:16px; align-items:start;
+  }
+  @media (max-width: 1000px){ .grid-bottom-2{ grid-template-columns: 1fr; } }
+  .grid-bottom-2 > .subcard{ height:auto !important; max-height:none !important; overflow:visible !important; padding:6px 8px !important; display:flex; flex-direction:column; }
+  .grid-bottom-2 > .subcard h3{ margin:0 0 4px; padding:0; font-size:1rem; }
+  .grid-bottom-2 > .subcard > .grid-2{
+    display:grid; grid-template-columns: repeat(3, minmax(180px, 1fr)); gap:6px 8px; align-items:end;
+  }
+  @media (max-width: 1200px){ .grid-bottom-2 > .subcard > .grid-2{ grid-template-columns: repeat(2, minmax(160px, 1fr)); } }
+  @media (max-width: 720px){ .grid-bottom-2 > .subcard > .grid-2{ grid-template-columns: 1fr; } }
+  .grid-bottom-2 > .subcard label{ font-size:.9rem; line-height:1.1; }
+  .grid-bottom-2 > .subcard input, .grid-bottom-2 > .subcard select{ height:26px; padding:2px 6px; font-size:.9rem; }
+
+  .produtos-card{ padding:0 !important; }
+  .produtos-card h2{ margin:0; padding:6px 8px; border-bottom:1px solid #ddd; font-size:1rem; }
+  .produtos-card .c-scroll{ max-height:420px; padding:0; }
+
+  .c-modal{ position:fixed; inset:0; display:flex; align-items:center; justify-content:center; z-index:9999; }
+  .c-modal.hidden{ display:none; }
+  .c-modal__backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.35); backdrop-filter:saturate(120%) blur(1px); }
+  .c-modal__panel{ position:relative; z-index:1; background:#fff; color:#222; border-radius:10px; width:min(520px, 92vw); padding:16px 18px; box-shadow:0 10px 30px rgba(0,0,0,.18); overflow:hidden; }
+  .c-modal__title{ margin:0 0 8px; font-size:1.05rem; }
+  .c-modal__body{ display:flex; align-items:center; gap:14px; padding:8px 0 4px; min-height:68px; }
+  .c-modal__footer{ display:flex; justify-content:flex-end; gap:8px; margin-top:8px; }
+
+  .c-spinner{
+    --thickness: 6px;
+    width:56px; height:56px; border-radius:50%;
+    background: conic-gradient(from 0deg, var(--brand-blue) 0 25%, var(--brand-cyan) 0 50%, transparent 0 100%);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--thickness)), #000 0);
+            mask: radial-gradient(farthest-side, transparent calc(100% - var(--thickness)), #000 0);
+    animation:cspin .9s linear infinite;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,.18));
+  }
+  @keyframes cspin{ to{ transform:rotate(360deg); } }
+  .c-icon{ font-size:24px; line-height:0; }
+  .c-ok{ color:#16a34a; }
+  .c-err{ color:#dc2626; }
+  #txModalMsg{ margin:0; font-weight:600; color:#0f172a; font-size:clamp(1.125rem, 2.4vw, 1.5rem); }
+
+  .brandmark{ position:relative; }
+  .brandmark .brandmark-bg{
+    position:absolute; z-index:0; top:50%; left:-6%; width:112%; height:46%;
+    transform:translateY(-50%) rotate(-0.2deg);
+    background: linear-gradient(90deg, rgba(14,165,233,.10), rgba(37,99,235,.10));
+    border-radius:16px; pointer-events:none; user-select:none;
+  }
+  .brandmark::before{
+    content:"CONSART"; position:absolute; inset:0; z-index:0; display:flex; align-items:center; justify-content:center;
+    font-weight:900; font-size:clamp(42px, 9vw, 140px); letter-spacing:.08em; color:#000; opacity:.06; pointer-events:none; user-select:none; transform:translateY(-6px);
+  }
+  .brandmark::after{
+    content:"GESTÃO EMPRESARIAL"; position:absolute; left:0; right:0; bottom:10px; z-index:0; text-align:center;
+    font-weight:700; font-size:clamp(10px, 2.2vw, 22px); letter-spacing:.35em; color:#000; opacity:.06; pointer-events:none; user-select:none;
+  }
+  @media (prefers-reduced-motion: reduce){ .c-spinner{ animation-duration: 1.8s; } }
+  </style>
+
+  <!-- (Toolbar permanece no DOM, mas oculta por CSS) -->
+  <div class="sticky-toolbar" id="tlbar" role="region" aria-label="Barra de faturamento">
+    <strong>Faturamento</strong>
+    <span id="ambBadge" class="badge info">Ambiente: —</span>
+    <span id="serieInfo" class="badge">Série: —</span>
+    <span id="numeroInfo" class="badge">NF-e: —</span>
+    <span id="valorInfo" class="badge ok">Vlr NF: —</span>
+    <span class="sp"></span>
+    <label class="muted" style="display:flex;align-items:center;gap:.5rem">
+      <span>ID do Pedido:</span>
+      <input type="number" id="pedidoIdTop" placeholder="ex.: 24" />
+    </label>
+    <button class="btn" id="btnCarregarTop">Carregar</button>
+    <button class="btn" id="btnDanfeTop" disabled>Ver DANFE</button>
+    <button class="btn" id="btnCopiarChave" disabled>Copiar chave</button>
+  </div>
+
+  <main class="c-main">
+    <div class="c-container c-container--2xl">
+
+      <nav class="tabs">
+        <button class="tab active" data-tab="transmissao">Transmissão / Conferência</button>
+        <button class="tab" data-tab="acoes">Ações</button>
+      </nav>
+
+      <!-- ===== Aba 1 – Transmissão / Conferência ===== -->
+      <section class="tab-content" id="tab-transmissao">
+        <div class="linha-top-faturamento">
+          <section class="card" id="bloco-txconf">
+            <h2>🛰️ Transmissão &nbsp;•&nbsp; 📄 Conferência</h2>
+
+            <div class="txconf-line">
+              <div class="tx-status">
+                <span id="badgeTx" class="badge info">Aguardando…</span>
+                <span id="connTx" class="muted">desconectado</span>
+              </div>
+
+              <div class="tx-actions">
+                <label for="pedidoId">ID do Pedido
+                  <input type="number" id="pedidoId" placeholder="Informe o ID e pressionar Enter" />
+                </label>
+                <button id="btnCarregar" type="button" class="btn">🔄 Carregar Dados</button>
+              </div>
+            </div>
+
+            <div class="stepper" id="stepper" role="list">
+              <div class="step" data-step="1">1. Carregar</div>
+              <div class="step" data-step="2">2. Conferir</div>
+              <div class="step" data-step="3">3. Validar</div>
+              <div class="step" data-step="4">4. Assinar</div>
+              <div class="step" data-step="5">5. Transmitir</div>
+              <div class="step" data-step="6">6. DANFE</div>
+            </div>
+
+            <ul id="timeline" class="timeline"></ul>
+          </section>
+
+          <section class="card" id="bloco-nota">
+            <h2>📄 Nota Fiscal</h2>
+            <div class="grid-2">
+              <label>Operação
+                <select id="operacao">
+                  <option value="1">Venda</option>
+                  <option value="2">Remessa</option>
+                  <option value="3">Devolução</option>
+                </select>
+              </label>
+              <label>Número NF-e <input type="text" id="numero_nf" /></label>
+              <label>Série NF-e <input type="text" id="serie_nf" /></label>
+              <label>Hora Emissão <input type="time" id="hora_emissao" /></label>
+              <label>Data Emissão <input type="date" id="data_emissao" /></label>
+              <label>Data Saída <input type="date" id="data_saida" /></label>
+              <label class="span-2">Chave de Acesso <input type="text" id="chave_acesso" /></label>
+            </div>
+          </section>
+        </div>
+
+        <section class="card">
+          <div class="grid-bottom-2">
+            <div class="subcard box-cliente">
+              <h3>👤 Dados do Cliente</h3>
+              <div class="grid-2 cols-2">
+                <label>Nome / Razão Social <input id="cliente_nome_input" placeholder="Nome/Razão Social" /></label>
+                <label>CNPJ / CPF <input id="cliente_cnpj_input" placeholder="00.000.000/0000-00" /></label>
+                <label class="span-2">Endereço <input id="cliente_endereco_input" placeholder="Rua, nº, bairro" /></label>
+                <label>Bairro / Distrito <input id="cliente_bairro_input" /></label>
+                <label>CEP <input id="cliente_cep_input" /></label>
+                <label>Município <input id="cliente_municipio_input" /></label>
+                <label>UF <input id="cliente_uf_input" maxlength="2" /></label>
+                <label>Fone / Fax <input id="cliente_fone_input" /></label>
+                <label>Inscrição Estadual <input id="cliente_ie_input" /></label>
+              </div>
+            </div>
+
+            <div class="subcard box-transporte">
+              <h3>🚚 Transporte</h3>
+              <div class="grid-2 cols-2">
+                <label>Valor do Frete <input type="text" id="valor_frete" /></label>
+                <label>Transportadora <input type="text" id="transportadora" /></label>
+                <label>Modalidade Frete
+                  <select id="modalidade_frete">
+                    <option value="0">0 - Emitente</option>
+                    <option value="1">1 - Destinatário</option>
+                    <option value="2">2 - Terceiros</option>
+                    <option value="9">9 - Sem frete</option>
+                  </select>
+                </label>
+                <label>Placa do veículo <input type="text" id="placa_veiculo" /></label>
+                <label>UF do veículo <input type="text" id="uf_veiculo" maxlength="2" /></label>
+                <label>RNTC do veículo <input type="text" id="rntc_veiculo" /></label>
+                <label>Quantidade <input type="text" id="quantidade_volumes" /></label>
+                <label>Espécie <input type="text" id="especie" /></label>
+                <label>Marca <input type="text" id="marca" /></label>
+                <label>Volumes <input type="text" id="volumes" /></label>
+                <label>Peso líquido <input type="text" id="peso_liquido" /></label>
+                <label>Peso bruto <input type="text" id="peso_bruto" /></label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card produtos-card">
+          <h2>📦 Produtos</h2>
+          <div class="c-scroll c-scroll--table">
+            <table class="tabela-produtos" aria-describedby="totalProdutosLabel">
+              <thead>
+                <tr>
+                  <th style="width:100px;">SKU</th>
+                  <th style="width:320px;">Descrição</th>
+                  <th style="width:80px;">NCM</th>
+                  <th style="width:80px;">CEST</th>
+                  <th style="width:80px;">CFOP</th>
+                  <th style="width:80px;">CST</th>
+                  <th style="width:60px;">Unid.</th>
+                  <th style="width:60px;">Qtd</th>
+                  <th style="width:100px;">Unit.</th>
+                  <th style="width:120px;">Total</th>
+                </tr>
+              </thead>
+              <tbody id="corpoTabelaProdutos">
+                <tr><td colspan="10" style="text-align:center;">Nenhum produto carregado.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="margin:.25rem 6px; text-align:right;">
+            <strong id="totalProdutosLabel">Total dos produtos: R$ <span id="totalProdutos">0,00</span></strong>
+          </div>
+
+          <!-- ░░░ Prazo de Pagamento / Duplicatas ░░░ -->
+          <div id="boxPrazoPagamento" class="prazo-wrapper" hidden>
+            <div class="prazo-card">
+              <div class="prazo-header">
+                <strong>🧾 Prazo de Pagamento</strong>
+                <span id="prazoForma" class="prazo-pill"></span>
+                <span id="prazoCond" class="prazo-pill"></span>
+              </div>
+
+              <div class="c-scroll c-scroll--table" style="max-height: 220px;">
+                <table class="prazo-table" aria-describedby="prazoResumo">
+                  <thead>
+                    <tr>
+                      <th style="width:90px;">Parcela</th>
+                      <th style="width:160px;">Vencimento</th>
+                      <th style="width:160px;" class="num">Valor</th>
+                    </tr>
+                  </thead>
+                  <tbody id="prazoTBody">
+                    <tr><td colspan="3" style="text-align:center;">Sem duplicatas.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+
+              <div class="prazo-footer">
+                <div id="prazoResumo" class="muted"></div>
+                <div><strong>Total das duplicatas: <span id="prazoTotal">R$ 0,00</span></strong></div>
+              </div>
+            </div>
+          </div>
+          <!-- ░░░ /Prazo de Pagamento ░░░ -->
+
+          <div class="acoes-inline" style="display:flex; gap:12px; justify-content:flex-end; margin:.5rem 6px 6px;">
+            <button id="btnTransmitir" type="button" class="btn btn-primary">🚀 Transmitir NF-e</button>
+          </div>
+        </section>
+      </section>
+
+      <section class="tab-content hidden" id="tab-acoes">
+        <section class="card acoes" style="display:flex; gap:12px; justify-content:flex-end;">
+          <button type="button" onclick="window.history.back()" class="btn">↩️ Voltar</button>
+        </section>
+      </section>
+
+    </div>
+  </main>
+
+<script>
+  if (!window.reservarNumeroNFe) {
+    window.reservarNumeroNFe = async function () {
+      try { console.info('[hotfix] reservarNumeroNFe() chamado no front – ignorado.'); }
+      catch {}
+      return { ok: true, message: 'Reserva tratada no backend.' };
+    };
+  }
+</script>
+  <!-- Globais -->
+  <script src="/public/verificarLogin/verificarLogin.js"></script>
+  <script src="/public/statusUsuario/statusUsuario.js" defer></script>
+  <script src="/public/includes/menu.js"></script>
+  <script src="/public/includes/sessionTimeout.js" defer></script>
+
+  <!-- Tab switcher -->
+  <script>
+    const tabs = document.querySelectorAll(".tab");
+    const tabContents = document.querySelectorAll(".tab-content");
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        tabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        const target = "tab-" + tab.dataset.tab;
+        tabContents.forEach(tc => tc.classList.add("hidden"));
+        document.getElementById(target).classList.remove("hidden");
+      });
+    });
+  </script>
+
+  <!-- 📦 Importações modularizadas -->
+<script type="module" src="nfe.js?v=hf1"></script>
+
+  <!-- ╔══════════════════════════════════════════════════════╗
+       ║ MODAL DE TRANSMISSÃO – marcação                     ║
+       ╚══════════════════════════════════════════════════════╝ -->
+  <div id="txModal" class="c-modal hidden" role="dialog" aria-modal="true" aria-labelledby="txModalTitle" aria-describedby="txModalMsg">
+    <div class="c-modal__backdrop" data-close="1"></div>
+    <div class="c-modal__panel brandmark" role="document" tabindex="-1">
+      <div class="brandmark-bg" aria-hidden="true"></div>
+      <h3 id="txModalTitle" class="c-modal__title">Transmitindo NF-e</h3>
+      <div class="c-modal__body">
+        <div id="txSpin" class="c-spinner" aria-hidden="true"></div>
+        <div id="txOk" class="c-icon c-ok hidden" aria-hidden="true">✔️</div>
+        <div id="txErr" class="c-icon c-err hidden" aria-hidden="true">✖️</div>
+        <p id="txModalMsg">Faturando sua NF-e…</p>
+      </div>
+      <div class="c-modal__footer">
+        <!-- 🔽 Agora é um botão normal; o JS fará o download -->
+        <button id="txOpenDanfe" class="btn hidden">Abrir DANFE</button>
+        <button id="txCloseBtn" type="button" class="btn hidden" aria-keyshortcuts="Escape">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+<!-- ╔══════════════════════════════════════════════════════════════╗
+     ║ MODAL DE TRANSMISSÃO – lógica (download automático)          ║
+     ╚══════════════════════════════════════════════════════════════╝ -->
+<script>
+(function(){
+  let currentDanfeUrl  = '';
+  let currentChaveNFe  = '';
+  let currentNumero    = '';
+  let currentSerie     = 1;
+
+  const safeText = (v) => (v ?? '').toString();
+
+  /** 🔽 Força o download via rota /api/nfe/danfe/download/:ref */
+  function triggerDanfeDownload(ref){
+    if (!ref) { alert('Número da NF-e não disponível para download.'); return; }
+    const url = `/api/nfe/danfe/download/${encodeURIComponent(String(ref))}?t=${Date.now()}`;
+    // navegar para a URL com attachment → o navegador baixa
+    window.location.href = url;
+  }
+
+  /** (Opcional) Garante que o DANFE foi gerado antes do download */
+async function ensureDanfeGenerated({numero, serie, chave}){
+  try{
+    if (!numero && !chave) return;
+    const ovr = (window.getDanfeFaturaOverride && window.getDanfeFaturaOverride()) || {};
+    await fetch('/api/danfe/gerar', {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json', 'Accept':'application/json' },
+      body: JSON.stringify({ numero, serie, chave, ...ovr })
+    }).catch(()=>{});
+  }catch(_){}
+}
+
+  function setupModal(){
+    const elBtn        = document.getElementById('btnTransmitir');
+    const elPedido1    = document.getElementById('pedidoId');
+    const elPedido2    = document.getElementById('pedidoIdTop');
+    const btnDanfeTop  = document.getElementById('btnDanfeTop');
+    const btnCopiar    = document.getElementById('btnCopiarChave');
+
+    const $modal  = document.getElementById('txModal');
+    const $panel  = $modal?.querySelector('.c-modal__panel');
+    const $bd     = $modal?.querySelector('.c-modal__backdrop');
+    const $msg    = document.getElementById('txModalMsg');
+    const $title  = document.getElementById('txModalTitle');
+    const $spin   = document.getElementById('txSpin');
+    const $ok     = document.getElementById('txOk');
+    const $err    = document.getElementById('txErr');
+    const $close  = document.getElementById('txCloseBtn');
+    const $openDn = document.getElementById('txOpenDanfe');
+
+    if (!$modal || !$title || !$msg || !$spin || !$ok || !$err) return;
+
+    // 🔽 Botão do TOP: baixa direto
+    if (btnDanfeTop) {
+      btnDanfeTop.addEventListener('click', async () => {
+        try {
+          await ensureDanfeGenerated({numero: currentNumero, serie: currentSerie, chave: currentChaveNFe});
+          triggerDanfeDownload(currentNumero || currentChaveNFe);
+        } catch (e) {
+          alert(e?.message || 'Falha ao preparar o download do DANFE.');
+        }
+      });
+    }
+
+    if (btnCopiar) {
+      btnCopiar.addEventListener('click', async () => {
+        const chave = safeText(currentChaveNFe);
+        if (!chave) return;
+        try {
+          await navigator.clipboard.writeText(chave);
+          btnCopiar.textContent = 'Copiado!'; setTimeout(()=> btnCopiar.textContent = 'Copiar chave', 1200);
+        } catch {
+          alert('Não foi possível copiar a chave.');
+        }
+      });
+    }
+
+    const isOpen   = () => !$modal.classList.contains('hidden');
+    const canClose = () => true;
+
+    function openModal(){
+      $title.textContent = 'Transmitindo NF-e';
+      $msg.textContent   = 'Faturando sua NF-e…';
+      $spin?.classList.remove('hidden');
+      $ok  ?.classList.add('hidden');
+      $err ?.classList.add('hidden');
+      $close   ?.classList.add('hidden');
+      $openDn  ?.classList.add('hidden');
+      $modal.classList.remove('hidden');
+      $panel?.focus();
+    }
+
+    function setOk(msg='NF-e emitida e transmitida com sucesso!'){
+      $spin?.classList.add('hidden');
+      $err ?.classList.add('hidden');
+      $ok  ?.classList.remove('hidden');
+      $title.textContent = 'Tudo certo!';
+      $msg.textContent   = msg;
+
+      if ($openDn) {
+        $openDn.onclick = async (ev) => {
+          ev.preventDefault();
+          try {
+            await ensureDanfeGenerated({numero: currentNumero, serie: currentSerie, chave: currentChaveNFe});
+            triggerDanfeDownload(currentNumero || currentChaveNFe);
+          } catch (e) {
+            alert(e?.message || 'Falha ao preparar o download do DANFE.');
+          }
+        };
+        $openDn.classList.remove('hidden');
+      }
+      $close?.classList.remove('hidden');
+    }
+
+    function setErr(msg='Falha ao transmitir a NF-e'){
+      $spin?.classList.add('hidden');
+      $ok  ?.classList.add('hidden');
+      $err ?.classList.remove('hidden');
+      $title.textContent = 'Ocorreu um erro';
+      $msg.textContent   = msg;
+      $close?.classList.remove('hidden');
+      $openDn?.classList.add('hidden');
+    }
+    function closeModal(){
+      if (!isOpen() || !canClose()) return;
+      $modal.classList.add('hidden');
+    }
+
+    document.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Escape' && isOpen() && canClose()) {
+        ev.preventDefault();
+        closeModal();
+      }
+    });
+    $bd?.addEventListener('click', () => { if (isOpen() && canClose()) closeModal(); });
+    $close?.addEventListener('click', closeModal);
+
+    async function defaultTransmit(pedidoId){
+      const res = await fetch(`/api/nfe/transmitir/${encodeURIComponent(pedidoId)}`, {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json', 'Accept':'application/json' },
+        body: JSON.stringify({})
+      });
+      if (!res.ok){
+        const txt = await res.text().catch(()=> '');
+        try { const j = JSON.parse(txt); throw new Error(j?.erro || txt || ('HTTP '+res.status)); }
+        catch { throw new Error(txt || ('HTTP '+res.status)); }
+      }
+      return res.json();
+    }
+
+    async function onTransmitClick(){
+      const pedidoId = Number(elPedido1?.value || elPedido2?.value || 0);
+      if(!pedidoId){
+        $modal.classList.remove('hidden');
+        setErr('Informe o ID do pedido antes de transmitir.');
+        return;
+      }
+
+      currentDanfeUrl = '';
+      currentChaveNFe = '';
+      currentNumero   = '';
+      currentSerie    = Number.parseInt(document.getElementById('serie_nf')?.value, 10) || 1;
+      btnDanfeTop && (btnDanfeTop.disabled = true);
+      btnCopiar   && (btnCopiar.disabled   = true);
+
+      openModal();
+      elBtn && (elBtn.disabled = true);
+
+      try {
+        const exec = (typeof window.execTransmitirNFe === 'function')
+          ? (pid) => window.execTransmitirNFe(pid)
+          : defaultTransmit;
+
+        const data   = await exec(pedidoId);
+        const numero = data?.numero || data?.nNF || '';
+        const chave  = data?.chave  || data?.chNFe || data?.chave_acesso || '';
+
+        currentNumero   = safeText(numero);
+        currentChaveNFe = safeText(chave);
+
+        if (btnDanfeTop && (currentNumero || currentChaveNFe)) btnDanfeTop.disabled = false;
+        if (btnCopiar   && currentChaveNFe) btnCopiar.disabled   = false;
+
+        setOk(numero ? `NF-e nº ${numero} transmitida com sucesso!` : 'NF-e transmitida com sucesso!');
+      } catch(e) {
+        setErr(e?.message || 'Falha ao transmitir a NF-e');
+      } finally {
+        elBtn && (elBtn.disabled = false);
+      }
+    }
+
+    elBtn?.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      ev.stopImmediatePropagation();
+      onTransmitClick();
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', setupModal);
+})();
+</script>
+
+
+</body>
+</html>

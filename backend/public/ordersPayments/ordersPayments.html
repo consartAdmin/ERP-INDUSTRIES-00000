@@ -1,0 +1,139 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ ordersPayments.html — Pagamentos de Pedidos                        ║
+     ║ PRODNEX ERP                                                        ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Pagamentos de Pedidos | PRODNEX ERP</title>
+
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/ordersPayments/ordersPayments.css" />
+</head>
+
+<body>
+  <div id="appMenu"></div>
+
+  <main class="payments-page">
+    <header class="page-header">
+      <div>
+        <h1>Pagamentos de Pedidos</h1>
+        <p>Cadastre, consulte e gerencie as formas de pagamento vinculadas aos pedidos.</p>
+      </div>
+
+      <button id="btnNovoPagamento" class="btn primary">+ Novo Pagamento</button>
+    </header>
+
+    <section class="card filters-card">
+      <div class="field">
+        <label for="filtroOrderId">Nº do Pedido</label>
+        <input type="number" id="filtroOrderId" placeholder="Ex: 123" />
+      </div>
+
+      <button id="btnPesquisar" class="btn">Pesquisar</button>
+      <button id="btnLimpar" class="btn ghost">Limpar</button>
+    </section>
+
+    <section class="card table-card">
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Pedido</th>
+              <th>Forma</th>
+              <th>Valor</th>
+              <th>Parcelas</th>
+              <th>Vencimento Manual</th>
+              <th>Criado em</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="paymentsTableBody">
+            <tr>
+              <td colspan="8" class="empty">Carregando...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div id="paymentModal" class="modal-layer hidden">
+    <div class="modal-card">
+      <header class="modal-header">
+        <h2 id="modalTitle">Novo Pagamento</h2>
+        <button id="btnFecharModal" class="modal-close">×</button>
+      </header>
+
+      <form id="paymentForm" class="payment-form">
+        <input type="hidden" id="order_payment_id" />
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="order_id">Pedido *</label>
+            <input type="number" id="order_id" required />
+          </div>
+
+          <div class="field">
+            <label for="payment_method_id">ID Forma Pagamento</label>
+            <input type="number" id="payment_method_id" />
+          </div>
+
+          <div class="field span-2">
+            <label for="payment_method_name">Nome da Forma</label>
+            <input type="text" id="payment_method_name" placeholder="Ex: Boleto, Pix, Cartão" />
+          </div>
+
+          <div class="field">
+            <label for="amount">Valor *</label>
+            <input type="number" id="amount" step="0.01" min="0" required />
+          </div>
+
+          <div class="field">
+            <label for="installments">Parcelas</label>
+            <input type="number" id="installments" min="1" />
+          </div>
+
+          <div class="field">
+            <label for="manual_due_date">Vencimento Manual</label>
+            <input type="date" id="manual_due_date" />
+          </div>
+
+          <div class="field">
+            <label for="gap_one">Intervalo 1</label>
+            <input type="number" id="gap_one" placeholder="Dias" />
+          </div>
+
+          <div class="field">
+            <label for="gap_two">Intervalo 2</label>
+            <input type="number" id="gap_two" placeholder="Dias" />
+          </div>
+
+          <div class="field">
+            <label for="gap_three">Intervalo 3</label>
+            <input type="number" id="gap_three" placeholder="Dias" />
+          </div>
+
+          <div class="field">
+            <label for="gap_four">Intervalo 4</label>
+            <input type="number" id="gap_four" placeholder="Dias" />
+          </div>
+        </div>
+
+        <footer class="modal-actions">
+          <button type="button" id="btnCancelar" class="btn ghost">Cancelar</button>
+          <button type="submit" class="btn primary">Salvar</button>
+        </footer>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="/public/ordersPayments/ordersPayments.js"></script>
+</body>
+</html>

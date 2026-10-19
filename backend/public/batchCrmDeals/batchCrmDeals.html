@@ -1,0 +1,108 @@
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ batchCrmDeals.html — Inserção CRM em Lote | CONSART             ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+
+    <title>CRM EM LOTE | PRODNEX ERP</title>
+
+    <link rel="stylesheet" href="/public/includes/css/style.css" />
+    <link rel="stylesheet" href="/public/includes/css/topGradientBar.css?v=crm-batch-01" />
+    <link rel="stylesheet" href="./batchCrmDeals.css" />
+</head>
+
+<body class="page page-batch-crm">
+
+    <header class="top-gradient-bar">
+        <div class="top-gradient-bar__inner">
+            <div class="top-gradient-bar__titles">
+                <p class="top-gradient-bar__subtitle"></p>
+            </div>
+        </div>
+    </header>
+
+    <main class="bcd-layout">
+
+        <!-- LEFT: CUSTOMER SEARCH + SELECTION -->
+        <section class="bcd-panel bcd-left">
+            <div class="bcd-panel-header">
+                <h2>Selecionar Clientes</h2>
+                <p>
+                    Busque clientes cadastrados e marque vários para criar cards no Kanban do CRM.
+                </p>
+            </div>
+
+            <div class="bcd-card">
+                <label for="bcd-customer-search">Buscar clientes</label>
+
+                <div class="bcd-search-row">
+                    <input id="bcd-customer-search" type="text"
+                        placeholder="Digite nome, fantasia, CNPJ/CPF ou código..." autocomplete="off" />
+
+                    <button id="bcd-search-btn" type="button" class="bcd-btn bcd-btn-secondary">
+                        🔍 Buscar
+                    </button>
+                </div>
+
+                <small>
+                    Mínimo recomendado: 3 caracteres. Marque os clientes desejados na tabela abaixo.
+                </small>
+            </div>
+
+            <div class="bcd-card">
+                <div class="bcd-table-header">
+
+                    <div class="bcd-table-header-left">
+                        <h3>Clientes encontrados</h3>
+                    </div>
+
+                    <div class="bcd-table-header-actions">
+
+                        <button id="bcd-export-btn" type="button" class="bcd-btn bcd-btn-primary">
+                            🚀 Exportar Selecionados para CRM
+                        </button>
+
+                        <label class="bcd-check-all">
+                            <input type="checkbox" id="bcd-select-all" />
+                            Selecionar todos
+                        </label>
+
+                    </div>
+
+                </div>
+
+                <div class="bcd-table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>CNPJ/CPF</th>
+                                <th>Telefone</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bcd-customers-body">
+                            <tr>
+                                <td colspan="5">Faça uma busca para listar os clientes.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script type="module" src="/public/includes/js/core.js"></script>
+    <script type="module" src="./batchCrmDeals.js"></script>
+
+</body>
+
+</html>

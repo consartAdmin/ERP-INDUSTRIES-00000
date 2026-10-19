@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>📄 Informações Fiscais da Empresa</title>
+
+  <!-- Tema / globais -->
+  <link rel="stylesheet" href="/public/includes/theme-consart.css">
+  <link rel="stylesheet" href="/public/includes/home.css">
+  <link rel="stylesheet" href="/public/includes/menu.css">
+  <link rel="stylesheet" href="/public/statusUsuario/statusUsuario.css" />
+
+  <!-- Estilos da página -->
+  <link rel="stylesheet" href="empresaFiscal.css">
+</head>
+
+<body class="consart-theme c-page">
+  <main class="c-main">
+    <div class="c-container c-container--2XL">
+      <h1 class="titulo">📄 Cadastro de Informações Fiscais da Empresa</h1>
+
+      <form id="formEmpresaFiscal" class="formulario" autocomplete="off">
+        <input type="hidden" id="id">
+
+        <!-- Linha 1 -->
+        <div class="form-linha c-grid c-grid-2">
+          <div class="form-grupo">
+            <label for="razao_social">Razão Social</label>
+            <input type="text" id="razao_social" required>
+          </div>
+          <div class="form-grupo">
+            <label for="nome_fantasia">Nome Fantasia</label>
+            <input type="text" id="nome_fantasia">
+          </div>
+        </div>
+
+        <!-- Linha 2 -->
+        <div class="form-linha c-grid c-grid-2">
+          <div class="form-grupo">
+            <label for="cnpj">CNPJ</label>
+            <input type="text" id="cnpj" maxlength="18" placeholder="00.000.000/0000-00" required>
+          </div>
+          <div class="form-grupo">
+            <label for="crt">Regime Tributário (CRT)</label>
+            <select id="crt" required>
+              <option value="1">1 — Simples Nacional</option>
+              <option value="2">2 — Simples Nacional (excesso sublimite)</option>
+              <option value="3">3 — Regime Normal</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Linha 3 -->
+        <div class="form-linha c-grid c-grid-2">
+          <div class="form-grupo">
+            <label for="inscricao_estadual">Inscrição Estadual</label>
+            <input type="text" id="inscricao_estadual" maxlength="14">
+          </div>
+          <div class="form-grupo">
+            <label for="inscricao_municipal">Inscrição Municipal</label>
+            <input type="text" id="inscricao_municipal" maxlength="15">
+          </div>
+        </div>
+
+        <!-- Linha 4 -->
+        <div class="form-linha c-grid c-grid-2">
+          <div class="form-grupo">
+            <label for="cnae_principal">CNAE Principal</label>
+            <input type="text" id="cnae_principal" maxlength="7" placeholder="Somente números">
+          </div>
+          <div class="form-grupo">
+            <label for="perfil_fiscal_id">Perfil Fiscal</label>
+            <select id="perfil_fiscal_id">
+              <option value="">Selecione um perfil...</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- ENDEREÇO FISCAL (campos NOT NULL no DB) -->
+        <h2 class="subtitulo">🏢 Endereço Fiscal</h2>
+        <div class="form-linha c-grid c-grid-2">
+          <div class="form-grupo">
+            <label for="logradouro">Logradouro</label>
+            <input type="text" id="logradouro" required>
+          </div>
+          <div class="form-grupo">
+            <label for="numero">Número</label>
+            <input type="text" id="numero" required>
+          </div>
+        </div>
+
+        <div class="form-linha c-grid c-grid-3">
+          <div class="form-grupo">
+            <label for="complemento">Complemento</label>
+            <input type="text" id="complemento">
+          </div>
+          <div class="form-grupo">
+            <label for="bairro">Bairro</label>
+            <input type="text" id="bairro" required>
+          </div>
+          <div class="form-grupo">
+            <label for="cep">CEP</label>
+            <input type="text" id="cep" maxlength="9" placeholder="00000-000" required>
+          </div>
+        </div>
+
+        <div class="form-linha c-grid c-grid-3">
+          <div class="form-grupo">
+            <label for="cod_municipio_ibge">Cód. Município IBGE</label>
+            <input type="text" id="cod_municipio_ibge" maxlength="7" placeholder="Somente números" required>
+          </div>
+          <div class="form-grupo">
+            <label for="municipio">Município</label>
+            <input type="text" id="municipio" required>
+          </div>
+          <div class="form-grupo">
+            <label for="uf">UF</label>
+            <input type="text" id="uf" maxlength="2" required>
+          </div>
+        </div>
+
+        <div class="form-linha c-grid c-grid-2">
+          <div class="form-grupo">
+            <label for="email">Email (empresa)</label>
+            <input type="email" id="email">
+          </div>
+          <div class="form-grupo">
+            <label for="telefone">Telefone (empresa)</label>
+            <input type="text" id="telefone" maxlength="15" placeholder="(00) 00000-0000">
+          </div>
+        </div>
+
+        <!-- RESPONSÁVEL TÉCNICO -->
+        <h2 class="subtitulo">👤 Responsável Técnico</h2>
+        <div class="form-linha c-grid c-grid-2">
+          <div class="form-grupo">
+            <label for="responsavel_nome">Nome</label>
+            <input type="text" id="responsavel_nome">
+          </div>
+          <div class="form-grupo">
+            <label for="responsavel_crc">CRC</label>
+            <input type="text" id="responsavel_crc">
+          </div>
+        </div>
+        <div class="form-linha c-grid c-grid-2">
+          <div class="form-grupo">
+            <label for="responsavel_email">Email</label>
+            <input type="email" id="responsavel_email">
+          </div>
+          <div class="form-grupo">
+            <label for="responsavel_telefone">Telefone</label>
+            <input type="text" id="responsavel_telefone" maxlength="15">
+          </div>
+        </div>
+
+        <!-- CERTIFICADO -->
+        <h2 class="subtitulo">🔐 Certificado Digital</h2>
+        <div class="form-linha c-grid c-grid-2">
+          <div class="form-grupo">
+            <label for="caminho_certificado">Caminho do Arquivo</label>
+            <input type="text" id="caminho_certificado">
+          </div>
+          <div class="form-grupo">
+            <label for="senha_certificado">Senha</label>
+            <input type="password" id="senha_certificado">
+          </div>
+        </div>
+
+        <div class="form-linha">
+          <label><input type="checkbox" id="ativo" checked> Ativo</label>
+        </div>
+
+        <button type="submit" class="btn btn-salvar">💾 Salvar Informações</button>
+        <div id="mensagemErro" class="erro-msg" aria-live="polite"></div>
+      </form>
+    </div>
+  </main>
+  <!-- Configurar API base global -->
+  <script>window.apiBase = "https://erp.prodnex.com.br";</script>
+
+  <!-- libs e scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="/public/verificarLogin/verificarLogin.js"></script>
+  <script src="/public/statusUsuario/statusUsuario.js" defer></script>
+  <script src="/public/includes/menu.js"></script>
+  <script src="/public/includes/sessionTimeout.js" defer></script>
+  <script src="empresaFiscal.js"></script>
+</body>
+</html>

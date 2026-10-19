@@ -1,0 +1,77 @@
+/* ╔════════════════════════════════════════════════════════════════════╗
+   ║ checkBox.css — Standard Checkbox | PRODNEX ERP                    ║
+   ║ Reusable checkbox component for all system modules                ║
+   ╚════════════════════════════════════════════════════════════════════╝ */
+
+/* ====================================================================
+   Variables
+==================================================================== */
+
+:root {
+    --checkbox-size: 16px;
+
+    --checkbox-border: #cbd5e1;
+    --checkbox-border-hover: #3b82f6;
+
+    --checkbox-bg: #ffffff;
+    --checkbox-bg-checked: #2563eb;
+
+    --checkbox-radius: 4px;
+
+    --checkbox-label-color: #334155;
+    --checkbox-gap: 8px;
+
+    --checkbox-transition: .18s ease;
+}
+
+/* ====================================================================
+   Wrapper
+==================================================================== */
+
+.checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--checkbox-gap);
+
+    cursor: pointer;
+
+    color: var(--checkbox-label-color);
+    user-select: none;
+}
+
+/* ====================================================================
+   Native Checkbox
+==================================================================== */
+
+.checkbox input[type="checkbox"] {
+    width: var(--checkbox-size);
+    height: var(--checkbox-size);
+
+    margin: 0;
+
+    accent-color: var(--checkbox-bg-checked);
+
+    cursor: pointer;
+
+    transition: var(--checkbox-transition);
+}
+
+.checkbox input[type="checkbox"]:hover {
+    border-color: var(--checkbox-border-hover);
+}
+
+.checkbox input[type="checkbox"]:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+.checkbox span {
+    line-height: 1;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    height: 100%;
+}

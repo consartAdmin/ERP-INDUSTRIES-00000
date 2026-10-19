@@ -1,0 +1,335 @@
+/* ╔══════════════════════════════════════════════════════════════════╗
+   ║ img.css — Images and Action Icons | PRODNEX ERP                ║
+   ║ Width and height utilities from level 1 to level 20            ║
+   ╚══════════════════════════════════════════════════════════════════╝ */
+
+:root {
+    /* Widths */
+    --img-width-1: 12px;
+    --img-width-2: 14px;
+    --img-width-3: 16px;
+    --img-width-4: 18px;
+    --img-width-5: 20px;
+    --img-width-6: 24px;
+    --img-width-7: 28px;
+    --img-width-8: 32px;
+    --img-width-9: 36px;
+    --img-width-10: 40px;
+    --img-width-11: 44px;
+    --img-width-12: 48px;
+    --img-width-13: 52px;
+    --img-width-14: 56px;
+    --img-width-15: 60px;
+    --img-width-16: 64px;
+    --img-width-17: 68px;
+    --img-width-18: 72px;
+    --img-width-19: 76px;
+    --img-width-20: 80px;
+
+    /* Heights */
+    --img-height-1: 12px;
+    --img-height-2: 14px;
+    --img-height-3: 16px;
+    --img-height-4: 18px;
+    --img-height-5: 20px;
+    --img-height-6: 24px;
+    --img-height-7: 28px;
+    --img-height-8: 32px;
+    --img-height-9: 36px;
+    --img-height-10: 40px;
+    --img-height-11: 44px;
+    --img-height-12: 48px;
+    --img-height-13: 52px;
+    --img-height-14: 56px;
+    --img-height-15: 60px;
+    --img-height-16: 64px;
+    --img-height-17: 68px;
+    --img-height-18: 72px;
+    --img-height-19: 76px;
+    --img-height-20: 80px;
+
+    /* Effects */
+    --img-radius: 4px;
+    --img-hover-scale: 1.08;
+    --img-disabled-opacity: 0.45;
+
+    /* Horizontal gaps between images */
+    --img-gap-0: 0;
+    --img-gap-1: 2px;
+    --img-gap-2: 4px;
+    --img-gap-3: 6px;
+    --img-gap-4: 8px;
+    --img-gap-5: 10px;
+    --img-gap-6: 12px;
+    --img-gap-7: 16px;
+    --img-gap-8: 20px;
+    --img-gap-9: 24px;
+    --img-gap-10: 32px;
+}
+
+/* ====================================================================
+   BASE
+==================================================================== */
+
+.img {
+    display: inline-block;
+    object-fit: contain;
+    vertical-align: middle;
+    user-select: none;
+}
+
+/* ====================================================================
+   CLICKABLE IMAGE
+==================================================================== */
+
+.img-action {
+    cursor: pointer;
+
+    transition:
+        transform 0.18s ease,
+        opacity 0.18s ease,
+        filter 0.18s ease;
+}
+
+.img-action:hover {
+    filter: brightness(1.05);
+    transform: scale(var(--img-hover-scale));
+}
+
+.img-action:active {
+    transform: scale(0.96);
+}
+
+.img-action:focus-visible {
+    border-radius: var(--img-radius);
+    outline: 2px solid #2563eb;
+    outline-offset: 3px;
+}
+
+.img-action[aria-disabled="true"] {
+    opacity: var(--img-disabled-opacity);
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ====================================================================
+   WIDTH
+==================================================================== */
+
+.img-w-1 {
+    width: var(--img-width-1);
+}
+
+.img-w-2 {
+    width: var(--img-width-2);
+}
+
+.img-w-3 {
+    width: var(--img-width-3);
+}
+
+.img-w-4 {
+    width: var(--img-width-4);
+}
+
+.img-w-5 {
+    width: var(--img-width-5);
+}
+
+.img-w-6 {
+    width: var(--img-width-6);
+}
+
+.img-w-7 {
+    width: var(--img-width-7);
+}
+
+.img-w-8 {
+    width: var(--img-width-8);
+}
+
+.img-w-9 {
+    width: var(--img-width-9);
+}
+
+.img-w-10 {
+    width: var(--img-width-10);
+}
+
+.img-w-11 {
+    width: var(--img-width-11);
+}
+
+.img-w-12 {
+    width: var(--img-width-12);
+}
+
+.img-w-13 {
+    width: var(--img-width-13);
+}
+
+.img-w-14 {
+    width: var(--img-width-14);
+}
+
+.img-w-15 {
+    width: var(--img-width-15);
+}
+
+.img-w-16 {
+    width: var(--img-width-16);
+}
+
+.img-w-17 {
+    width: var(--img-width-17);
+}
+
+.img-w-18 {
+    width: var(--img-width-18);
+}
+
+.img-w-19 {
+    width: var(--img-width-19);
+}
+
+.img-w-20 {
+    width: var(--img-width-20);
+}
+
+/* ====================================================================
+   HEIGHT
+==================================================================== */
+
+.img-h-1 {
+    height: var(--img-height-1);
+}
+
+.img-h-2 {
+    height: var(--img-height-2);
+}
+
+.img-h-3 {
+    height: var(--img-height-3);
+}
+
+.img-h-4 {
+    height: var(--img-height-4);
+}
+
+.img-h-5 {
+    height: var(--img-height-5);
+}
+
+.img-h-6 {
+    height: var(--img-height-6);
+}
+
+.img-h-7 {
+    height: var(--img-height-7);
+}
+
+.img-h-8 {
+    height: var(--img-height-8);
+}
+
+.img-h-9 {
+    height: var(--img-height-9);
+}
+
+.img-h-10 {
+    height: var(--img-height-10);
+}
+
+.img-h-11 {
+    height: var(--img-height-11);
+}
+
+.img-h-12 {
+    height: var(--img-height-12);
+}
+
+.img-h-13 {
+    height: var(--img-height-13);
+}
+
+.img-h-14 {
+    height: var(--img-height-14);
+}
+
+.img-h-15 {
+    height: var(--img-height-15);
+}
+
+.img-h-16 {
+    height: var(--img-height-16);
+}
+
+.img-h-17 {
+    height: var(--img-height-17);
+}
+
+.img-h-18 {
+    height: var(--img-height-18);
+}
+
+.img-h-19 {
+    height: var(--img-height-19);
+}
+
+.img-h-20 {
+    height: var(--img-height-20);
+}
+
+/* ====================================================================
+   IMAGE GROUP AND HORIZONTAL GAPS
+==================================================================== */
+
+.img-group {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.img-gap-0 {
+    column-gap: var(--img-gap-0);
+}
+
+.img-gap-1 {
+    column-gap: var(--img-gap-1);
+}
+
+.img-gap-2 {
+    column-gap: var(--img-gap-2);
+}
+
+.img-gap-3 {
+    column-gap: var(--img-gap-3);
+}
+
+.img-gap-4 {
+    column-gap: var(--img-gap-4);
+}
+
+.img-gap-5 {
+    column-gap: var(--img-gap-5);
+}
+
+.img-gap-6 {
+    column-gap: var(--img-gap-6);
+}
+
+.img-gap-7 {
+    column-gap: var(--img-gap-7);
+}
+
+.img-gap-8 {
+    column-gap: var(--img-gap-8);
+}
+
+.img-gap-9 {
+    column-gap: var(--img-gap-9);
+}
+
+.img-gap-10 {
+    column-gap: var(--img-gap-10);
+}

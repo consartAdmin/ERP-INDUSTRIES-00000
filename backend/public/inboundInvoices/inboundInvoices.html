@@ -1,0 +1,561 @@
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ inboundInvoices.html                                                     ║
+     ║ Layout padronizado com topGradientBar + Design System CONSART    ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>ENTRADA DE NF-E | PRODNEX ERP</title>
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png" />
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png" />
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png" />
+
+  <link rel="stylesheet" href="./suppliersModal.css" />
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/includes/css/sortableTable.css" />
+  <link rel="stylesheet" href="/public/includes/css/dateRangeField.css" />
+  <link rel="stylesheet" href="/public/includes/css/modals.css" />
+  <link rel="stylesheet" href="./inboundInvoicesDfeModal.css" />
+
+  <style>
+    /* The shared modal stylesheet uses .is-open; this screen keeps its
+       existing hidden-attribute controller for backward compatibility. */
+    #tab-form[hidden] {
+      display: none !important;
+    }
+
+    body.inbound-modal-open {
+      overflow: hidden;
+    }
+
+    #tab-form.is-loading .modal__panel {
+      cursor: progress;
+    }
+
+    #tab-form.is-loading .modal__body {
+      opacity: 0.56;
+      pointer-events: none;
+    }
+
+    /* Form actions positioned at the upper-right of the invoice header. */
+    #formInvoice .inbound-form-actions {
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+      gap: 8px;
+
+      flex: 0 0 auto;
+      align-self: flex-end;
+
+      margin-left: auto;
+      padding-left: 16px;
+    }
+
+    #formInvoice .inbound-form-actions .btn {
+      min-width: 90px;
+      margin: 0;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 900px) {
+      #formInvoice .inbound-form-actions {
+        width: 100%;
+        margin-left: 0;
+        padding-left: 0;
+      }
+    }
+  </style>
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <!-- Complete list view -->
+    <section class="tabpanel ativa table-layout-integrated" id="tab-list">
+      <div class="table-layout-integrated__filter table-max-height-600">
+        <div class="fields-lines fields-gap-3">
+          <div class="fields-inline">
+
+            <div class="fields fields-h-6 fields-w-20 fields-font-3">
+              <label for="search">Pesquisa</label>
+              <input id="search" type="text" placeholder="Chave de acesso ou número da nota..." />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-16 fields-font-3">
+              <date-range-field id="filterDateRange" class="drf-width-3 drf-height-3" label="Período"
+                locale="pt-BR"></date-range-field>
+            </div>
+
+            <div class="btn-inline">
+              <button id="btnSearch" class="btn btn-new btn-sm btn-h-5" type="button">
+                Filtrar
+              </button>
+            </div>
+
+            <button id="btnImportXml" class="btn btn-new btn-sm btn-h-5" type="button">
+              📥 Importar XML
+            </button>
+
+            <input type="file" id="xmlFileInput" accept=".xml" hidden />
+
+            <button id="btnImportFromDfe" class="btn btn-new btn-sm btn-h-5" type="button"
+              title="Importar o XML diretamente da caixa de entrada DF-e">
+              🛰️ Importar do DF-e
+            </button>
+
+            <button id="btnNewFromList" class="btn btn-new btn-sm btn-h-5" type="button">
+              Nova Nota
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- No additional #tab-list wrapper here -->
+      <div class="table-scroll table-height-flex table-row-h-20" data-table-settings="inboundinvoices.inboundtable">
+        <table id="inboundTable" class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th class="table-sortable" data-sort-column="id" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  # <span data-sort-icon aria-hidden="true">↕</span>
+                </button>
+              </th>
+              <th class="table-sortable" data-sort-column="supplier_name" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  Fornecedor <span data-sort-icon aria-hidden="true">↕</span>
+                </button>
+              </th>
+              <th class="table-sortable" data-sort-column="access_key" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  Chave de Acesso <span data-sort-icon aria-hidden="true">↕</span>
+                </button>
+              </th>
+              <th class="table-sortable" data-sort-column="invoice_number" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  Número <span data-sort-icon aria-hidden="true">↕</span>
+                </button>
+              </th>
+              <th class="table-sortable" data-sort-column="series" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  Série <span data-sort-icon aria-hidden="true">↕</span>
+                </button>
+              </th>
+              <th class="table-sortable" data-sort-column="issuer" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  Emitente <span data-sort-icon aria-hidden="true">↕</span>
+                </button>
+              </th>
+              <th class="table-sortable" data-sort-column="recipient" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  Destinatário <span data-sort-icon aria-hidden="true">↕</span>
+                </button>
+              </th>
+              <th class="table-sortable" data-sort-column="total_amount" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  Total <span data-sort-icon aria-hidden="true">↕</span>
+                </button>
+              </th>
+              <th class="table-sortable" data-sort-column="issue_date" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  Data Emissão <span data-sort-icon aria-hidden="true">↕</span>
+                </button>
+              </th>
+              <th class="table-sortable" data-sort-column="created_at" aria-sort="descending">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  Data de Criação <span data-sort-icon aria-hidden="true">↓</span>
+                </button>
+              </th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+
+          <tbody id="corpoTabelaMovimentacoes"></tbody>
+        </table>
+      </div>
+
+      <footer class="table-footer">
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+            <span id="apTableInfo">0 Registros</span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button type="button" id="pagePrev" class="btn btn-clean btn-sm">
+            Anterior
+          </button>
+
+          <span id="pageInfo">Página 1 de 1</span>
+
+          <button type="button" id="pageNext" class="btn btn-new btn-sm">
+            Próxima
+          </button>
+        </div>
+
+        <div class="table-footer__page-size">
+          <label for="apRowsPerPage">Mostrar</label>
+
+          <select id="apRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+            <option value="10">10 linhas</option>
+            <option value="20">20 linhas</option>
+            <option value="30">30 linhas</option>
+            <option value="50" selected>50 linhas</option>
+            <option value="100">100 linhas</option>
+          </select>
+        </div>
+      </footer>
+    </section>
+
+    <div class="modal is-open" id="tab-form" role="dialog" aria-modal="true" aria-labelledby="inboundEditModalTitle"
+      hidden>
+      <div class="modal__backdrop" aria-hidden="true"></div>
+      <div class="modal__dialog">
+        <section class="modal__panel modal-width-12 modal-height-10">
+          <header class="modal__header">
+            <div>
+              <h2 id="inboundEditModalTitle" class="modal__title">Nota Fiscal de Entrada</h2>
+              <p id="inboundEditModalSubtitle">Visualize e atualize os dados, itens e parcelas da NF-e.</p>
+            </div>
+
+            <button type="button" id="btnCloseInvoiceModal" class="modal__close" title="Fechar"
+              aria-label="Fechar modal">
+              ✕
+            </button>
+          </header>
+
+          <div class="modal__body">
+
+            <form id="formInvoice">
+              <input type="hidden" id="invoiceId" />
+              <input type="hidden" id="supplierId" />
+
+              <section class="table-layout-integrated inbound-form-section">
+
+                <div class="table-layout-integrated__filter">
+                  <div class="fields-inline fields-gap-3">
+
+                    <div class="fields fields-h-5 fields-w-20 fields-font-3">
+                      <label for="access_key">Chave de Acesso</label>
+                      <input id="access_key" required />
+                    </div>
+
+                    <div class="fields fields-h-5 fields-w-5 fields-font-3">
+                      <label for="invoice_number">Número</label>
+                      <input id="invoice_number" required />
+                    </div>
+
+                    <div class="fields fields-h-5 fields-w-5 fields-font-3">
+                      <label for="series">Série</label>
+                      <input id="series" required />
+                    </div>
+
+                    <div class="fields fields-h-5 fields-w-10 fields-font-3">
+                      <label for="issuer">Emitente (CNPJ)</label>
+                      <input id="issuer" required />
+                    </div>
+
+                    <div class="fields fields-h-5 fields-w-10 fields-font-3">
+                      <label for="recipient">Destinatário (CNPJ)</label>
+                      <input id="recipient" required />
+                    </div>
+
+                    <div class="fields fields-h-5 fields-w-7 fields-font-3">
+                      <label for="total_amount">Valor Total</label>
+                      <input id="total_amount" type="number" step="0.01" required />
+                    </div>
+
+                    <div class="fields fields-h-5 fields-w-10 fields-font-3">
+                      <label for="issue_date">Emissão</label>
+                      <input id="issue_date" type="date" />
+                    </div>
+
+                    <div class="fields fields-h-5 fields-w-10 fields-font-3">
+                      <label for="entry_date">Entrada</label>
+                      <input id="entry_date" type="date" />
+                    </div>
+
+                    <div class="fields fields-h-5 fields-w-5 fields-font-3">
+                      <label for="invoice_status">Status</label>
+                      <input id="invoice_status" readonly />
+                    </div>
+
+                    <div class="btn-inline inbound-form-actions">
+                      <button type="submit" id="btnSaveInvoice" class="btn btn-new btn-sm btn-h-5">
+                        Salvar
+                      </button>
+
+                      <button type="button" id="btnCancelForm" class="btn btn-clean btn-sm btn-h-5">
+                        Cancelar
+                      </button>
+                    </div>
+
+                  </div>
+
+                  <div id="supplierWarning" class="card mt-2" style="
+              display: none;
+              border-left: 4px solid #f59e0b;
+              background: #fffbeb;
+              padding: 8px 12px;
+            ">
+                    <div style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                flex-wrap: wrap;
+              ">
+                      <div style="font-size: 0.875rem; color: #92400e;">
+                        ⚠️ Fornecedor não localizado no cadastro.
+                        É necessário cadastrar o fornecedor para que a nota gere
+                        títulos em <strong>Contas a Pagar</strong>.
+                      </div>
+
+                      <button type="button" id="btnOpenSupplierModal" class="btn btn-toolbar btn-sm">
+                        Cadastrar Fornecedor
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="linha" style="margin-top: 16px;">
+                    <h3>Itens da Nota</h3>
+                  </div>
+                </div>
+
+                <!-- Items and installments share the same integrated section. -->
+                <div class="inbound-form-section__content">
+
+                  <!-- Fixed-height items table with internal vertical scrolling. -->
+                  <div class="table-scroll table-height-400 table-row-h-20" data-table-settings="inboundinvoices.tblitemsbody">
+                    <table class="table table-fixed table-zebra table-zebra-hover table-sticky-head">
+                      <colgroup>
+                        <col class="table-col-w-1" />
+                        <col class="table-col-w-3" />
+                        <col class="table-col-w-9" />
+                        <col class="table-col-w-7" data-role="lot-column" hidden style="display:none" />
+                        <col class="table-col-w-9" />
+                        <col class="table-col-w-2" />
+                        <col class="table-col-w-3" />
+                        <col class="table-col-w-4" />
+                        <col class="table-col-w-2" />
+                        <col class="table-col-w-4" />
+                        <col class="table-col-w-4" />
+                        <col class="table-col-w-2" />
+                        <col class="table-col-w-2" />
+                      </colgroup>
+
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Código NF-e</th>
+                          <th>Produto (cadastro)</th>
+                          <th data-role="lot-column" hidden style="display:none">Lote (obrigatório)</th>
+                          <th>Descrição NF-e</th>
+                          <th>NCM</th>
+                          <th>CFOP</th>
+                          <th>U.M</th>
+                          <th>Quantidade</th>
+                          <th>Vlr Unitário</th>
+                          <th>Vlr Total</th>
+                          <th>IPI</th>
+                          <th>ICMS</th>
+                        </tr>
+                      </thead>
+
+                      <tbody id="tblItemsBody"></tbody>
+                    </table>
+                  </div>
+
+                  <p id="itemsEmpty" class="mt-1" style="font-size:0.85rem; color:#6b7280;">
+                    Nenhum item importado.
+                  </p>
+
+                  <div class="inbound-installments-title">
+                    <h3>Parcelas (Contas a Pagar)</h3>
+                  </div>
+
+                  <div class="table-scroll table-scroll--rounded inbound-installments-table" data-table-settings="inboundinvoices.tblinstallments">
+                    <table id="tblInstallments" class="table table-zebra table-zebra-hover table-sticky-head">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Código</th>
+                          <th>Vencimento</th>
+                          <th>Valor</th>
+                          <th>Pago?</th>
+                        </tr>
+                      </thead>
+
+                      <tbody></tbody>
+                    </table>
+                  </div>
+
+                  <p id="instEmpty" class="mt-1" style="font-size:0.85rem; color:#6b7280;">
+                    Nenhuma parcela importada.
+                  </p>
+
+                </div>
+                <!-- End inbound-form-section__content -->
+
+              </section>
+
+            </form>
+          </div>
+        </section>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ============================================================= -->
+  <!-- MODAL — CADASTRO RAPIDO DE FORNECEDOR                          -->
+  <!-- Estrutura padrao de /public/includes/css/modals.css            -->
+  <!-- ============================================================= -->
+  <div id="supplierModal" class="modal">
+    <div id="supplierModalBackdrop" class="modal__backdrop"></div>
+
+    <div class="modal__dialog">
+      <div class="modal__panel modal-width-4" role="dialog" aria-modal="true" aria-labelledby="supplierModalTitle">
+
+        <header class="modal__header modal-header-color-7">
+          <h3 id="supplierModalTitle" class="modal__title">
+            Cadastro R&aacute;pido de Fornecedor
+          </h3>
+
+          <button type="button" id="btnCloseSupplierModal" class="modal__close" aria-label="Fechar">
+            &times;
+          </button>
+        </header>
+
+        <!-- O form e o proprio corpo do modal; o footer usa form="formQuickSupplier". -->
+        <form id="formQuickSupplier" class="modal__body" autocomplete="off">
+          <div class="modal-section">
+
+            <div class="modal-form-grid modal-form-grid--3">
+              <div class="fields fields-w-12 fields-h-5 fields-font-3">
+                <label for="supplier_tax_id">CNPJ / CPF</label>
+                <input id="supplier_tax_id" required />
+              </div>
+
+              <div class="fields fields-h-5 fields-font-3 modal-field--span-2">
+                <label for="supplier_name">Raz&atilde;o Social / Nome</label>
+                <input id="supplier_name" required />
+              </div>
+            </div>
+
+            <div class="modal-form-grid modal-form-grid--3">
+              <div class="fields fields-w-15 fields-h-5 fields-font-3">
+                <label for="supplier_fantasy">Nome Fantasia</label>
+                <input id="supplier_fantasy" />
+              </div>
+
+              <div class="fields fields-w-15 fields-h-5 fields-font-3">
+                <label for="supplier_email">E-mail</label>
+                <input id="supplier_email" type="email" />
+              </div>
+
+              <div class="fields fields-w-8 fields-h-5 fields-font-3">
+                <label for="supplier_phone">Telefone</label>
+                <input id="supplier_phone" />
+              </div>
+            </div>
+
+          </div>
+        </form>
+
+        <footer class="modal__footer modal-footer-color-2">
+          <button type="button" id="btnCancelSupplier" class="btn btn-cancel btn-sm">
+            Cancelar
+          </button>
+
+          <button type="submit" form="formQuickSupplier" id="btnSaveSupplier" class="btn btn-save btn-sm">
+            Salvar Fornecedor
+          </button>
+        </footer>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- MODAL — IMPORTAR XML DIRETO DO DF-e                            -->
+  <!-- Estrutura padrao de /public/includes/css/modals.css            -->
+  <!-- ============================================================= -->
+  <div id="dfeImportModal" class="modal">
+    <div id="dfeImportBackdrop" class="modal__backdrop"></div>
+
+    <div class="modal__dialog">
+      <div class="modal__panel modal-width-11 modal-height-12" role="dialog" aria-modal="true"
+        aria-labelledby="dfeModalTitle">
+
+        <header class="modal__header modal-header-color-3">
+          <h3 id="dfeModalTitle" class="modal__title">Importar do DF-e</h3>
+
+          <button type="button" id="btnCloseDfeModal" class="modal__close" aria-label="Fechar">
+            &times;
+          </button>
+        </header>
+
+        <div class="modal__body">
+          <div class="modal-section">
+
+            <div class="modal-form-grid modal-form-grid--4">
+              <div class="fields fields-h-5 fields-w-20 fields-font-3 modal-field--span-2">
+                <label for="dfeSearch">Buscar</label>
+                <input id="dfeSearch" type="text" placeholder="Chave (44), n&ordm; NF-e ou emitente&hellip;"
+                  autocomplete="off" />
+              </div>
+
+              <div class="fields fields-h-5 fields-font-3 dfe-check-field">
+                <label class="dfe-check" for="dfeOnlyPending">
+                  <input type="checkbox" id="dfeOnlyPending" checked />
+                  Somente pendentes
+                </label>
+              </div>
+
+              <div class="fields fields-h-5 fields-font-3">
+                <button type="button" id="btnReloadDfe" class="btn btn-new btn-sm btn-h-5">
+                  Atualizar
+                </button>
+              </div>
+            </div>
+
+            <div class="modal-divider"></div>
+
+            <div class="table-scroll dfe-table-scroll" data-table-settings="inboundinvoices.dfetablebody">
+              <table class="table table-zebra table-zebra-hover table-sticky-head">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Chave NF-e</th>
+                    <th>N&ordm; NF-e</th>
+                    <th>Emitente</th>
+                    <th class="dfe-col-right">Valor Total</th>
+                    <th>A&ccedil;&atilde;o</th>
+                  </tr>
+                </thead>
+                <tbody id="dfeTableBody"></tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+
+        <footer class="modal__footer modal-footer-color-2">
+          <span id="dfeStatus" class="dfe-status" data-tone="info"></span>
+        </footer>
+
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <script type="module" src="./js/inboundInvoices.init.js?v=20260920-product-stock-mode-1"></script>
+</body>
+
+</html>

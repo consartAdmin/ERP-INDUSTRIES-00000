@@ -1,0 +1,218 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ productBarCodeSecond.html — Códigos de barras secundários           ║
+     ║ PRODNEX ERP                                                         ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR" class="page-product-barcode-second">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>CÓDIGOS SECUNDÁRIOS | PRODNEX ERP</title>
+
+  <!-- 🎨 Design System CONSART (orquestrador) -->
+  <link rel="stylesheet" href="/public/includes/css/style.css"/>
+
+  <!-- CSS específico desta página -->
+  <link rel="stylesheet" href="./productBarCodeSecond.css"/>
+</head>
+<body class="consart-theme c-page page" style="--consart-input-h: 30px;">
+
+  <!-- ✅ Container principal (altura manda aqui) -->
+  <main class="consart-container consart-container--fixed consart-container--full consart-container--h-800">
+    <div class="consart-layout-col">
+
+      <!-- 🌟 VISUAL do módulo (não controla altura/scroll) -->
+      <section class="container-customers">
+<header class="pbs-card-header">
+  <div>
+    <h2>Filtros</h2>
+    <p>Localize registros existentes rapidamente.</p>
+  </div>
+</header>
+
+<form id="pbsFilterForm" class="pbs-filter-form row">
+  <div class="form-group">
+    <label for="filterProductCode">Código do produto</label>
+    <input type="text" id="filterProductCode" class="form-control"
+           placeholder="Ex.: 00004828" autocomplete="off"/>
+  </div>
+
+  <div class="form-group">
+    <label for="filterSecondBarCode">Segundo código de barras</label>
+    <input type="text" id="filterSecondBarCode" class="form-control"
+           placeholder="Ex.: 1789789789789" autocomplete="off"/>
+  </div>
+
+  <!-- ✅ AÇÕES (dois botões lado a lado) -->
+  <div class="pbs-filter-actions">
+    <button type="button" id="btnPbsClearFilters" class="btn btn-toolbar btn-sm">
+      Limpar filtros
+    </button>
+
+    <button type="submit" class="btn btn-toolbar btn-sm">
+      🔍 Buscar
+    </button>
+  </div>
+</form>
+</section>
+
+      <!-- ──────────────────────────────────────────────────────────────── -->
+      <!-- NOVO REGISTRO                                                   -->
+      <!-- ──────────────────────────────────────────────────────────────── -->
+      <section class="section-card pbs-card pbs-card--form stack">
+        <header class="pbs-card-header">
+          <div>
+            <h2>Novo código secundário</h2>
+            <p>
+              Informe o produto, a unidade vinculada e o código de barras secundário.
+            </p>
+          </div>
+        </header>
+
+        <form id="pbsCreateForm" class="pbs-create-form stack">
+
+  <!-- ✅ ONE LINE ROW -->
+  <div class="pbs-create-row">
+
+    <!-- Produto -->
+    <div class="form-group pbs-col-product">
+      <label for="createProductCode">Produto</label>
+      <div class="input-actions">
+        <input
+          type="text"
+          id="createProductCode"
+          class="form-control"
+          placeholder="Clique na lupa para buscar…"
+          autocomplete="off"
+          readonly
+        />
+        <button
+          type="button"
+          id="btnPbsOpenProductsModal"
+          class="btn btn-toolbar btn-sm"
+          title="Buscar produto"
+        >
+          🔍 Produto
+        </button>
+      </div>
+
+      <input type="hidden" id="createProductInternalId">
+      <small class="help">
+      </small>
+    </div>
+
+    <!-- Unidade -->
+    <div class="form-group pbs-col-unit">
+      <label for="createProductUnitId">Unidade vinculada (ID em <code>productsUnits</code>)</label>
+      <div class="input-actions">
+        <input
+          type="text"
+          id="createProductUnitId"
+          class="form-control"
+          placeholder="Clique na lupa para buscar…"
+          autocomplete="off"
+          readonly
+        />
+        <button
+          type="button"
+          id="btnPbsOpenUnitsModal"
+          class="btn btn-toolbar btn-sm"
+          title="Buscar unidade vinculada"
+        >
+          🔍 Unidade
+        </button>
+      </div>
+      <small class="help">
+      </small>
+    </div>
+
+    <!-- Segundo código -->
+    <div class="form-group pbs-col-barcode">
+      <label for="createSecondBarCode">Segundo código de barras</label>
+      <input
+        type="text"
+        id="createSecondBarCode"
+        class="form-control"
+        maxlength="100"
+        required
+      />
+    </div>
+
+    <!-- Tipo -->
+    <div class="form-group pbs-col-type">
+      <label for="createCodeType">Tipo de código</label>
+      <select id="createCodeType" class="form-control">
+        <option value="EAN-13">EAN-13</option>
+        <option value="DUN-14">DUN-14</option>
+        <option value="EAN-8">EAN-8</option>
+        <option value="QR-CODE">QR-Code</option>
+        <option value="OUTRO">Outro</option>
+      </select>
+    </div>
+
+    <!-- Botão -->
+    <div class="form-group pbs-col-add">
+      <label>&nbsp;</label>
+      <button type="submit" class="btn btn-toolbar btn-sm pbs-btn-add">
+        + Adicionar
+      </button>
+    </div>
+  </div>
+
+  <p class="pbs-form-hint">
+    * O <strong>product_code</strong> deve existir em <code>products</code> e o <strong>product_unit_id</strong> em
+    <code>productsUnits</code>. Caso contrário, o backend irá rejeitar o cadastro pela foreign key.
+  </p>
+</form>
+      </section>
+
+      <!-- ──────────────────────────────────────────────────────────────── -->
+      <!-- LISTAGEM                                                        -->
+      <!-- ──────────────────────────────────────────────────────────────── -->
+      <section class="section-card pbs-card pbs-card--table stack">
+        <header class="pbs-card-header row between center">
+          <div>
+            <h2>Registros</h2>
+            <p>Lista dos códigos secundários cadastrados.</p>
+          </div>
+          <span id="pbsTotalLabel" class="pbs-total-label">0 registro(s)</span>
+        </header>
+
+        <div class="pbs-table-wrapper table-wrapper">
+          <table class="pbs-table">
+            <thead>
+              <tr>
+                <th style="width: 10%">ID</th>
+                <th style="width: 16%">Produto</th>
+                <th style="width: 26%">Descrição</th>
+                <th style="width: 14%">Unidade (ID)</th>
+                <th style="width: 24%">Segundo código</th>
+                <th style="width: 10%">Tipo</th>
+                <th style="width: 10%">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="pbsTableBody">
+              <tr class="pbs-table-empty-row">
+                <td colspan="7">Nenhum registro encontrado.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Scripts globais -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <!-- Lógica específica desta página -->
+  <script type="module" src="./productBarCodeSecond.js"></script>
+</body>
+</html>

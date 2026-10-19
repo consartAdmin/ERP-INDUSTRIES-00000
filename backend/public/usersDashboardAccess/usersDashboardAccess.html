@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>ACESSO AOS DASHBOARDS | PRODNEX ERP</title>
+
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png" />
+
+  <!-- style.css imports fields.css and table.css -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <link rel="stylesheet" href="/public/usersDashboardAccess/css/usersDashboardAccess.css" />
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <section class="table-layout-integrated">
+
+
+      <!-- ================================================================
+           FILTERS
+      ================================================================= -->
+
+      <div class="table-layout-integrated__filter">
+
+        <h1 class="table-layout-integrated__filter-title">
+          Acesso aos Dashboards — defina quais indicadores cada usuário poderá visualizar na Home.
+        </h1>
+
+        <div class="fields-inline fields-gap-3">
+
+
+          <!-- USER ID + SEARCH -->
+
+          <div class="fields fields-w-16 fields-h-6">
+
+            <label for="udaUserId">
+              Usuário
+            </label>
+
+            <div class="inline-field">
+
+              <input id="udaUserId" type="text" placeholder="ID" readonly
+                autocomplete="off" title="Selecione o usuário pela busca" style="cursor:pointer" />
+
+              <button type="button" id="udaSearchUserButton" class="btn btn-search btn-sm" title="Buscar usuário">
+                🔎
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <!-- USER NAME -->
+
+          <div class="fields fields-w-25 fields-h-6">
+
+            <label for="udaUserName">
+              Nome
+            </label>
+
+            <input id="udaUserName" type="text" placeholder="Selecione um usuário" readonly tabindex="-1" />
+
+          </div>
+
+
+          <!-- LOAD -->
+
+          <div class="btn-inline">
+
+            <button type="button" id="udaLoadButton" class="btn btn-new btn-sm">
+              Carregar
+            </button>
+
+          </div>
+
+
+          <!-- ACTIONS -->
+
+          <div class="btn-inline btn-position-right">
+
+            <button type="button" id="udaSelectAllButton" class="btn btn-clean btn-sm" disabled>
+              Marcar todos
+            </button>
+
+            <button type="button" id="udaClearAllButton" class="btn btn-clean btn-sm" disabled>
+              Desmarcar todos
+            </button>
+
+            <button type="button" id="udaSaveButton" class="btn btn-save btn-sm" disabled>
+              Salvar acessos
+            </button>
+
+          </div>
+
+        </div>
+
+        <div id="udaStatus" class="uda-status" role="status" aria-live="polite"></div>
+
+      </div>
+
+
+      <!-- ================================================================
+           TABLE
+      ================================================================= -->
+
+      <div class="table-scroll table-height-flex" data-table-settings="usersdashboardaccess.udatablebody">
+
+        <table class="table table-zebra table-zebra-hover table-sticky-head">
+
+          <thead>
+
+            <tr>
+              <th>Dashboard</th>
+              <th>Chave</th>
+              <th class="uda-col-access">Acesso</th>
+            </tr>
+
+          </thead>
+
+          <tbody id="udaTableBody"></tbody>
+
+        </table>
+
+      </div>
+
+
+      <footer class="table-footer">
+
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+            <span id="apTableInfo">0 Registros</span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button type="button" id="btnPreviousPage" class="btn btn-clean btn-sm">
+            Anterior
+          </button>
+
+          <span id="apPageInfo">Página 1 de 1</span>
+
+          <button type="button" id="btnNextPage" class="btn btn-new btn-sm">
+            Próxima
+          </button>
+        </div>
+
+        <div class="table-footer__page-size">
+          <label for="apRowsPerPage">Mostrar</label>
+
+          <select id="apRowsPerPage" class="table-footer__page-size-select">
+            <option value="10">10 linhas</option>
+            <option value="20">20 linhas</option>
+            <option value="30">30 linhas</option>
+            <option value="50" selected>50 linhas</option>
+            <option value="100">100 linhas</option>
+          </select>
+        </div>
+
+      </footer>
+
+    </section>
+
+  </main>
+
+  <script type="module" src="/public/usersDashboardAccess/js/usersDashboardAccess.js"></script>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+</body>
+
+</html>

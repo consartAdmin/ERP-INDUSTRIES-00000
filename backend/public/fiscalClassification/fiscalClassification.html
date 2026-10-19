@@ -1,0 +1,392 @@
+<!-- /backend/app/fiscal/fiscalClassification.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>CLASSIFICAÇÃO FISCAL | PRODNEX ERP</title>
+
+  <!-- 🎨 Design System CONSART -->
+  <link rel="stylesheet" href="/public/includes/css/style.css">
+</head>
+
+<body class="consart-theme page-employees p-page pw-page--full ph-page--xr" data-emp-view="list">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+    <!-- =========================================================
+           ABAS
+      ========================================================== -->
+    <section class="cs-wrapper cs-wrapper--lg">
+      <div class="tabs">
+
+        <nav class="tab-list" role="tablist" aria-label="Classificação fiscal">
+          <button id="tab-list" class="tab is-active" type="button" role="tab" aria-selected="true"
+            aria-controls="painel-list" data-tab="list">
+            Classificações cadastradas
+          </button>
+
+          <button id="tab-form" class="tab" type="button" role="tab" aria-selected="false" aria-controls="painel-form"
+            data-tab="form">
+            Cadastro / Edição
+          </button>
+        </nav>
+
+        <!-- =====================================================
+               PAINEL — LISTA
+          ====================================================== -->
+        <section id="painel-list" class="tab-panel is-active" role="tabpanel" aria-labelledby="tab-list">
+
+          <section class="fc-card">
+            <section class="table-layout-integrated table-max-height-700 emp-card--list">
+
+              <div class="table-layout-integrated__filter">
+                <header class="cs-wrapper__header">
+                  <div>
+                    <h2>Classificações cadastradas</h2>
+                  </div>
+                  <button id="btnNovo" class="btn btn-toolbar btn-sm" type="button">
+                    Nova classificação
+                  </button>
+                </header>
+
+                <div class="fields-inline fields-gap-3">
+                  <div class="fields fields-h-5 fields-w-20 fields-font-3">
+                    <label for="busca">Busca geral</label>
+                    <input id="busca" class="field-input" type="search"
+                      placeholder="Filtrar por descrição, NCM, CEST ou perfil...">
+                  </div>
+
+                  <div class="fields fields-h-5 fields-w-12 fields-font-3">
+                    <label for="buscaNcm">NCM</label>
+                    <input id="buscaNcm" class="field-input" type="search" placeholder="Ex.: 48182000">
+                  </div>
+
+                  <div class="fields fields-h-5 fields-w-12 fields-font-3">
+                    <label for="buscaCest">CEST</label>
+                    <input id="buscaCest" class="field-input" type="search" placeholder="Ex.: 10.005.00">
+                  </div>
+
+                  <div class="fields fields-h-5 fields-w-12 fields-font-3">
+                    <label for="filtroAtivo">Status</label>
+                    <select id="filtroAtivo" class="field-select">
+                      <option value="all">Todos</option>
+                      <option value="true">Somente ativos</option>
+                      <option value="false">Somente inativos</option>
+                    </select>
+                  </div>
+
+                  <div class="btn-inline">
+                    <button id="btnBuscar" class="btn btn-toolbar btn-sm" type="button">
+                      Buscar
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- TABLE -->
+              <div class="table-scroll table-height-flex table-row-h-28" data-table-settings="fiscalclassification.bodytable">
+                <table class="table table-zebra table-zebra-hover table-sticky-head">
+                  <thead>
+                    <tr>
+                      <th style="width: 70px;">ID</th>
+                      <th>Classificação</th>
+                      <th>NCM</th>
+                      <th>CEST</th>
+                      <th>IBS/CBS</th>
+                      <th>Imposto Seletivo</th>
+                      <th>Perfil Fiscal</th>
+                      <th style="width: 90px;">Ativo</th>
+                      <th style="width: 180px;">Ações</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="bodyTable"></tbody>
+                </table>
+              </div>
+
+              <!-- TABLE FOOTER -->
+              <footer class="table-footer">
+                <div class="table-footer__info">
+                  <div class="summary-pill summary-pill--success summary-width-5 summary-left-space-3">
+                    <span id="apTableInfo">0 registros</span>
+                  </div>
+                </div>
+
+                <div class="table-footer__pagination">
+                  <button id="btnPrev" class="btn btn-toolbar btn-sm" type="button">
+                    Anterior
+                  </button>
+
+                  <span id="paginacaoInfo">
+                    Mostrando 0–0 de 0 registro(s)
+                  </span>
+
+                  <button id="btnNext" class="btn btn-toolbar btn-sm" type="button">
+                    Próxima
+                  </button>
+                </div>
+
+                <div class="table-footer__page-size">
+                  <label for="pageSize">Mostrar</label>
+
+                  <div class="fields fields-h-6 fields-w-3 fields-font-3">
+                    <select id="pageSize" class="table-footer__page-size-select">
+                      <option value="10">10</option>
+                      <option value="20">20</option>
+                      <option value="50" selected>50</option>
+                      <option value="100">100</option>
+                    </select>
+                  </div>
+                </div>
+              </footer>
+
+            </section>
+          </section>
+        </section>
+
+        <!-- =====================================================
+               PAINEL — FORMULÁRIO
+          ====================================================== -->
+        <section id="painel-form" class="tab-panel" role="tabpanel" aria-labelledby="tab-form" hidden>
+
+          <section class="fc-card fc-form-wrapper">
+            <header class="header">
+              <h2 id="formTitulo">Nova Classificação</h2>
+
+              <span id="formSubtitulo" class="fc-form__subtitle">
+                Preencha os dados e salve.
+              </span>
+
+              <div class="fields fields-inline">
+                <div class="btn-position-right">
+                  <label class="checkbox">
+                    <input id="is_active" name="is_active" type="checkbox" checked>
+
+                    <span>Classificação ativa</span>
+                  </label>
+                </div>
+              </div>
+
+            </header>
+
+            <form id="formFiscalClassification" autocomplete="off">
+              <input type="hidden" id="fiscal_classification_id">
+
+              <!-- IDENTIFICAÇÃO -->
+              <div class="header">
+                <fieldset class="fc-fieldset">
+                  <legend>Identificação</legend>
+
+                  <div class="fields-inline fields-gap-3">
+                    <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                      <label for="classification_name">
+                        Nome da Classificação *
+                      </label>
+
+                      <input id="classification_name" name="classification_name" class="field-input" type="text"
+                        maxlength="150" required placeholder="Ex.: Papel toalha – consumo próprio">
+                    </div>
+
+                    <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                      <label for="fiscal_profile_id">
+                        Perfil Fiscal padrão
+                      </label>
+
+                      <select id="fiscal_profile_id" name="fiscal_profile_id" class="field-select">
+                        <option value="">(Nenhum vinculado)</option>
+                      </select>
+                    </div>
+
+                    <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                      <label for="description">
+                        Descrição interna
+                      </label>
+
+                      <textarea id="description"
+                        class="textarea textarea-border-1  textarea-radius-4 textarea-h-3 textarea-w-10 textarea-resize-vertical"
+                        placeholder="Descrição interna sobre o vínculo fiscal..."></textarea>
+                    </div>
+
+                  </div>
+                </fieldset>
+              </div>
+
+              <!-- NCM / CEST -->
+              <div class="header">
+                <fieldset class="fc-fieldset">
+                  <legend>NCM / CEST</legend>
+
+                  <div class="fields-inline fields-gap-3">
+                    <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                      <label for="ncm_code">NCM</label>
+
+                      <input id="ncm_code" name="ncm_code" class="field-input" type="text" maxlength="10"
+                        placeholder="Ex.: 48182000">
+                    </div>
+
+                    <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                      <label for="cest_code">CEST</label>
+
+                      <input id="cest_code" name="cest_code" class="field-input" type="text" maxlength="10"
+                        placeholder="Ex.: 10.005.00">
+                    </div>
+
+                    <div class="fields fields-h-6 fields-w-8 fields-font-3">
+                      <label for="ex_tipi">EX TIPI</label>
+                      <input id="ex_tipi" name="ex_tipi" class="field-input" type="text" maxlength="3">
+                    </div>
+                  </div>
+
+                  <div class="fields-inline fields-gap-3">
+                    <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                      <label for="ncm_description">
+                        Descrição NCM
+                      </label>
+
+                      <textarea id="ncm_description" name="ncm_description" class="field-textarea" rows="2"
+                        placeholder="Descrição oficial do NCM (opcional)."></textarea>
+                    </div>
+
+                    <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                      <label for="cest_description">
+                        Descrição CEST
+                      </label>
+
+                      <textarea id="cest_description" name="cest_description" class="field-textarea" rows="2"
+                        placeholder="Descrição oficial do CEST (opcional)."></textarea>
+                    </div>
+                  </div>
+
+                  <div class="fields-inline fields-gap-3">
+                    <div class="btn-position-right">
+                      <button class="btn btn-toolbar btn-sm" type="submit">
+                        💾 Salvar
+                      </button>
+                      <button id="btnLimpar" class="btn btn-toolbar btn-sm" type="button">
+                        Limpar
+                      </button>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+
+              <!-- IBS / CBS -->
+              <div class="header">
+                <fieldset class="fc-fieldset">
+                  <legend>Reforma Tributária — IBS / CBS</legend>
+
+                  <div class="fields-inline fields-gap-3">
+                    <div class="fields fields-h-6 fields-w-8 fields-font-3">
+                      <label for="ibscbs_cst">CST IBS/CBS</label>
+                      <input id="ibscbs_cst" name="ibscbs_cst" class="field-input" type="text" inputmode="numeric"
+                        maxlength="3" placeholder="000">
+                    </div>
+
+                    <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                      <label for="ibscbs_classification">Classificação IBS/CBS</label>
+                      <input id="ibscbs_classification" name="ibscbs_classification" class="field-input" type="text"
+                        inputmode="numeric" maxlength="6" placeholder="000000">
+                    </div>
+
+                    <div class="fields fields-h-6 fields-w-8 fields-font-3">
+                      <label for="ibs_uf_rate">Alíquota IBS UF (%)</label>
+                      <input id="ibs_uf_rate" name="ibs_uf_rate" class="field-input" type="number" min="0" max="100"
+                        step="0.0001" value="0">
+                    </div>
+
+                    <div class="fields fields-h-6 fields-w-8 fields-font-3">
+                      <label for="ibs_municipal_rate">Alíquota IBS Municipal (%)</label>
+                      <input id="ibs_municipal_rate" name="ibs_municipal_rate" class="field-input" type="number" min="0"
+                        max="100" step="0.0001" value="0">
+                    </div>
+
+                    <div class="fields fields-h-6 fields-w-8 fields-font-3">
+                      <label for="cbs_rate">Alíquota CBS (%)</label>
+                      <input id="cbs_rate" name="cbs_rate" class="field-input" type="number" min="0" max="100"
+                        step="0.0001" value="0">
+                    </div>
+
+                    <div class="fields fields-h-6 fields-w-10 fields-font-3">
+                      <label for="donation_indicator">Indicador de doação</label>
+                      <select id="donation_indicator" name="donation_indicator" class="field-select">
+                        <option value="1" selected>1 — Não</option>
+                        <option value="0">0 — Sim</option>
+                      </select>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+
+              <!-- IMPOSTO SELETIVO -->
+              <div class="header">
+                <fieldset class="fc-fieldset">
+                  <legend>Imposto Seletivo</legend>
+
+                  <div class="fields-inline fields-gap-3">
+                    <div class="fields fields-h-6 fields-w-8 fields-font-3">
+                      <label for="is_cst">CST IS</label>
+                      <input id="is_cst" name="is_cst" class="field-input" type="text" maxlength="3">
+                    </div>
+
+                    <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                      <label for="is_classification">Classificação IS</label>
+                      <input id="is_classification" name="is_classification" class="field-input" type="text"
+                        maxlength="10">
+                    </div>
+
+                    <div class="fields fields-h-6 fields-w-8 fields-font-3">
+                      <label for="is_rate">Alíquota IS (%)</label>
+                      <input id="is_rate" name="is_rate" class="field-input" type="number" min="0" max="100"
+                        step="0.0001" value="0">
+                    </div>
+
+                    <div class="fields fields-h-6 fields-w-10 fields-font-3">
+                      <label for="is_specific_rate">Alíquota específica</label>
+                      <input id="is_specific_rate" name="is_specific_rate" class="field-input" type="number" min="0"
+                        step="0.000001" value="0">
+                    </div>
+
+                    <div class="fields fields-h-6 fields-w-8 fields-font-3">
+                      <label for="is_unit">Unidade</label>
+                      <input id="is_unit" name="is_unit" class="field-input" type="text" maxlength="6" value="UN">
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+            </form>
+          </section>
+      </div>
+    </section>
+    </div>
+  </main>
+
+  <!-- =========================================================
+       ACTION BUTTONS TEMPLATE
+  ========================================================== -->
+  <section id="actionButtons" hidden>
+    <div class="btn-actions btn-actions-md">
+      <button class="btn btn-edit btn-sm" type="button">
+        Editar
+      </button>
+
+      <button class="btn btn-delete btn-sm" type="button">
+        Desativar
+      </button>
+    </div>
+  </section>
+
+  <!-- ⚙️ Scripts globais -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <!-- JS da página -->
+  <script type="module" src="./js/fiscalClassification.init.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,205 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ 🎨 products.camera.css — Câmera / Imagens de Produtos              ║
+   ║ PRODNEX ERP                                                        ║
+   ║ ✅ Vermelha quando não possui imagem                               ║
+   ║ ✅ Escura quando possui imagem                                     ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+/* =========================================================
+   BOTÕES DE IMAGEM
+   ========================================================= */
+
+.page .btn-camera,
+.page .btn-upload {
+  min-width: 38px;
+  height: 32px;
+  padding: 0 10px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  border: 1px solid var(--line, #d0d7e2);
+  border-radius: 6px;
+
+  background: #fff;
+
+  cursor: pointer;
+
+  transition:
+    color .18s ease,
+    border-color .18s ease,
+    background-color .18s ease,
+    box-shadow .18s ease,
+    transform .18s ease;
+}
+
+/* =========================================================
+   BOTÃO DA CÂMERA
+   ========================================================= */
+
+.page .btn-camera {
+  position: relative;
+
+  color: #334155;
+
+  /*
+   * Esconde emoji ou texto original.
+   * O ícone será criado por ::before.
+   */
+  font-size: 0;
+}
+
+/* Ícone monocromático da câmera */
+.page .btn-camera::before {
+  content: "";
+
+  width: 17px;
+  height: 17px;
+
+  display: block;
+
+  background-color: currentColor;
+
+  -webkit-mask-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M9 3l-1.83 2H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3.17L15 3H9zm3 5a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6a3 3 0 0 0 0-6z'/%3E%3C/svg%3E");
+
+  mask-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M9 3l-1.83 2H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3.17L15 3H9zm3 5a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6a3 3 0 0 0 0-6z'/%3E%3C/svg%3E");
+
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+
+  -webkit-mask-position: center;
+  mask-position: center;
+
+  -webkit-mask-size: contain;
+  mask-size: contain;
+
+  pointer-events: none;
+
+  transition:
+    background-color .18s ease,
+    transform .18s ease;
+}
+
+.page .btn-camera:hover::before {
+  transform: scale(1.08);
+}
+
+/* Oculta eventual elemento antigo do emoji */
+.page .btn-camera .camera-icon {
+  display: none;
+}
+
+/* =========================================================
+   CÂMERA COM IMAGEM
+   ========================================================= */
+
+.page .btn-camera.has-image {
+  color: #334155;
+  border-color: var(--line, #d0d7e2);
+  background: #fff;
+}
+
+.page .btn-camera.has-image:hover {
+  color: #0f172a;
+  border-color: #94a3b8;
+  background: #f8fafc;
+}
+
+/* =========================================================
+   CÂMERA SEM IMAGEM
+   ========================================================= */
+
+.page .btn-camera.no-image {
+  color: #dc2626;
+  border-color: #dc2626;
+  background: #fff5f5;
+}
+
+.page .btn-camera.no-image:hover {
+  color: #b91c1c;
+  border-color: #b91c1c;
+  background: #fee2e2;
+}
+
+/* =========================================================
+   FOCO
+   ========================================================= */
+
+.page .btn-camera.camera-focused,
+.page .btn-camera:focus-visible {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, .18);
+}
+
+.page .btn-camera.camera-unfocused {
+  opacity: 1;
+}
+
+/* =========================================================
+   DROP HOVER
+   ========================================================= */
+
+.page .btn-camera.camera-drop-hover,
+.page #cameraArea.camera-drop-hover,
+.page [data-camera-dropzone].camera-drop-hover {
+  color: #2563eb !important;
+  border-color: #2563eb !important;
+  background: #eff6ff !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
+}
+
+/* =========================================================
+   PREVIEW HOVER
+   ========================================================= */
+
+.img-hover-preview {
+  overflow: hidden;
+}
+
+.img-hover-preview img {
+  display: block;
+
+  max-width: 220px;
+  max-height: 220px;
+
+  object-fit: contain;
+
+  border-radius: 8px;
+}
+
+/* =========================================================
+   LINHA SENDO ARRASTADA
+   ========================================================= */
+
+.page tr.is-dragging {
+  opacity: .55;
+}
+
+/* =========================================================
+   COLUNA DA IMAGEM
+   ========================================================= */
+
+.page .col-img {
+  white-space: nowrap;
+}
+
+.page .col-img .btn,
+.page .col-img label {
+  margin: 0 2px;
+}
+
+/* =========================================================
+   DESABILITADO
+   ========================================================= */
+
+.page .btn-camera:disabled,
+.page .btn-upload:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+  transform: none;
+}

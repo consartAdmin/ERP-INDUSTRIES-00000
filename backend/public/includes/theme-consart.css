@@ -1,0 +1,244 @@
+/* =============================
+   CONSART Theme — Base & Inputs
+   ============================= */
+:root{
+  --c-primary:#a6c8ee;
+  --c-primary-600:#a6c8ee;
+
+  --c-input-bg:#f7fbff;
+  --c-input-bd:#cfe2ff;
+  --c-input-bd-hover:#9ec1ff;
+  --c-ring:rgba(0,87,184,.22);
+  --radius:8px;
+
+  /* Botões (fácil de trocar depois) */
+  --btn-bg:#ffffff;
+  --btn-bd:#000;
+  --btn-fg:#000;
+  --btn-bg-hover:#f5f5f5;
+
+  /* Fundo/aurora (opt-in) */
+  --bg1:#f6f9ff; --bg2:#ecf3ff;
+  --blue1:rgba(168,201,255,.55);
+  --blue2:rgba(189,214,255,.42);
+  --blue3:rgba(160,205,255,.38);
+}
+
+/* Inputs */
+body.consart-theme input[type="text"],
+body.consart-theme input[type="search"],
+body.consart-theme input[type="date"],
+body.consart-theme input[type="number"],
+body.consart-theme input[type="password"],
+body.consart-theme select{
+  -webkit-appearance:none; appearance:none;
+  background:var(--c-input-bg);
+  border:1px solid var(--c-input-bd);
+  border-radius:var(--radius);
+  box-sizing: border-box;      /* ← altura passa a incluir o padding */
+  height:28px;                 /* ← ajuste a gosto (32–40px) */
+  padding:6px 10px;            /* ← padding menor */
+  font-size:14px;
+  color:#0f172a; outline:none;
+  transition:border-color .15s, box-shadow .15s, background-color .15s;
+  box-shadow:0 1px 0 rgba(0,0,0,.03), inset 0 1px 0 rgba(255,255,255,.6);
+}
+body.consart-theme input::placeholder{ color:#94a3b8; }
+body.consart-theme input:hover,
+body.consart-theme select:hover { border-color:var(--c-input-bd-hover); }
+body.consart-theme input:focus,
+body.consart-theme select:focus {
+  border-color:var(--c-primary);
+  box-shadow:0 0 0 3px var(--c-ring);
+  background:#fff;
+}
+
+/* Botões padrão */
+body.consart-theme .btn,
+body.consart-theme button.btn,
+body.consart-theme button[type="submit"]{
+  background:var(--btn-bg);
+  border:1px solid var(--btn-bd);
+  color:var(--btn-fg);
+  height:40px; padding:0 14px;
+  border-radius:var(--radius);
+  font-weight:700; /* 1000 pode variar por fonte, 700 é mais estável */
+  cursor:pointer;
+  transition:background-color .15s, border-color .15s, transform .02s, box-shadow .15s;
+}
+body.consart-theme .btn:hover,
+body.consart-theme button.btn:hover,
+body.consart-theme button[type="submit"]:hover{
+  background:var(--btn-bg-hover);
+  border-color:var(--btn-bd);
+}
+body.consart-theme .btn:active,
+body.consart-theme button.btn:active,
+body.consart-theme button[type="submit"]:active{
+  transform: translateY(1px);
+}
+body.consart-theme .btn:focus-visible,
+body.consart-theme button.btn:focus-visible,
+body.consart-theme button[type="submit"]:focus-visible{
+  outline:none;
+  box-shadow:0 0 0 3px var(--c-ring);
+}
+body.consart-theme .btn[disabled],
+body.consart-theme button[disabled]{
+  opacity:.6; cursor:not-allowed;
+}
+
+/* =====================
+   Aurora (OPT-IN real)
+   ===================== */
+html, body { height:100%; }
+body{ margin:0; }
+
+/* aplique a classe "with-aurora" no <html> OU no <body> */
+body.with-aurora{
+  background: linear-gradient(180deg, var(--bg1), var(--bg2));
+  overflow-x:hidden;
+}
+/* suporte tanto em <html> quanto em <body> */
+html.with-aurora::before,
+body.with-aurora::before{
+  content:""; position:fixed; inset:-15%;
+  pointer-events:none;
+  background:
+    radial-gradient(62% 70% at 26% 24%, var(--blue1) 0 35%, transparent 65%),
+    radial-gradient(58% 65% at 78% 32%, var(--blue2) 0 30%, transparent 62%),
+    radial-gradient(55% 62% at 50% 82%, var(--blue3) 0 24%, transparent 58%);
+  filter:blur(90px); opacity:.55;
+  animation: auroraMove 32s ease-in-out infinite alternate; z-index:0;
+}
+@keyframes auroraMove{
+  0%   { transform: translate3d(-1%,-1%,0) scale(1.02); }
+  50%  { transform: translate3d( 1%, 1%,0) scale(1.05); }
+  100% { transform: translate3d( 0%,-1%,0) scale(1.03); }
+}
+
+/* =========================================
+   Layout utilitário CONSART (dimensionamento)
+   ========================================= */
+:root{
+  --c-container-sm: 640px;
+  --c-container-md: 768px;
+  --c-container-lg: 1024px;
+  --c-container-xl: 1280px;
+  --c-container-2xl: 1440px;
+
+  --c-container-px: clamp(12px, 2.5vw, 24px);
+
+  --c-header-h: 56px;
+  --c-space-2: 8px;
+  --c-space-3: 12px;
+  --c-space-4: 16px;
+  --c-space-6: 24px;
+  --c-space-8: 32px;
+}
+
+/* página com 2 linhas: header + conteúdo */
+.c-page{
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+/* container com limite de largura + padding lateral */
+.c-container{
+  width: 100%;
+  max-width: var(--c-container-lg); /* default */
+  margin-inline: auto;
+  padding-inline: var(--c-container-px);
+}
+
+/* variações de largura */
+.c-container--sm   { max-width: var(--c-container-sm); }
+.c-container--md   { max-width: var(--c-container-md); }
+.c-container--lg   { max-width: var(--c-container-lg); }
+.c-container--xl   { max-width: var(--c-container-xl); }
+.c-container--2xl  { max-width: var(--c-container-2xl); }
+.c-container--fluid{ max-width: none; }
+
+/* respiro vertical do conteúdo principal */
+.c-main{ padding-block: var(--c-space-8); }
+
+/* utilitários de grid */
+.c-grid  { display: grid; gap: var(--c-space-6); }
+.c-grid-2{ grid-template-columns: 1fr; }
+.c-grid-3{ grid-template-columns: 1fr; }
+@media (min-width: 768px){
+  .c-grid-2{ grid-template-columns: repeat(2, 1fr); }
+  .c-grid-3{ grid-template-columns: repeat(3, 1fr); }
+}
+
+/* tipografia adaptável (opcional) */
+@media (min-width: 1600px){ html { font-size: 17px; } }
+@media (max-width: 360px){  html { font-size: 15px; } }
+
+/* ================================
+   Wrapper com Scroll Encapsulado
+   ================================ */
+.c-scroll {
+  max-height: 250px;   /* ajuste conforme sua necessidade */
+  overflow-y: auto;
+  padding: var(--c-space-3);
+  border: 1px solid var(--c-input-bd);
+  border-radius: var(--radius);
+  background: var(--c-input-bg);
+  scrollbar-width: thin;          /* Firefox */
+  scrollbar-color: var(--c-primary) #f1f5f9; /* cor e trilha */
+}
+
+/* Scrollbar (Webkit - Chrome/Edge/Safari) */
+.c-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.c-scroll::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 8px;
+}
+.c-scroll::-webkit-scrollbar-thumb {
+  background-color: var(--c-primary);
+  border-radius: 8px;
+  border: 2px solid #f1f5f9;
+}
+.c-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: var(--c-primary-600);
+}
+
+/* =======================================
+   Extensão: Scroll aplicado em Tabelas
+   ======================================= */
+.c-scroll--table {
+  max-height: 550px;                 /* altura sugerida para registros */
+  padding: var(--c-space-2);
+}
+
+.c-scroll--table table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.c-scroll--table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #ffffff;
+  border-bottom: 1px solid var(--c-input-bd);
+  box-shadow: 0 2px 0 rgba(0,0,0,.03);
+}
+
+.c-scroll--table th,
+.c-scroll--table td {
+  padding: 10px 12px;
+  font-size: 14px;
+  border-bottom: 1px solid var(--c-input-bd);
+}
+
+.c-scroll--table tbody tr:hover {
+  background: #f8fbff;
+}
+

@@ -1,0 +1,371 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ FILE: backend/public/customerTrainings/customerTrainings.html      ║
+     ║ MODULE: Treinamentos de Clientes (agenda + lista)                  ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>PRODNEX ERP | Treinamentos de Clientes</title>
+
+    <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+    <!-- style.css já importa table.css, fields.css e modals.css -->
+    <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+    <link rel="stylesheet" href="/public/customerTrainings/customerTrainings.css" />
+</head>
+
+<body>
+    <main class="ct-page">
+        <header class="ct-header">
+            <div>
+                <h1>🎓 Treinamentos de Clientes</h1>
+                <p>Programação, participantes e relatórios dos treinamentos.</p>
+            </div>
+
+            <div class="btn-position-right">
+                <button id="btnReload" type="button" class="btn btn-secondary btn-sm">⟳ Atualizar</button>
+                <button id="btnNewTraining" type="button" class="btn btn-new btn-sm">➕ Novo Treinamento</button>
+            </div>
+        </header>
+
+        <!-- ===================================================== -->
+        <!-- TABS                                                  -->
+        <!-- ===================================================== -->
+        <nav id="ctTabs" class="tab-list ct-tabs" role="tablist" aria-label="Visões dos treinamentos">
+            <button type="button" class="tab is-active" role="tab" data-tab="calendar" aria-selected="true">📅 Calendário</button>
+            <button type="button" class="tab" role="tab" data-tab="list" aria-selected="false">📋 Lista</button>
+        </nav>
+
+        <!-- ===================================================== -->
+        <!-- CALENDÁRIO                                            -->
+        <!-- ===================================================== -->
+        <section id="calendarPanel" class="ct-calendar">
+            <div class="ct-calendar__toolbar">
+                <div class="ct-calendar__nav">
+                    <button id="btnCalPrev" type="button" class="btn btn-secondary btn-sm" title="Anterior">‹</button>
+                    <button id="btnCalToday" type="button" class="btn btn-secondary btn-sm">Hoje</button>
+                    <button id="btnCalNext" type="button" class="btn btn-secondary btn-sm" title="Próximo">›</button>
+                    <h2 id="calTitle" class="ct-calendar__title">—</h2>
+                </div>
+
+                <div class="ct-calendar__modes" role="group" aria-label="Modo do calendário">
+                    <button type="button" class="btn btn-secondary btn-sm is-active" data-cal-mode="month">Mês</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-cal-mode="week">Semana</button>
+                </div>
+            </div>
+
+            <div id="calGrid" class="ct-calendar__grid"></div>
+
+            <div class="ct-legend">
+                <span class="ct-status ct-status--scheduled">Agendado</span>
+                <span class="ct-status ct-status--rescheduled">Reagendado</span>
+                <span class="ct-status ct-status--done">Realizado</span>
+                <span class="ct-status ct-status--cancelled">Cancelado</span>
+            </div>
+        </section>
+
+        <!-- ===================================================== -->
+        <!-- LISTA (tabela integrada)                              -->
+        <!-- ===================================================== -->
+        <section id="listPanel" class="table-layout-integrated hidden">
+            <div class="table-layout-integrated__filter">
+                <div class="fields-inline fields-inline-wrap fields-gap-3">
+                    <div class="fields fields-h-6 fields-w-25 fields-font-3">
+                        <label for="fltSearch">🔎 Pesquisar</label>
+                        <input id="fltSearch" type="text" placeholder="Cliente, título ou conteúdo..." autocomplete="off" />
+                    </div>
+                    <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                        <label for="fltStatus">Situação</label>
+                        <select id="fltStatus">
+                            <option value="">Todas</option>
+                            <option value="scheduled">Agendado</option>
+                            <option value="rescheduled">Reagendado</option>
+                            <option value="done">Realizado</option>
+                            <option value="cancelled">Cancelado</option>
+                        </select>
+                    </div>
+                    <div class="fields fields-h-6 fields-w-15 fields-font-3">
+                        <label for="fltTrainer">Instrutor</label>
+                        <input id="fltTrainer" type="text" placeholder="Nome do instrutor" autocomplete="off" />
+                    </div>
+                    <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                        <label for="fltDateFrom">De</label>
+                        <input id="fltDateFrom" type="date" />
+                    </div>
+                    <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                        <label for="fltDateTo">Até</label>
+                        <input id="fltDateTo" type="date" />
+                    </div>
+                    <button id="btnClearFilters" type="button" class="btn btn-secondary btn-sm">Limpar</button>
+                </div>
+            </div>
+
+            <div class="table-scroll table-scroll--flex table-row-h-28" data-table-settings="customertrainings.listbody">
+                <table class="table table-zebra table-zebra-hover table-sticky-head ct-table">
+                    <thead>
+                        <tr>
+                            <th>Data / horário</th>
+                            <th>Cliente</th>
+                            <th>Treinamento</th>
+                            <th>Instrutor</th>
+                            <th>Formato</th>
+                            <th>Duração</th>
+                            <th>Participantes</th>
+                            <th>Situação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listBody">
+                        <tr><td colspan="8" class="ct-empty">Carregando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <footer class="table-footer">
+                <div class="table-footer__info">
+                    <div class="summary-pill summary-pill--success">
+                        <span>Total: <strong id="listTotal">0</strong></span>
+                    </div>
+                </div>
+
+                <div class="table-footer__pagination">
+                    <button id="btnPrev" type="button" class="btn btn-secondary btn-sm">Anterior</button>
+                    <span id="paginationLabel">Página 1</span>
+                    <button id="btnNext" type="button" class="btn btn-secondary btn-sm">Próxima</button>
+                </div>
+
+                <div class="table-footer__page-size">
+                    <label for="limitSelect">Mostrar</label>
+                    <div class="fields fields-h-6 fields-w-3 fields-font-3">
+                        <select id="limitSelect" class="table-footer__page-size-select">
+                            <option value="25">25</option>
+                            <option value="50" selected>50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                </div>
+            </footer>
+        </section>
+    </main>
+
+    <!-- ===================================================== -->
+    <!-- MODAL — CADASTRO / EDIÇÃO DO TREINAMENTO              -->
+    <!-- ===================================================== -->
+    <div id="trainingModal" class="modal" aria-hidden="true">
+        <div class="modal__backdrop" data-close-modal></div>
+
+        <div class="modal__dialog">
+            <div class="modal__panel modal__panel--xl modal-header-color-2 modal-footer-color-1" role="dialog"
+                aria-modal="true" aria-labelledby="trainingModalTitle">
+                <header class="modal__header">
+                    <h3 id="trainingModalTitle" class="modal__title">Novo treinamento</h3>
+                    <span id="trainingStatusBadge" class="ct-status hidden"></span>
+                    <button type="button" class="modal__close" data-close-modal aria-label="Fechar modal" title="Fechar">×</button>
+                </header>
+
+                <div class="modal__body">
+                    <form id="trainingForm" class="modal-form-grid modal-form-grid--4" autocomplete="off">
+                        <div class="fields fields-h-6 fields-w-full fields-font-3 modal-field--span-2">
+                            <label for="fCustomerName">Cliente *</label>
+                            <div class="ct-picker">
+                                <input id="fCustomerName" type="text" readonly placeholder="Clique em 🔎 para selecionar" />
+                                <button id="btnPickCustomer" type="button" class="btn btn-secondary btn-sm" title="Buscar cliente">🔎</button>
+                            </div>
+                            <input id="fCustomerId" type="hidden" />
+                        </div>
+
+                        <div class="fields fields-h-6 fields-w-full fields-font-3 modal-field--span-2">
+                            <label for="fTitle">Título do treinamento *</label>
+                            <input id="fTitle" type="text" maxlength="200" placeholder="ex.: Treinamento módulo Financeiro" />
+                        </div>
+
+                        <div class="fields fields-h-6 fields-w-full fields-font-3">
+                            <label for="fScheduledAt">Data e horário *</label>
+                            <input id="fScheduledAt" type="datetime-local" />
+                        </div>
+
+                        <div class="fields fields-h-6 fields-w-full fields-font-3">
+                            <label for="fDuration">Duração (minutos)</label>
+                            <input id="fDuration" type="number" min="5" step="5" value="60" />
+                        </div>
+
+                        <div class="fields fields-h-6 fields-w-full fields-font-3">
+                            <label for="fFormat">Formato</label>
+                            <select id="fFormat">
+                                <option value="online">Online</option>
+                                <option value="onsite">Presencial</option>
+                            </select>
+                        </div>
+
+                        <div class="fields fields-h-6 fields-w-full fields-font-3">
+                            <label for="fStatus">Situação</label>
+                            <select id="fStatus">
+                                <option value="scheduled">Agendado</option>
+                                <option value="rescheduled">Reagendado</option>
+                                <option value="done">Realizado</option>
+                                <option value="cancelled">Cancelado</option>
+                            </select>
+                        </div>
+
+                        <div class="fields fields-h-6 fields-w-full fields-font-3 modal-field--span-2">
+                            <label for="fTrainer">Instrutor</label>
+                            <input id="fTrainer" type="text" maxlength="150" placeholder="Nome de quem vai ministrar" />
+                        </div>
+
+                        <div class="fields fields-h-6 fields-w-full fields-font-3 modal-field--span-2">
+                            <label for="fLocation">Local / link da reunião</label>
+                            <input id="fLocation" type="text" maxlength="500" placeholder="Endereço ou link (Meet, Teams, Zoom...)" />
+                        </div>
+
+                        <div class="fields fields-w-full fields-font-3 modal-field--span-full">
+                            <label for="fTopics">Conteúdo programático</label>
+                            <textarea id="fTopics" rows="4" placeholder="Módulos e assuntos que serão abordados (um por linha)"></textarea>
+                        </div>
+                    </form>
+
+                    <div class="modal-divider"></div>
+
+                    <section class="ct-attendees">
+                        <div class="ct-attendees__header">
+                            <h4>👥 Participantes</h4>
+                            <div class="row-actions">
+                                <button id="btnAttendeeFromCustomer" type="button" class="btn btn-secondary btn-sm">Usar contato do cliente</button>
+                                <button id="btnAddAttendee" type="button" class="btn btn-new btn-sm">➕ Participante</button>
+                            </div>
+                        </div>
+
+                        <div class="table-scroll table-row-h-28" data-table-settings="customertrainings.attendeesbody">
+                            <table class="table table-zebra ct-attendees__table">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>E-mail</th>
+                                        <th>Telefone</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="attendeesBody"></tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+
+                <footer class="modal__footer">
+                    <button id="btnDeleteTraining" type="button" class="btn btn-delete btn-sm hidden">Excluir</button>
+                    <div class="ct-spacer"></div>
+                    <button id="btnTrainingPdf" type="button" class="btn btn-secondary btn-sm hidden">📄 PDF</button>
+                    <button id="btnTrainingEmail" type="button" class="btn btn-secondary btn-sm hidden">✉️ Enviar e-mail</button>
+                    <button id="btnTrainingComplete" type="button" class="btn btn-edit btn-sm hidden">✔ Concluir treinamento</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-close-modal>Cancelar</button>
+                    <button id="btnSaveTraining" type="button" class="btn btn-save btn-sm">Salvar</button>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- MODAL — CONCLUSÃO (notas, pendências, presença)       -->
+    <!-- ===================================================== -->
+    <div id="completeModal" class="modal" aria-hidden="true">
+        <div class="modal__backdrop" data-close-modal></div>
+
+        <div class="modal__dialog">
+            <div class="modal__panel modal__panel--lg modal-header-color-2 modal-footer-color-1" role="dialog"
+                aria-modal="true" aria-labelledby="completeModalTitle">
+                <header class="modal__header">
+                    <h3 id="completeModalTitle" class="modal__title">Concluir treinamento</h3>
+                    <button type="button" class="modal__close" data-close-modal aria-label="Fechar modal" title="Fechar">×</button>
+                </header>
+
+                <div class="modal__body">
+                    <div class="modal-form-grid modal-form-grid--2">
+                        <div class="fields fields-w-full fields-font-3 modal-field--span-full">
+                            <label for="cNotes">O que foi abordado / observações</label>
+                            <textarea id="cNotes" rows="5"></textarea>
+                        </div>
+
+                        <div class="fields fields-w-full fields-font-3 modal-field--span-full">
+                            <label for="cPending">Pendências</label>
+                            <textarea id="cPending" rows="3" placeholder="Itens que ficaram para depois, ajustes solicitados..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="modal-divider"></div>
+
+                    <h4 class="ct-subtitle">✅ Lista de presença</h4>
+                    <div id="attendanceList" class="ct-attendance"></div>
+                    <small class="fields-help">Para incluir participantes, salve-os antes no cadastro do treinamento.</small>
+                </div>
+
+                <footer class="modal__footer">
+                    <div class="ct-spacer"></div>
+                    <button type="button" class="btn btn-secondary btn-sm" data-close-modal>Cancelar</button>
+                    <button id="btnConfirmComplete" type="button" class="btn btn-save btn-sm">Concluir</button>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- MODAL — ENVIO DE E-MAIL                               -->
+    <!-- ===================================================== -->
+    <div id="emailModal" class="modal" aria-hidden="true">
+        <div class="modal__backdrop" data-close-modal></div>
+
+        <div class="modal__dialog">
+            <div class="modal__panel modal__panel--md modal-header-color-2 modal-footer-color-1" role="dialog"
+                aria-modal="true" aria-labelledby="emailModalTitle">
+                <header class="modal__header">
+                    <h3 id="emailModalTitle" class="modal__title">Enviar e-mail</h3>
+                    <button type="button" class="modal__close" data-close-modal aria-label="Fechar modal" title="Fechar">×</button>
+                </header>
+
+                <div class="modal__body">
+                    <div class="modal-form-grid modal-form-grid--2">
+                        <div class="fields fields-h-6 fields-w-full fields-font-3 modal-field--span-full">
+                            <label for="eKind">Tipo de mensagem</label>
+                            <select id="eKind">
+                                <option value="invite">Agendamento / reagendamento</option>
+                                <option value="cancel">Cancelamento</option>
+                                <option value="report">Relatório do treinamento realizado</option>
+                            </select>
+                        </div>
+
+                        <div class="fields fields-h-6 fields-w-full fields-font-3 modal-field--span-full">
+                            <label for="eTo">Destinatários</label>
+                            <input id="eTo" type="text" placeholder="email1@cliente.com, email2@cliente.com" />
+                            <small class="fields-help">Separe por vírgula. Por padrão, os e-mails dos participantes.</small>
+                        </div>
+
+                        <div class="fields fields-w-full fields-font-3 modal-field--span-full">
+                            <label for="eMessage">Mensagem adicional (opcional)</label>
+                            <textarea id="eMessage" rows="3"></textarea>
+                        </div>
+
+                        <label class="ct-check modal-field--span-full" for="eAttachPdf">
+                            <input id="eAttachPdf" type="checkbox" />
+                            Anexar PDF do treinamento
+                        </label>
+                    </div>
+                </div>
+
+                <footer class="modal__footer">
+                    <div class="ct-spacer"></div>
+                    <button type="button" class="btn btn-secondary btn-sm" data-close-modal>Cancelar</button>
+                    <button id="btnSendEmail" type="button" class="btn btn-save btn-sm">✉️ Enviar</button>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/public/includes/js/core.js"></script>
+
+    <script type="module" src="/public/customerTrainings/js/customerTrainings.init.js"></script>
+</body>
+
+</html>

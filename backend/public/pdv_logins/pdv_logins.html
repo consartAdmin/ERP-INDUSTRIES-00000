@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Usuários do PDV | PRODNEX ERP</title>
+    <link rel="stylesheet" href="./pdv_logins.css">
+</head>
+
+<body>
+    <main class="pdv-page">
+        <header class="pdv-header">
+            <div>
+                <h1>Usuários do PDV</h1>
+                <p>Cadastro e controle de acesso dos operadores do ponto de venda.</p>
+            </div>
+
+            <button type="button" id="btnNew" class="btn btn-primary">+ Novo usuário</button>
+        </header>
+
+        <section class="pdv-panel pdv-filters" aria-label="Filtros">
+            <div class="field field-search">
+                <label for="filterSearch">Buscar</label>
+                <input id="filterSearch" type="search" placeholder="Usuário ou nome completo">
+            </div>
+
+            <div class="field">
+                <label for="filterRole">Perfil</label>
+                <select id="filterRole">
+                    <option value="">Todos</option>
+                    <option value="operator">Operador</option>
+                    <option value="supervisor">Supervisor</option>
+                    <option value="admin">Administrador</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="filterActive">Status</label>
+                <select id="filterActive">
+                    <option value="">Todos</option>
+                    <option value="true">Ativo</option>
+                    <option value="false">Inativo</option>
+                </select>
+            </div>
+
+            <div class="filter-actions">
+                <button type="button" id="btnApplyFilters" class="btn btn-secondary">Filtrar</button>
+                <button type="button" id="btnClearFilters" class="btn btn-light">Limpar</button>
+            </div>
+        </section>
+
+        <section class="pdv-summary" aria-label="Resumo">
+            <div class="summary-card"><span>Total</span><strong id="summaryTotal">0</strong></div>
+            <div class="summary-card summary-active"><span>Ativos na página</span><strong id="summaryActive">0</strong>
+            </div>
+            <div class="summary-card summary-inactive"><span>Inativos na página</span><strong
+                    id="summaryInactive">0</strong></div>
+        </section>
+
+        <section class="pdv-panel table-panel">
+            <div id="loadingBox" class="state-box" hidden>Carregando usuários...</div>
+            <div id="emptyBox" class="state-box" hidden>Nenhum usuário encontrado.</div>
+
+            <div class="table-scroll" data-table-settings="pdv-logins.userstablebody">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Usuário</th>
+                            <th>Nome completo</th>
+                            <th>Perfil</th>
+                            <th>Status</th>
+                            <th>Atualizado em</th>
+                            <th class="actions-column">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody"></tbody>
+                </table>
+            </div>
+
+            <footer class="pagination">
+                <span id="paginationInfo">0 registros</span>
+                <div>
+                    <button type="button" id="btnPrevious" class="btn btn-light btn-small">Anterior</button>
+                    <span id="pageInfo">Página 1 de 1</span>
+                    <button type="button" id="btnNext" class="btn btn-light btn-small">Próxima</button>
+                </div>
+            </footer>
+        </section>
+    </main>
+
+    <div id="userModal" class="modal" hidden>
+        <div class="modal-backdrop" data-close-modal></div>
+        <section class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <header class="modal-header">
+                <h2 id="modalTitle">Novo usuário</h2>
+                <button type="button" class="modal-close" data-close-modal aria-label="Fechar">×</button>
+            </header>
+
+            <form id="userForm" novalidate>
+                <div class="modal-body">
+                    <input type="hidden" id="userId">
+
+                    <div class="form-grid">
+                        <div class="field">
+                            <label for="username">Usuário *</label>
+                            <input id="username" name="username" maxlength="50" autocomplete="username" required>
+                            <small>Letras, números, ponto, hífen e sublinhado.</small>
+                        </div>
+
+                        <div class="field field-wide">
+                            <label for="fullName">Nome completo *</label>
+                            <input id="fullName" name="full_name" maxlength="120" required>
+                        </div>
+
+                        <div class="field">
+                            <label for="role">Perfil *</label>
+                            <select id="role" name="role" required>
+                                <option value="operator">Operador</option>
+                                <option value="supervisor">Supervisor</option>
+                                <option value="admin">Administrador</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label for="password">Senha <span id="passwordRequired">*</span></label>
+                            <div class="password-field">
+                                <input id="password" name="password" type="password" maxlength="72"
+                                    autocomplete="new-password">
+                                <button type="button" id="btnTogglePassword" class="password-toggle">Mostrar</button>
+                            </div>
+                            <small id="passwordHelp">Mínimo de 8 caracteres.</small>
+                        </div>
+
+                        <label class="active-control">
+                            <input id="active" name="active" type="checkbox" checked>
+                            <span>Usuário ativo</span>
+                        </label>
+                    </div>
+
+                    <div id="formError" class="form-error" role="alert" hidden></div>
+                </div>
+
+                <footer class="modal-footer">
+                    <button type="button" class="btn btn-light" data-close-modal>Cancelar</button>
+                    <button type="submit" id="btnSave" class="btn btn-primary">Salvar usuário</button>
+                </footer>
+            </form>
+        </section>
+    </div>
+
+    <div id="toast" class="toast" role="status" hidden></div>
+
+    <script type="module" src="./pdv_logins.js"></script>
+</body>
+
+</html>

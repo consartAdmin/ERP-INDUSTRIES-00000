@@ -1,0 +1,321 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ nfeReceipts.css — Canhoto Digital da NF-e (mobile)                  ║
+   ║ Tudo escopado em .receipt-page / .nr-* para não afetar o menu e o   ║
+   ║ Design System global do ERP.                                        ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.hidden {
+  display: none !important;
+}
+
+.receipt-page,
+.receipt-page *,
+.nr-modal,
+.nr-modal * {
+  box-sizing: border-box;
+}
+
+/* ==========================================================
+   PÁGINA E CARTÃO
+   ========================================================== */
+
+.receipt-page {
+  min-height: 100vh;
+  padding: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: #f4f6f8;
+  color: #222;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.receipt-card {
+  width: 100%;
+  max-width: 480px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.receipt-header {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.receipt-page .brand {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+}
+
+.receipt-page .subtitle {
+  margin-top: 4px;
+  font-size: 14px;
+  color: #666;
+}
+
+/* ==========================================================
+   CAIXAS DE MENSAGEM
+   ========================================================== */
+
+.receipt-page .box {
+  padding: 14px;
+  border-radius: 12px;
+  margin-bottom: 14px;
+  font-size: 14px;
+}
+
+.receipt-page .info {
+  background: #eef4ff;
+  border: 1px solid #cddfff;
+}
+
+.receipt-page .error {
+  background: #fff0f0;
+  border: 1px solid #ffc5c5;
+  color: #9d1111;
+}
+
+.receipt-page .success {
+  background: #effaf1;
+  border: 1px solid #bfe8c7;
+  color: #126b27;
+  text-align: center;
+  font-weight: 700;
+}
+
+.receipt-page .closed {
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  color: #555;
+  text-align: center;
+  font-weight: 700;
+}
+
+/* ==========================================================
+   RESUMO DA NF-e
+   ========================================================== */
+
+.nfe-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.nfe-summary div {
+  background: #f7f7f7;
+  border: 1px solid #e1e1e1;
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.nfe-summary span {
+  display: block;
+  font-size: 12px;
+  color: #666;
+}
+
+.nfe-summary strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 16px;
+}
+
+.receipt-status[data-status="SIGNED"] { color: #126b27; }
+.receipt-status[data-status="REFUSED"] { color: #9d1111; }
+.receipt-status[data-status="PENDING"] { color: #92400e; }
+
+/* ==========================================================
+   CAMPOS
+   ========================================================== */
+
+.nr-field {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.nr-field input,
+.nr-field textarea {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  border: 1px solid #cfcfcf;
+  border-radius: 10px;
+  padding: 11px;
+  font-size: 16px; /* 16px evita o zoom automático do iOS ao focar */
+  font-weight: 400;
+  outline: none;
+  background: #fff;
+  color: #222;
+}
+
+.nr-field input:focus,
+.nr-field textarea:focus {
+  border-color: #222;
+}
+
+.nr-check {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 12px 0 4px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.nr-check input {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+}
+
+/* ==========================================================
+   ASSINATURA
+   ========================================================== */
+
+.signature-title {
+  font-size: 13px;
+  font-weight: 800;
+  margin: 10px 0 6px;
+}
+
+.signature-wrap {
+  position: relative;
+  width: 100%;
+  height: 190px;
+  border: 2px dashed #999;
+  border-radius: 14px;
+  background: #fff;
+  overflow: hidden;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.signature-wrap.is-invalid {
+  border-color: #9d1111;
+  background: #fff8f8;
+}
+
+.signature-wrap canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;           /* o dedo desenha em vez de rolar a página */
+  -webkit-touch-callout: none;  /* sem menu de "salvar imagem" no iOS */
+  cursor: crosshair;
+}
+
+.signature-hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b0b0b0;
+  font-size: 14px;
+  pointer-events: none;
+}
+
+/* ==========================================================
+   BOTÕES
+   ========================================================== */
+
+.nr-btn {
+  display: block;
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  padding: 13px;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.nr-btn--primary {
+  background: #111;
+  color: #fff;
+}
+
+.nr-btn--secondary {
+  background: #fff;
+  color: #111;
+  border: 1px solid #111;
+}
+
+.nr-btn--danger {
+  background: #fff;
+  color: #9d1111;
+  border: 1px solid #9d1111;
+}
+
+.nr-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ==========================================================
+   MODAL — MOTIVO DA RECUSA
+   ========================================================== */
+
+body.nr-modal-open {
+  overflow: hidden;
+}
+
+.nr-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.nr-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, .45);
+}
+
+.nr-modal__panel {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  margin: 14px;
+  padding: 18px;
+  border-radius: 16px;
+  background: #fff;
+  color: #222;
+}
+
+.nr-modal__title {
+  margin: 0 0 12px;
+  font-size: 17px;
+}
+
+.nr-modal__error {
+  margin: -4px 0 8px;
+  color: #9d1111;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.nr-modal__actions .nr-btn:first-child {
+  margin-top: 0;
+}
+
+@media (min-width: 600px) {
+  .nr-modal {
+    align-items: center;
+  }
+}

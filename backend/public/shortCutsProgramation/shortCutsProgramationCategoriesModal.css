@@ -1,0 +1,162 @@
+.scp-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .35);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scp-modal-backdrop.hidden {
+  display: none;
+}
+
+.scp-modal {
+  width: min(1100px, 96vw);
+  height: min(720px, 92vh);
+  background: #fff;
+  border: 1px solid #111;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.scp-modal-header {
+  background: #f2f2f2;
+  border-bottom: 1px solid #111;
+  padding: 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.scp-modal-header h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.scp-modal-header p {
+  margin: 3px 0 0;
+  font-size: 12px;
+  color: #555;
+}
+
+.scp-modal-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 10px;
+}
+
+.scp-box {
+  border: 1px solid #111;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.scp-box-title {
+  background: #f2f2f2;
+  border-bottom: 1px solid #111;
+  padding: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.scp-form {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-bottom: 1px solid #ddd;
+}
+
+.scp-form label {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.scp-form input,
+.scp-form select,
+.scp-form textarea {
+  width: 100%;
+  min-height: 30px;
+  border: 1px solid #999;
+  border-radius: 6px;
+  padding: 5px 8px;
+  font-size: 12px;
+}
+
+.scp-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 90px;
+  gap: 6px;
+}
+
+.scp-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.scp-check input {
+  width: auto;
+  min-height: auto;
+}
+
+.scp-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.scp-list {
+  flex: 1;
+  overflow: auto;
+  padding: 8px;
+}
+
+.scp-row {
+  width: 100%;
+  border: 1px solid #bbb;
+  background: #fff;
+  border-radius: 6px;
+  padding: 7px 8px;
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  text-align: left;
+}
+
+.scp-row:hover,
+.scp-row.selected {
+  background: #f2f2f2;
+  border-color: #111;
+}
+
+.scp-row small {
+  color: #555;
+}
+
+.scp-empty {
+  text-align: center;
+  color: #777;
+  padding: 20px;
+}
+
+.btn.danger {
+  background: #ffe1e1;
+}
+
+@media (max-width: 900px) {
+  .scp-modal-body {
+    grid-template-columns: 1fr;
+  }
+}

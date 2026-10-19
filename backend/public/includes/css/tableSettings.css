@@ -1,0 +1,227 @@
+/* ╔════════════════════════════════════════════════════════════════════╗
+   ║ tableSettings.css — Engrenagem ⚙️ das tabelas | PRODNEX ERP        ║
+   ║ Par do includes/js/tableSettings.js                                ║
+   ╚════════════════════════════════════════════════════════════════════╝ */
+
+/* =========================================================
+   Engrenagem injetada (canto superior direito da tabela)
+========================================================= */
+
+.ts-anchor {
+    position: relative;
+    flex: 0 0 auto;
+    height: 0;
+    max-width: 100%;
+    z-index: 30;
+}
+
+/* Pai em grid / flex em linha: anchor dentro da .table-scroll, preso no topo */
+.ts-anchor--inner {
+    position: sticky;
+    top: 0;
+    left: 0;
+    display: block;
+}
+
+.ts-trigger {
+    position: absolute;
+    top: calc((var(--table-head-height, 34px) - 24px) / 2);
+    right: calc(var(--ts-scrollbar, 0px) + 4px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+
+    border: 0;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, .85);
+    font-size: 15px;
+    line-height: 1;
+    opacity: .55;
+    cursor: pointer;
+    transition: opacity .2s ease, transform .2s ease, background-color .2s ease;
+}
+
+.ts-trigger:hover,
+.ts-trigger:focus-visible,
+.ts-trigger[aria-expanded="true"] {
+    opacity: 1;
+    background: #fff;
+    transform: rotate(30deg);
+}
+
+/* =========================================================
+   Modal (estrutura do modals.css)
+========================================================= */
+
+.ts-modal {
+    /* acima do menu fixo (menuConsart.css usa até 20060) */
+    --modal-z-index: 99998;
+}
+
+.ts-modal .ts-subtitle {
+    margin: 4px 0 0;
+    font-size: 12px;
+    font-weight: 500;
+    color: #64748b;
+}
+
+.ts-modal .modal__body {
+    max-height: 65vh;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+.ts-modal .ts-section+.ts-section {
+    margin-top: 16px;
+}
+
+.ts-modal .ts-section[hidden] {
+    display: none;
+}
+
+.ts-modal .ts-section__title {
+    margin: 0 0 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #0f172a;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+}
+
+.ts-modal .ts-table-fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+}
+
+.ts-modal .ts-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.ts-modal .ts-field__group {
+    display: flex;
+    gap: 6px;
+}
+
+.ts-modal .ts-hint {
+    margin: 6px 0 0;
+    font-size: 11px;
+    color: #64748b;
+}
+
+.ts-modal .ts-input {
+    width: 130px;
+    height: 28px;
+    padding: 0 8px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 12px;
+}
+
+.ts-modal .ts-input--wide {
+    width: 220px;
+}
+
+.ts-modal [hidden] {
+    display: none !important;
+}
+
+.ts-modal input[type="number"].ts-input {
+    text-align: right;
+}
+
+.ts-modal .ts-unit {
+    width: 64px;
+}
+
+/* Tabela de colunas */
+.ts-modal .ts-cols {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+/* O <body> de algumas telas tem regras .page th:nth-child(n) { min-width … }:
+   zera aqui as larguras herdadas para não deformar a tabela do modal. */
+#tableSettingsModal .ts-cols th,
+#tableSettingsModal .ts-cols td {
+    min-width: 0;
+    max-width: none;
+    position: static;
+    padding: 4px 8px;
+    vertical-align: middle;
+}
+
+#tableSettingsModal .ts-cols thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    text-align: center;
+}
+
+#tableSettingsModal .ts-cols .ts-col-show,
+#tableSettingsModal .ts-cols .ts-col-width,
+#tableSettingsModal .ts-cols .ts-col-align {
+    width: 20%;
+    text-align: center;
+    white-space: nowrap;
+}
+
+#tableSettingsModal .ts-cols .ts-col-name {
+    width: 20%;
+    min-width: 160px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.ts-modal .ts-cols .ts-width {
+    width: 90px;
+}
+
+.ts-modal tr.is-hidden .ts-col-name {
+    color: #94a3b8;
+}
+
+.ts-modal .ts-locked {
+    margin-left: 6px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: #e2e8f0;
+    color: #475569;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+/* Rodapé */
+.ts-modal .modal__footer {
+    align-items: center;
+}
+
+.ts-modal .ts-status {
+    margin-right: auto;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.ts-modal .ts-status[data-kind="ok"] {
+    color: #047857;
+}
+
+.ts-modal .ts-status[data-kind="error"] {
+    color: #b91c1c;
+}
+
+.ts-modal .ts-status[data-kind="dirty"] {
+    color: #b45309;
+    font-weight: 600;
+}

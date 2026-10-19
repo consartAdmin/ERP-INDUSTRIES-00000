@@ -1,0 +1,101 @@
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║ pricesModalSearch.css — Modal de busca de Tabelas de Preço   ║
+   ║ PRODNEX ERP — estrutura base vem do MODALS.CSS               ║
+   ║ Aqui ficam apenas as regras específicas deste componente.    ║
+   ║ Campos: fields.css | Botões: button.css                      ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+/* Sempre acima de outros modais da tela */
+.modal.prices-search-modal {
+  --modal-z-index: 99998;
+}
+
+.prices-search-modal .modal__panel {
+  max-height: var(--modal-max-height);
+}
+
+/* Body: campo fixo no topo, rolagem somente na tabela */
+.prices-search-modal .modal__body {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ───────────────────────── Resultados ───────────────────────── */
+.prms-results {
+  flex: 1 1 auto;
+  min-height: 220px;
+  overflow: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overscroll-behavior: contain;
+}
+
+.prms-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: #334155;
+  font-size: 13px;
+}
+
+.prms-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 10px 12px;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  white-space: nowrap;
+  background: var(--modal-soft-surface);
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.prms-table tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.prms-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.prms-col-code {
+  width: 120px;
+}
+
+.prms-col-doc {
+  width: 200px;
+}
+
+.prms-row {
+  cursor: pointer;
+}
+
+.prms-row:hover,
+.prms-row.is-active {
+  background: #eff6ff;
+}
+
+.prms-empty {
+  padding: 28px 20px;
+  color: var(--modal-muted);
+  text-align: center;
+}
+
+.prms-hint {
+  margin: 8px 0 0;
+  color: var(--modal-muted);
+  font-size: 12px;
+}
+
+/* ───────────────────────── Mobile ───────────────────────── */
+@media (max-width: 720px) {
+  .prms-col-doc {
+    width: auto;
+  }
+}

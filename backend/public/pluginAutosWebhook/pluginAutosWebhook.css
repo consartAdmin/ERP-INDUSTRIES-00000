@@ -1,0 +1,303 @@
+/* public/integrations/pluginAutosWebhook.css */
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║ pluginAutosWebhook.css — Tela Webhook Plugin Autos          ║
+   ║ PRODNEX ERP                                                  ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+.page-webhook-autos {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+/* Cabeçalho */
+.page-webhook-autos__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.page-webhook-autos__title {
+  font-size: 1.6rem;
+  margin: 0;
+}
+
+.page-webhook-autos__subtitle {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* Cards */
+.webhook-card {
+  background: var(--surface, #ffffff);
+  border-radius: 12px;
+  padding: 20px 18px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  margin-bottom: 20px;
+}
+
+.webhook-card--secondary {
+  margin-top: 8px;
+}
+
+.webhook-card__title {
+  font-size: 1.1rem;
+  margin: 0 0 12px;
+}
+
+/* Formulário */
+.webhook-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.webhook-form__row {
+  display: grid;
+  grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
+  gap: 12px 20px;
+  align-items: center;
+}
+
+.webhook-form__label {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.webhook-form__hint {
+  display: block;
+  font-size: 0.8rem;
+  opacity: 0.8;
+  margin-top: 4px;
+}
+
+.webhook-form__hint--small {
+  margin-left: 0;
+}
+
+.webhook-form__field {
+  display: flex;
+  align-items: center;
+}
+
+.webhook-form__field--inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Inputs */
+.webhook-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
+}
+
+.webhook-input--readonly {
+  background: #f7f7f9;
+  cursor: default;
+}
+
+/* Ações */
+.webhook-form__actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.webhook-form__actions-right {
+  display: flex;
+  gap: 8px;
+}
+
+/* Botões base (se já tiver no seu style.css, essas classes vão só complementar) */
+.btn {
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 0.85rem;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--primary, #2563eb);
+  color: #fff;
+}
+
+.btn-secondary {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid rgba(15, 23, 42, 0.2);
+  color: #111827;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: none;
+  color: #6b7280;
+}
+
+.btn-ghost--sm {
+  padding: 4px 10px;
+  font-size: 0.8rem;
+}
+
+/* Toggle switch */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 22px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-switch__slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #e5e7eb;
+  transition: 0.25s;
+  border-radius: 999px;
+}
+
+.toggle-switch__slider::before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.25s;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.25);
+}
+
+.toggle-switch input:checked + .toggle-switch__slider {
+  background-color: var(--primary, #2563eb);
+}
+
+.toggle-switch input:checked + .toggle-switch__slider::before {
+  transform: translateX(18px);
+}
+
+/* Feedback */
+.webhook-feedback {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  min-height: 18px;
+}
+
+.webhook-feedback--success {
+  color: #059669;
+}
+
+.webhook-feedback--error {
+  color: #dc2626;
+}
+
+.webhook-feedback--info {
+  color: #2563eb;
+}
+
+/* Status Grid */
+.webhook-status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.webhook-status-item {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #f9fafb;
+  border: 1px solid rgba(15, 23, 42, 0.05);
+}
+
+.webhook-status-item__label {
+  display: block;
+  font-size: 0.75rem;
+  opacity: 0.7;
+  margin-bottom: 4px;
+}
+
+.webhook-status-item__value {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Logs */
+.webhook-log {
+  margin-top: 4px;
+}
+
+.webhook-log__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+}
+
+.webhook-log__body {
+  max-height: 260px;
+  overflow: auto;
+  border-radius: 8px;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.webhook-log__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.webhook-log__table th,
+.webhook-log__table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.05);
+}
+
+.webhook-log__table th {
+  text-align: left;
+  background: #f3f4f6;
+  position: sticky;
+  top: 0;
+}
+
+.webhook-log__empty {
+  text-align: center;
+  color: #9ca3af;
+}
+
+/* Responsivo */
+@media (max-width: 720px) {
+  .webhook-form__row {
+    grid-template-columns: 1fr;
+    align-items: flex-start;
+  }
+
+  .page-webhook-autos {
+    padding-inline: 10px;
+  }
+}

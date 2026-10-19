@@ -1,0 +1,205 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ FILE: manufacturesModalSearch.css                                  ║
+   ║ MODULE: Manufactures Modal Search                                  ║
+   ║ PRODNEX ERP                                                        ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.manufactures-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.58);
+  backdrop-filter: blur(5px);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.manufactures-modal-overlay.hidden {
+  display: none !important;
+}
+
+.manufactures-modal {
+  width: 100%;
+  max-width: 850px;
+  max-height: 92vh;
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.manufactures-modal-header {
+  padding: 24px 28px;
+  background: linear-gradient(135deg, #111827, #1f2937);
+  color: #ffffff;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.manufactures-modal-header h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.manufactures-modal-header p {
+  margin: 7px 0 0;
+  color: #d1d5db;
+  font-size: 14px;
+}
+
+.manufactures-modal-close {
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.manufactures-modal-close:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.manufactures-modal-body {
+  padding: 24px 28px;
+  overflow: auto;
+}
+
+.manufactures-search-box {
+  display: grid;
+  grid-template-columns: 1fr 140px;
+  gap: 12px;
+}
+
+.manufactures-search-box input {
+  width: 100%;
+  border: 1px solid #dbe3ef;
+  border-radius: 14px;
+  padding: 13px 15px;
+  font-size: 14px;
+  outline: none;
+}
+
+.manufactures-search-box input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+.manufactures-search-box button,
+.btn-select-manufacture,
+.btn-manufactures-cancel {
+  border: none;
+  border-radius: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.manufactures-search-box button {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.manufactures-search-box button:hover,
+.btn-select-manufacture:hover,
+.btn-manufactures-cancel:hover {
+  transform: translateY(-1px);
+}
+
+.manufactures-modal-hint {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.manufactures-modal-table-wrap {
+  margin-top: 18px;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  overflow: auto;
+}
+
+.manufactures-modal-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.manufactures-modal-table thead {
+  background: #f8fafc;
+}
+
+.manufactures-modal-table th {
+  text-align: left;
+  padding: 14px 16px;
+  font-size: 13px;
+  color: #334155;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.manufactures-modal-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #edf2f7;
+  vertical-align: middle;
+}
+
+.manufactures-modal-table tr:hover {
+  background: #f8fbff;
+}
+
+.manufactures-modal-table small {
+  display: block;
+  margin-top: 4px;
+  color: #64748b;
+}
+
+.btn-select-manufacture {
+  background: #16a34a;
+  color: #ffffff;
+  padding: 10px 14px;
+}
+
+.manufactures-empty,
+.manufactures-loading {
+  text-align: center;
+  color: #64748b;
+  padding: 34px !important;
+}
+
+.manufactures-modal-footer {
+  padding: 18px 28px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-manufactures-cancel {
+  background: #f3f4f6;
+  color: #111827;
+  padding: 12px 18px;
+}
+
+@media (max-width: 700px) {
+  .manufactures-search-box {
+    grid-template-columns: 1fr;
+  }
+
+  .manufactures-modal {
+    border-radius: 18px;
+  }
+
+  .manufactures-modal-header,
+  .manufactures-modal-body,
+  .manufactures-modal-footer {
+    padding: 20px;
+  }
+}

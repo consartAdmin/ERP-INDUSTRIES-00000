@@ -1,0 +1,158 @@
+/* ════════════════════════════════════════════════
+   📋 asaas.css – Gestão de Cobranças (compat theme)
+   ════════════════════════════════════════════════ */
+
+/* ===== Cartão / seção padrão no estilo do tema ===== */
+.card{
+  background:#fff;
+  border:1px solid var(--c-input-bd, #cfe2ff);
+  border-radius:var(--radius, 8px);
+  padding:var(--c-space-6, 24px);
+  box-shadow:0 1px 0 rgba(0,0,0,.03);
+  margin-block: var(--c-space-6, 24px);
+}
+.page-header h1{ margin:0 0 var(--c-space-6, 24px); }
+
+/* ===== Grids utilitários ===== */
+.grid{ display:grid; gap: var(--c-space-4, 16px); }
+.grid-2{ grid-template-columns: 1fr; }
+.grid .span-2{ grid-column: span 2; }
+@media (min-width: 900px){ .grid-2{ grid-template-columns: repeat(2,1fr);} }
+
+/* ===== Ações (botões) ===== */
+.actions{ margin-top: var(--c-space-4,16px); display:flex; gap: var(--c-space-3,12px); }
+
+/* ===== Filtros ===== */
+.filtros-grid{
+  display:grid;
+  gap: var(--c-space-4,16px);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.btns-filtro{ display:flex; gap: var(--c-space-3,12px); align-items:end; }
+
+/* ===== Totais / KPIs ===== */
+.totais-resumo{
+  display:grid;
+  gap: var(--c-space-4,16px);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-block: var(--c-space-6,24px);
+}
+.total-card,
+.bloco-confirmadas,
+.bloco-saldo{
+  background:#fff;
+  border:1px solid var(--c-input-bd, #cfe2ff);
+  border-radius:var(--radius, 8px);
+  padding: var(--c-space-4,16px);
+}
+.total-card h3,
+.bloco-confirmadas h3,
+.bloco-saldo h3{ margin: 0 0 .25rem; }
+
+.total-card.verde   { border-left:4px solid #16a34a; }
+.total-card.amarelo { border-left:4px solid #f59e0b; }
+.total-card.vermelho{ border-left:4px solid #ef4444; }
+
+.valor-principal{
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #2e86de;
+}
+.valor-liquido{ color:#64748b; }
+
+/* ===== Painel de Cobranças ===== */
+/* grid base das colunas (caso use sem o wrapper) */
+.colunas-status{
+  display:grid;
+  gap: var(--c-space-4,16px);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  width:100%;
+}
+.coluna{
+  background:#fff;
+  border:1px solid var(--c-input-bd, #cfe2ff);
+  border-radius:var(--radius, 8px);
+  padding: var(--c-space-4,16px);
+  min-width:0;
+  box-shadow:0 1px 0 rgba(0,0,0,.03);
+}
+.coluna h3{ margin:0 0 .5rem; }
+
+/* cartão individual de cobrança (itens injetados via JS) */
+.card-cobranca{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+  gap: .6rem;
+  align-items:center;
+  background:#fff;
+  border:1px solid var(--c-input-bd, #cfe2ff);
+  border-radius:var(--radius, 8px);
+  padding: .75rem;
+  margin-top: .5rem;
+  font-size: .95rem;
+}
+.card-cobranca .acoes{ display:flex; flex-wrap:wrap; gap:.5rem; }
+
+/* ===== Scroll do painel usando o wrapper do tema ===== */
+.c-scroll--panel{
+  max-height: 520px;                 /* ajuste a gosto */
+  padding: var(--c-space-2, 8px);
+  border-radius: var(--radius, 8px);
+}
+/* grid interno quando estiver dentro do wrapper com scroll */
+.c-scroll--panel .colunas-status{
+  display: grid;
+  gap: var(--c-space-4, 16px);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* evitar “borda dupla” quando o wrapper estiver dentro de .card */
+.card .c-scroll--panel{
+  background: transparent;
+  border-color: transparent;
+  padding: 0;
+}
+.card .c-scroll--panel .colunas-status{
+  padding: var(--c-space-2,12px);
+}
+
+/* ===== Voltar ===== */
+.voltar-container{ text-align:center; margin-block: var(--c-space-8,32px); }
+.btn-voltar{ display:inline-block; }
+
+/* ===== Dark-mode opcional ===== */
+body.dark-mode .card,
+body.dark-mode .total-card,
+body.dark-mode .bloco-confirmadas,
+body.dark-mode .bloco-saldo,
+body.dark-mode .coluna,
+body.dark-mode .card-cobranca{
+  background:#1f2937; border-color:#334155;
+}
+body.dark-mode .valor-liquido{ color:#94a3b8; }
+
+/* 🔄 Linha única de campos */
+.linha-form {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* 6 colunas iguais */
+  gap: 12px;
+  align-items: end; /* alinha campos na base */
+}
+
+.linha-form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+}
+
+/* responsivo: quebra em 2 linhas no celular */
+@media (max-width: 1200px) {
+  .linha-form {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .linha-form {
+    grid-template-columns: 1fr;
+  }
+}

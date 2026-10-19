@@ -1,0 +1,189 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ FILE: layout.css                                                   ║
+   ║ MODULE: invoicesIssued                                             ║
+   ║ DESCRIPTION: Estrutura principal, hero, cards e filtros            ║
+   ║ PRODNEX ERP                                                        ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+/* ─────────────────────────────────────────────────────────────
+   CONTAINER PRINCIPAL
+───────────────────────────────────────────────────────────── */
+
+.invoices-page {
+  height: calc(100vh - 72px);
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 18px 24px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  overflow: hidden;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   HERO / CABEÇALHO
+───────────────────────────────────────────────────────────── */
+
+.hero {
+  flex: 0 0 auto;
+
+  background: linear-gradient(135deg,
+      #102a56,
+      #2563eb);
+
+  color: #ffffff;
+
+  padding: 22px 28px;
+
+  border-radius: 18px;
+
+  box-shadow: var(--shadow);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  opacity: 0.85;
+}
+
+.hero h1 {
+  margin: 0;
+
+  font-size: 28px;
+  font-weight: 900;
+
+  line-height: 1.1;
+}
+
+.subtitle {
+  margin: 6px 0 0;
+
+  opacity: 0.9;
+
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+
+  flex-wrap: wrap;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   CARDS / KPIs
+───────────────────────────────────────────────────────────── */
+
+.cards {
+  flex: 0 0 auto;
+
+  display: grid;
+  grid-template-columns: repeat(4,
+      minmax(180px, 1fr));
+
+  gap: 12px;
+}
+
+.card {
+  background: var(--panel);
+
+  border: 1px solid var(--border);
+
+  border-radius: 14px;
+
+  padding: 14px 18px;
+
+  box-shadow: var(--shadow);
+
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.16s ease;
+}
+
+.card:hover {
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 10px 22px rgba(15, 23, 42, 0.08);
+}
+
+.card span {
+  display: block;
+
+  color: var(--muted);
+
+  font-size: 12px;
+  font-weight: 700;
+
+  margin-bottom: 6px;
+}
+
+.card strong {
+  font-size: 24px;
+  font-weight: 900;
+
+  color: #0f172a;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   PAINEL PRINCIPAL
+───────────────────────────────────────────────────────────── */
+
+.panel {
+  flex: 1 1 auto;
+
+  min-height: 0;
+
+  background: var(--panel);
+
+  border-radius: 16px;
+
+  border: 1px solid var(--border);
+
+  box-shadow: var(--shadow);
+
+  padding: 14px;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   FILTROS
+───────────────────────────────────────────────────────────── */
+
+.filters {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 180px 145px 125px 300px;
+  gap: 8px;
+  margin-bottom: 10px;
+  align-items: stretch;
+}
+
+.search-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+

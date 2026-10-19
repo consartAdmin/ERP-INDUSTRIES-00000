@@ -1,0 +1,109 @@
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║ 💠     Botões padrão CONSART (nova versão clean & elegante)       💠 ║
+   ║        backend/public/includes/css/components.css                     ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+
+/* Contêiner de botões */
+.menu-botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+/* ======================================================================
+   🌈 NOVO ESTILO — BOTÃO PRINCIPAL CONSART (btn-primary)
+   Fundo limpo + borda fina + destaque com cor azul Consart
+   ====================================================================== */
+.btn-primary {
+  background-color: #f0f6ff;
+  color: #050506;
+  border: 1px solid #a8c6ff;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(20, 110, 245, 0.12);
+  backdrop-filter: blur(2px);
+}
+
+.btn-primary:hover {
+  background-color: #e6f0ff;
+  border-color: #5a9bff;
+  color: #0f5fe0;
+  box-shadow: 0 2px 5px rgba(20, 110, 245, 0.18);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  background-color: #d9e7ff;
+  border-color: #4a90ff;
+  transform: translateY(1px);
+}
+
+/* ======================================================================
+   🔹 BTN-SECONDARY — tom turquesa inspirado na logo CONSART
+   ====================================================================== */
+.btn-secondary {
+  background-color: #f3fcfc;
+  border: 1px solid #8ae1d2;
+  color: #0b1010;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(19, 191, 167, 0.1);
+}
+
+.btn-secondary:hover {
+  background-color: #e7f9f7;
+  border-color: #51d7c4;
+  color: #0da58f;
+  box-shadow: 0 2px 5px rgba(19, 191, 167, 0.2);
+  transform: translateY(-1px);
+}
+
+/* ======================================================================
+   ❤️ BTN-DANGER — vermelho elegante (ações de exclusão)
+   ====================================================================== */
+.btn-danger {
+  background-color: #fff5f5;
+  color: #e53e3e;
+  border: 1px solid #fca5a5;
+  box-shadow: 0 1px 3px rgba(229, 62, 62, 0.1);
+}
+
+.btn-danger:hover {
+  background-color: #ffe4e4;
+  border-color: #f87171;
+  color: #c53030;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(229, 62, 62, 0.18);
+}
+
+/* ======================================================================
+   🧊 BTN-FLAT — neutro e minimalista
+   ====================================================================== */
+.btn-flat {
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-weight: 500;
+  color: #111827;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s ease;
+}
+.btn-flat:hover {
+  background-color: #f9fafb;
+  border-color: #d1d5db;
+  box-shadow: 0 2px 5px rgba(43, 109, 246, 0.08);
+  color: var(--primary, #1976d2);
+}
+
+/* Compactos */
+.btn-sm {
+  font-size: var(--fs-12);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+}
+
+/* Feedback de clique */
+.btn:active:not(:disabled) {
+  transform: scale(0.98);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+}

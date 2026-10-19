@@ -1,0 +1,199 @@
+<!-- Backend/public/includes/sessionTimeout-config.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>⚙️ Timeout de Sessão – CONSART</title>
+  <!-- 🎨 CSS — Design System CONSART -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <style>
+    .wrap{max-width:720px;margin:40px auto;background:#fff;padding:24px;border-radius:12px;
+      box-shadow:0 10px 24px rgba(0,0,0,.12)}
+    .row{display:flex;gap:14px;align-items:center;margin:12px 0}
+    .row label{width:240px;font-weight:700}
+    .row input[type="number"], .row input[type="text"]{flex:1}
+    .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+    .ok{color:green;display:none}
+  </style>
+</head>
+<body class="consart-theme">
+  <main class="wrap">
+    <h2>⚙️ Configurar Timeout de Sessão</h2>
+
+    <div class="row"><label for="enabled">Habilitar</label><input id="enabled" type="checkbox"></div>
+    <div class="row"><label for="idleMinutes">Minutos de inatividade</label><input id="idleMinutes" type="number" min="1" step="1" placeholder="10"></div>
+    <div class="row"><label for="warnSeconds">Aviso antes (segundos)</label><input id="warnSeconds" type="number" min="0" step="5" placeholder="0"></div>
+    <div class="row"><label for="silent">Redirecionar em silêncio</label><input id="silent" type="checkbox"></div>
+    <div class="row"><label for="redirectUrl">URL de login</label><input id="redirectUrl" type="text" placeholder="/public/login/login.html"></div>
+
+    <div class="actions">
+      <button class="btn" id="reset">Padrão</button>
+      <button class="btn" id="save">Salvar</button>
+      <span id="msg" class="ok">✔ Salvo</span>
+    </div>
+  </main>
+
+<!-- Backend/public/includes/sessionTimeout.js -->
+<!-- Backend/public/includes/sessionTimeout.js -->
+<script>
+(function () {
+  const API = (window.apiBase || '') + '/api/session-config';
+  const LS_KEY = 'consart.sessionTimeout.cfg';
+  const DEFAULTS = {
+    enabled: true,
+    idle_minutes: 30,        // seguro: 30 min
+    warn_seconds: 0,         // 0 = sem aviso
+    silent: true,            // sem alert no timeout
+    redirect_url: '/public/login/login.html'
+  };
+
+  // ---------- utils ----------
+  const num = (v, fb) => {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : fb;
+  };
+  const merge = (a,b) => Object.assign({}, a, b || {});
+  const lsGet = () => {
+    try { return merge(DEFAULTS, JSON.parse(localStorage.getItem(LS_KEY) || '{}')); }
+    catch { return { ...DEFAULTS }; }
+  };
+  const lsSet = (cfg) => localStorage.setItem(LS_KEY, JSON.stringify(cfg));
+
+  function normalizeServerCfg(j) {
+    if (!j || typeof j !== 'object') return null;
+
+    // aceita camelCase e snake_case
+    const idle = num(j.idleMinutes,  num(j.idle_minutes,  DEFAULTS.idle_minutes));
+    let   warn = num(j.warningMinutes, num(j.warn_seconds, DEFAULTS.warn_seconds));
+
+    const enabled = (typeof j.enabled === 'boolean') ? j.enabled : DEFAULTS.enabled;
+    const silent  = (typeof j.silent  === 'boolean') ? j.silent  : DEFAULTS.silent;
+    const redirect_url = j.redirect_url || j.redirectUrl || DEFAULTS.redirect_url;
+
+    const idle_minutes = Math.max(1, idle); // mínimo 1 min
+    if (warn >= idle_minutes * 60) warn = 0; // nunca >= idle
+
+    return { enabled, idle_minutes, warn_seconds: Math.max(0, warn|0), silent, redirect_url };
+  }
+
+  // ---------- estado ----------
+  let cfg = lsGet();
+  let warnTimer = 0, logoutTimer = 0, tickInt = 0;
+
+  function clearTimers() {
+    clearTimeout(warnTimer);   warnTimer = 0;
+    clearTimeout(logoutTimer); logoutTimer = 0;
+    clearInterval(tickInt);    tickInt = 0;
+  }
+
+  function showWarn() {
+    if (cfg.silent || cfg.warn_seconds <= 0) return;
+
+    let box = document.getElementById('session-warning');
+    if (!box) {
+      box = document.createElement('div');
+      box.id = 'session-warning';
+      box.style.cssText = [
+        'position:fixed;right:16px;bottom:16px;z-index:9999',
+        'background:#111827;color:#fff;padding:12px 14px',
+        'border-radius:10px;box-shadow:0 10px 24px rgba(0,0,0,.25)',
+        'display:flex;gap:10px;align-items:center;font:14px system-ui'
+      ].join(';');
+      box.innerHTML = 'Sessão expira em <strong id="sw-ct"></strong>s <button id="sw-stay" class="btn">Continuar</button>';
+      document.body.appendChild(box);
+      document.getElementById('sw-stay').addEventListener('click', () => {
+        hideWarn();
+        start(); // reinicia timers
+      }, { passive: true });
+    }
+
+    let remaining = Math.floor(num(cfg.warn_seconds, 0));
+    const ct = document.getElementById('sw-ct');
+    ct.textContent = remaining;
+
+    clearInterval(tickInt);
+    tickInt = setInterval(() => {
+      remaining -= 1;
+      if (remaining < 0) { clearInterval(tickInt); return; }
+      ct.textContent = remaining;
+    }, 1000);
+
+    box.style.display = 'flex';
+  }
+
+  function hideWarn() {
+    const box = document.getElementById('session-warning');
+    if (box) box.style.display = 'none';
+    clearInterval(tickInt);
+  }
+
+  function redirect() {
+    hideWarn();
+    const url = cfg.redirect_url || DEFAULTS.redirect_url;
+    // evita loop se já estiver na tela de login
+    if (!location.pathname.endsWith(url)) window.location.href = url;
+  }
+
+  function start() {
+    if (!cfg.enabled) return;
+    clearTimers();
+
+    // SANITIZA AQUI (corrige o bug do NaN)
+    const idleMin = Math.max(1, num(cfg.idle_minutes, DEFAULTS.idle_minutes));
+    let   warnSec = Math.max(0, num(cfg.warn_seconds, DEFAULTS.warn_seconds));
+
+    // guarda-chuva extra: nunca deixa warn >= idle
+    if (warnSec >= idleMin * 60) warnSec = 0;
+
+    // proteção extra: nunca menos que 30s totais
+    const idleMs = Math.max(idleMin * 60 * 1000, 30 * 1000);
+    const warnMs = warnSec * 1000;
+
+    if (warnMs > 0 && warnMs < idleMs) {
+      warnTimer = setTimeout(showWarn, idleMs - warnMs);
+    }
+    logoutTimer = setTimeout(() => {
+      if (!cfg.silent) { try { alert('Sessão expirada! Você será redirecionado para o login.'); } catch {} }
+      redirect();
+    }, idleMs);
+  }
+
+  // reinicia em atividade
+  ['click','mousemove','keydown','scroll','touchstart','wheel'].forEach(ev => {
+    document.addEventListener(ev, start, { capture: true, passive: true });
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') start();
+  });
+
+  // sincroniza entre abas
+  window.addEventListener('storage', (e) => {
+    if (e.key === LS_KEY) { cfg = lsGet(); start(); }
+  });
+
+  // ---------- bootstrap ----------
+  (async () => {
+    try {
+      const r = await fetch(API, { cache: 'no-store', credentials: 'include' });
+      if (r.ok) {
+        const j = await r.json().catch(() => ({}));
+        const normalized = normalizeServerCfg(j);
+        if (normalized) { cfg = merge(DEFAULTS, normalized); lsSet(cfg); }
+      }
+      // se falhar/404, mantemos LS/defaults (sem chutar o usuário)
+    } catch {
+      // offline/erro → ignora, usa LS/defaults
+    }
+
+    if (!cfg.enabled) return;
+    start();
+  })();
+})();
+</script>
+
+<script type="module" src="/public/includes/js/core.js"></script>
+
+</body>
+</html>
+    

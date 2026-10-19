@@ -1,0 +1,369 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ accountReleases.html — Accounting Releases / Document Dispatch      ║
+     ║ CONSART Accountant Panel | Frontend ESM                             ║
+     ║ Path: /public/accountReleases/accountReleases.html                  ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Accounting Releases | CONSART Accountant Panel</title>
+
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/modalsSearch/customersModalSearch.css" />
+  <link rel="stylesheet" href="/public/accountReleases/accountReleases.css" />
+</head>
+
+<body class="ar-page consart-theme">
+
+  <header class="ar-topbar">
+    <div class="ar-topbar__titleWrap">
+      <h1 class="ar-title">Accounting Releases</h1>
+      <div class="ar-subtitle">Send, organize and manage accounting documents by customer, category, year and month.</div>
+    </div>
+
+    <div class="ar-topbar__actions">
+      <button type="button" class="btn btn-pastel-neutral" id="btnEnsure">Ensure</button>
+      <button type="button" class="btn btn-pastel-primary" id="btnNewRelease">New Release</button>
+    </div>
+  </header>
+
+  <main class="ar-container">
+
+    <!-- FILTERS -->
+    <section class="ar-filters">
+      <div class="ar-filter">
+        <label>Competence</label>
+        <input type="month" id="fltCompetence" />
+      </div>
+
+      <div class="ar-filter">
+        <label>Company ID</label>
+        <input type="number" id="fltCompanyId" placeholder="e.g. 1" />
+      </div>
+
+      <div class="ar-filter">
+        <label>Category</label>
+        <select id="fltCategory">
+          <option value="">All categories</option>
+          <option value="inbound_documents">Inbound Documents</option>
+          <option value="outbound_documents">Outbound Documents</option>
+          <option value="accounting_documents">Accounting Documents</option>
+          <option value="sped">SPED</option>
+          <option value="payroll">Payroll</option>
+          <option value="taxes">Taxes</option>
+          <option value="contracts">Contracts</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="ar-filter">
+        <label>Status</label>
+        <select id="fltStatus">
+          <option value="">All statuses</option>
+          <option value="DRAFT">DRAFT</option>
+          <option value="SENT">SENT</option>
+          <option value="CONFIRMED">CONFIRMED</option>
+          <option value="CANCELED">CANCELED</option>
+        </select>
+      </div>
+
+      <div class="ar-filter ar-filter--actions">
+        <button type="button" class="btn btn-pastel-primary" id="btnSearch">Search</button>
+        <button type="button" class="btn btn-pastel-neutral" id="btnReset">Reset</button>
+      </div>
+    </section>
+
+    <!-- CUSTOMER SUMMARY -->
+    <section class="ar-card ar-card--customer">
+      <div class="ar-card__head">
+        <div>
+          <h2 class="ar-h2">Selected Customer</h2>
+          <div class="ar-muted" id="customerHint">Select a customer to load data and attachments.</div>
+        </div>
+
+        <div class="ar-customerHeadActions">
+          <button
+            type="button"
+            class="btn btn-pastel-primary"
+            id="btnPickCustomer"
+            title="Search Customer"
+            aria-label="Search Customer"
+          >⌕</button>
+
+          <div class="ar-statusPill" id="customerPill">—</div>
+        </div>
+      </div>
+
+      <div class="ar-card__body">
+        <div class="ar-customerGrid">
+          <div class="ar-field">
+            <label>Customer ID</label>
+            <input id="cId" readonly placeholder="—" />
+          </div>
+          <div class="ar-field">
+            <label>Name / Company Name</label>
+            <input id="cName" readonly placeholder="—" />
+          </div>
+          <div class="ar-field">
+            <label>Tax ID</label>
+            <input id="cDoc" readonly placeholder="—" />
+          </div>
+          <div class="ar-field">
+            <label>E-mail</label>
+            <input id="cEmail" readonly placeholder="—" />
+          </div>
+          <div class="ar-field">
+            <label>Phone</label>
+            <input id="cPhone" readonly placeholder="—" />
+          </div>
+          <div class="ar-field">
+            <label>Bucket / Prefix</label>
+            <input id="cPrefix" readonly placeholder="—" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ar-twoCards">
+
+      <!-- LEFT: CUSTOMER ATTACHMENTS -->
+      <section class="ar-card ar-card--customerAttach">
+        <div class="ar-card__head">
+          <div>
+            <h2 class="ar-h2">Customer Attachments</h2>
+            <div class="ar-muted" id="customerAttachCount">0 attachments</div>
+
+            <div class="ar-attachFilters" id="customerAttachFilters" aria-label="Customer attachment filters">
+              <div class="ar-attachFilters__row">
+                <span class="ar-muted ar-attachFilters__label">Year:</span>
+                <div class="ar-attachFilters__buttons" id="customerYearBtns"></div>
+
+                <button type="button" class="btn btn-pastel-neutral ar-attachFilters__all" id="btnCustomerAttachAll">
+                  All
+                </button>
+              </div>
+
+              <div class="ar-attachFilters__row">
+                <span class="ar-muted ar-attachFilters__label">Month:</span>
+                <div class="ar-attachFilters__buttons" id="customerMonthBtns"></div>
+              </div>
+
+              <div class="ar-attachFilters__row">
+                <span class="ar-muted ar-attachFilters__label">Category:</span>
+                <div class="ar-attachFilters__buttons ar-attachFilters__buttons--category" id="customerCategoryBtns"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ar-card__body">
+          <div class="ar-attachList" id="customerAttachmentsList"></div>
+        </div>
+      </section>
+
+      <!-- RIGHT: RELEASE DETAILS -->
+      <section class="ar-card ar-card--details">
+        <div class="ar-card__head">
+          <div>
+            <h2 class="ar-h2">Release Details</h2>
+            <div class="ar-muted">Create, update and send accounting document releases.</div>
+          </div>
+          <div class="ar-statusPill" id="detailStatusPill">—</div>
+        </div>
+
+        <div class="ar-card__body">
+
+          <form class="ar-form" id="releaseForm">
+            <div class="ar-grid">
+              <div class="ar-field">
+                <label>Release ID</label>
+                <input type="text" id="fReleaseId" readonly placeholder="Select or create a release..." />
+              </div>
+
+              <div class="ar-field">
+                <label>Company ID</label>
+                <input type="number" id="fCompanyId" placeholder="e.g. 1" />
+              </div>
+
+              <div class="ar-field">
+                <label>Customer *</label>
+                <input type="number" id="fCustomerId" required placeholder="Comes from selected customer" />
+              </div>
+
+              <div class="ar-field">
+                <label>Competence *</label>
+                <input type="month" id="fCompetence" required />
+              </div>
+
+              <div class="ar-field">
+                <label>Category *</label>
+                <select id="fCategory" required>
+                  <option value="">Select category</option>
+                  <option value="inbound_documents">Inbound Documents</option>
+                  <option value="outbound_documents">Outbound Documents</option>
+                  <option value="accounting_documents">Accounting Documents</option>
+                  <option value="sped">SPED</option>
+                  <option value="payroll">Payroll</option>
+                  <option value="taxes">Taxes</option>
+                  <option value="contracts">Contracts</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <div class="ar-field">
+                <label>Status</label>
+                <select id="fStatus">
+                  <option value="DRAFT">DRAFT</option>
+                  <option value="SENT">SENT</option>
+                  <option value="CONFIRMED">CONFIRMED</option>
+                  <option value="CANCELED">CANCELED</option>
+                </select>
+              </div>
+
+              <div class="ar-field">
+                <label>Release Date</label>
+                <input type="date" id="fReleaseDate" />
+              </div>
+
+              <div class="ar-field">
+                <label>Due Date</label>
+                <input type="date" id="fDueDate" />
+              </div>
+
+              <div class="ar-field">
+                <label>Sent At</label>
+                <input type="datetime-local" id="fSentAt" />
+              </div>
+            </div>
+
+            <div class="ar-divider"></div>
+
+            <div class="ar-grid ar-grid--money">
+              <div class="ar-field">
+                <label>Total Amount (R$)</label>
+                <input type="number" step="0.01" id="fAmount" value="0" />
+              </div>
+
+              <div class="ar-field">
+                <label>Extra Charges (R$)</label>
+                <input type="number" step="0.01" id="fExtraCharges" value="0" />
+              </div>
+
+              <div class="ar-field">
+                <label>Discounts (R$)</label>
+                <input type="number" step="0.01" id="fDiscounts" value="0" />
+              </div>
+
+              <div class="ar-field">
+                <label>Taxes (R$)</label>
+                <input type="number" step="0.01" id="fTaxesAmount" value="0" />
+              </div>
+
+              <div class="ar-field">
+                <label>Final Amount (R$)</label>
+                <input type="number" step="0.01" id="fFinalAmount" value="0" readonly />
+              </div>
+            </div>
+
+            <div class="ar-field ar-field--full">
+              <label>Title / Subject</label>
+              <input type="text" id="fTitle" placeholder="e.g. March 2026 Tax Documents" />
+            </div>
+
+            <div class="ar-field ar-field--full">
+              <label>Notes</label>
+              <textarea id="fNotes" rows="3" placeholder="Internal notes..."></textarea>
+            </div>
+
+            <div class="ar-actions">
+              <button type="button" class="btn btn-pastel-neutral" id="btnCalc">Recalculate</button>
+
+              <div class="ar-actions__right">
+                <button type="button" class="btn btn-pastel-danger" id="btnDelete" disabled>Delete</button>
+                <button type="button" class="btn btn-pastel-warning" id="btnCancelRelease" disabled>Cancel</button>
+                <button type="button" class="btn btn-pastel-success" id="btnSendRelease" disabled>Send</button>
+                <button type="button" class="btn btn-pastel-primary" id="btnSave">Save</button>
+              </div>
+            </div>
+          </form>
+
+          <div class="ar-divider"></div>
+
+          <section class="ar-attachments">
+            <div class="ar-attachments__head">
+              <h3 class="ar-h3">Release Attachments</h3>
+              <div class="ar-muted" id="attachCount">0 attachments</div>
+            </div>
+
+            <div class="ar-uploader">
+              <input type="file" id="fileInput" class="ar-file" />
+
+              <input
+                type="text"
+                id="attachCustomName"
+                class="ar-input"
+                placeholder="Attachment name (optional) — e.g. SPED_March_2026"
+                autocomplete="off"
+              />
+
+              <select id="attachType" class="ar-input" style="min-width:220px">
+                <option value="">Attachment type (optional)</option>
+                <option value="xml">XML</option>
+                <option value="pdf">PDF</option>
+                <option value="receipt">Receipt</option>
+                <option value="tax_guide">Tax Guide</option>
+                <option value="spreadsheet">Spreadsheet</option>
+                <option value="statement">Statement</option>
+                <option value="contract">Contract</option>
+                <option value="sped_file">SPED File</option>
+                <option value="other">Other</option>
+              </select>
+
+              <button
+                type="button"
+                class="btn btn-pastel-primary"
+                id="btnAddAttachment"
+                disabled
+              >Upload Attachment</button>
+
+              <div class="ar-muted ar-note">
+                The file will be uploaded securely and registered in the system.
+              </div>
+            </div>
+
+            <div class="ar-attachList" id="attachmentsList"></div>
+          </section>
+        </div>
+      </section>
+    </section>
+
+    <!-- RELEASE LIST -->
+    <aside class="ar-card ar-card--list">
+      <div class="ar-card__head">
+        <div>
+          <h2 class="ar-h2">Releases</h2>
+          <div class="ar-muted" id="listCount">0 items</div>
+        </div>
+
+        <div class="ar-miniPager">
+          <button type="button" class="btn btn-pastel-primary" id="btnPrev" title="Previous" aria-label="Previous">‹</button>
+          <div class="ar-muted" id="pageInfo">Page 1</div>
+          <button type="button" class="btn btn-pastel-primary" id="btnNext" title="Next" aria-label="Next">›</button>
+        </div>
+      </div>
+
+      <div class="ar-list" id="releasesList"></div>
+    </aside>
+
+  </main>
+
+  <div class="ar-toast" id="toast" aria-live="polite" aria-atomic="true"></div>
+
+  <script type="module" src="/public/modalsSearch/customersModalSearch.js"></script>
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="/public/accountReleases/accountReleases.js"></script>
+</body>
+</html>

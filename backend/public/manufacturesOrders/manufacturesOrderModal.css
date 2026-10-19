@@ -1,0 +1,424 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ FILE: manufacturesOrderModal.css                                   ║
+   ║ MODULE: Manufactures Orders                                        ║
+   ║ DESCRIPTION: Estilo exclusivo do modal Pedido para Fabricante        ║
+   ║ PRODNEX ERP                                                        ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+#orderModal.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(15, 23, 42, 0.62);
+  backdrop-filter: blur(6px);
+}
+
+#orderModal.hidden {
+  display: none !important;
+}
+
+#orderModal .modal-xl {
+  width: min(1450px, calc(100vw - 48px));
+  height: min(90vh, 950px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow:
+    0 24px 80px rgba(15, 23, 42, 0.35),
+    0 0 0 1px rgba(226, 232, 240, 0.9);
+}
+
+#orderModal .modal-header {
+  flex: 0 0 auto;
+  padding: 22px 26px;
+  border-bottom: 1px solid #e5eaf3;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+#orderModal .modal-header h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 850;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#orderModal .modal-header p {
+  margin-top: 8px;
+  margin-bottom: 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+#orderModal .modal-close {
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 14px;
+  background: #f1f5f9;
+  color: #0f172a;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+#orderModal .modal-close:hover {
+  background: #e2e8f0;
+  transform: scale(1.03);
+}
+
+#orderModal .modal-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 24px 26px;
+  background: #ffffff;
+}
+
+#orderModal .modal-footer {
+  flex: 0 0 auto;
+  padding: 18px 26px;
+  border-top: 1px solid #e5eaf3;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#orderModal .form-grid-header {
+  display: grid;
+  grid-template-columns: 170px 190px minmax(360px, 1fr) 240px 190px;
+  gap: 16px 18px;
+  margin-bottom: 20px;
+  align-items: end;
+}
+
+#orderModal .field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#orderModal .field-full {
+  grid-column: 1 / -1;
+}
+
+#orderModal .field-2x {
+  grid-column: span 2;
+}
+
+#orderModal .field label {
+  font-size: 12px;
+  font-weight: 800;
+  color: #334155;
+}
+
+#orderModal .field input,
+#orderModal .field select,
+#orderModal .field textarea {
+  width: 100%;
+  min-height: 44px;
+  border-radius: 13px;
+  border: 1px solid #dbe4f0;
+  background: #ffffff;
+  font-size: 14px;
+  padding: 12px 14px;
+  outline: none;
+}
+
+#orderModal .field textarea {
+  resize: vertical;
+}
+
+#orderModal .manufacturer-search-line {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+#orderModal .manufacturer-search-line input {
+  flex: 1;
+}
+
+#orderModal .manufacturer-search-line button {
+  width: 54px;
+  min-width: 54px;
+  min-height: 44px;
+  padding: 0;
+}
+
+#orderModal .apply-filter-field button {
+  width: 100%;
+  min-height: 44px;
+}
+
+#orderModal .products-box {
+  padding: 0;
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+#orderModal .products-header {
+  padding: 16px 20px;
+  margin: 0;
+  border-bottom: 1px solid #e2e8f0;
+  background: linear-gradient(180deg, #ffffff, #f8fafc);
+}
+
+#orderModal .products-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 850;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#orderModal .product-search-card {
+  margin: 0;
+  padding: 18px 20px;
+  border: none;
+  border-bottom: 1px solid #e2e8f0;
+  border-radius: 0;
+  background: #ffffff;
+}
+
+#orderModal .search-row {
+  display: grid;
+  grid-template-columns: 1.9fr 140px 150px 150px;
+  gap: 14px;
+  align-items: end;
+}
+
+#orderModal .search-input {
+  position: relative;
+}
+
+#orderModal .search-input i {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+}
+
+#orderModal .search-input input {
+  padding-left: 42px;
+}
+
+#orderModal .add-button-field {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#orderModal .add-button-field button {
+  width: 100%;
+  min-height: 44px;
+}
+
+#orderModal .autocomplete-list {
+  position: absolute;
+  width: 100%;
+  background: white;
+  border: 1px solid #dbe3ef;
+  border-radius: 16px;
+  margin-top: 8px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  z-index: 999;
+}
+
+#orderModal .autocomplete-item {
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: 0.15s ease;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+#orderModal .autocomplete-item:hover {
+  background: #eff6ff;
+}
+
+#orderModal .autocomplete-item strong {
+  display: block;
+}
+
+#orderModal .autocomplete-item span {
+  font-size: 12px;
+  color: #64748b;
+}
+
+#orderModal .items-table-wrapper {
+  max-height: 360px;
+  overflow: auto;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+#orderModal .items-table-wrapper .erp-table {
+  min-width: 1080px;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+#orderModal .items-table-wrapper .erp-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: #f1f5f9;
+}
+
+#orderModal .items-table-wrapper .erp-table th {
+  padding: 13px 12px;
+  font-size: 12px;
+  font-weight: 900;
+  color: #334155;
+  background: linear-gradient(180deg, #f8fafc, #eef2f7);
+  border-bottom: 1px solid #dbe4f0;
+  white-space: nowrap;
+}
+
+#orderModal .items-table-wrapper .erp-table td {
+  padding: 12px;
+  font-size: 13px;
+  color: #0f172a;
+  border-bottom: 1px solid #edf2f7;
+}
+
+#orderModal .items-table-wrapper .erp-table tbody tr:nth-child(odd) {
+  background: #ffffff;
+}
+
+#orderModal .items-table-wrapper .erp-table tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+#orderModal .items-table-wrapper .erp-table tbody tr:hover {
+  background: #eff6ff;
+}
+
+#orderModal .items-table-wrapper .erp-table td:nth-child(2) {
+  max-width: 270px;
+  white-space: normal;
+  line-height: 1.25;
+}
+
+#orderModal .items-table-wrapper .btn-danger {
+  width: 44px;
+  height: 38px;
+  padding: 0;
+  border-radius: 12px;
+}
+
+#orderModal .totals-area {
+  margin: 0;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: flex-end;
+  background: #ffffff;
+}
+
+#orderModal .total-box {
+  min-width: 220px;
+  padding: 18px 22px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #1e293b, #020617);
+  color: #ffffff;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#orderModal .total-box span {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+#orderModal .total-box strong {
+  font-size: 26px;
+}
+
+#orderModal .modal-body::-webkit-scrollbar,
+#orderModal .items-table-wrapper::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+#orderModal .modal-body::-webkit-scrollbar-thumb,
+#orderModal .items-table-wrapper::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+#orderModal .modal-body::-webkit-scrollbar-track,
+#orderModal .items-table-wrapper::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+@media (max-width: 1200px) {
+  #orderModal .modal-xl {
+    width: calc(100vw - 32px);
+    height: calc(100vh - 32px);
+  }
+
+  #orderModal .form-grid-header {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  #orderModal .search-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  #orderModal .field-2x,
+  #orderModal .field-full {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 700px) {
+  #orderModal.modal-overlay {
+    padding: 10px;
+  }
+
+  #orderModal .modal-xl {
+    width: calc(100vw - 20px);
+    height: calc(100vh - 20px);
+    border-radius: 18px;
+  }
+
+  #orderModal .form-grid-header,
+  #orderModal .search-row {
+    grid-template-columns: 1fr;
+  }
+
+  #orderModal .modal-header,
+  #orderModal .modal-body,
+  #orderModal .modal-footer {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  #orderModal .modal-footer {
+    flex-direction: column-reverse;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  #orderModal .modal-footer .btn {
+    width: 100%;
+  }
+}

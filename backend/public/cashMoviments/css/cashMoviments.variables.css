@@ -1,0 +1,17 @@
+/* ===========================================================
+   Variáveis / Alturas
+   =========================================================== */
+:root{
+  --topbar-h: 64px;
+  --tabs-h: 44px;
+  --page-pad: 24px;
+  --filtros-movs-h: 120px;
+
+  --tabela-min-w: 1700px;
+  --mov-font-size-base: 12px;
+  --mov-font-size-header: 11px;
+  --mov-row-h: 28px;
+
+  --zebra-odd: #ffffff;
+  --zebra-even: #f7fafc;
+}

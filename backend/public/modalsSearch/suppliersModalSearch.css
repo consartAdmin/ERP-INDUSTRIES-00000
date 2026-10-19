@@ -1,0 +1,138 @@
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║ suppliersModalSearch.css — Modal de Fornecedores / Clientes  ║
+   ║ PRODNEX ERP — estrutura base vem do MODALS.CSS               ║
+   ║ Aqui ficam apenas as regras específicas deste componente.    ║
+   ║ Campos: fields.css | Botões: button.css                      ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+/* Sempre acima de outros modais (ex.: Nova Conta a Pagar) */
+.modal.suppliers-search-modal {
+  --modal-z-index: 99998;
+}
+
+.suppliers-search-modal .modal__panel {
+  max-height: var(--modal-max-height);
+}
+
+/* Body: campo fixo no topo, rolagem somente na tabela */
+.suppliers-search-modal .modal__body {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ───────────────────── Header: seletor + fechar ───────────────────── */
+.sms-header-actions {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.sms-typeswitch {
+  display: inline-flex;
+  gap: 8px;
+}
+
+.sms-typeswitch__btn {
+  min-width: 96px;
+  color: #475569;
+  background: var(--modal-surface);
+  border: 1px solid #cbd5e1;
+}
+
+.sms-typeswitch__btn:hover {
+  color: var(--modal-primary);
+  border-color: var(--modal-primary);
+}
+
+.sms-typeswitch__btn.is-active {
+  color: #ffffff;
+  background: var(--modal-primary);
+  border-color: var(--modal-primary);
+}
+
+.sms-typeswitch__btn:focus-visible {
+  outline: 2px solid var(--modal-primary);
+  outline-offset: 2px;
+}
+
+/* ───────────────────────── Resultados ───────────────────────── */
+.sms-results {
+  flex: 1 1 auto;
+  min-height: 220px;
+  overflow: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overscroll-behavior: contain;
+}
+
+.sms-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: #334155;
+  font-size: 13px;
+}
+
+.sms-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 10px 12px;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  white-space: nowrap;
+  background: var(--modal-soft-surface);
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.sms-table tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.sms-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.sms-col-code {
+  width: 120px;
+}
+
+.sms-col-doc {
+  width: 200px;
+}
+
+.sms-row {
+  cursor: pointer;
+}
+
+.sms-row:hover {
+  background: #eff6ff;
+}
+
+.sms-empty {
+  padding: 28px 20px;
+  color: var(--modal-muted);
+  text-align: center;
+}
+
+/* ───────────────────────── Mobile ───────────────────────── */
+@media (max-width: 720px) {
+  .suppliers-search-modal .modal__header {
+    flex-wrap: wrap;
+  }
+
+  .sms-typeswitch__btn {
+    min-width: 0;
+  }
+
+  .sms-col-doc {
+    width: auto;
+  }
+}

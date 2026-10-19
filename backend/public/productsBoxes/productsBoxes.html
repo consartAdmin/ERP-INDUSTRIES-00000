@@ -1,0 +1,229 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ productsBoxes.html — Produtos › Caixas (Boxes) | PRODNEX ERP        ║
+     ║ Path: backend/public/productsBoxes/productsBoxes.html              ║
+     ║ ✅ UPDATE: zebra + sticky header + scroll interno (sem scroll duplo)║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>BOXES • PRODNEX ERP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <!-- CSS base do sistema (inclui containerConsart.css via style.css) -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- ✅ Zebra tables (ajuste o path se o seu for diferente) -->
+  <link rel="stylesheet" href="/public/includes/css/tableZebra.css" />
+
+  <!-- CSS do módulo -->
+  <link rel="stylesheet" href="./productsBoxes.css" />
+
+  <script>
+    window.apiBase = window.apiBase || location.origin;
+  </script>
+</head>
+
+<body class="consart-theme c-page page" style="--consart-input-h: 30px;">
+  <!-- ✅ FIX: container fixo SEM scroll externo (scroll fica nos painéis/lista/tabela) -->
+  <main class="consart-container consart-container--fixed consart-container--full consart-container--h-800 pbxShell">
+
+    <!-- ✅ IMPORTANTÍSSIMO: wrapper do módulo -->
+    <div class="pbx">
+
+      <!-- Top bar -->
+      <header class="pbx__top">
+        <div class="pbx__title">
+          <h1>Produtos • Caixas</h1>
+          <p>Gerencie caixas e os SKUs vinculados. Gere PDFs por caixa ou listagem.</p>
+        </div>
+
+        <div class="pbx__topActions">
+          <button class="btn btn-toolbar btn-sm" id="btnNewBox" type="button">+ Nova Caixa</button>
+
+          <button class="btn btn-toolbar btn-sm" id="btnDownloadListPdf" type="button" title="Baixar PDF com filtros atuais">
+            PDF Listagem
+          </button>
+
+          <button class="btn btn-toolbar btn-sm" id="btnRefresh" type="button">Atualizar</button>
+        </div>
+      </header>
+
+      <!-- ✅ GRID agora ocupa a altura restante e os painéis rolam internamente -->
+      <section class="pbx__grid">
+        <!-- Left: list -->
+        <aside class="pbx__panel pbx__panel--list">
+          <div class="pbx__panelHeader">
+            <div class="pbx__searchRow">
+              <div class="pbx__search">
+                <span class="pbx__icon">🔎</span>
+                <input id="searchQ" type="text" placeholder="Buscar por nome ou código..." autocomplete="off" />
+                <button id="btnSearch" class="btn btn-toolbar btn-sm" type="button">Buscar</button>
+              </div>
+
+              <div class="pbx__filters">
+                <select id="filterActive" title="Ativo">
+                  <option value="">Todos</option>
+                  <option value="true" selected>Ativos</option>
+                  <option value="false">Inativos</option>
+                </select>
+
+                <select id="orderBy" title="Ordenação">
+                  <option value="created_at DESC" selected>Mais recentes</option>
+                  <option value="created_at ASC">Mais antigos</option>
+                  <option value="name ASC">Nome A→Z</option>
+                  <option value="name DESC">Nome Z→A</option>
+                  <option value="code ASC">Código A→Z</option>
+                  <option value="code DESC">Código Z→A</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="pbx__metaRow">
+              <div class="pbx__meta">
+                <span id="listCount">0</span> caixas
+              </div>
+              <div class="pbx__pager">
+                <button class="btn btn-toolbar btn-sm" id="btnPrev" type="button">◀</button>
+                <span class="pbx__pageInfo" id="pageInfo">1 / 1</span>
+                <button class="btn btn-toolbar btn-sm" id="btnNext" type="button">▶</button>
+                <select id="pageSize" title="Itens por página">
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="50" selected>50</option>
+                  <option value="100">100</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- ✅ scroll interno aqui -->
+          <div class="pbx__listTableWrap">
+  <table class="pbx__listTable table-zebra table-zebra-hover consart-table-sticky">
+    <thead>
+      <tr>
+        <th style="width: 90px;">Código</th>
+        <th style="width: auto;">Nome</th>
+        <th style="width: 120px;">Tipo</th>
+        <th style="width: 140px;">Status</th>
+      </tr>
+    </thead>
+    <tbody id="boxesList">
+      <tr>
+        <td colspan="4" class="pbx__empty">
+          Carregando caixas...
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+          <div class="pbx__hint">
+            Dica: clique em uma caixa para editar e gerenciar os itens (SKUs).
+          </div>
+        </aside>
+
+        <!-- Right: details -->
+        <section class="pbx__panel pbx__panel--detail">
+          <div class="pbx__panelHeader pbx__panelHeader--detail">
+            <div class="pbx__detailTitle">
+              <h2 id="detailTitle">Selecione uma caixa</h2>
+              <p id="detailSubtitle">Crie uma nova caixa ou selecione uma existente na lista.</p>
+            </div>
+
+            <div class="pbx__detailActions">
+              <button class="btn btn-toolbar btn-sm" id="btnDeleteBox" type="button" disabled>Excluir</button>
+              <button class="btn btn-toolbar btn-sm" id="btnToggleActive" type="button" disabled>Inativar</button>
+
+              <button class="btn btn-toolbar btn-sm" id="btnDownloadPdf" type="button" disabled title="Baixar PDF da caixa selecionada">
+                Baixar PDF
+              </button>
+
+              <button class="btn btn-toolbar btn-sm" id="btnSaveBox" type="button" disabled>Salvar</button>
+            </div>
+          </div>
+
+          <!-- ✅ scroll interno no corpo do painel direito -->
+          <div class="pbx__body">
+            <!-- Box form -->
+            <form id="boxForm" class="pbx__form" autocomplete="off">
+              <input type="hidden" id="box_id" />
+
+              <div class="pbx__formGrid pbx__formGrid--singleRow">
+                <div class="pbx__field pbx__col-4">
+                  <label for="name">Nome *</label>
+                  <input id="name" type="text" maxlength="120" placeholder="Ex: Caixa Varejo Pequena" required />
+                </div>
+
+                <div class="pbx__field pbx__col-2">
+                  <label for="box_type">Tipo</label>
+                  <input id="box_type" type="text" maxlength="40" placeholder="Ex: PAPELAO" />
+                </div>
+
+                <div class="pbx__field pbx__col-2">
+                  <label for="location">Localização</label>
+                  <input id="location" type="text" maxlength="80" placeholder="Ex: Depósito A / Rua 3" />
+                </div>
+
+                <div class="pbx__field pbx__col-2 pbx__field--actions">
+                  <label>&nbsp;</label>
+                  <button class="btn btn-toolbar btn-sm" id="btnResetForm" type="button" disabled>
+                    Desfazer
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            <!-- Items -->
+            <div class="pbx__items">
+              <div class="pbx__itemsHeader">
+                <div>
+                  <h3>Itens da Caixa (SKUs)</h3>
+                  <p class="pbx__muted">Adicionar/atualizar por SKU (upsert). Remover por SKU.</p>
+                </div>
+
+                <div class="pbx__itemsActions">
+                  <button class="btn btn-toolbar btn-sm" id="btnAddItem" type="button" disabled>+ Adicionar Item</button>
+                  <button class="btn btn-toolbar btn-sm" id="btnReloadItems" type="button" disabled>Recarregar</button>
+                </div>
+              </div>
+
+              <!-- ✅ scroll interno da tabela -->
+              <div class="pbx__itemsTableWrap">
+                <table class="pbx__table table-zebra table-zebra-hover consart-table-sticky">
+                  <thead>
+                    <tr>
+                      <th style="width: 180px;">SKU</th>
+                      <th style="width: 120px;">Qtd</th>
+                      <th style="width: 90px;">Unid</th>
+                      <th style="min-width: 280px;">Descrição</th>
+                      <th>Observação</th>
+                      <th style="width: 130px; text-align:right;">Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody id="itemsTbody">
+                    <tr><td colspan="6" class="pbx__empty">Selecione uma caixa para carregar os itens.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Toast -->
+            <div class="pbx__toast" id="toast" aria-live="polite" aria-atomic="true"></div>
+          </div>
+        </section>
+      </section>
+
+    </div><!-- /pbx -->
+  </main>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="./productsBoxes.js"></script>
+</body>
+</html>

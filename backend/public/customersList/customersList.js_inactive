@@ -1,0 +1,1011 @@
+// /backend/public/customers/customersList.js
+// ╔══════════════════════════════════════════════════════════════════════╗
+// ║ customersList.js — Lista de Clientes (PRODNEX ERP | ESM)            ║
+// ║ - Paginação, busca, filtros de situação                             ║
+// ║ - Exibe Vendedor, Segmento e Status COM NOME                        ║
+// ║ - ✅ JOIN do Vendedor via seller-for-customer (relation table)       ║
+// ║ - ✅ Robustez inspirada no customerEdit.js (payloads variados)       ║
+// ║ - ✅ Exportação: PDF / EXCEL com chave de liberação                  ║
+// ╚══════════════════════════════════════════════════════════════════════╝
+
+import { showCenterModal } from '/public/includes/js/centerAlertModal.js';
+
+// ---------------------------------------------------------------------
+// API BASE & ROTAS
+// ---------------------------------------------------------------------
+const API_BASE =
+  (typeof window !== 'undefined' && (window.apiBase || window.API_BASE)) ||
+  (typeof window !== 'undefined' ? window.location.origin : '');
+
+const ROUTES = Object.freeze({
+  customers: `${API_BASE}/api/customers`,
+  customerById: (id) => `${API_BASE}/api/customers/${encodeURIComponent(id)}`,
+
+  // ✅ Relatórios
+  customersReportPdf: `${API_BASE}/api/customers/report/pdf`,
+  customersReportExcel: `${API_BASE}/api/customers/report/excel`,
+
+  segmentos: `${API_BASE}/api/customer-segments`,
+  sellers: `${API_BASE}/api/sellers`,
+  vendedores: `${API_BASE}/api/vendedores`,
+  statusTypes: `${API_BASE}/api/customer-status-types`,
+
+  // ✅ relação vendedor ↔ cliente
+  sellerForCustomer: `${API_BASE}/api/seller-for-customer`,
+  sellerForCustomerByCustomer: (customerId) =>
+    `${API_BASE}/api/seller-for-customer/by-customer/${encodeURIComponent(customerId)}`,
+});
+
+// ---------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------
+const $ = (s, r = document) => r.querySelector(s);
+
+const safe = (v) => (v == null || v === '') ? '—' : String(v);
+const fmtBool = (v) => v === true ? 'Ativo' : v === false ? 'Inativo' : '—';
+const onlyDigits = (s) => String(s ?? '').replace(/\D+/g, '');
+
+function pick(...vals) {
+  for (const v of vals) if (v != null && v !== '') return v;
+  return null;
+}
+
+function normalizeRowsPayload(js) {
+  if (Array.isArray(js)) return { rows: js, total: js.length };
+
+  const root = js?.data ?? js;
+
+  const rows =
+    (Array.isArray(root?.rows) ? root.rows :
+      Array.isArray(root?.items) ? root.items :
+        Array.isArray(js?.rows) ? js.rows :
+          Array.isArray(js?.items) ? js.items :
+            Array.isArray(root) ? root : []);
+
+  const total =
+    Number(pick(root?.total, js?.total, root?.count, js?.count, rows?.length, 0)) || 0;
+
+  return { rows, total };
+}
+
+async function fetchJson(url) {
+  const r = await fetch(url, { headers: { Accept: 'application/json' } });
+  const js = await r.json().catch(() => ({}));
+  return { r, js };
+}
+
+async function fetchJsonTry(urls = []) {
+  let last = null;
+  for (const url of urls) {
+    try {
+      const out = await fetchJson(url);
+      if (out.r.ok) return out.js;
+      last = new Error(`HTTP ${out.r.status} em ${url}`);
+    } catch (e) {
+      last = e;
+    }
+  }
+  throw last || new Error('fetchJsonTry failed');
+}
+
+function normalizeArrayPayload(js) {
+  if (Array.isArray(js)) return js;
+
+  if (js?.ok && js?.data != null) {
+    const d = js.data;
+    if (Array.isArray(d)) return d;
+    if (Array.isArray(d?.rows)) return d.rows;
+    if (Array.isArray(d?.items)) return d.items;
+    if (Array.isArray(d?.result)) return d.result;
+    if (Array.isArray(d?.data)) return d.data;
+  }
+
+  if (Array.isArray(js?.data)) return js.data;
+  if (Array.isArray(js?.rows)) return js.rows;
+  if (Array.isArray(js?.items)) return js.items;
+  if (Array.isArray(js?.result)) return js.result;
+
+  if (Array.isArray(js?.data?.rows)) return js.data.rows;
+  if (Array.isArray(js?.data?.items)) return js.data.items;
+
+  const root = js?.data ?? js;
+  if (Array.isArray(root?.rows)) return root.rows;
+  if (Array.isArray(root?.items)) return root.items;
+  if (Array.isArray(root)) return root;
+
+  return [];
+}
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+// ---------------------------------------------------------------------
+// Estado global
+// ---------------------------------------------------------------------
+const state = {
+  q: '',
+  is_active: '',
+  status_type_id: '',
+  business_segment: '',
+  segment_id: '',
+  seller_id: '',
+  limit: 10,
+  offset: 0,
+  total: 0,
+  page: 1,
+  totalPages: 1,
+};
+
+// caches para renderização
+const lookups = {
+  sellersById: new Map(),
+  segmentsByKey: new Map(),
+  statusById: new Map(),
+  sellerByCustomerId: new Map(),
+};
+
+// ======================================================================
+// BOOT
+// ======================================================================
+document.addEventListener('DOMContentLoaded', () => {
+  boot().catch((e) => console.error('[customersList] boot error', e));
+});
+
+async function boot() {
+  const q = $('#q');
+  const status = $('#status');
+  const perPage = $('#perPage');
+  const statusType = $('#statusType');
+  const segmento = $('#segmento');
+  const vendedor = $('#vendedor');
+
+  $('#btnNew')?.addEventListener('click', () => {
+    location.href = './customersRegistration.html';
+  });
+
+  $('#btnBack')?.addEventListener('click', () => {
+    location.href = '/public/home/home.html';
+  });
+
+  $('#btnReload')?.addEventListener('click', onReload);
+  $('#btnSearch')?.addEventListener('click', onSearch);
+
+  $('#btnPdf')?.addEventListener('click', onExportPdf);
+  $('#btnExcel')?.addEventListener('click', onExportExcel);
+
+  q?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      onSearch();
+    }
+  });
+
+  perPage?.addEventListener('change', onPerPageChange);
+  status?.addEventListener('change', onStatusChange);
+  statusType?.addEventListener('change', onStatusTypeChange);
+  segmento?.addEventListener('change', onSegmentoChange);
+  vendedor?.addEventListener('change', onVendedorChange);
+
+  $('#firstPage')?.addEventListener('click', goFirst);
+  $('#prevPage')?.addEventListener('click', goPrev);
+  $('#nextPage')?.addEventListener('click', goNext);
+  $('#lastPage')?.addEventListener('click', goLast);
+
+  state.limit = Number(perPage?.value || 10);
+  state.q = q?.value?.trim() || '';
+  state.is_active = status?.value || '';
+
+  await preloadLookups();
+  await loadAndRender();
+  fillFiltersCombos();
+}
+
+// ======================================================================
+// EXPORTAÇÕES (PDF / EXCEL)
+// ======================================================================
+function buildReportQuery(extra = {}) {
+  const qp = new URLSearchParams();
+
+  const q = (state.q ?? '').trim();
+  const isActive = state.is_active;
+
+  if (q) qp.set('q', q);
+
+  if (isActive !== '') {
+    const v = (isActive === 'true') ? 'true' : 'false';
+    qp.set('is_active', v);
+    qp.set('status', v);
+  }
+
+  if (state.status_type_id && /^\d+$/.test(String(state.status_type_id))) {
+    qp.set('status_type_id', String(state.status_type_id));
+  }
+
+  if (state.business_segment) {
+    qp.set('business_segment', String(state.business_segment));
+  }
+
+  if (state.seller_id && /^\d+$/.test(String(state.seller_id))) {
+    qp.set('seller_id', String(state.seller_id));
+  }
+
+  if (state.segment_id && /^\d+$/.test(String(state.segment_id))) {
+    qp.set('segment_id', String(state.segment_id));
+  }
+
+  for (const [k, v] of Object.entries(extra)) {
+    if (v != null && String(v).trim() !== '') {
+      qp.set(k, String(v).trim());
+    }
+  }
+
+  return qp.toString();
+}
+
+async function askExportKey(typeLabel) {
+  const key = window.prompt(`Digite a chave para exportar ${typeLabel}:`, '');
+  if (key == null) return null;
+
+  const clean = String(key).trim();
+  if (!clean) return '';
+
+  return clean;
+}
+
+function showExportCancelled(typeLabel) {
+  showCenterModal({
+    variant: 'warning',
+    title: `Exportação ${typeLabel}`,
+    message: `A exportação ${typeLabel} foi cancelada.`,
+  });
+}
+
+function showMissingKey(typeLabel) {
+  showCenterModal({
+    variant: 'warning',
+    title: `Exportação ${typeLabel}`,
+    message: `Informe a chave para liberar a exportação ${typeLabel}.`,
+  });
+}
+
+async function onExportPdf() {
+  try {
+    const exportKey = await askExportKey('PDF');
+
+    if (exportKey === null) {
+      showExportCancelled('PDF');
+      return;
+    }
+
+    if (!exportKey) {
+      showMissingKey('PDF');
+      return;
+    }
+
+    const qs = buildReportQuery({ export_key: exportKey });
+    const url = `${ROUTES.customersReportPdf}?${qs}`;
+
+    window.open(url, '_blank', 'noopener,noreferrer');
+  } catch (e) {
+    console.error('[customersList.onExportPdf] error:', e);
+    showCenterModal({
+      variant: 'error',
+      title: 'Exportação PDF',
+      message: 'Não foi possível iniciar a exportação PDF.',
+    });
+  }
+}
+
+async function onExportExcel() {
+  try {
+    const exportKey = await askExportKey('EXCEL');
+
+    if (exportKey === null) {
+      showExportCancelled('EXCEL');
+      return;
+    }
+
+    if (!exportKey) {
+      showMissingKey('EXCEL');
+      return;
+    }
+
+    const qs = buildReportQuery({ export_key: exportKey });
+    const url = `${ROUTES.customersReportExcel}?${qs}`;
+
+    window.location.href = url;
+  } catch (e) {
+    console.error('[customersList.onExportExcel] error:', e);
+    showCenterModal({
+      variant: 'error',
+      title: 'Exportação Excel',
+      message: 'Não foi possível iniciar a exportação Excel.',
+    });
+  }
+}
+
+// ======================================================================
+// LOOKUPS
+// ======================================================================
+async function preloadLookups() {
+  await Promise.all([
+    loadSellersLookup(),
+    loadSegmentsLookup(),
+    loadStatusTypesLookup(),
+  ]).catch((e) => console.warn('[customersList] preloadLookups warn', e));
+}
+
+async function loadSellersLookup() {
+  const map = lookups.sellersById;
+  map.clear();
+
+  const urls = [ROUTES.sellers, ROUTES.vendedores].filter(Boolean);
+  let js = null;
+
+  for (const url of urls) {
+    try {
+      const out = await fetchJson(url);
+      if (!out.r.ok) continue;
+      js = out.js;
+      break;
+    } catch {}
+  }
+  if (!js) return;
+
+  const arr = normalizeArrayPayload(js);
+
+  for (const s of arr) {
+    const id = pick(s.id, s.seller_id, s.codigo, s.code);
+    if (id == null) continue;
+
+    const name =
+      pick(s.nickname, s.apelido, s.name, s.nome, s.description) || `Vendedor #${id}`;
+
+    map.set(String(id), String(name));
+  }
+}
+
+async function loadSegmentsLookup() {
+  const map = lookups.segmentsByKey;
+  map.clear();
+
+  try {
+    const out = await fetchJson(ROUTES.segmentos);
+    if (!out.r.ok) return;
+
+    const arr = normalizeArrayPayload(out.js);
+
+    for (const it of arr) {
+      const segmentCode = pick(it.segment_code, it.codigo, it.code);
+      const segmentName = pick(it.segment_name, it.nome, it.name, it.description);
+
+      const display =
+        segmentName && segmentCode ? `${segmentName} (${segmentCode})`
+          : (segmentName || segmentCode || '');
+
+      if (!display) continue;
+
+      const keys = [
+        segmentCode,
+        it.id,
+        it.segment_id,
+        it.segmentCode,
+        it.segmentId,
+      ].filter((k) => k != null && k !== '');
+
+      keys.forEach((k) => map.set(String(k), display));
+    }
+  } catch (e) {
+    console.warn('[customersList] loadSegmentsLookup erro', e);
+  }
+}
+
+async function loadStatusTypesLookup() {
+  const map = lookups.statusById;
+  map.clear();
+
+  try {
+    const out = await fetchJson(ROUTES.statusTypes);
+    if (!out.r.ok) return;
+
+    const arr = normalizeArrayPayload(out.js);
+
+    for (const st of arr) {
+      const id = pick(st.id, st.status_type_id, st.codigo, st.code);
+      if (id == null) continue;
+
+      const name =
+        pick(st.name_pt, st.nome, st.description, st.name) || `Status #${id}`;
+
+      map.set(String(id), String(name));
+      if (st.internal_code) map.set(String(st.internal_code), String(name));
+      if (st.status_code) map.set(String(st.status_code), String(name));
+    }
+  } catch (e) {
+    console.warn('[customersList] loadStatusTypesLookup erro', e);
+  }
+}
+
+// ======================================================================
+// HANDLERS FILTROS
+// ======================================================================
+function onReload() {
+  state.q = '';
+  state.is_active = '';
+  state.status_type_id = '';
+  state.business_segment = '';
+  state.segment_id = '';
+  state.seller_id = '';
+
+  state.page = 1;
+  state.offset = 0;
+
+  const qEl = $('#q'); if (qEl) qEl.value = '';
+  const stEl = $('#status'); if (stEl) stEl.value = '';
+  const ppEl = $('#perPage'); if (ppEl) ppEl.value = String(state.limit);
+
+  const st2El = $('#statusType'); if (st2El) st2El.value = '';
+  const segEl = $('#segmento'); if (segEl) segEl.value = '';
+  const venEl = $('#vendedor'); if (venEl) venEl.value = '';
+
+  loadAndRender();
+}
+
+function onSearch() {
+  state.q = $('#q')?.value?.trim() || '';
+  state.page = 1;
+  state.offset = 0;
+  loadAndRender();
+}
+
+function onPerPageChange() {
+  const v = Number($('#perPage')?.value || 10);
+  state.limit = Number.isFinite(v) && v > 0 ? v : 10;
+  state.page = 1;
+  state.offset = 0;
+  loadAndRender();
+}
+
+function onStatusChange() {
+  state.is_active = $('#status')?.value || '';
+  state.page = 1;
+  state.offset = 0;
+  loadAndRender();
+}
+
+function onStatusTypeChange() {
+  state.status_type_id = $('#statusType')?.value || '';
+  state.page = 1;
+  state.offset = 0;
+  loadAndRender();
+}
+
+function onSegmentoChange() {
+  const v = ($('#segmento')?.value || '').trim();
+  state.segment_id = v;
+  state.page = 1;
+  state.offset = 0;
+  loadAndRender();
+}
+
+function onVendedorChange() {
+  state.seller_id = $('#vendedor')?.value || '';
+  state.page = 1;
+  state.offset = 0;
+  loadAndRender();
+}
+
+// ======================================================================
+// FETCH CLIENTES (ROBUSTO)
+// ======================================================================
+async function fetchCustomers() {
+  const isDigits = (v) => /^\d+$/.test(String(v ?? '').trim());
+
+  const setAdvancedFilters = (qp) => {
+    if (state.status_type_id != null && isDigits(state.status_type_id)) {
+      qp.set('status_type_id', String(state.status_type_id));
+    }
+    if (state.segment_id != null && isDigits(state.segment_id)) {
+      qp.set('segment_id', String(state.segment_id));
+    }
+    if (state.seller_id != null && isDigits(state.seller_id)) {
+      qp.set('seller_id', String(state.seller_id));
+    }
+    if (state.business_segment != null && String(state.business_segment).trim() !== '') {
+      qp.set('business_segment', String(state.business_segment).trim());
+    }
+  };
+
+  const setCommonFilters = (qp) => {
+    if (state.q != null && String(state.q).trim() !== '') {
+      qp.set('q', String(state.q).trim());
+    }
+
+    if (state.is_active !== '' && state.is_active !== null && state.is_active !== undefined) {
+      qp.set('is_active', state.is_active === 'true' ? 'true' : 'false');
+    }
+
+    setAdvancedFilters(qp);
+  };
+
+  const safeNormalize = (js) => {
+    const norm = normalizeRowsPayload(js) || {};
+    const rows = Array.isArray(norm.rows) ? norm.rows : [];
+    const total = Number.isFinite(Number(norm.total)) ? Number(norm.total) : rows.length;
+    return { rows, total };
+  };
+
+  {
+    const qp = new URLSearchParams();
+    setCommonFilters(qp);
+
+    const limit = Math.max(1, Number(state.limit || 10000));
+    const offset = Math.max(0, Number(state.offset || 0));
+
+    qp.set('limit', String(limit));
+    qp.set('offset', String(offset));
+
+    const url = `${ROUTES.customers}?${qp.toString()}`;
+
+    try {
+      const out = await fetchJson(url);
+      if (out?.r?.ok) {
+        const norm = safeNormalize(out.js);
+        return { ...norm, limit, offset };
+      }
+    } catch {}
+  }
+
+  {
+    const qp = new URLSearchParams();
+    setCommonFilters(qp);
+
+    const pageSize = Math.max(1, Number(state.limit || 50));
+    const page = Math.max(1, Number(state.page || 1));
+
+    qp.set('page', String(page));
+    qp.set('pageSize', String(pageSize));
+
+    const url = `${ROUTES.customers}?${qp.toString()}`;
+
+    const out = await fetchJson(url);
+    if (!out?.r?.ok) {
+      throw new Error(`HTTP ${out?.r?.status || 'ERR'} (customers)`);
+    }
+
+    const norm = safeNormalize(out.js);
+    const offset = (page - 1) * pageSize;
+
+    return { ...norm, limit: pageSize, offset };
+  }
+}
+
+// ======================================================================
+// SELLER-FOR-CUSTOMER JOIN
+// ======================================================================
+function linkIsActive(link) {
+  if (!link) return false;
+
+  const v = pick(
+    link.link_active,
+    link.active,
+    link.ativo,
+    link.is_active,
+    link.isActive
+  );
+
+  if (v == null) return true;
+
+  if (typeof v === 'string') return v !== '0' && v.toLowerCase() !== 'false';
+  return v !== false && v !== 0;
+}
+
+function getSellerIdFromLink(link) {
+  if (!link) return null;
+
+  const direct = pick(
+    link.seller_id, link.sellerId, link.id_seller,
+    link.vendedor_id, link.vendedorId,
+    link.salesperson_id, link.salespersonId
+  );
+  if (direct != null && direct !== '') return direct;
+
+  const nested = pick(
+    link.seller?.id, link.seller?.seller_id,
+    link.vendedor?.id, link.vendedor?.seller_id,
+    link.salesperson?.id
+  );
+  if (nested != null && nested !== '') return nested;
+
+  const nameDirect = pick(link.seller_name, link.vendedor_nome, link.salesperson_name, link.name);
+  return nameDirect != null && nameDirect !== '' ? nameDirect : null;
+}
+
+function getCustomerIdFromLink(link) {
+  if (!link) return null;
+
+  const direct = pick(
+    link.customer_id, link.customerId, link.id_customer,
+    link.cliente_id, link.clienteId
+  );
+  if (direct != null && direct !== '') return direct;
+
+  const nested = pick(
+    link.customer?.id, link.customer?.customer_id,
+    link.cliente?.id, link.cliente?.customer_id
+  );
+  return nested != null && nested !== '' ? nested : null;
+}
+
+async function loadSellerLinksForRows(rows) {
+  lookups.sellerByCustomerId.clear();
+
+  const customerIds = rows
+    .map(r => pick(r.customer_id, r.id, r.customerId))
+    .filter(v => v != null && v !== '')
+    .map(v => String(v));
+
+  if (!customerIds.length) return;
+
+  const bulkUrls = [
+    `${ROUTES.sellerForCustomer}?customer_ids=${encodeURIComponent(customerIds.join(','))}`,
+    `${ROUTES.sellerForCustomer}?customerIds=${encodeURIComponent(customerIds.join(','))}`,
+    `${ROUTES.sellerForCustomer}/bulk?customer_ids=${encodeURIComponent(customerIds.join(','))}`,
+    `${ROUTES.sellerForCustomer}/by-customers?ids=${encodeURIComponent(customerIds.join(','))}`,
+  ];
+
+  try {
+    const js = await fetchJsonTry(bulkUrls);
+    const arr = normalizeArrayPayload(js);
+
+    if (arr.length) {
+      for (const link of arr) {
+        const cid = getCustomerIdFromLink(link);
+        const sid = getSellerIdFromLink(link);
+        if (!cid || !sid) continue;
+        if (!linkIsActive(link)) continue;
+
+        const sidStr = String(sid);
+
+        if (isNaN(Number(onlyDigits(sidStr))) && sidStr.length > 0) {
+          lookups.sellerByCustomerId.set(String(cid), `__NAME__:${sidStr}`);
+          continue;
+        }
+
+        if (!lookups.sellerByCustomerId.has(String(cid))) {
+          lookups.sellerByCustomerId.set(String(cid), String(sid));
+        }
+      }
+      return;
+    }
+  } catch {}
+
+  const concurrency = 8;
+  let idx = 0;
+
+  const worker = async () => {
+    while (idx < customerIds.length) {
+      const my = customerIds[idx++];
+      try {
+        const out = await fetchJson(ROUTES.sellerForCustomerByCustomer(my));
+        if (!out.r.ok) continue;
+
+        const arr = normalizeArrayPayload(out.js);
+        const active = arr.find(linkIsActive) || arr[0];
+        if (!active) continue;
+
+        const sid = getSellerIdFromLink(active);
+        if (!sid) continue;
+
+        const sidStr = String(sid);
+
+        if (isNaN(Number(onlyDigits(sidStr))) && sidStr.length > 0) {
+          lookups.sellerByCustomerId.set(String(my), `__NAME__:${sidStr}`);
+          continue;
+        }
+
+        lookups.sellerByCustomerId.set(String(my), String(sid));
+      } catch {}
+    }
+  };
+
+  await Promise.all(
+    Array.from({ length: Math.min(concurrency, customerIds.length) }, worker)
+  );
+}
+
+// ======================================================================
+// LOAD + RENDER
+// ======================================================================
+async function loadAndRender() {
+  try {
+    const data = await fetchCustomers();
+
+    state.total = Number(data.total || 0);
+    state.totalPages = Math.max(1, Math.ceil(state.total / state.limit));
+
+    state.page = Math.max(1, Math.floor((Number(data.offset || 0) / state.limit)) + 1);
+    state.offset = Number(data.offset || 0);
+
+    if (state.page > state.totalPages) {
+      state.page = state.totalPages;
+      state.offset = (state.page - 1) * state.limit;
+      return loadAndRender();
+    }
+
+    const rows = Array.isArray(data.rows) ? data.rows : [];
+
+    await loadSellerLinksForRows(rows);
+    renderRows(rows);
+
+    const counterEl = $('#listCounter');
+    if (counterEl) {
+      counterEl.textContent = `${state.total} ${state.total === 1 ? 'cliente' : 'clientes'}`;
+    }
+
+    const pageEl = $('#pageInfo');
+    if (pageEl) {
+      pageEl.textContent = `Página ${state.page} de ${state.totalPages}`;
+    }
+  } catch (e) {
+    console.error(e);
+    showCenterModal({
+      variant: 'error',
+      title: 'Erro',
+      message: 'Não foi possível carregar clientes.',
+    });
+  }
+}
+
+// ======================================================================
+// RENDER
+// ======================================================================
+function renderRows(rows) {
+  const tbody = $('#tbody');
+  if (!tbody) return;
+
+  tbody.innerHTML = '';
+
+  for (const r of rows) {
+    const id = pick(r.customer_id, r.id, r.customerId);
+
+    const nomeFantasia = pick(
+      r.trade_name, r.fantasy_name, r.nome_fantasia,
+      r.name, r.legal_name, r.social_reason
+    );
+
+    const taxId = pick(r.tax_id, r.cnpj_cpf, r.cnpjCpf, r.cpf_cnpj);
+    const email = pick(r.email, r.mail);
+    const phone = pick(r.phone_number, r.phone, r.telefone);
+    const city = pick(r.city, r.cidade);
+    const uf = pick(r.state, r.uf);
+
+    const rawSellerFromRow = pick(
+      r.salesperson, r.salesperson_id,
+      r.seller_id, r.vendedor_id,
+      r.sellerId, r.vendedorId
+    );
+
+    const sellerFromRelation =
+      (id != null && lookups.sellerByCustomerId.get(String(id))) || null;
+
+    const sellerIdFinal = pick(rawSellerFromRow, sellerFromRelation);
+
+    let sellerName = null;
+
+    if (typeof sellerIdFinal === 'string' && sellerIdFinal.startsWith('__NAME__:')) {
+      sellerName = sellerIdFinal.replace('__NAME__:', '').trim() || null;
+    } else if (sellerIdFinal != null && sellerIdFinal !== '') {
+      sellerName =
+        lookups.sellersById.get(String(sellerIdFinal)) ??
+        lookups.sellersById.get(onlyDigits(sellerIdFinal)) ??
+        String(sellerIdFinal);
+    }
+
+    const rawSegmentKey = pick(
+      r.business_segment,
+      r.segment_id,
+      r.segment_code,
+      r.segmento,
+      r.segmentKey
+    );
+
+    let segmentName = null;
+    if (rawSegmentKey != null && rawSegmentKey !== '') {
+      segmentName =
+        lookups.segmentsByKey.get(String(rawSegmentKey)) ??
+        lookups.segmentsByKey.get(onlyDigits(rawSegmentKey)) ??
+        String(rawSegmentKey);
+    }
+
+    const statusNameFromRow = pick(
+      r.status_name_pt, r.status_name, r.status_label,
+      r.customer_status_name, r.customer_status_label,
+      r.status_pt, r.status, r.status_cliente
+    );
+
+    const statusColorFromRow = pick(
+      r.status_color_hex, r.status_color, r.statusColor
+    );
+
+    const rawStatusKey = pick(
+      r.status_type_id,
+      r.customer_status_type_id,
+      r.customer_status_id,
+      r.status_id,
+      r.status_type,
+      r.status_code,
+      r.internal_code
+    );
+
+    let statusLabel = statusNameFromRow || null;
+    if (!statusLabel && rawStatusKey != null && rawStatusKey !== '') {
+      statusLabel =
+        lookups.statusById.get(String(rawStatusKey)) ??
+        lookups.statusById.get(onlyDigits(rawStatusKey)) ??
+        null;
+    }
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${escapeHtml(safe(id))}</td>
+      <td>${escapeHtml(safe(nomeFantasia))}</td>
+      <td>${escapeHtml(safe(taxId))}</td>
+      <td>${escapeHtml(safe(email))}</td>
+      <td>${escapeHtml(safe(phone))}</td>
+      <td>${escapeHtml(safe(city))}</td>
+      <td>${escapeHtml(safe(uf))}</td>
+
+      <td>${escapeHtml(safe(sellerName))}</td>
+      <td>${escapeHtml(safe(segmentName))}</td>
+      <td class="col-status"></td>
+
+      <td>${escapeHtml(fmtBool(pick(r.is_active, r.ativo, r.active)))}</td>
+
+      <td>
+        <div class="menu-botoes">
+          <button class="btn btn-toolbar btn-sm" data-edit="${escapeHtml(safe(id))}">✏️</button>
+        </div>
+      </td>
+    `;
+
+    const tdStatus = tr.querySelector('.col-status');
+    if (tdStatus) {
+      if (!statusLabel) {
+        tdStatus.textContent = '—';
+      } else {
+        const span = document.createElement('span');
+        span.textContent = statusLabel;
+        span.style.display = 'inline-block';
+        span.style.padding = '2px 10px';
+        span.style.borderRadius = '999px';
+        span.style.fontSize = '0.78rem';
+        span.style.lineHeight = '1.4';
+
+        if (statusColorFromRow) {
+          span.style.backgroundColor = statusColorFromRow;
+          span.style.color = '#ffffff';
+        } else {
+          span.style.backgroundColor = '#e5e7eb';
+          span.style.color = '#111827';
+        }
+        tdStatus.appendChild(span);
+      }
+    }
+
+    tr.querySelector('[data-edit]')?.addEventListener('click', () => {
+      const cid = pick(r.customer_id, r.id);
+      if (!cid) return;
+      location.href = `./customersEdit.html?id=${encodeURIComponent(cid)}`;
+    });
+
+    tbody.appendChild(tr);
+  }
+}
+
+function fillFiltersCombos() {
+  {
+    const el = $('#statusType');
+    if (el) {
+      const keep = el.value;
+      el.innerHTML = `<option value="">Todos</option>`;
+
+      const entries = Array.from(lookups.statusById.entries())
+        .filter(([k]) => /^\d+$/.test(String(k)))
+        .map(([k, v]) => ({ k: String(k), v: String(v) }))
+        .sort((a, b) => a.v.localeCompare(b.v, 'pt-BR'));
+
+      for (const it of entries) {
+        const opt = document.createElement('option');
+        opt.value = it.k;
+        opt.textContent = it.v;
+        el.appendChild(opt);
+      }
+      el.value = keep || '';
+    }
+  }
+
+  {
+    const el = $('#segmento');
+    if (el) {
+      const keep = el.value;
+      el.innerHTML = `<option value="">Todos</option>`;
+      const entries = Array.from(lookups.segmentsByKey.entries())
+        .filter(([k]) => String(k).length > 0 && String(k).length <= 40)
+        .map(([k, v]) => ({ k: String(k), v: String(v) }))
+        .reduce((acc, cur) => {
+          const key = `${cur.k}::${cur.v}`;
+          if (!acc.seen.has(key)) {
+            acc.seen.add(key);
+            acc.items.push(cur);
+          }
+          return acc;
+        }, { seen: new Set(), items: [] }).items
+        .sort((a, b) => a.v.localeCompare(b.v, 'pt-BR'));
+
+      for (const it of entries) {
+        const opt = document.createElement('option');
+        opt.value = it.k;
+        opt.textContent = it.v;
+        el.appendChild(opt);
+      }
+      el.value = keep || '';
+    }
+  }
+
+  {
+    const el = $('#vendedor');
+    if (el) {
+      const keep = el.value;
+      el.innerHTML = `<option value="">Todos</option>`;
+      const entries = Array.from(lookups.sellersById.entries())
+        .map(([k, v]) => ({ k: String(k), v: String(v) }))
+        .sort((a, b) => a.v.localeCompare(b.v, 'pt-BR'));
+
+      for (const it of entries) {
+        const opt = document.createElement('option');
+        opt.value = it.k;
+        opt.textContent = it.v;
+        el.appendChild(opt);
+      }
+      el.value = keep || '';
+    }
+  }
+}
+
+// ======================================================================
+// PAGINAÇÃO
+// ======================================================================
+function goFirst() {
+  if (state.page === 1) return;
+  state.page = 1;
+  state.offset = 0;
+  loadAndRender();
+}
+
+function goPrev() {
+  if (state.page <= 1) return;
+  state.page--;
+  state.offset = (state.page - 1) * state.limit;
+  loadAndRender();
+}
+
+function goNext() {
+  if (state.page >= state.totalPages) return;
+  state.page++;
+  state.offset = (state.page - 1) * state.limit;
+  loadAndRender();
+}
+
+function goLast() {
+  if (state.page >= state.totalPages) return;
+  state.page = state.totalPages;
+  state.offset = (state.page - 1) * state.limit;
+  loadAndRender();
+}

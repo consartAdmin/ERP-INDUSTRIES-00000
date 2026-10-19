@@ -1,0 +1,220 @@
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ batchProductsPrices.html — Reajuste Preços em Lote | CONSART    ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>REAJUSTE PREÇOS LOTE | PRODNEX ERP</title>
+
+  <!-- 🎨 Design System global -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- CSS específico desta página -->
+  <link rel="stylesheet" href="./batchProductsPrices.css" />
+</head>
+
+<body class="page page-batch-prices">
+
+  <main class="bpp-layout">
+
+    <!-- 🔍 Lado esquerdo: busca + lista de produtos -->
+    <section class="bpp-panel bpp-left">
+      <div class="bpp-panel-header">
+        <h2>Produtos</h2>
+
+        <header class="header">
+          <label for="bpp-search-input">Buscar produtos</label>
+          <div class="bpp-search-input-wrapper">
+            <input id="bpp-search-input" type="text" placeholder="Digite código, descrição ou código de barras..."
+              autocomplete="off" />
+            <button id="bpp-search-btn" type="button">Buscar</button>
+          </div>
+          <small class="bpp-help">
+            Mínimo de 3 caracteres para busca. Marque vários produtos para aplicar o reajuste apenas neles.
+          </small>
+      </div>
+      </div>
+      <header>
+        <div class="table-scroll table-scroll--flex" data-table-settings="batchproductsprices.bpp-products-body">
+          <table class="table table-fixed table-zebra table-zebra-hover table-sticky-head">
+
+            <thead>
+              <tr>
+                <th><input type="checkbox" id="bpp-select-all" /></th>
+                <th>SKU</th>
+                <th>Descrição</th>
+                <th>Preço Atual (tabela selecionada)</th>
+              </tr>
+            </thead>
+            <tbody id="bpp-products-body">
+              <!-- linhas geradas via JS -->
+            </tbody>
+          </table>
+
+          <footer class="table-footer">
+            <span id="apTableInfo">0 registros encontrados</span>
+
+            <div class="table-footer__pagination">
+              <button type="button" id="btnPreviousPage" class="btn btn-clean btn-sm">
+                Anterior
+              </button>
+
+              <span id="apPageInfo">Página 1 de 1</span>
+
+              <button type="button" id="btnNextPage" class="btn btn-new btn-sm">
+                Próxima
+              </button>
+            </div>
+          </footer>
+    </section>
+
+    <!-- ⚙️ Lado direito: configuração de reajuste + importação -->
+    <section class="bpp-panel bpp-right">
+      <!-- Card: Reajuste por tabela -->
+      <div class="header">
+        <h2>Configuração de Reajuste</h2>
+
+        <div class="bpp-field-group">
+          <label for="bpp-price-table">Tabela de Preço</label>
+          <select id="bpp-price-table">
+            <option value="">Carregando tabelas...</option>
+          </select>
+          <small class="bpp-help">
+            Tabelas cadastradas em <strong>/api/prices</strong>. O reajuste é aplicado apenas nesta tabela.
+          </small>
+        </div>
+
+        <div class="bpp-field-row">
+          <div class="bpp-field-group">
+            <label for="bpp-mode">Modo</label>
+            <select id="bpp-mode">
+              <option value="percent">Percentual (%)</option>
+              <option value="amount">Valor (R$)</option>
+              <option value="set">Novo preço</option>
+              <!-- 🔹 novo modo: calcula preço a partir do custo + margem -->
+              <option value="margin">Margem Lucro (%)</option>
+            </select>
+          </div>
+
+          <div class="bpp-field-group" id="bpp-field-operation">
+            <label for="bpp-operation">Operação</label>
+            <select id="bpp-operation">
+              <option value="increase">Aumentar</option>
+              <option value="decrease">Reduzir</option>
+            </select>
+          </div>
+
+          <div class="bpp-field-group">
+            <label for="bpp-value">Valor</label>
+            <div class="bpp-input-with-prefix">
+              <span id="bpp-value-prefix">%</span>
+              <input type="number" step="0.01" id="bpp-value" placeholder="Ex: 10" />
+            </div>
+            <small id="bpp-value-hint" class="bpp-help">
+              Para percentual, informe apenas o número (10 = 10%).
+            </small>
+          </div>
+        </div>
+
+        <div class="bpp-alert-box">
+          <p>
+            <strong>Atenção:</strong> o reajuste será aplicado
+            <strong>apenas aos produtos selecionados</strong>.
+            Se nenhum produto estiver marcado, o reajuste é aplicado a
+            <strong>todos os produtos</strong> da tabela.
+          </p>
+        </div>
+
+        <button id="bpp-apply-adjust" type="button" class="bpp-apply-btn">
+          ⚙ Aplicar reajuste
+        </button>
+
+        <div class="bpp-status-line">
+          <span id="bpp-status-adjust" class="bpp-status"></span>
+        </div>
+      </div>
+      <header>
+
+        <!-- Card: Resumo -->
+        <header class="header">
+          <div class="bpp-card bpp-summary-card">
+            <h3>Resumo rápido</h3>
+            <ul>
+              <li><strong>Produtos selecionados:</strong> <span id="bpp-summary-selected">0</span></li>
+              <li><strong>Tabela:</strong> <span id="bpp-summary-table">-</span></li>
+              <li><strong>Regra:</strong> <span id="bpp-summary-rule">-</span></li>
+              <li><strong>Linhas afetadas (último reajuste):</strong> <span id="bpp-summary-rows">0</span></li>
+            </ul>
+          </div>
+        </header>
+
+        <header class="header">
+
+          <!-- Card: Importação / Upsert em lote -->
+          <div class="bpp-card bpp-import-card">
+            <h2>Importação / Lançamento de Preços</h2>
+            <p class="bpp-help">
+              Formato por linha:
+              <code>SKU;price_id;sale_price;markup_percent;gross_profit_pct</code>
+            </p>
+
+            <div class="bpp-import-layout">
+              <div class="bpp-field-group">
+                <label for="bpp-items-textarea">Linhas</label>
+                <textarea id="bpp-items-textarea" rows="6" placeholder="Ex: LIMPEZA001;1;19.90;100;50"></textarea>
+              </div>
+
+              <div class="bpp-import-help">
+                <pre><code>LIMPEZA001;1;19.90;100;50
+LIMPEZA001;2;17.90;;
+LIMPEZA002;1;29.90;110;47.5</code></pre>
+                <p class="bpp-help">
+                  A tela envia os dados para
+                  <strong>/api/products-prices/batch/upsert</strong>.
+                </p>
+              </div>
+            </div>
+
+            <div class="bpp-import-actions">
+              <button id="bpp-send-upsert" type="button" class="bpp-apply-btn">
+                📤 Enviar lote
+              </button>
+              <span id="bpp-status-upsert" class="bpp-status"></span>
+            </div>
+        </header>
+
+        <div class="bpp-table-wrapper bpp-preview-wrapper" id="bpp-preview-card" hidden>
+          <table>
+            <thead>
+              <tr>
+                <th>SKU</th>
+                <th>price_id</th>
+                <th>sale_price</th>
+                <th>markup%</th>
+                <th>lucro%</th>
+              </tr>
+            </thead>
+            <tbody id="bpp-preview-body"></tbody>
+          </table>
+        </div>
+        </div>
+    </section>
+
+  </main>
+
+  <!-- Scripts globais (menu, sessão, etc.) -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <!-- Script específico desta página -->
+  <script type="module" src="./batchProductsPrices.js"></script>
+</body>
+
+</html>

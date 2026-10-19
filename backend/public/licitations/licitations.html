@@ -1,0 +1,461 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ licitations.html — Gestão de Licitações | PRODNEX ERP             ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+    <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+    <title>LICITAÇÕES | PRODNEX ERP</title>
+
+    <!-- 🎨 Design System CONSART -->
+    <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+
+    <link rel="stylesheet" href="./licitations.css">
+</head>
+
+<body>
+    <main class="licitations-page">
+
+        <section class="licitations-container">
+
+            <header class="licitations-header">
+                <div>
+                    <span class="licitations-eyebrow">Gestão Comercial</span>
+                    <h1>Licitações</h1>
+                    <p>Controle os itens, prazos, propostas, margens e resultados das licitações.</p>
+                </div>
+
+                <div class="licitations-header__actions">
+                    <button id="btnRefresh" class="btn btn-secondary" type="button">
+                        ↻ Atualizar
+                    </button>
+
+                    <button id="btnNewLicitation" class="btn btn-primary" type="button">
+                        + Nova licitação
+                    </button>
+                </div>
+            </header>
+
+            <section class="licitations-summary" aria-label="Resumo das licitações">
+                <article class="summary-card">
+                    <span>Total de itens</span>
+                    <strong id="summaryTotalItems">0</strong>
+                </article>
+
+                <article class="summary-card">
+                    <span>Em análise</span>
+                    <strong id="summaryAnalysisItems">0</strong>
+                </article>
+
+                <article class="summary-card">
+                    <span>Propostas enviadas</span>
+                    <strong id="summaryProposalItems">0</strong>
+                </article>
+
+                <article class="summary-card">
+                    <span>Ganhos</span>
+                    <strong id="summaryWonItems">0</strong>
+                </article>
+
+                <article class="summary-card">
+                    <span>Valor estimado</span>
+                    <strong id="summaryEstimatedTotal">R$ 0,00</strong>
+                </article>
+
+                <article class="summary-card">
+                    <span>Valor proposto</span>
+                    <strong id="summaryProposedTotal">R$ 0,00</strong>
+                </article>
+            </section>
+
+            <section class="licitations-panel">
+                <div class="licitations-filters">
+
+                    <label class="field-group field-group--search">
+                        <span>Buscar</span>
+                        <input id="filterSearch" type="search" placeholder="Processo, licitação, órgão, item, SKU..."
+                            autocomplete="off" />
+                    </label>
+
+                    <label class="field-group">
+                        <span>Status</span>
+                        <select id="filterStatus">
+                            <option value="">Todos</option>
+                            <option value="FOUND">Encontrada</option>
+                            <option value="UNDER_ANALYSIS">Em análise</option>
+                            <option value="APPROVED">Aprovada</option>
+                            <option value="PROPOSAL_SENT">Proposta enviada</option>
+                            <option value="WON">Ganha</option>
+                            <option value="LOST">Perdida</option>
+                            <option value="CANCELLED">Cancelada</option>
+                        </select>
+                    </label>
+
+                    <label class="field-group">
+                        <span>Modalidade</span>
+                        <select id="filterModality">
+                            <option value="">Todas</option>
+                            <option value="PREGAO_ELETRONICO">Pregão eletrônico</option>
+                            <option value="PREGAO_PRESENCIAL">Pregão presencial</option>
+                            <option value="DISPENSA_ELETRONICA">Dispensa eletrônica</option>
+                            <option value="CONCORRENCIA">Concorrência</option>
+                            <option value="TOMADA_DE_PRECOS">Tomada de preços</option>
+                            <option value="CREDENCIAMENTO">Credenciamento</option>
+                            <option value="OUTRA">Outra</option>
+                        </select>
+                    </label>
+
+                    <label class="field-group field-group--uf">
+                        <span>UF</span>
+                        <input id="filterState" type="text" maxlength="2" placeholder="MG" />
+                    </label>
+
+                    <label class="field-group">
+                        <span>Sessão de</span>
+                        <input id="filterSessionFrom" type="date" />
+                    </label>
+
+                    <label class="field-group">
+                        <span>Sessão até</span>
+                        <input id="filterSessionTo" type="date" />
+                    </label>
+
+                    <label class="field-group field-group--small">
+                        <span>Mostrar</span>
+                        <select id="filterLimit">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50" selected>50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </label>
+
+                    <div class="licitations-filters__actions">
+                        <button id="btnClearFilters" class="btn btn-light" type="button">
+                            Limpar
+                        </button>
+                        <button id="btnApplyFilters" class="btn btn-primary" type="button">
+                            Filtrar
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="licitations-panel licitations-table-panel">
+                <div class="licitations-table-scroll" data-table-settings="licitations.licitationstablebody">
+                    <table class="licitations-table" aria-label="Itens de licitações">
+                        <thead>
+                            <tr>
+                                <th class="col-id">ID</th>
+                                <th>Processo</th>
+                                <th>Licitação</th>
+                                <th>Órgão</th>
+                                <th>Item</th>
+                                <th>Descrição</th>
+                                <th>Quantidade</th>
+                                <th>Estimado</th>
+                                <th>Proposto</th>
+                                <th>Margem</th>
+                                <th>Sessão</th>
+                                <th>Status</th>
+                                <th class="col-actions">Ações</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="licitationsTableBody">
+                            <tr>
+                                <td colspan="13" class="table-message">Carregando licitações...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <footer class="licitations-table-footer">
+                    <div id="tableInfo">Nenhum registro</div>
+
+                    <div class="pagination-controls">
+                        <button id="btnPreviousPage" class="btn btn-light btn-sm" type="button">
+                            Anterior
+                        </button>
+
+                        <span id="pageInfo">Página 1 de 1</span>
+
+                        <button id="btnNextPage" class="btn btn-light btn-sm" type="button">
+                            Próxima
+                        </button>
+                    </div>
+                </footer>
+            </section>
+        </section>
+    </main>
+
+    <div id="licitationModal" class="modal-overlay" hidden>
+        <section class="modal-card modal-card--large" role="dialog" aria-modal="true"
+            aria-labelledby="licitationModalTitle">
+            <header class="modal-header">
+                <div>
+                    <span class="licitations-eyebrow">Cadastro</span>
+                    <h2 id="licitationModalTitle">Nova licitação</h2>
+                </div>
+
+                <button id="btnCloseModal" class="modal-close" type="button" aria-label="Fechar">
+                    ×
+                </button>
+            </header>
+
+            <form id="licitationForm">
+                <input id="licitationId" type="hidden" />
+
+                <div class="modal-body">
+                    <section class="form-section">
+                        <h3>Identificação</h3>
+
+                        <div class="form-grid form-grid--4">
+                            <label class="field-group">
+                                <span>Processo</span>
+                                <input id="process_number" name="process_number" type="text" maxlength="100" />
+                            </label>
+
+                            <label class="field-group">
+                                <span>Número da licitação</span>
+                                <input id="licitation_number" name="licitation_number" type="text" maxlength="100" />
+                            </label>
+
+                            <label class="field-group">
+                                <span>Modalidade</span>
+                                <select id="modality" name="modality">
+                                    <option value="">Selecione</option>
+                                    <option value="PREGAO_ELETRONICO">Pregão eletrônico</option>
+                                    <option value="PREGAO_PRESENCIAL">Pregão presencial</option>
+                                    <option value="DISPENSA_ELETRONICA">Dispensa eletrônica</option>
+                                    <option value="CONCORRENCIA">Concorrência</option>
+                                    <option value="TOMADA_DE_PRECOS">Tomada de preços</option>
+                                    <option value="CREDENCIAMENTO">Credenciamento</option>
+                                    <option value="OUTRA">Outra</option>
+                                </select>
+                            </label>
+
+                            <label class="field-group">
+                                <span>Status</span>
+                                <select id="status" name="status">
+                                    <option value="FOUND">Encontrada</option>
+                                    <option value="UNDER_ANALYSIS">Em análise</option>
+                                    <option value="APPROVED">Aprovada</option>
+                                    <option value="PROPOSAL_SENT">Proposta enviada</option>
+                                    <option value="WON">Ganha</option>
+                                    <option value="LOST">Perdida</option>
+                                    <option value="CANCELLED">Cancelada</option>
+                                </select>
+                            </label>
+                        </div>
+
+                        <div class="form-grid form-grid--4">
+                            <label class="field-group field-group--span-2">
+                                <span>Órgão *</span>
+                                <input id="agency_name" name="agency_name" type="text" maxlength="255" required />
+                            </label>
+
+                            <label class="field-group">
+                                <span>CNPJ do órgão</span>
+                                <input id="agency_document" name="agency_document" type="text" maxlength="20" />
+                            </label>
+
+                            <label class="field-group">
+                                <span>Responsável</span>
+                                <input id="responsible" name="responsible" type="text" maxlength="120" />
+                            </label>
+                        </div>
+
+                        <div class="form-grid form-grid--4">
+                            <label class="field-group">
+                                <span>Portal</span>
+                                <input id="portal" name="portal" type="text" maxlength="100" />
+                            </label>
+
+                            <label class="field-group field-group--span-2">
+                                <span>Link do portal</span>
+                                <input id="portal_url" name="portal_url" type="url" />
+                            </label>
+
+                            <label class="field-group field-group--uf">
+                                <span>UF</span>
+                                <input id="state" name="state" type="text" maxlength="2" />
+                            </label>
+                        </div>
+
+                        <div class="form-grid form-grid--4">
+                            <label class="field-group field-group--span-2">
+                                <span>Cidade</span>
+                                <input id="city" name="city" type="text" maxlength="120" />
+                            </label>
+
+                            <label class="field-group">
+                                <span>Prazo da proposta</span>
+                                <input id="proposal_deadline" name="proposal_deadline" type="datetime-local" />
+                            </label>
+
+                            <label class="field-group">
+                                <span>Data da sessão</span>
+                                <input id="session_date" name="session_date" type="datetime-local" />
+                            </label>
+                        </div>
+                    </section>
+
+                    <section class="form-section">
+                        <h3>Item da licitação</h3>
+
+                        <div class="form-grid form-grid--4">
+                            <label class="field-group">
+                                <span>Lote</span>
+                                <input id="lot_number" name="lot_number" type="text" maxlength="30" />
+                            </label>
+
+                            <label class="field-group">
+                                <span>Item</span>
+                                <input id="item_number" name="item_number" type="text" maxlength="30" />
+                            </label>
+
+                            <label class="field-group">
+                                <span>CATMAT</span>
+                                <input id="catmat_code" name="catmat_code" type="text" maxlength="50" />
+                            </label>
+
+                            <label class="field-group">
+                                <span>CATSER</span>
+                                <input id="catser_code" name="catser_code" type="text" maxlength="50" />
+                            </label>
+                        </div>
+
+                        <label class="field-group">
+                            <span>Descrição do produto *</span>
+                            <textarea id="product_description" name="product_description" rows="3" required></textarea>
+                        </label>
+
+                        <div class="form-grid form-grid--4">
+                            <label class="field-group">
+                                <span>Quantidade</span>
+                                <input id="quantity" name="quantity" type="number" min="0" step="0.0001" />
+                            </label>
+
+                            <label class="field-group">
+                                <span>Unidade</span>
+                                <input id="unit" name="unit" type="text" maxlength="20" placeholder="UN, CX, FD..." />
+                            </label>
+
+                            <label class="field-group">
+                                <span>Produto ID</span>
+                                <input id="product_id" name="product_id" type="number" min="1" step="1" />
+                            </label>
+
+                            <label class="field-group">
+                                <span>SKU</span>
+                                <input id="sku" name="sku" type="text" maxlength="30" />
+                            </label>
+                        </div>
+
+                        <div class="form-grid form-grid--4">
+                            <label class="field-group">
+                                <span>Marca</span>
+                                <input id="brand" name="brand" type="text" maxlength="120" />
+                            </label>
+
+                            <label class="field-group">
+                                <span>Fabricante</span>
+                                <input id="manufacturer" name="manufacturer" type="text" maxlength="120" />
+                            </label>
+
+                            <label class="field-group">
+                                <span>Valor unitário estimado</span>
+                                <input id="estimated_unit_price" name="estimated_unit_price" type="number" min="0"
+                                    step="0.0001" />
+                            </label>
+
+                            <label class="field-group">
+                                <span>Valor total estimado</span>
+                                <input id="estimated_total_price" name="estimated_total_price" type="number" min="0"
+                                    step="0.01" />
+                            </label>
+                        </div>
+                    </section>
+
+                    <section class="form-section">
+                        <h3>Formação de preço</h3>
+
+                        <div class="form-grid form-grid--4">
+                            <label class="field-group">
+                                <span>Custo</span>
+                                <input id="cost_price" name="cost_price" type="number" min="0" step="0.0001" />
+                            </label>
+
+                            <label class="field-group">
+                                <span>Frete</span>
+                                <input id="freight_cost" name="freight_cost" type="number" min="0" step="0.0001" />
+                            </label>
+
+                            <label class="field-group">
+                                <span>Impostos</span>
+                                <input id="tax_cost" name="tax_cost" type="number" min="0" step="0.0001" />
+                            </label>
+
+                            <label class="field-group">
+                                <span>Preço mínimo</span>
+                                <input id="minimum_sale_price" name="minimum_sale_price" type="number" min="0"
+                                    step="0.0001" />
+                            </label>
+                        </div>
+
+                        <div class="form-grid form-grid--4">
+                            <label class="field-group">
+                                <span>Preço proposto</span>
+                                <input id="proposed_price" name="proposed_price" type="number" min="0" step="0.0001" />
+                            </label>
+
+                            <label class="field-group">
+                                <span>Margem estimada (%)</span>
+                                <input id="estimated_margin" name="estimated_margin" type="number" step="0.01"
+                                    readonly />
+                            </label>
+
+                            <label class="check-field">
+                                <input id="participation" name="participation" type="checkbox" />
+                                <span>Participaremos deste item</span>
+                            </label>
+                        </div>
+
+                        <label class="field-group">
+                            <span>Observações</span>
+                            <textarea id="observations" name="observations" rows="4"></textarea>
+                        </label>
+                    </section>
+                </div>
+
+                <footer class="modal-footer">
+                    <button id="btnCancelModal" class="btn btn-light" type="button">
+                        Cancelar
+                    </button>
+
+                    <button id="btnSaveLicitation" class="btn btn-primary" type="submit">
+                        Salvar
+                    </button>
+                </footer>
+            </form>
+        </section>
+    </div>
+
+    <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+    <script type="module" src="/public/includes/js/core.js"></script>
+
+    <script type="module" src="./licitations.js"></script>
+</body>
+
+</html>

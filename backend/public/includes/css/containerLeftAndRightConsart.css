@@ -1,0 +1,156 @@
+/* ╔══════════════════════════════════════════════════════════════════════════╗
+ * ║ containerLeftAndRightConsart.css — Layout LEFT/RIGHT | PRODNEX ERP       ║
+ * ║ Objetivo: criar um padrão reutilizável de 2 painéis com scroll interno   ║
+ * ║ Requisitos: usar junto com containerConsart.css (consart-container...)   ║
+ * ║ ✅ Grid 2 colunas (desktop) + stack (mobile)                             ║
+ * ║ ✅ Painéis como colunas flex (header / conteúdo scroll / footer)         ║
+ * ║ ✅ Scroll interno seguro (min-height:0)                                  ║
+ * ║ ✅ Helpers p/ tabela/área rolável, sticky header                         ║
+ * ╚══════════════════════════════════════════════════════════════════════════╝ */
+
+/* =========================================================
+   Tokens (pode sobrescrever por página)
+========================================================= */
+:root{
+  --consart-lr-gap: 16px;
+
+  /* proporção padrão: left maior, right menor */
+  --consart-lr-left-fr: 1.65fr;
+  --consart-lr-right-fr: 1fr;
+
+  /* breakpoint que empilha */
+  --consart-lr-break: 980px;
+
+  /* min widths (evita esmagar) */
+  --consart-lr-left-minw: 520px;
+  --consart-lr-right-minw: 360px;
+
+  /* visual opcional */
+  --consart-lr-panel-radius: 16px;
+  --consart-lr-panel-bg: rgba(255,255,255,0.75);
+  --consart-lr-panel-border: rgba(20, 24, 40, 0.10);
+  --consart-lr-panel-shadow: 0 16px 40px rgba(0,0,0,0.08);
+}
+
+/* =========================================================
+   ✅ Layout principal (aplica no MESMO elemento do container)
+   Ex: <main class="consart-container consart-container--fixed consart-lr">
+========================================================= */
+.consart-lr{
+  /* 🔥 essencial pra scroll/overflow funcionar em filhos */
+  min-height: 0;
+  min-width: 0;
+
+  /* vira layout 2 colunas */
+  display: grid;
+  grid-template-columns: minmax(var(--consart-lr-left-minw), var(--consart-lr-left-fr))
+                         minmax(var(--consart-lr-right-minw), var(--consart-lr-right-fr));
+  gap: var(--consart-lr-gap);
+  align-items: stretch;
+}
+
+/* Variante: right maior */
+.consart-lr--right-bigger{
+  --consart-lr-left-fr: 1fr;
+  --consart-lr-right-fr: 1.35fr;
+}
+
+/* Variante: colunas iguais */
+.consart-lr--equal{
+  --consart-lr-left-fr: 1fr;
+  --consart-lr-right-fr: 1fr;
+}
+
+/* Mobile: empilha */
+@media (max-width: 980px){
+  .consart-lr{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   ✅ Painel padrão (aplique nos <section>)
+   Ex: <section class="consart-lr-panel">...</section>
+========================================================= */
+.consart-lr-panel{
+  min-height: 0;
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  border-radius: var(--consart-lr-panel-radius);
+  background: var(--consart-lr-panel-bg);
+  border: 1px solid var(--consart-lr-panel-border);
+  box-shadow: var(--consart-lr-panel-shadow);
+
+  padding: 14px;
+  box-sizing: border-box;
+}
+
+/* Se você quiser painel “flush” (sem padding) */
+.consart-lr-panel--flush{
+  padding: 0;
+}
+
+/* =========================================================
+   ✅ Área rolável dentro do painel
+   Use para: tabelas, listas, grids que precisam rolar.
+   Ex: <div class="consart-lr-scroll"> ... </div>
+========================================================= */
+.consart-lr-scroll{
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+
+  overflow: auto;
+  border-radius: 12px;
+}
+
+/* Sticky header de tabela dentro do scroll */
+.consart-lr-scroll table thead th{
+  position: sticky;
+  top: 0;
+  z-index: 5;
+
+  /* tenta usar tokens do seu button toolbar */
+  background: var(--btn-toolbar-bg, #f2f2f2);
+  color: var(--btn-toolbar-tx, #1f2937);
+  border-bottom: 1px solid var(--btn-toolbar-bd, rgba(0,0,0,0.35));
+}
+
+/* =========================================================
+   Helpers de layout dentro do painel (opcionais)
+========================================================= */
+
+/* header no topo */
+.consart-lr-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+
+/* footer fixo (não rola) */
+.consart-lr-footer{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+
+/* =========================================================
+   Compatibilidade com suas classes atuais (pfb-*)
+   ✅ sem obrigar a mudar tudo agora
+========================================================= */
+.pfb-panel{
+  /* se você já usa pfb-panel, pode ganhar o mesmo comportamento */
+  min-height: 0;
+  min-width: 0;
+}
+
+/* Se quiser aplicar visual padrão sem trocar HTML:
+   basta adicionar class="consart-lr-panel" junto do pfb-panel */

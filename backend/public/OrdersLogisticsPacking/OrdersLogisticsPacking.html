@@ -1,0 +1,310 @@
+<!--╔══════════════════════════════════════════════════════════════════════╗
+    ║ OrdersLogisticsPacking.html — Packing & Volumes (PRODNEX ERP)       ║
+    ║ Path: backend/public/OrdersLogisticsPacking/OrdersLogisticsPacking.html║
+    ╚══════════════════════════════════════════════════════════════════════╝-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+  <title>Packing & Volumes | PRODNEX ERP</title>
+
+  <!-- Design System / Includes globais -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <link rel="stylesheet" href="/public/includes/css/centerAlertModal.css" />
+
+  <!-- CSS local -->
+  <link rel="stylesheet" href="/public/OrdersLogisticsPacking/OrdersLogisticsPacking.css" />
+
+  <script>
+    window.apiBase = window.apiBase || location.origin;
+  </script>
+</head>
+
+<body class="consart-theme">
+  <!-- Se você já tem seu header/menu global por include, mantenha como está no seu projeto -->
+  <main class="olp-wrap">
+    <!-- Top -->
+    <header class="olp-top">
+      <div class="olp-top__left">
+        <div class="olp-title">
+          <div class="olp-title__icon">📦</div>
+          <div>
+            <div class="olp-title__main">Packing & Volumes</div>
+            <div class="olp-title__sub">Arraste itens para caixas e organize a expedição</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="olp-top__right">
+        <div class="olp-order">
+          <label class="olp-label" for="olpOrderId">Order ID</label>
+          <input id="olpOrderId" class="olp-input" type="number" min="1" placeholder="Ex: 235" />
+        </div>
+
+        <button id="btnOpenOrderSearch" class="btn btn-secondary">Buscar</button>
+        <button id="btnLoadOrder" class="btn btn-primary">Carregar</button>
+        <button id="btnRefresh" class="btn btn-secondary" title="Recarregar">↻</button>
+      </div>
+    </header>
+
+    <!-- KPIs -->
+    <section class="olp-kpis">
+      <div class="olp-kpi">
+        <div class="olp-kpi__label">Pedido</div>
+        <div class="olp-kpi__value" id="kpiOrder">—</div>
+      </div>
+
+      <div class="olp-kpi">
+        <div class="olp-kpi__label">Volumes</div>
+        <div class="olp-kpi__value" id="kpiVolumes">—</div>
+      </div>
+
+      <div class="olp-kpi">
+        <div class="olp-kpi__label">Itens não alocados</div>
+        <div class="olp-kpi__value" id="kpiNotPacked">—</div>
+      </div>
+
+      <div class="olp-kpi">
+        <div class="olp-kpi__label">Peso total (somatório volumes)</div>
+        <div class="olp-kpi__value" id="kpiWeight">—</div>
+      </div>
+
+      <div class="olp-kpi">
+        <div class="olp-kpi__label">Cubagem total (somatório volumes)</div>
+        <div class="olp-kpi__value" id="kpiM3">—</div>
+      </div>
+    </section>
+
+    <!-- Main grid -->
+    <section class="olp-grid">
+      <!-- Left: not allocated -->
+      <aside class="olp-panel">
+        <div class="olp-panel__head">
+          <div>
+            <div class="olp-panel__title">Não alocados</div>
+            <div class="olp-panel__sub">Arraste para um volume</div>
+          </div>
+          <div class="olp-panel__meta" id="notPackedMeta">—</div>
+        </div>
+
+        <div class="olp-panel__body">
+          <div class="olp-empty" id="notPackedEmpty">
+            Nenhum item pendente.
+          </div>
+
+          <div class="olp-list" id="notPackedList"></div>
+
+          <div class="olp-tip">
+            <div class="olp-tip__title">Dica</div>
+            <div class="olp-tip__text">
+              O painel “Não alocados” mostra apenas o <b>restante</b> do pedido.
+              Ao arrastar para um volume, o sistema pergunta a unidade e a quantidade.
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right: volumes -->
+      <section class="olp-panel olp-panel--main">
+        <div class="olp-panel__head">
+          <div>
+            <div class="olp-panel__title">Volumes</div>
+            <div class="olp-panel__sub">Crie volumes e arraste itens para dentro</div>
+          </div>
+          <div class="olp-panel__actions">
+            <button id="btnPdf" class="btn btn-secondary" type="button">🧾 PDF</button>
+            <button id="btnCreateVolume" class="btn btn-primary" type="button">＋ Criar volume</button>
+          </div>
+        </div>
+
+        <div class="olp-panel__body olp-panel__body--main">
+          <div class="olp-volumes" id="volumesWrap"></div>
+
+          <div class="olp-empty olp-empty--big" id="volumesEmpty">
+            Nenhum volume criado ainda. Clique em <b>Criar volume</b>.
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- Modal: Search Orders -->
+    <div class="olp-modal" id="orderSearchModal" aria-hidden="true">
+      <div class="olp-modal__backdrop" data-close="1"></div>
+
+      <div class="olp-modal__panel" role="dialog" aria-modal="true" aria-labelledby="orderSearchTitle">
+        <div class="olp-modal__head">
+          <div>
+            <div class="olp-modal__title" id="orderSearchTitle">Pesquisar Pedido</div>
+            <div class="olp-modal__sub">Digite nº do pedido ou nome/cliente/status</div>
+          </div>
+          <button class="olp-mini danger" id="btnCloseOrderSearch" title="Fechar">✕</button>
+        </div>
+
+        <div class="olp-modal__body">
+          <div class="olp-modal__toolbar">
+            <input id="orderSearchInput" class="olp-input olp-modal__input" placeholder="Ex: 235, BH3, Concluído..." />
+            <button id="btnOrderSearchGo" class="btn btn-primary">Buscar</button>
+          </div>
+
+          <div class="olp-modal__results">
+            <table class="olp-table">
+              <thead>
+                <tr id="orderSearchThead"></tr>
+              </thead>
+              <tbody id="orderSearchTbody"></tbody>
+            </table>
+          </div>
+
+          <div class="olp-modal__hint" id="orderSearchHint">Digite algo e clique em Buscar.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Escolher Unidade do Item -->
+    <div class="olp-modal" id="packingUnitModal" aria-hidden="true">
+      <div class="olp-modal__backdrop" id="packingUnitBackdrop"></div>
+
+      <div class="olp-modal__panel" role="dialog" aria-modal="true" aria-labelledby="packingUnitTitle"
+        style="max-width:640px;">
+        <div class="olp-modal__head">
+          <div>
+            <div class="olp-modal__title" id="packingUnitTitle">Adicionar item ao volume</div>
+            <div class="olp-modal__sub" id="packingUnitSub">Escolha a unidade e quantidade para embalar.</div>
+          </div>
+          <button id="btnClosePackingUnit" class="olp-mini danger" type="button" title="Fechar">X</button>
+        </div>
+
+        <div class="olp-modal__body">
+          <form id="formPackingUnit" class="olp-cv-form">
+            <div class="olp-cv-grid">
+              <label class="olp-cv-field" style="grid-column:1 / -1;">
+                <span class="olp-label">Produto</span>
+                <input id="puProduct" class="olp-input" readonly />
+              </label>
+
+              <label class="olp-cv-field">
+                <span class="olp-label">Unidade</span>
+                <select id="puUnit" class="olp-input"></select>
+              </label>
+
+              <label class="olp-cv-field">
+                <span class="olp-label">Quantidade</span>
+                <input id="puQty" class="olp-input" inputmode="decimal" placeholder="0" />
+              </label>
+
+              <label class="olp-cv-field">
+                <span class="olp-label">Fator</span>
+                <input id="puFator" class="olp-input" readonly />
+              </label>
+
+              <label class="olp-cv-field">
+                <span class="olp-label">Peso unitário (kg)</span>
+                <input id="puWeight" class="olp-input" readonly />
+              </label>
+
+              <label class="olp-cv-field">
+                <span class="olp-label">Dimensões</span>
+                <input id="puDims" class="olp-input" readonly />
+              </label>
+            </div>
+
+            <div class="olp-cv-actions">
+              <button type="button" id="btnCancelPackingUnit" class="olp-mini">Cancelar</button>
+              <button type="submit" class="olp-mini soft" style="min-width:160px;">Adicionar ao volume</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="olp-toast" id="toast" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Loading overlay -->
+    <div class="olp-loading" id="loading" aria-hidden="true">
+      <div class="olp-loading__card">
+        <div class="olp-spinner"></div>
+        <div class="olp-loading__text" id="loadingText">Carregando…</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ─────────────────────────────────────────────────────────────
+     Modal: Criar Volume (Dimensões)
+───────────────────────────────────────────────────────────── -->
+  <div id="createVolumeModal" class="olp-modal" aria-hidden="true">
+    <div class="olp-modal__backdrop" data-close="1"></div>
+
+    <div class="olp-modal__panel" role="dialog" aria-modal="true" aria-labelledby="cvTitle" style="max-width:720px;">
+      <div class="olp-modal__head">
+        <div>
+          <div id="cvTitle" class="olp-modal__title">Criar volume</div>
+          <div class="olp-modal__sub">Informe tipo, dimensões e tara para calcular cubagem/peso corretamente.</div>
+        </div>
+        <button id="btnCloseCreateVolume" class="olp-mini danger" type="button" title="Fechar">X</button>
+      </div>
+
+      <div class="olp-modal__body">
+        <form id="formCreateVolume" class="olp-cv-form">
+          <div class="olp-cv-grid">
+            <label class="olp-cv-field">
+              <span class="olp-label">Tipo</span>
+              <select id="cvType" class="olp-input">
+                <option value="BOX">BOX</option>
+                <option value="PALLET">PALLET</option>
+                <option value="BAG">BAG</option>
+                <option value="OTHER">OTHER</option>
+              </select>
+            </label>
+
+            <label class="olp-cv-field">
+              <span class="olp-label">Descrição (opcional)</span>
+              <input id="cvDesc" class="olp-input" placeholder="Ex: Caixa reforçada, palete PBR..." />
+            </label>
+
+            <label class="olp-cv-field">
+              <span class="olp-label">Altura (cm)</span>
+              <input id="cvH" class="olp-input" inputmode="decimal" placeholder="0" />
+            </label>
+
+            <label class="olp-cv-field">
+              <span class="olp-label">Largura (cm)</span>
+              <input id="cvW" class="olp-input" inputmode="decimal" placeholder="0" />
+            </label>
+
+            <label class="olp-cv-field">
+              <span class="olp-label">Comprimento (cm)</span>
+              <input id="cvL" class="olp-input" inputmode="decimal" placeholder="0" />
+            </label>
+
+            <label class="olp-cv-field">
+              <span class="olp-label">Tara (kg)</span>
+              <input id="cvTare" class="olp-input" inputmode="decimal" placeholder="0" />
+            </label>
+
+            <label class="olp-cv-field" style="grid-column: 1 / -1;">
+              <span class="olp-label">Observações (opcional)</span>
+              <textarea id="cvNotes" class="olp-input" rows="3" style="padding-top:10px; height:auto;"></textarea>
+            </label>
+          </div>
+
+          <div class="olp-cv-actions">
+            <button type="button" id="btnCancelCreateVolume" class="olp-mini">Cancelar</button>
+            <button type="submit" class="olp-mini soft" style="min-width:140px;">Criar volume</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <script type="module" src="/public/OrdersLogisticsPacking/OrdersLogisticsPacking.js"></script>
+
+</body>
+
+</html>

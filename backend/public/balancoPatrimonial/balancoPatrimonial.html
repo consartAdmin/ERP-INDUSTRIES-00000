@@ -1,0 +1,132 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ balancoPatrimonial.html — PRODNEX ERP (Balanço Patrimonial)         ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>BALANÇO PATRIMONIAL | PRODNEX ERP</title>
+
+  <link rel="stylesheet" href="/public/includes/css/style.css"/>
+  <link rel="stylesheet" href="./balancoPatrimonial.css"/>
+  <style>
+    :root { --app-header-h: 64px; }
+    body.with-fixed-header .c-main { padding-top: calc(var(--app-header-h) + 12px); }
+  </style>
+</head>
+<body class="c-page with-fixed-header">
+  <main class="c-main">
+    <div class="c-container c-container--2xl stack">
+
+      <section class="section-card row between center">
+        <h1 style="margin:0;">🏛️ Balanço Patrimonial — Imobilizados</h1>
+        <div class="row gap-8">
+          <input id="q" placeholder="Buscar por código ou descrição"/>
+          <select id="categoria" title="Categoria">
+            <option value="">Categoria</option>
+            <option>Informática</option>
+            <option>Máquinas</option>
+            <option>Veículos</option>
+            <option>Móveis</option>
+          </select>
+          <input type="date" id="dt_from" title="Aquisição de"/>
+          <input type="date" id="dt_to" title="Aquisição até"/>
+          <button id="btnBuscar" class="btn btn-primary">Buscar</button>
+          <button id="btnNovo" class="btn">Novo</button>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="table-wrapper">
+          <table class="table" id="tabela">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Código</th>
+                <th>Descrição</th>
+                <th>Categoria</th>
+                <th>Aquisição</th>
+                <th>Valor</th>
+                <th>Anexos</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="row between center" style="margin-top:8px;">
+          <div id="totalInfo" class="muted"></div>
+          <div class="row gap-8">
+            <button id="prev" class="btn">«</button>
+            <span id="page" class="muted">1</span>
+            <button id="next" class="btn">»</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Editor -->
+      <section class="section-card hidden" id="editor">
+        <h2 id="editorTitle">Novo Imobilizado</h2>
+        <form id="form">
+          <div class="form-grid">
+            <label>Código <input name="asset_code" required/></label>
+            <label>Descrição <input name="descricao" required/></label>
+            <label>Categoria <input name="categoria" list="catlist"/></label>
+            <datalist id="catlist">
+              <option value="Informática"/>
+              <option value="Máquinas"/>
+              <option value="Veículos"/>
+              <option value="Móveis"/>
+            </datalist>
+
+            <label>Data Aquisição <input type="date" name="data_aquisicao" required/></label>
+            <label>Valor Aquisição <input type="number" step="0.01" name="valor_aquisicao" required/></label>
+            <label>Vida Útil (meses) <input type="number" name="vida_util_meses"/></label>
+
+            <label>Método Deprec. <input name="metodo_depreciacao" placeholder="linear"/></label>
+            <label>Taxa Anual (%) <input type="number" step="0.001" name="taxa_anual"/></label>
+            <label>Valor Residual <input type="number" step="0.01" name="valor_residual"/></label>
+
+            <label>Centro de Custo ID <input type="number" name="centro_custo_id"/></label>
+            <label>Chave NFe <input name="nfe_chave" maxlength="60"/></label>
+            <label>Observação <input name="observacao"/></label>
+
+            <label>Ativo <input type="checkbox" name="ativo" checked/></label>
+          </div>
+
+          <!-- Upload de anexos (opcional, requer uploadBucketsBalanco.js plugado nas rotas) -->
+          <div class="stack" style="margin-top:12px;">
+            <h3>Anexos (XML/PDF)</h3>
+            <div class="row gap-8">
+              <input type="file" id="file" accept=".xml,.pdf"/>
+              <button type="button" id="btnUpload" class="btn">Anexar</button>
+            </div>
+            <div id="anexos"></div>
+          </div>
+
+          <div class="row gap-8" style="margin-top:12px;">
+            <button class="btn btn-primary" id="btnSalvar" type="submit">Salvar</button>
+            <button class="btn btn-danger" id="btnCancelar" type="button">Cancelar</button>
+          </div>
+        </form>
+      </section>
+
+    </div>
+  </main>
+
+    <!-- Scripts globais -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <script>window.API_BASE = '';</script>
+  <script type="module" src="./balancoPatrimonial.js"></script>
+</body>
+</html>

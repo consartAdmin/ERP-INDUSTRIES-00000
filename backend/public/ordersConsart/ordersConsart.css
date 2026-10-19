@@ -1,0 +1,729 @@
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║ ordersConsart.css — Estilos do módulo de Pedidos — PRODNEX ERP      ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+.page-orders .section-card {
+  margin-top: var(--gap-lg);
+}
+
+/* Título e subtítulo da página */
+.page-orders__title {
+  font-size: var(--fs-20);
+  margin: 0;
+}
+
+.page-orders__subtitle {
+  margin: 0;
+  font-size: var(--fs-12);
+  color: var(--muted);
+}
+
+/* Toolbar da lista */
+.page-orders__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-sm);
+  align-items: flex-end;
+  margin-bottom: var(--gap);
+}
+
+.page-orders .toolbar-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: var(--fs-12);
+  color: var(--muted);
+}
+
+.page-orders .toolbar-label input,
+.page-orders .toolbar-label select {
+  min-width: 150px;
+}
+
+/* Tabela (lista de pedidos) */
+.page-orders__table-wrapper {
+  margin-top: var(--gap-sm);
+}
+
+/* Fonte um pouco menor na lista de pedidos */
+.page-orders__table-wrapper thead th {
+  font-size: 0.75rem;
+  padding: 4px 6px;
+}
+
+.page-orders__table-wrapper tbody td {
+  font-size: 0.8rem;
+  padding: 4px 6px;
+  line-height: 1.25;
+}
+
+/* Zebra + hover na lista de pedidos */
+#tblPedidos tbody tr:nth-child(even) {
+  background-color: rgba(247, 250, 252, 0.9);
+}
+
+#tblPedidos tbody tr:hover {
+  background-color: rgba(225, 239, 254, 0.75);
+}
+
+/* Alinhamento geral da lista */
+#tblPedidos th,
+#tblPedidos td {
+  text-align: left;
+}
+
+/* Coluna 1: seta */
+#tblPedidos th:nth-child(1),
+#tblPedidos td:nth-child(1) {
+  text-align: center;
+}
+
+/* Coluna 2: número do pedido */
+#tblPedidos th:nth-child(2),
+#tblPedidos td:nth-child(2) {
+  text-align: right;
+}
+
+/* Coluna 3: data */
+#tblPedidos th:nth-child(3),
+#tblPedidos td:nth-child(3) {
+  text-align: center;
+}
+
+/* Coluna 4: cliente */
+#tblPedidos th:nth-child(4),
+#tblPedidos td:nth-child(4) {
+  text-align: left;
+}
+
+/* Coluna 5: CNPJ/CPF */
+#tblPedidos th:nth-child(5),
+#tblPedidos td:nth-child(5) {
+  text-align: center;
+}
+
+/* Coluna 6: total */
+#tblPedidos th:nth-child(6),
+#tblPedidos td:nth-child(6) {
+  text-align: right;
+}
+
+/* Coluna 7: status */
+#tblPedidos th:nth-child(7),
+#tblPedidos td:nth-child(7) {
+  text-align: center;
+}
+
+/* Coluna 8: ações */
+#tblPedidos th:nth-child(8),
+#tblPedidos td:nth-child(8) {
+  text-align: center;
+}
+
+/* Coluna Cliente: mais largura + ellipsis */
+#tblPedidos td.col-cliente {
+  max-width: 420px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Paginação */
+.page-orders__pager {
+  margin-top: var(--gap);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--fs-12);
+}
+
+/* ====================== EDITOR ====================== */
+
+.page-orders__editor {
+  margin-top: var(--gap-lg);
+}
+
+.page-orders__editor-header {
+  margin-bottom: var(--gap);
+}
+
+.page-orders__editor-title {
+  margin: 0;
+  font-size: var(--fs-18);
+}
+
+.page-orders__editor-subtitle {
+  margin: 0;
+  font-size: var(--fs-12);
+  color: var(--muted);
+}
+
+/* Corpo do editor */
+.page-orders__editor-body {
+  gap: var(--gap-lg);
+}
+
+/* Blocos (Dados do pedido, NF-e, etc.) */
+.page-orders__section {
+  padding: var(--gap);
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: #f9fbff;
+}
+
+.page-orders__section .section-title {
+  font-size: var(--fs-14);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin-bottom: var(--gap-sm);
+}
+
+/* Linhas e campos genéricos (grid 4 colunas) */
+.page-orders__row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--gap);
+}
+
+.page-orders__field-full {
+  grid-column: 1 / -1;
+}
+
+/* Campos padrão */
+.page-orders .field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: var(--fs-13);
+}
+
+.page-orders .field label {
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.page-orders .field input,
+.page-orders .field select,
+.page-orders .field textarea {
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  padding: 6px 10px;
+  font-size: var(--fs-13);
+  background: #ffffff;
+}
+
+/* Crescimento flexível (para grids) */
+.page-orders .field-grow {
+  grid-column: span 2;
+}
+
+/* ====================== ITENS DO PEDIDO (RETROFIT) ====================== */
+
+.page-orders__section-items {
+  margin-top: 1.25rem;
+}
+
+.page-orders__section-header {
+  margin-bottom: 0.5rem;
+}
+
+.page-orders__section-header-right .tag-soft {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(66, 153, 225, 0.08);
+  color: #2b6cb0;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.page-orders__section-header-right .tag-soft span {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Card dos itens */
+.page-orders__items-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 0.9rem 1rem 0.75rem;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Tabela de itens com cabeçalho fixo e zebra */
+.page-orders__itens-table {
+  max-width: 100%;
+  border-radius: 8px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  overflow: hidden;
+  max-height: 260px;
+  overflow-y: auto;
+  background: #ffffff;
+}
+
+.page-orders__itens-table table {
+  width: 100%;
+  min-width: 900px;
+  border-collapse: collapse;
+}
+
+.page-orders__itens-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #f7fafc;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #4a5568;
+  padding: 6px 8px;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+.page-orders__itens-table tbody td {
+  padding: 5px 8px;
+  font-size: 0.83rem;
+  vertical-align: middle;
+}
+
+/* Reforço zebra (além do tableZebra.css) */
+.page-orders__itens-table tr:nth-child(even) {
+  background-color: rgba(247, 250, 252, 0.8);
+}
+
+/* Totais em barra de resumo */
+.page-orders__totals-bar {
+  margin-top: 0.35rem;
+  border-top: 1px dashed rgba(203, 213, 224, 0.9);
+  padding-top: 0.55rem;
+}
+
+.page-orders__totals {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  font-size: 0.85rem;
+}
+
+.page-orders__totals .totais-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 80px;
+}
+
+.page-orders__totals .totais-label {
+  font-size: 0.75rem;
+  color: #718096;
+  margin-bottom: 2px;
+}
+
+.page-orders__totals .totais-group strong,
+.page-orders__totals .totais-group span {
+  font-variant-numeric: tabular-nums;
+}
+
+.page-orders__totals .totais-group--total {
+  padding: 0.25rem 0.8rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #3182ce, #805ad5);
+  color: #fdfdfd;
+  box-shadow: 0 6px 14px rgba(49, 130, 206, 0.35);
+}
+
+.page-orders__totals .totais-group--total span#totalGeralPedido {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* ====================== NF-E EM LINHA ÚNICA ====================== */
+
+.page-orders__row-nfe-singleline {
+  display: flex;
+  gap: var(--gap);
+  align-items: flex-start;
+}
+
+.page-orders__row-nfe-singleline .field {
+  flex: 1 1 0;
+}
+
+.page-orders__row-nfe-singleline .field-big {
+  flex: 2.5 1 0;
+}
+
+/* ====================== Responsivo ====================== */
+
+@media (max-width: 1100px) {
+  .page-orders__row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .page-orders .field-grow {
+    grid-column: span 2;
+  }
+
+  .page-orders__row-nfe-singleline {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 700px) {
+  .page-orders__row {
+    grid-template-columns: 1fr;
+  }
+  .page-orders .field-grow,
+  .page-orders__field-full {
+    grid-column: 1 / -1;
+  }
+
+  .page-orders__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--gap-sm);
+  }
+
+  .page-orders .menu-botoes {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .page-orders__totals {
+    justify-content: flex-start;
+  }
+
+  .page-orders__row-nfe-singleline .field,
+  .page-orders__row-nfe-singleline .field-big {
+    flex: 1 1 100%;
+  }
+}
+
+/* ===== Espaçamento extra para não colar no rodapé ===== */
+.page-orders__editor {
+  padding-bottom: 120px;
+}
+
+@media (max-height: 800px) {
+  .page-orders__editor {
+    padding-bottom: 160px;
+  }
+}
+
+/* Expande o container principal e a tabela */
+.page-orders .section-card {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.page-orders table {
+  width: 100% !important;
+}
+
+/* ====================== SETA DE EXPANSÃO + DETALHES ====================== */
+
+.page-orders__table-wrapper th.col-expand,
+.page-orders__table-wrapper td.col-expand {
+  width: 26px !important;
+  max-width: 26px !important;
+  min-width: 26px !important;
+  padding-left: 4px;
+  padding-right: 4px;
+  text-align: center;
+}
+
+/* Botão "▶ / ▼" centralizado e pequenininho */
+.page-orders__table-wrapper .btn-expand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  font-size: 11px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #4a5568;
+}
+
+/* Linha de detalhes */
+.order-details-row td {
+  padding: 0;
+  background: #f9fafb;
+  border-top: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.order-details-card {
+  padding: 12px 18px 16px;
+  background: #f9fbff;
+}
+
+/* Loading / erro */
+.order-details-loading,
+.order-details-error {
+  font-size: 0.85rem;
+  color: #4a5568;
+}
+
+/* ✅ NOVO LAYOUT: 3 CONTAINERS NA PRIMEIRA LINHA + ITENS NA SEGUNDA */
+.order-details-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.7fr) minmax(0, 1.7fr);
+  gap: 1.25rem;
+  margin-bottom: 0.75rem;
+  align-items: start;
+}
+
+/* Blocos padrão */
+.order-details-block {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+/* Títulos internos */
+.order-details-title {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #4a5568;
+  margin-bottom: 0.35rem;
+}
+
+.order-details-info-line {
+  font-size: 0.82rem;
+  margin-bottom: 2px;
+}
+
+/* Checklist NF-e */
+.order-details-nfe-check-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0 0 0.4rem 0;
+  font-size: 0.8rem;
+}
+
+.order-details-nfe-check-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 2px;
+}
+
+.order-details-nfe-check-list li::before {
+  content: '•';
+  font-size: 0.95rem;
+}
+
+.order-details-nfe-check-list li.ok::before {
+  content: '✔';
+  color: #38a169;
+}
+
+.order-details-nfe-check-list li.missing::before {
+  content: '⚠';
+  color: #e53e3e;
+}
+
+.order-details-hint {
+  font-size: 0.74rem;
+  color: #718096;
+}
+
+/* 🔹 Bloco de Forma de pagamento (no detalhe) */
+.order-details-payment {
+  margin-top: 0.6rem;
+  padding-top: 0.55rem;
+  border-top: 1px dashed rgba(203, 213, 224, 0.9);
+}
+
+.order-details-payment-title {
+  margin-bottom: 0.25rem;
+}
+
+/* ✅ ITENS DO PEDIDO: agora ocupa a 2ª linha inteira */
+.order-details-items-table {
+  grid-column: 1 / -1;
+  margin-top: 0.25rem;
+}
+
+.order-details-section-title {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #4a5568;
+  margin-bottom: 4px;
+}
+
+.order-details-items-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+.order-details-items-table thead th {
+  background: #f7fafc;
+  padding: 4px 6px;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.7rem;
+}
+
+.order-details-items-table tbody td {
+  padding: 4px 6px;
+  border-bottom: 1px solid rgba(237, 242, 247, 0.9);
+}
+
+.order-details-items-table tbody tr:nth-child(even) {
+  background-color: rgba(247, 250, 252, 0.7);
+}
+
+/* Totais no detalhe */
+.order-details-totals {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.1rem;
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+}
+
+.order-details-totals .totais-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 70px;
+}
+
+.order-details-totals .totais-label {
+  font-size: 0.72rem;
+  color: #718096;
+}
+
+.order-details-totals .totais-group--total {
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #3182ce, #805ad5);
+  color: #fdfdfd;
+  box-shadow: 0 4px 10px rgba(49, 130, 206, 0.28);
+  font-weight: 600;
+}
+
+/* Informações complementares (Observações do Orçamento) - visual padrão */
+.order-details-compl {
+  margin-top: 0.6rem;
+  padding-top: 0.55rem;
+  border-top: 1px dashed rgba(203, 213, 224, 0.9);
+}
+
+.order-details-compl-text {
+  font-size: 0.82rem;
+  color: #2d3748;
+  line-height: 1.35;
+  white-space: normal;
+}
+
+.order-details-complementary {
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #334155;
+  line-height: 1.5;
+}
+
+/* Responsivo dos detalhes */
+@media (max-width: 1100px) {
+  .order-details-grid {
+    grid-template-columns: 1fr;
+  }
+  .order-details-items-table {
+    grid-column: 1;
+  }
+}
+
+/* ====================== ALERTA: NF-e PENDENTE ====================== */
+
+#tblPedidos tbody tr.order-row-main.is-nfe-pending {
+  background: rgba(255, 245, 235, 0.95) !important; /* âmbar suave */
+  position: relative;
+}
+
+#tblPedidos tbody tr.order-row-main.is-nfe-pending td:first-child {
+  border-left: 6px solid rgba(245, 158, 11, 0.85); /* amber */
+}
+
+/* hover ainda mais evidente */
+#tblPedidos tbody tr.order-row-main.is-nfe-pending:hover {
+  background: rgba(255, 237, 213, 0.95) !important;
+}
+
+/* badge específico */
+.badge--nfe-pending {
+  background: rgba(245, 158, 11, 0.12);
+  color: #92400e;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+/* botão urgente (sem mudar o design-system todo) */
+.btn-nfe-urgent {
+  border-color: rgba(245, 158, 11, 0.55) !important;
+  background: rgba(245, 158, 11, 0.12) !important;
+}
+
+/* pulso sutil (chama atenção sem irritar) */
+#tblPedidos tbody tr.order-row-main.is-nfe-pending {
+  animation: nfePulse 7s ease-in-out infinite;
+}
+
+@keyframes nfePulse {
+  0%, 70%, 100% { box-shadow: inset 0 0 0 rgba(245,158,11,0); }
+  80% { box-shadow: inset 0 0 0 9999px rgba(245,158,11,0.02); }
+  90% { box-shadow: inset 0 0 0 9999px rgba(245,158,11,0.04); }
+}
+
+button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ====================== AÇÕES (botões lado a lado) ====================== */
+
+/* Coluna 8 (ações) vira flex para alinhar botões */
+#tblPedidos tbody td:nth-child(8) {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* mantém centralizado na coluna */
+  gap: 8px;               /* espaço entre botões */
+  flex-wrap: nowrap;      /* não quebrar linha */
+  white-space: nowrap;    /* evita quebra por texto */
+}
+
+/* garante que botões não “virem bloco” */
+#tblPedidos tbody td:nth-child(8) .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* opcional: deixa menor e mais consistente nessa coluna */
+#tblPedidos tbody td:nth-child(8) .btn {
+  height: 30px;
+  padding: 0 10px;
+  font-size: 0.78rem;
+}

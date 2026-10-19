@@ -1,0 +1,161 @@
+<!-- ╔════════════════════════════════════════════════════════════════════╗ -->
+<!-- ║ usersProfile.html                                                 ║ -->
+<!-- ║ Módulo: Perfis de Usuários por Módulo                             ║ -->
+<!-- ║ Projeto: PRODNEX ERP                                              ║ -->
+<!-- ╚════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PERFIS DE USUÁRIOS | PRODNEX ERP</title>
+
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png" />
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/includes/css/modals.css" />
+  <link rel="stylesheet" href="/public/usersProfile/css/usersProfile.css" />
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <div class="header">
+      <div>
+        <h1>🛡️ Perfis de Usuários</h1>
+        <p>Defina, para cada usuário, o perfil de acesso em cada módulo do sistema.</p>
+      </div>
+    </div>
+
+    <section class="table-layout-integrated table-max-height-700">
+
+      <!-- FILTER AREA -->
+      <div class="table-layout-integrated__filter">
+        <div class="fields-inline fields-gap-3">
+          <div class="fields fields-w-30 fields-h-6">
+            <label for="upSearchInput">Pesquisar</label>
+            <input id="upSearchInput" type="search" autocomplete="off" placeholder="Nome ou e-mail do usuário..." />
+          </div>
+
+          <div class="fields fields-w-15 fields-h-6">
+            <label for="upFilterActive">Status</label>
+            <select id="upFilterActive">
+              <option value="true" selected>Ativos</option>
+              <option value="false">Inativos</option>
+              <option value="">Todos</option>
+            </select>
+          </div>
+
+          <div class="up-button-field">
+            <label aria-hidden="true">&nbsp;</label>
+            <button id="upBtnSearch" class="btn btn-toolbar btn-sm" type="button">Filtrar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-scroll table-height-flex table-row-h-20" data-table-settings="usersprofile.userstablebody">
+        <table class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Usuário</th>
+              <th>E-mail</th>
+              <th>Nível</th>
+              <th>Status</th>
+              <th>Módulos com acesso</th>
+              <th>Última alteração</th>
+              <th class="up-col-actions">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="upUsersTableBody">
+            <tr>
+              <td colspan="8" class="up-empty">Carregando usuários...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <footer class="table-footer">
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+            <span id="upTableInfo">0 Registros</span>
+          </div>
+        </div>
+      </footer>
+
+    </section>
+  </main>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       MODAL — Perfis do usuário por módulo
+  ═══════════════════════════════════════════════════════════════════ -->
+  <div id="usersProfileModal" class="modal users-profile-modal" aria-hidden="true">
+    <div class="modal__backdrop" data-modal-close></div>
+
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="upModalTitle">
+      <div class="modal__panel modal-width-12 modal-height-10">
+        <header class="modal__header">
+          <div>
+            <h2 id="upModalTitle" class="modal__title">Perfis do usuário</h2>
+            <p id="upModalSubtitle" class="modal__subtitle">Escolha o perfil de acesso em cada módulo.</p>
+          </div>
+          <button class="modal__close" type="button" aria-label="Fechar modal" title="Fechar" data-modal-close>×</button>
+        </header>
+
+        <form id="upProfilesForm" class="up-modal-form" novalidate>
+          <div class="modal__body">
+
+            <div class="fields-inline fields-gap-3 up-modal-toolbar">
+              <div class="fields fields-w-25 fields-h-6">
+                <label for="upModuleSearch">Filtrar módulos</label>
+                <input id="upModuleSearch" type="search" autocomplete="off" placeholder="Nome ou caminho do módulo..." />
+              </div>
+
+              <div class="fields fields-w-20 fields-h-6">
+                <label for="upBulkProfile">Aplicar perfil aos módulos listados</label>
+                <select id="upBulkProfile"></select>
+              </div>
+
+              <div class="up-button-field">
+                <label aria-hidden="true">&nbsp;</label>
+                <button id="upBtnApplyBulk" class="btn btn-toolbar btn-sm" type="button">Aplicar</button>
+              </div>
+
+              <p id="upProfileLegend" class="up-legend"></p>
+            </div>
+
+            <div class="table-scroll up-modules-scroll">
+              <table class="table table-zebra table-zebra-hover table-sticky-head up-modules-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Módulo</th>
+                    <th>Caminho</th>
+                    <th>Perfil</th>
+                    <th class="up-col-flag" title="Visualizar">Ver</th>
+                    <th class="up-col-flag" title="Incluir">Incluir</th>
+                    <th class="up-col-flag" title="Editar">Editar</th>
+                    <th class="up-col-flag" title="Excluir">Excluir</th>
+                    <th class="up-col-flag" title="Exportar">Exportar</th>
+                  </tr>
+                </thead>
+                <tbody id="upModulesTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <footer class="modal__footer">
+            <span id="upModalInfo" class="up-modal-info"></span>
+            <button class="btn btn-cancel btn-sm" type="button" data-modal-close>Cancelar</button>
+            <button id="upBtnSaveProfiles" class="btn btn-save btn-sm" type="submit">Salvar perfis</button>
+          </footer>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="/public/usersProfile/js/usersProfile.init.js"></script>
+</body>
+
+</html>

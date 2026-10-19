@@ -1,0 +1,303 @@
+/* ╔══════════════════════════════════════════════════════════════════════════╗
+   ║ locations.css — Warehouse Locations | PRODNEX ERP                       ║
+   ║ Path: backend/public/locations/locations.css                             ║
+   ╚══════════════════════════════════════════════════════════════════════════╝ */
+
+:root{
+  --loc-gap: 12px;
+}
+
+.loc-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap: var(--loc-gap);
+  padding: 12px 12px 6px;
+}
+
+.loc-title h1{
+  margin:0;
+  font-size: 20px;
+  letter-spacing: .2px;
+}
+.loc-title p{
+  margin: 4px 0 0;
+  opacity:.85;
+  font-size: 13px;
+}
+
+.loc-actions{
+  display:flex;
+  gap: 8px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+.loc-tabs{
+  display:flex;
+  gap: 8px;
+  padding: 0 12px 10px;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+}
+
+.loc-tab{
+  border: 1px solid rgba(0,0,0,.12);
+  background: rgba(255,255,255,.7);
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor:pointer;
+  font-weight:600;
+  font-size: 13px;
+}
+.loc-tab.is-active{
+  background: rgba(255,255,255,.95);
+  border-color: rgba(0,0,0,.18);
+  box-shadow: 0 6px 18px rgba(0,0,0,.06);
+}
+
+.loc-tabpanel{
+  display:none;
+  padding: 12px;
+  gap: var(--loc-gap);
+}
+.loc-tabpanel.is-active{
+  display:block;
+}
+
+.loc-grid-2{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--loc-gap);
+}
+
+.loc-card{
+  background: rgba(255,255,255,.9);
+  border: 1px solid rgba(0,0,0,.10);
+  border-radius: 14px;
+  padding: 12px;
+  box-shadow: 0 10px 22px rgba(0,0,0,.05);
+  min-height: 120px;
+}
+
+.loc-card-full{
+  margin-top: var(--loc-gap);
+}
+
+.loc-card-header{
+  display:flex;
+  flex-direction:column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+.loc-card-header h2{
+  margin:0;
+  font-size: 15px;
+}
+.loc-muted{
+  opacity:.72;
+  font-size: 12px;
+}
+
+.loc-form-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--loc-gap);
+}
+
+.field label{
+  display:block;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  opacity:.9;
+}
+
+.field input,
+.field select{
+  width:100%;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,.12);
+  padding: 0 10px;
+  outline: none;
+  background: rgba(255,255,255,.95);
+}
+
+.field input:focus,
+.field select:focus{
+  border-color: rgba(0,0,0,.22);
+  box-shadow: 0 0 0 3px rgba(0,0,0,.05);
+}
+
+.field-small{
+  max-width: 180px;
+}
+
+.loc-inline-actions{
+  margin-top: 10px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.loc-check{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+  font-size: 13px;
+  opacity:.9;
+  user-select:none;
+}
+
+.loc-switch{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+  height: 36px;
+}
+
+.loc-crud-top{
+  display:grid;
+  grid-template-columns: 160px 1fr 1fr 150px;
+  gap: var(--loc-gap);
+  align-items:end;
+}
+
+.loc-crud-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap: 8px;
+}
+
+.loc-note{
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px dashed rgba(0,0,0,.14);
+  background: rgba(255,255,255,.55);
+  font-size: 12px;
+  opacity:.85;
+}
+
+.loc-lists-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--loc-gap);
+}
+
+.loc-list{
+  border: 1px solid rgba(0,0,0,.10);
+  border-radius: 14px;
+  overflow:hidden;
+  background: rgba(255,255,255,.85);
+}
+
+.loc-list-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 10px 10px 8px;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+}
+.loc-list-head h3{
+  margin:0;
+  font-size: 14px;
+}
+.loc-mini-actions{
+  display:flex;
+  gap: 6px;
+}
+
+.loc-table-wrap{
+  max-height: 320px;
+  overflow:auto;
+}
+
+.tableZebra{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.tableZebra thead th{
+  position: sticky;
+  top: 0;
+  background: rgba(255,255,255,.96);
+  z-index: 2;
+}
+
+.tableZebra th,
+.tableZebra td{
+  padding: 8px 8px;
+  border-bottom: 1px solid rgba(0,0,0,.06);
+  font-size: 12px;
+}
+
+.loc-actions-row{
+  display:flex;
+  gap: 6px;
+  justify-content:flex-end;
+  align-items:center;
+}
+
+.loc-pill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.10);
+  font-size: 11px;
+  opacity:.9;
+}
+
+.loc-pill.is-on{
+  background: rgba(0, 200, 120, .10);
+}
+.loc-pill.is-off{
+  background: rgba(220, 60, 60, .10);
+}
+
+.loc-product-form .loc-input-with-hint{
+  display:flex;
+  gap: 8px;
+}
+
+.loc-product-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--loc-gap);
+  margin-top: 8px;
+}
+
+.loc-product-actions{
+  margin-top: 10px;
+  display:flex;
+  gap: 8px;
+  justify-content:flex-end;
+}
+
+.loc-search-row{
+  display:grid;
+  grid-template-columns: 1fr 280px;
+  gap: var(--loc-gap);
+  align-items:end;
+  margin-bottom: 10px;
+}
+.loc-search-actions{
+  display:flex;
+  gap: 8px;
+  justify-content:flex-end;
+}
+
+.loc-footer{
+  padding: 10px 12px 14px;
+  opacity: .75;
+  font-size: 12px;
+}
+
+@media (max-width: 1100px){
+  .loc-grid-2{ grid-template-columns: 1fr; }
+  .loc-lists-grid{ grid-template-columns: 1fr; }
+  .loc-crud-top{ grid-template-columns: 1fr 1fr; }
+  .loc-search-row{ grid-template-columns: 1fr; }
+}

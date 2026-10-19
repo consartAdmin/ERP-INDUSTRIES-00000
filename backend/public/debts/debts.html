@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>CONTROLE DE DÍVIDAS | PRODNEX ERP</title>
+
+  <link rel="icon" type="image/png" href="/public/imagens/brasaoConsartInfinity.png" />
+
+
+  <link rel="stylesheet" href="/public/modalsSearch/suppliersModalSearch.css" />
+  <link rel="stylesheet" href="/public/modalsSearch/chartAccountsModalSearch.css" />
+
+
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter">
+
+        <!-- =================================================== -->
+        <!-- HEADER: TITLE + SUMMARY + BUTTONS                    -->
+        <!-- =================================================== -->
+
+        <div class="fields-inline fields-gap-3">
+
+          <div>
+            <h1 class="page-header__title">
+              Controle de Dívidas
+            </h1>
+
+            <p class="page-header__subtitle">
+              Gerencie contas a pagar, parcelamentos, vencimentos e pagamentos.
+            </p>
+          </div>
+
+          <div class="summary summary--center summary-gap-8 summary-width-auto summary-flex-1">
+
+            <div class="summary-pill summary-pill--info summary-width-7 summary-height-5">
+              <span>Total em Aberto:&nbsp;</span>
+              <strong id="sumTotalOpen">R$ 0,00</strong>
+            </div>
+
+            <div class="summary-pill summary-pill--danger summary-width-7 summary-height-5">
+              <span>Vencidas:&nbsp;</span>
+              <strong id="sumTotalOverdue">R$ 0,00</strong>
+            </div>
+
+            <div class="summary-pill summary-pill--warning summary-width-7 summary-height-5">
+              <span>Vencem Hoje:&nbsp;</span>
+              <strong id="sumDueToday">R$ 0,00</strong>
+            </div>
+
+            <div class="summary-pill summary-pill--success summary-width-7 summary-height-5">
+              <span>Pagas:&nbsp;</span>
+              <strong id="sumTotalPaid">R$ 0,00</strong>
+            </div>
+
+          </div>
+
+          <div class="btn-inline">
+            <button id="btnReload" class="btn btn-new btn-sm" type="button">
+              Recarregar
+            </button>
+
+            <button id="btnNewDebt" class="btn btn-new btn-sm" type="button">
+              Nova Dívida
+            </button>
+          </div>
+
+        </div>
+
+        <!-- =================================================== -->
+        <!-- FILTERS                                             -->
+        <!-- =================================================== -->
+
+        <form id="filtersForm">
+          <div class="fields-inline fields-gap-3">
+
+            <div class="fields fields-h-6 fields-w-20 fields-font-3">
+              <label for="q">Pesquisa</label>
+
+              <input id="q" name="q" type="text" placeholder="Código, descrição, credor, documento..." />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-12 fields-font-3">
+              <label for="status">Status</label>
+
+              <select id="status" name="status">
+                <option value="">Todos</option>
+                <option value="EM_ABERTO">Em Aberto</option>
+                <option value="PARCIAL">Parcial</option>
+                <option value="PAGO">Pago</option>
+                <option value="VENCIDO">Vencido</option>
+              </select>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-12 fields-font-3">
+              <label for="debt_type">Tipo</label>
+
+              <select id="debt_type" name="debt_type">
+                <option value="">Todos</option>
+                <option value="FORNECEDOR">Fornecedor</option>
+                <option value="IMPOSTO">Imposto</option>
+                <option value="ALUGUEL">Aluguel</option>
+                <option value="EMPRESTIMO">Empréstimo</option>
+                <option value="CARTAO">Cartão</option>
+                <option value="FOLHA">Folha</option>
+                <option value="SERVICOS">Serviços</option>
+                <option value="OUTROS">Outros</option>
+              </select>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-20 fields-font-3">
+              <label for="creditor_name">Credor</label>
+
+              <input id="creditor_name" name="creditor_name" type="text" placeholder="Nome do credor" />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-10 fields-font-3">
+              <label for="due_date_from">Venc. Inicial</label>
+              <input id="due_date_from" name="due_date_from" type="date" />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-12 fields-font-3">
+              <label for="due_date_to">Venc. Final</label>
+              <input id="due_date_to" name="due_date_to" type="date" />
+            </div>
+
+            <div class="checkbox-group">
+              <label class="checkbox">
+                <input type="checkbox" id="only_overdue" name="only_overdue" />
+                <span>Somente vencidas</span>
+              </label>
+
+              <label class="checkbox">
+                <input type="checkbox" id="only_open" name="only_open" checked />
+                <span>Somente em aberto</span>
+              </label>
+            </div>
+
+            <div class="btn-inline btn-gap-3">
+              <button class="btn btn-new btn-sm" type="button" id="btnClearFilters">
+                Limpar
+              </button>
+
+              <button class="btn btn-new btn-sm" type="submit">
+                Pesquisar
+              </button>
+            </div>
+          </div>
+
+        </form>
+
+        <div class="table-scroll table-height-500 table-row-h-20" data-table-settings="debts.tablebody">
+          <table class="table table-zebra table-zebra-hover table-sticky-head">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Descrição</th>
+                <th>Credor</th>
+                <th>Tipo</th>
+                <th>Vencimento</th>
+                <th>Original</th>
+                <th>Pago</th>
+                <th>Aberto</th>
+                <th>Status</th>
+                <th class="th-actions">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- =================================================== -->
+      <!-- TABLE FOOTER                                        -->
+      <!-- =================================================== -->
+
+      <footer class="table-footer">
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill-success summary-width-5 summary-left-space-3">
+            <span id="apTableInfo">
+              0 Registros
+            </span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button id="btnPrevious" type="button" class="btn btn-toolbar btn-sm">
+            Anterior
+          </button>
+
+          <span id="pageInfo">
+            Página 1 de 1
+          </span>
+
+          <button id="btnNext" type="button" class="btn btn-toolbar btn-sm">
+            Próxima
+          </button>
+        </div>
+        <div class="table-footer__page-size">
+          <label for="pageSize">
+            Mostrar
+          </label>
+          <div class="fields fields-h-6 fields-w-3 fields-font-3">
+            <select id="pageSize" class="table-footer__page-size-select">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50" selected>50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <script type="module" src="./js/debts.init.js"></script>
+
+</body>
+
+</html>

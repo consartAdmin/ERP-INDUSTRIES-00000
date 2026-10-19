@@ -1,0 +1,349 @@
+/* ╔══════════════════════════════════════════════════════╗
+ * ║ supplierReturns.css — Devolução ao Fornecedor        ║
+ * ╚══════════════════════════════════════════════════════╝ */
+
+.supplier-return-page {
+  padding: 14px;
+  box-sizing: border-box;
+}
+
+.supplier-return-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 14px 38px rgba(15, 23, 42, 0.08);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.supplier-return-header {
+  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  border-bottom: 1px solid #cbd5e1;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.supplier-return-header h1 {
+  margin: 0;
+  font-size: 18px;
+  color: #0f172a;
+}
+
+.supplier-return-header p {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* Cabeçalho global (.header) com o botão "Verificar Tabelas" no canto superior direito */
+.supplier-return-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.supplier-return-page-header > #btnEnsure {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.supplier-return-toolbar,
+.import-box,
+.draft-box,
+.history-box {
+  padding: 10px 14px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.supplier-return-toolbar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.supplier-input,
+.supplier-select,
+.supplier-textarea {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;
+  color: #0f172a;
+  box-sizing: border-box;
+  font-size: 12px;
+}
+
+.supplier-input,
+.supplier-select {
+  height: 30px;
+  padding: 0 9px;
+}
+
+.supplier-textarea {
+  padding: 8px 9px;
+  resize: vertical;
+}
+
+.supplier-return-toolbar .supplier-input {
+  max-width: 380px;
+}
+
+.supplier-return-toolbar .supplier-select {
+  max-width: 150px;
+}
+
+/* Importação do XML fica à direita, na mesma linha da busca */
+.supplier-return-toolbar .import-box {
+  margin-left: auto;
+  padding: 0;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.supplier-return-toolbar .import-box__title {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.supplier-return-toolbar .import-box input[type="file"] {
+  max-width: 220px;
+}
+
+.supplier-message:empty {
+  display: none;
+}
+
+.table-layout-integrated__filter > .supplier-message {
+  padding: 0 14px 8px;
+  margin-top: 0;
+  text-align: right;
+}
+
+@media (max-width: 1200px) {
+  .supplier-return-toolbar {
+    flex-wrap: wrap;
+  }
+}
+
+.import-box__title,
+.history-title {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 8px;
+  color: #0f172a;
+}
+
+.import-box__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.import-box input[type="file"] {
+  font-size: 12px;
+}
+
+.supplier-message {
+  margin-top: 7px;
+  font-size: 12px;
+  color: #475569;
+}
+
+.supplier-message.is-error {
+  color: #b91c1c;
+}
+
+.supplier-message.is-success {
+  color: #166534;
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+.draft-box {
+  background: #ffffff;
+}
+
+.draft-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 100px 150px 2fr 100px 80px;
+  gap: 8px;
+}
+
+.draft-grid label,
+.reason-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11px;
+  color: #475569;
+  font-weight: 700;
+}
+
+.reason-label {
+  margin-top: 8px;
+}
+
+.items-header {
+  margin-top: 10px;
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+}
+
+#itemsSummary {
+  margin-left: 8px;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 2px 7px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.badge-ok {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.badge-warn {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+.badge-status {
+  color: #334155;
+  background: #e2e8f0;
+}
+
+.history-box {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.supplier-footer {
+  padding-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+  color: #475569;
+}
+
+@media (max-width: 1100px) {
+  .draft-grid {
+    grid-template-columns: 1fr 120px 160px;
+  }
+}
+/* Linha de ações: todos os botões com a mesma altura e centralizados */
+#returnsBody .row-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+#returnsBody .row-actions > .btn {
+  height: 28px;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+#returnsBody .row-actions > .btn-emit {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px;
+}
+
+/* Botões de ação com ícone (tabela de devoluções) */
+#returnsBody .btn-icon,
+#returnsBody .btn-icon:hover,
+#returnsBody .btn-icon:focus,
+#returnsBody .btn-icon:active,
+#returnsBody .btn-icon:disabled {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  padding: 0;
+  font-size: 20px;
+  line-height: 1;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  min-width: 0;
+  min-height: 0;
+  vertical-align: middle;
+}
+
+/* Emojis têm margem interna no glifo: fonte maior para igualar visualmente às imagens */
+#returnsBody .btn-icon .action-icon.action-icon--emoji {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  font-size: 23px;
+  line-height: 1;
+  text-align: center;
+}
+
+#returnsBody .btn-icon {
+  cursor: pointer;
+  transition: transform 0.12s ease, opacity 0.12s ease;
+}
+
+#returnsBody .btn-icon:not(:disabled):hover {
+  transform: scale(1.15);
+}
+
+#returnsBody .btn-icon:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+#returnsBody .btn-icon .action-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  display: block;
+}
+
+#returnsBody .btn-icon:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+  filter: grayscale(1);
+}

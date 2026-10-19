@@ -1,0 +1,220 @@
+<!-- ╔════════════════════════════════════════════════════════════════════╗
+     ║ groupsAndSubgroups.html — Grupos & Subgrupos de Produtos          ║
+     ║ PRODNEX ERP | Frontend (ESM)                                      ║
+     ╚════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>GRUPOS & SUBGRUPOS | PRODNEX ERP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <!-- 🎨 Design System CONSART -->
+  <link rel="stylesheet" href="/public/includes/css/style.css"/>
+
+  <!-- ✅ Layout LEFT/RIGHT (mesmo padrão do "grades") -->
+  <link rel="stylesheet" href="/public/includes/css/containerLeftAndRightConsart.css"/>
+
+  <!-- ✅ CSS da página -->
+  <link rel="stylesheet" href="/public/groupsAndSubgroups/groupsAndSubgroups.css?v=final-01"/>
+</head>
+
+<body class="consart-theme c-page page" style="--consart-input-h: 30px;">
+
+  <main class="consart-container consart-container--fixed consart-container--full consart-container--h-800 consart-lr"
+        style="
+          --consart-lr-left-minw: 520px;
+          --consart-lr-right-minw: 520px;
+          --consart-lr-left-fr: 1.25fr;
+          --consart-lr-right-fr: 1fr;
+        ">
+
+    <!-- ╭──────────────────────────────────────────────╮
+         │ LEFT: GRUPOS                                 │
+         ╰──────────────────────────────────────────────╯ -->
+    <section class="consart-lr-panel gs-panel">
+
+      <div class="consart-lr-header gs-panel-head">
+        <div class="gs-panel-head__title">
+          <h2 class="gs-h2">📦 Grupos de Produtos</h2>
+          <p class="gs-muted">
+            Nível superior de classificação. Ex.: LIMPEZA, DESCARTÁVEIS, HIGIENE.
+          </p>
+        </div>
+
+        <div class="gs-panel-head__actions">
+          <div class="gs-search">
+            <input id="groupsSearch" class="input input-sm" placeholder="Buscar grupo por nome..." />
+            <button type="button" id="btnSearchGroups" class="btn btn-toolbar btn-sm" title="Buscar">🔍</button>
+          </div>
+
+          <label class="toggle gs-toggle">
+            <input type="checkbox" id="groupsShowInactive" />
+            <span>Incluir inativos</span>
+          </label>
+
+          <button type="button" id="btnNewGroup" class="btn btn-toolbar btn-sm">
+            + Novo Grupo
+          </button>
+
+          <button type="button" id="btnReloadAll" class="btn btn-toolbar btn-sm">
+            ⟳ Atualizar tudo
+          </button>
+        </div>
+      </div>
+
+      <!-- Form de Grupo (compacto, estilo “grades”) -->
+      <form id="groupForm" class="gs-form" autocomplete="off">
+        <input type="hidden" id="groupId"/>
+
+        <div class="gs-field gs-field--grow">
+          <label for="groupName" class="gs-label">Nome do grupo</label>
+          <input
+            type="text"
+            id="groupName"
+            class="input"
+            maxlength="100"
+            placeholder="Ex.: Limpeza Profissional"
+            required
+          />
+        </div>
+
+        <div class="gs-field gs-field--auto">
+          <label class="check gs-check">
+            <input type="checkbox" id="groupIsActive" checked />
+            <span>Ativo</span>
+          </label>
+        </div>
+
+        <div class="gs-actions">
+          <button type="submit" class="btn btn-toolbar btn-sm" id="btnSaveGroup">💾 Salvar</button>
+          <button type="button" class="btn btn-toolbar btn-sm" id="btnCancelGroupEdit">✖ Cancelar</button>
+        </div>
+      </form>
+
+      <!-- Tabela de Grupos -->
+      <div class="consart-lr-scroll gs-scroll">
+        <table class="table table-zebra table-zebra-hover gs-table" aria-label="Grupos de produtos">
+          <thead>
+            <tr>
+              <th class="gs-col-id">ID</th>
+              <th>Nome</th>
+              <th class="gs-col-status">Status</th>
+              <th class="gs-col-actions">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="groupsTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="consart-lr-footer gs-footer">
+        <span id="groupsSummary" class="gs-muted">Carregando grupos...</span>
+      </div>
+    </section>
+
+    <!-- ╭──────────────────────────────────────────────╮
+         │ RIGHT: SUBGRUPOS                             │
+         ╰──────────────────────────────────────────────╯ -->
+    <section class="consart-lr-panel gs-panel">
+
+      <div class="consart-lr-header gs-panel-head">
+        <div class="gs-panel-head__title">
+          <h2 class="gs-h2">🧩 Subgrupos de Produtos</h2>
+          <p class="gs-muted">
+            Detalhamento dentro de cada grupo. Ex.: DESENGRAXANTES, DESINFETANTES, PAPEL.
+          </p>
+        </div>
+
+        <div class="gs-panel-head__actions">
+          <div class="gs-search">
+            <input id="subgroupsSearch" class="input input-sm" placeholder="Buscar subgrupo por nome..." />
+            <button type="button" id="btnSearchSubgroups" class="btn btn-toolbar btn-sm" title="Buscar">🔍</button>
+          </div>
+
+          <label class="toggle gs-toggle">
+            <input type="checkbox" id="subgroupsShowInactive" />
+            <span>Incluir inativos</span>
+          </label>
+
+          <button type="button" id="btnNewSubgroup" class="btn btn-toolbar btn-sm">
+            + Novo Subgrupo
+          </button>
+        </div>
+      </div>
+
+      <form id="subgroupForm" class="gs-form" autocomplete="off">
+        <input type="hidden" id="subgroupId"/>
+
+        <div class="gs-field gs-field--grow">
+          <label for="subgroupName" class="gs-label">Nome do subgrupo</label>
+          <input
+            type="text"
+            id="subgroupName"
+            class="input"
+            maxlength="100"
+            placeholder="Ex.: Desinfetantes Hospitalares"
+            required
+          />
+        </div>
+
+        <div class="gs-field gs-field--grow">
+          <label for="subgroupGroupSelect" class="gs-label">Grupo vinculado</label>
+          <select id="subgroupGroupSelect" class="select"></select>
+        </div>
+
+        <div class="gs-field gs-field--auto">
+          <label class="check gs-check">
+            <input type="checkbox" id="subgroupIsActive" checked />
+            <span>Ativo</span>
+          </label>
+        </div>
+
+        <div class="gs-actions">
+          <button type="submit" class="btn btn-toolbar btn-sm" id="btnSaveSubgroup">💾 Salvar</button>
+          <button type="button" class="btn btn-toolbar btn-sm" id="btnCancelSubgroupEdit">✖ Cancelar</button>
+        </div>
+      </form>
+
+      <div class="gs-inline">
+        <span id="selectedGroupLabel" class="gs-inline__text">
+          Nenhum grupo selecionado. Clique em um grupo à esquerda para filtrar.
+        </span>
+
+        <button type="button" id="btnClearSelectedGroup" class="btn btn-toolbar btn-sm">
+          Limpar seleção
+        </button>
+      </div>
+
+      <div class="consart-lr-scroll gs-scroll">
+        <table class="table table-zebra table-zebra-hover gs-table" aria-label="Subgrupos de produtos">
+          <thead>
+            <tr>
+              <th class="gs-col-id">ID</th>
+              <th>Nome</th>
+              <th>Grupo</th>
+              <th class="gs-col-status">Status</th>
+              <th class="gs-col-actions">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="subgroupsTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="consart-lr-footer gs-footer">
+        <span id="subgroupsSummary" class="gs-muted">Carregando subgrupos...</span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Scripts -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="/public/groupsAndSubgroups/groupsAndSubgroups.js?v=esm-02"></script>
+</body>
+</html>

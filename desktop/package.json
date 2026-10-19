@@ -1,0 +1,40 @@
+{
+    "name": "prodnex-erp-desktop",
+    "version": "1.0.0",
+    "description": "PRODNEX ERP Desktop",
+    "main": "main.js",
+    "author": "CONSART",
+    "license": "MIT",
+    "scripts": {
+        "start": "node ./node_modules/electron/cli.js .",
+        "dev": "node ./node_modules/electron/cli.js .",
+        "dist": "node ./node_modules/electron-builder/out/cli/cli.js"
+    },
+    "devDependencies": {
+        "electron": "^37.0.0",
+        "electron-builder": "^26.0.12"
+    },
+    "build": {
+        "appId": "br.com.prodnex.erp",
+        "productName": "PRODNEX ERP",
+        "directories": {
+            "output": "dist"
+        },
+        "files": [
+            "main.js",
+            "preload.js",
+            "icon.ico",
+            "package.json"
+        ],
+        "win": {
+            "target": "nsis"
+        },
+        "nsis": {
+            "oneClick": false,
+            "allowToChangeInstallationDirectory": true,
+            "createDesktopShortcut": true,
+            "createStartMenuShortcut": true,
+            "shortcutName": "CONSART ERP"
+        }
+    }
+}

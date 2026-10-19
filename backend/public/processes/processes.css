@@ -1,0 +1,327 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ processes.css — Gestão de Processos (PRODNEX ERP)                   ║
+   ║ Página: public/processes/processes.html                              ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ 1. AJUSTES GERAIS DA PÁGINA                                         ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.page-processes .c-container--2xl {
+  max-width: 1240px;
+}
+
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ 2. BARRA DE FILTROS / AÇÕES                                         ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.page-processes .linha-filtros {
+  margin: 8px 0 12px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #f9fafb;
+  border: 1px solid #e2e8f0;
+}
+
+.page-processes .linha-filtros label {
+  font-size: 0.86rem;
+  color: #374151;
+}
+
+.page-processes .linha-filtros input[type="text"],
+.page-processes .linha-filtros select {
+  min-height: 32px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-size: 0.9rem;
+}
+
+.page-processes .linha-filtros input[type="text"]:focus,
+.page-processes .linha-filtros select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.15);
+}
+
+.page-processes .menu-botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.page-processes .menu-botoes .btn {
+  font-size: 0.9rem;
+}
+
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ 3. TABELA DE PROCESSOS                                              ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.page-processes .tabela-wrapper {
+  margin-top: 8px;
+  overflow-x: auto;
+}
+
+.page-processes #tblProcesses {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.page-processes #tblProcesses th,
+.page-processes #tblProcesses td {
+  white-space: nowrap;
+}
+
+.page-processes #tblProcesses th:nth-child(4),
+.page-processes #tblProcesses td:nth-child(4) {
+  /* coluna Descrição pode quebrar um pouco pra não estourar */
+  white-space: normal;
+  max-width: 420px;
+}
+
+.page-processes #tblProcesses th {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: #f3f4f6;
+}
+
+.page-processes #tblProcesses td {
+  font-size: 0.88rem;
+}
+
+.page-processes #tblProcesses tr:nth-child(even) td {
+  background-color: #f9fafb;
+}
+
+.page-processes #tblProcesses tr:hover td {
+  background-color: #eef2ff;
+}
+
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ 4. PAGINAÇÃO                                                        ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.page-processes #paginacao {
+  margin-top: 8px;
+}
+
+.page-processes #paginacao .btn-sm {
+  font-size: 0.8rem;
+  padding: 3px 8px;
+}
+
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ 5. EDITOR (DRAWER/CARD DE EDIÇÃO)                                   ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.page-processes #editorProcesso.section-card {
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+  background: #ffffff;
+}
+
+.page-processes #editorProcesso h2 {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.page-processes #editorProcesso .form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.page-processes #editorProcesso .form-row label {
+  font-size: 0.85rem;
+  color: #374151;
+}
+
+.page-processes #editorProcesso input[type="text"],
+.page-processes #editorProcesso textarea,
+.page-processes #editorProcesso select {
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  padding: 6px 8px;
+  font-size: 0.9rem;
+}
+
+.page-processes #editorProcesso textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+
+.page-processes #editorProcesso input:focus,
+.page-processes #editorProcesso textarea:focus,
+.page-processes #editorProcesso select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.15);
+}
+
+.page-processes #editorProcesso .btn {
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 0.88rem;
+}
+
+.page-processes #editorProcesso .btn-danger {
+  background: #b91c1c;
+  border-color: #991b1b;
+  color: #ffffff;
+}
+
+.page-processes #editorProcesso .btn-danger:hover {
+  background: #991b1b;
+}
+
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ 6. BLOCO DE PERMISSÕES (PLACEHOLDER)                                ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.page-processes #editorProcesso .section-card {
+  border-radius: 10px;
+  border: 1px dashed #d1d5db;
+  background: #f9fafb;
+}
+
+.page-processes #editorProcesso .section-card h3 {
+  font-size: 0.96rem;
+  margin-bottom: 4px;
+}
+
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ 7. RODAPÉ                                                           ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.page-processes .rodape {
+  margin-top: 16px;
+}
+
+.page-processes .rodape .btn {
+  font-size: 0.9rem;
+}
+
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ 8. RESPONSIVIDADE                                                   ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+@media (max-width: 768px) {
+  .page-processes .linha-filtros {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .page-processes .menu-botoes {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .page-processes #editorProcesso.section-card {
+    margin: 12px 8px 0;
+  }
+}
+
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ 9. MODAL DE DESCRIÇÃO DO PROCESSO                                   ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+.proc-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.proc-modal.is-open {
+  display: flex;
+}
+
+.proc-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.35);
+}
+
+.proc-modal__dialog {
+  position: relative;
+  max-width: 640px;
+  width: calc(100% - 32px);
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.35);
+  overflow: hidden;
+  z-index: 1;
+}
+
+.proc-modal__header,
+.proc-modal__footer {
+  padding: 10px 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.proc-modal__footer {
+  border-top: 1px solid #e5e7eb;
+  border-bottom: none;
+  text-align: right;
+}
+
+.proc-modal__body {
+  padding: 12px 16px 14px;
+  max-height: 60vh;
+  overflow-y: auto;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #111827;
+}
+
+.proc-modal__header h2 {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.proc-modal__close {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0 4px;
+  color: #6b7280;
+}
+
+.proc-modal__close:hover {
+  color: #111827;
+}
+
+/* link de descrição na tabela */
+.page-processes .desc-link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.88rem;
+  color: #2563eb;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
+
+.page-processes .desc-link-btn:hover {
+  color: #1d4ed8;
+}

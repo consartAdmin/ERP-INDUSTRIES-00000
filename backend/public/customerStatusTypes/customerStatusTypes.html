@@ -1,0 +1,157 @@
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ customerStatusTypes.html — Customer Status Module | PRODNEX ERP ║
+     ║ Gerencia tipos de status + status atual do cliente              ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>STATUS CLIENTES | PRODNEX ERP</title>
+
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="./customerStatusTypes.css" />
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <div class="header">
+      <div>
+        <h2>Cadastro de Status de Clientes</h2>
+        <p>Gerenciamento e Configuração dos Tipos de Status de Clientes</p>
+      </div>
+
+      <div class="btn-inline btn-position-right">
+        <button id="btnReload" class="btn btn-new btn-sm" type="button">Recarregar</button>
+      </div>
+    </div>
+
+    <section class="table-layout-integrated table-max-height-400">
+      <div class="table-layout-integrated__filter">
+
+        <!-- =========================================
+           TIPOS DE STATUS
+      ========================================== -->
+        <div class="status-types-toolbar">
+          <h2>Tipos de Status</h2>
+          <button id="btnOpenTypeModal" class="btn btn-new btn-sm" type="button">
+            Novo Tipo
+          </button>
+        </div>
+      </div>
+
+      <div class="table-scroll table-height-flex table-row-h-20" data-table-settings="customerstatustypes.typestablebody">
+        <table class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Código</th>
+              <th>Cor</th>
+              <th>Ativo</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="typesTableBody"></tbody>
+        </table>
+      </div>
+
+      <footer class="table-footer">
+
+        <!--
+        Registers on the left side to accounts
+       -->
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+            <span id="apTableInfo">0 Registros </span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button type="button" id="btnPreviousPage" class="btn btn-clean btn-sm">
+            Anterior
+          </button>
+
+          <span id="apPageInfo">Página 1 de 1</span>
+
+          <button type="button" id="btnNextPage" class="btn btn-new btn-sm">
+            Próxima
+          </button>
+        </div>
+
+        <div class="table-footer__page-size">
+          <label for="apRowsPerPage">Mostrar</label>
+
+          <select id="apRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+            <option value="10">10 linhas</option>
+            <option value="20">20 linhas</option>
+            <option value="30">30 linhas</option>
+            <option value="50" selected>50 linhas</option>
+            <option value="100">100 linhas</option>
+          </select>
+        </div>
+
+      </footer>
+    </section>
+
+    <div id="typeModal" class="type-modal hidden" role="dialog" aria-modal="true" aria-labelledby="typeModalTitle">
+      <div class="type-modal__backdrop" data-close-type-modal></div>
+
+      <div class="type-modal__panel">
+        <div class="type-modal__header">
+          <h2 id="typeModalTitle">Novo Tipo de Status</h2>
+          <button id="btnCloseTypeModal" class="type-modal__close" type="button" aria-label="Fechar modal"
+            title="Fechar">&times;</button>
+        </div>
+
+        <div class="type-modal__body">
+          <div class="type-modal__grid">
+            <div class="fields fields-h-5 fields-font-3">
+              <label for="typeName">Nome (PT)</label>
+              <input type="text" id="typeName" placeholder="Ex: NOVO CLIENTE">
+            </div>
+
+            <div class="fields fields-h-5 fields-font-3">
+              <label for="typeCode">Código Interno</label>
+              <input type="text" id="typeCode" placeholder="Ex: NOVO_CLIENTE">
+            </div>
+
+            <div class="fields fields-h-5 fields-font-3">
+              <label for="typeOrder">Ordem</label>
+              <input type="number" id="typeOrder" placeholder="0" value="0">
+            </div>
+
+            <div class="fields fields-h-5 fields-font-3 type-modal__color-field">
+              <label for="typeColor">Cor (HEX)</label>
+              <div class="type-modal__color-controls">
+                <input type="text" id="typeColor" placeholder="#FF0000" maxlength="7" autocomplete="off"
+                  spellcheck="false">
+                <input type="color" id="typeColorPicker" value="#FF0000" aria-label="Selecionar cor"
+                  title="Selecionar cor">
+                <span id="typeColorPreview" class="color-preview-swatch" title="Pré-visualização da cor"
+                  aria-hidden="true"></span>
+              </div>
+              <small>Digite o HEX manualmente ou escolha a cor no seletor.</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="type-modal__footer">
+          <button id="btnCancelTypeModal" class="btn btn-clean btn-sm" type="button">Cancelar</button>
+          <button id="btnCreateType" class="btn btn-new btn-sm" type="button">Criar Tipo</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <script type="module" src="./customerStatusTypes.init.js"></script>
+</body>
+
+</html>

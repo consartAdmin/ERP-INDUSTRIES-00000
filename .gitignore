@@ -1,0 +1,182 @@
+# ============================================================
+# CONSART ERP - Git Ignore
+# ============================================================
+
+# ============================================================
+# NODE / DEPENDENCIES
+# ============================================================
+
+node_modules/
+**/node_modules/
+
+# ============================================================
+# ENVIRONMENT / CREDENTIALS
+# ============================================================
+
+.env
+.env.*
+**/.env
+**/.env.*
+
+# ============================================================
+# CERTIFICATES / PRIVATE KEYS
+# ============================================================
+
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+
+# ============================================================
+# GOOGLE / CLOUD CREDENTIALS
+# ============================================================
+
+*credentials*.json
+*credential*.json
+*service-account*.json
+*service_account*.json
+
+# ============================================================
+# LOGS
+# ============================================================
+
+*.log
+logs/
+**/logs/
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ============================================================
+# BUILD / COVERAGE
+# ============================================================
+
+dist/
+**/dist/
+
+build/
+**/build/
+
+coverage/
+**/coverage/
+
+# ============================================================
+# TEMPORARY FILES
+# ============================================================
+
+tmp/
+**/tmp/
+
+temp/
+**/temp/
+
+*.tmp
+*.temp
+*.cache
+
+# ============================================================
+# WINDOWS
+# ============================================================
+
+Thumbs.db
+Desktop.ini
+
+# ============================================================
+# MACOS
+# ============================================================
+
+.DS_Store
+
+# ============================================================
+# VS CODE
+# ============================================================
+
+.vscode/
+
+# ============================================================
+# CLAUDE / LOCAL AI SETTINGS
+# ============================================================
+
+.claude/
+
+# ============================================================
+# FISCAL / OPERATIONAL DATA
+# ============================================================
+
+# XMLs fiscais gerados / armazenados localmente
+backend/public/xml/*.xml
+backend/**/public/xml/*.xml
+
+# Arquivos SPED gerados
+backend/public/spedFiscal/files/*
+backend/**/public/spedFiscal/files/*
+
+# Mantém arquivos de código/configuração da pasta
+!backend/public/spedFiscal/files/.gitkeep
+!backend/**/public/spedFiscal/files/.gitkeep
+
+# JSONs gerados durante emissão/testes de NF-e
+backend/services/json/*.json
+
+# Mantém scripts JS da pasta JSON
+!backend/services/json/*.js
+
+# Relatórios/debug gerados automaticamente
+backend/services/apis/reports/*.json
+
+# Resultados temporários de APIs
+backend/services/apis/supplierReturnImportResult.json
+
+# Payloads XML/Base64 temporários
+backend/*.b64
+backend/**/*.b64
+
+# ============================================================
+# BACKUPS / LOCAL COPIES
+# ============================================================
+
+*.bak
+*.backup
+*.old
+
+# ============================================================
+# DATABASE DUMPS
+# ============================================================
+
+*.dump
+*.backup.sql
+*.dump.sql
+
+# ============================================================
+# LOCAL DATABASE / SQLITE
+# ============================================================
+
+*.sqlite
+*.sqlite3
+*.db
+
+# ============================================================
+# OS / EDITOR TEMP FILES
+# ============================================================
+
+*.swp
+*.swo
+*~
+# ============================================================
+# LOCAL COPIES OF BUCKET FILES (live only in GCS)
+# ============================================================
+
+backend/doc.contabil/
+backend/employees/
+
+# Chaves de service account GCP (nunca commitar)
+backend/keys/
+backend/.env
+backend/public/boletos/
+
+*.sql
+
+*.sql

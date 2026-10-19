@@ -1,0 +1,299 @@
+/* ╭─────────────────────────────────────────────────────────────╮
+   │           MENU SUPERIOR — ENTERPRISE (PRODNEX ERP)          │
+   ╰─────────────────────────────────────────────────────────────╯ */
+
+.menu-principal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  min-height: 52px;
+
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* =========================
+   NAVBAR ITEMS
+   ========================= */
+
+.menu-principal .menu-item,
+.menu-principal .link-inicio,
+.menu-principal .link-suporte {
+  padding: 14px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  text-decoration: none;
+
+  display: flex;
+  align-items: center;
+
+  transition: background 0.2s ease;
+}
+
+.menu-principal .menu-item:hover,
+.menu-principal .link-inicio:hover,
+.menu-principal .link-suporte:hover {
+  background: #f5f7fa;
+}
+
+.menu-principal .link-inicio {
+  font-weight: 600;
+}
+
+.menu-principal .link-suporte {
+  font-weight: 600;
+  color: #128c7e;
+}
+
+/* =========================
+   DROPDOWN BASE
+   ========================= */
+
+.menu-principal .dropdown {
+  position: relative;
+}
+
+/* 🔥 IMPORTANTE: SEM display:none */
+.menu-principal .dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+
+  min-width: 240px;
+  background: #fff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+
+  padding: 6px 0;
+
+  z-index: 2001;
+
+  /* 👇 animação */
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+
+  transition: all 0.18s ease;
+}
+
+/* ✅ ESTADO ABERTO (CONTROLADO VIA JS) */
+.menu-principal .dropdown-content.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* LINKS */
+.menu-principal .dropdown-content a {
+  display: block;
+  padding: 10px 14px;
+
+  font-size: 13.5px;
+  color: #333;
+  text-decoration: none;
+
+  transition: background 0.2s;
+}
+
+.menu-principal .dropdown-content a:hover {
+  background: #f5f7fa;
+}
+
+/* =========================
+   SUBMENU LATERAL
+   ========================= */
+
+.menu-principal .dropdown-submenu {
+  position: relative;
+}
+
+/* seta lateral */
+.menu-principal .dropdown-submenu > a::after {
+  content: "▸";
+  float: right;
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+/* 🔥 SEM display:none */
+.menu-principal .dropdown-submenu-content {
+  position: absolute;
+  top: 0;
+  left: 100%;
+
+  min-width: 240px;
+
+  background: #fff;
+  border: 1px solid #e5e7eb;
+
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+
+  padding: 6px 0;
+
+  z-index: 2002;
+
+  /* animação lateral */
+  opacity: 0;
+  transform: translateX(6px);
+  pointer-events: none;
+
+  transition: all 0.18s ease;
+}
+
+/* aberto */
+.menu-principal .dropdown-submenu-content.open {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+/* =========================
+   BUSCA
+   ========================= */
+
+.menu-principal .menu-search-wrapper {
+  position: relative;
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.menu-principal .menu-search-input {
+  height: 32px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  width: 220px;
+  font-size: 13px;
+  outline: none;
+}
+
+.menu-principal .menu-search-input:focus {
+  border-color: #888;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.12);
+}
+
+.menu-principal .menu-search-results {
+  position: absolute;
+  top: 42px;
+  left: 0;
+
+  width: 640px;
+  max-width: 75vw;
+
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+
+  max-height: 360px;
+  overflow-y: auto;
+
+  z-index: 20050;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.15);
+}
+
+.menu-principal .menu-search-item {
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 13px;
+  border-bottom: 1px solid #f0f0f0;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.menu-principal .menu-search-item:hover {
+  background: #f5f5f5;
+}
+
+.menu-search-item.active {
+  background: #e5f0ff;
+  border-radius: 6px;
+}
+
+.menu-principal .no-results {
+  padding: 8px 10px;
+  font-size: 13px;
+  color: #777;
+  text-align: center;
+}
+
+/* =========================
+   BOTÃO SAIR
+   ========================= */
+
+.btn-sair-menu {
+  position: fixed;
+  top: 10px;
+  right: 20px;
+
+  background: #ff4d4d;
+  color: #fff;
+
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+
+  cursor: pointer;
+  z-index: 20060;
+}
+
+.btn-sair-menu:hover {
+  background: #e60000;
+}
+
+/* =========================
+   FIX GLOBAL
+   ========================= */
+
+#menuConsartMount {
+  position: sticky;
+  top: 0;
+  z-index: 99999;
+}
+
+.container-caixa,
+.grid,
+.card {
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================
+   SEPARADOR ENTRE MENUS
+   ========================= */
+
+.menu-principal > *:not(:last-child) {
+  position: relative;
+}
+
+.menu-principal > *:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 1px;
+  height: 20px;
+
+  background: #e5e7eb; /* cor suave */
+  opacity: 0.8;
+}

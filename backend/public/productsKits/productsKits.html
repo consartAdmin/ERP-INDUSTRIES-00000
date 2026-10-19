@@ -1,0 +1,292 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ FILE: productsKits.html                                            ║
+     ║ MODULE: Products Kits                                              ║
+     ║ PRODNEX ERP                                                        ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Products Kits | PRODNEX ERP</title>
+
+    <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+    <link rel="stylesheet" href="./productsKits.css" />
+
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+    <main class="consart-container consart-container--full consart-container--ultraslim">
+
+        <header class="header header-h-5">
+            <!-- Container for all vertical lines -->
+            <div class="fields-lines fields-gap-3">
+
+                <!-- Line 1: fields side by side -->
+                <div class="fields-inline">
+                    <div>
+                        <h1>📦 Products Kits</h1>
+                        <p>Crie kits compostos por vários produtos.</p>
+                    </div>
+
+                    <div class="btn-position-right">
+                        <button id="btnNovoKit" class="btn btn-secondary btn-sm btn-h-3">+ Novo Kit</button>
+                        <button id="btnAtualizar" class="btn btn-secondary btn-sm btn-h-3">Atualizar</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="header">
+            <div class="fields-inline fields-gap-3">
+                <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                    <input id="searchKit" type="text" placeholder="Pesquisar por SKU ou descrição do kit..." />
+                </div>
+
+                <button id="btnPesquisar" class="btn btn-secondary btn-sm">Pesquisar</button>
+            </div>
+
+            <section class="table-layout">
+                <div class="table-scroll table-height-flex table-row-h-28" data-table-settings="productskits.kitstablebody">
+                    <table class="table table-zebra table-zebra-hover table-sticky-head">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>SKU Kit</th>
+                                <th>Descrição</th>
+                                <th>Modo Preço</th>
+                                <th>Preço Venda</th>
+                                <th>Itens</th>
+                                <th>Custo</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="kitsTableBody">
+                            <tr>
+                                <td colspan="9" class="empty">Carregando...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <footer class="table-footer">
+
+                    <!-- Rodapé -->
+                    <div class="table-footer__info">
+                        <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+                            <span id="apTableInfo"> 0 registros encontrados</span>
+                        </div>
+                    </div>
+
+                    <div class="table-footer__pagination">
+
+                        <button type="button" id="pagAnterior" class="btn btn-clean btn-sm">
+                            Anterior
+                        </button>
+
+                        <span id="infoPagina">Página 1 de 1</span>
+
+                        <button type="button" id="pagProxima" class="btn btn-new btn-sm">
+                            Próxima
+                        </button>
+
+                    </div>
+
+                    <div class="table-footer__page-size">
+                        <label for="perPage">Mostrar</label>
+
+                        <select id="perPage" class="table-footer__page-size-select" name="perPage">
+                            <option value="10">10 linhas</option>
+                            <option value="20">20 linhas</option>
+                            <option value="30">30 linhas</option>
+                            <option value="50" selected>50 linhas</option>
+                            <option value="100">100 linhas</option>
+                        </select>
+                    </div>
+                </footer>
+            </section>
+        </div>
+
+        <section id="kitFormSection" class="modal modal-width-10 modal-height-10 hidden" aria-hidden="true">
+            <div class="modal__backdrop" data-kit-modal-close></div>
+
+            <div class="modal__dialog">
+                <div class="modal__panel">
+                    <div class="header">
+                        <div class="fields-inline fields-gap-3">
+                            <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                                <div>
+                                    <h1 class="font-bold" id="formTitle">Novo Kit</h1>
+                                    <p class="font-normal">Informe o produto principal e adicione os itens que compõem o
+                                        kit.</p>
+                                </div>
+                            </div>
+                            <div class="btn-position-right">
+                                <button id="btnFecharForm" class="btn btn-new btn-sm">Fechar</button>
+                            </div>
+                        </div>
+
+                        <input type="hidden" id="kitId" />
+
+                        <div class="fields-inline fields-gap-3">
+                            <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                                <label>
+                                    SKU do Kit
+                                    <input id="kitSku" type="text" placeholder="Gerado automaticamente" readonly />
+                                </label>
+                            </div>
+
+                            <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                                <label>
+                                    Descrição do Kit
+                                    <input id="kitDescription" type="text" placeholder="Ex: Kit Limpeza Banheiro" />
+                                </label>
+                            </div>
+
+                            <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                                <label>
+                                    Modo de Preço
+                                    <select id="priceMode">
+                                        <option value="MANUAL">Manual</option>
+                                        <option value="SUM_ITEMS">Somar Itens</option>
+                                    </select>
+                                </label>
+                            </div>
+
+                            <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                                <label>
+                                    Preço de Venda do Kit
+                                    <input id="salePrice" type="number" step="0.01" value="0" />
+                                </label>
+                            </div>
+
+                            <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                                <label>
+                                    Status
+                                    <select id="kitActive">
+                                        <option value="true">Ativo</option>
+                                        <option value="false">Inativo</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                        <hr />
+
+                        <h3>Itens do Kit</h3>
+
+                        <div class="fields-inline fields-gap-3">
+                            <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                                <label>
+                                    Buscar Produto
+                                    <input id="productSearch" type="text" placeholder="Digite SKU ou descrição..."
+                                        autocomplete="off" />
+                                </label>
+
+                                <div id="productSuggestions" class="suggestions hidden"></div>
+                            </div>
+
+                            <div class="fields fields-h-6 fields-w-10 fields-font-3">
+                                <label>
+                                    SKU
+                                    <input id="itemSku" type="text" readonly />
+                                </label>
+                            </div>
+
+                            <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                                <label>
+                                    Descrição
+                                    <input id="itemDescription" type="text" readonly />
+                                </label>
+                            </div>
+
+                            <div class="fields fields-h-6 fields-w-10 fields-font-3">
+                                <label>
+                                    U.M
+                                    <input id="itemUnit" type="text" />
+                                </label>
+                            </div>
+
+                            <div class="fields fields-h-6 fields-w-10 fields-font-3">
+                                <label>
+                                    Qtd
+                                    <input id="itemQuantity" type="number" step="0.001" value="1" />
+                                </label>
+                            </div>
+
+                            <div class="fields fields-h-6 fields-w-10 fields-font-3">
+                                <label>
+                                    Custo Unit.
+                                    <input id="itemCostUnit" type="number" step="0.0001" value="0" />
+                                </label>
+                            </div>
+
+                            <div class="fields fields-h-6 fields-w-10 fields-font-3">
+                                <label>
+                                    Venda Unit.
+                                    <input id="itemSaleUnit" type="number" step="0.0001" value="0" />
+                                </label>
+                            </div>
+
+                            <div class="btn-inline">
+                                <button id="btnAdicionarItem" class="btn btn-new btn-sm">Adicionar Item</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <section class="table-layout">
+                        <div class="table-scroll table-height-flex table-row-h-28" data-table-settings="productskits.itemstablebody">
+                            <table class="table table-zebra table-zebra-hover table-sticky-head">
+                                <thead>
+                                    <tr>
+                                        <th>SKU</th>
+                                        <th>Descrição</th>
+                                        <th>U.M</th>
+                                        <th>Qtd</th>
+                                        <th>Custo Unit.</th>
+                                        <th>Venda Unit.</th>
+                                        <th>Total Custo</th>
+                                        <th>Total Venda</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="itemsTableBody">
+                                    <tr>
+                                        <td colspan="9" class="empty">Nenhum item adicionado.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="totals-box">
+                            <div>
+                                <span>Total Custo</span>
+                                <strong id="totalCost">R$ 0,00</strong>
+                            </div>
+
+                            <div>
+                                <span>Total Venda Itens</span>
+                                <strong id="totalSaleItems">R$ 0,00</strong>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button id="btnSalvarKit" class="btn btn-primary">Salvar Kit</button>
+                            <button id="btnCancelar" class="btn btn-light">Cancelar</button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script type="module" src="/public/includes/js/core.js"></script>
+
+    <script type="module" src="./js/productsKits.init.js"></script>
+
+</body>
+
+</html>

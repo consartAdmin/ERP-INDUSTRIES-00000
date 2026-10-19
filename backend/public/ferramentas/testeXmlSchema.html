@@ -1,0 +1,333 @@
+<!-- backend/public/ferramentas/testeXmlSchema.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Tema base (sua folha) + página -->
+  <link rel="stylesheet" href="/public/includes/theme-consart.css">
+
+  <!-- UI existentes -->
+  <link rel="stylesheet" href="/public/includes/menu.css">
+  <link rel="stylesheet" href="/public/statusUsuario/statusUsuario.css" />
+
+  <title>Validador XML ↔ XSD – NF-e 4.00</title>
+</head>
+
+<body class="consart-theme c-page">
+  <header class="c-header">
+    <div class="c-container c-container--xl header__inner">
+      <div class="heading">🧪 Validador XML ↔ XSD <span class="muted">NF-e 4.00</span></div>
+      <a class="btn btn--ghost" href="/public/home/home.html">Voltar</a>
+    </div>
+  </header>
+
+  <main class="c-main">
+    <div class="c-container c-container--xl c-grid page-grid">
+
+      <!-- Toolbar -->
+      <section class="toolbar">
+        <div class="toolbar__field">
+          <label class="muted">Arquivos XML</label>
+          <input id="inpFiles" type="file" accept=".xml,text/xml" multiple />
+          <div id="filesList" class="chips"></div>
+        </div>
+
+        <div class="toolbar__field">
+          <label class="muted">Schema</label>
+          <select id="schemaSel" title="Escolha o XSD base">
+            <option value="auto">Auto (detectar pelo root)</option>
+            <option value="enviNFe">enviNFe (Autorização – lote)</option>
+            <option value="NFe">NFe (documento)</option>
+            <option value="nfeProc">procNFe (autorizada + protocolo)</option>
+            <option value="retEnviNFe">retEnviNFe (retorno de lote)</option>
+            <option value="consReciNFe">consReciNFe (consulta recibo)</option>
+            <option value="inutNFe">inutNFe (inutilização)</option>
+          </select>
+        </div>
+
+        <div class="toolbar__actions">
+          <button id="btnValidar" class="btn btn--primary" type="button">Validar</button>
+          <a class="btn btn--ghost" href="/public/home/home.html">Voltar</a>
+        </div>
+
+        <p class="toolbar__hint muted">
+          Os XSDs precisam estar no servidor <code>backend/schemas</code>.
+          A validação usa <code>/api/ferramentas/validar-xml</code>.
+        </p>
+      </section>
+
+      <!-- Painel de resultados -->
+      <section class="panel">
+        <div class="panel__hd">
+          <div class="panel__tt">Resultados</div>
+          <div class="muted" id="resSum"></div>
+        </div>
+
+        <div class="panel__bd">
+          <section id="results" class="grid-results"></section>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- scripts existentes -->
+  <script src="/public/includes/SecurityModules.js" defer></script>
+  <script src="/public/verificarLogin/verificarLogin.js"></script>
+  <script src="/public/statusUsuario/statusUsuario.js" defer></script>
+  <script src="/public/includes/menu.js"></script>
+  <script src="/public/includes/sessionTimeout.js" defer></script>
+
+<script>
+  const inpFiles  = document.getElementById('inpFiles');
+  const filesList = document.getElementById('filesList');
+  const schemaSel = document.getElementById('schemaSel');
+  const btnValidar= document.getElementById('btnValidar');
+  const results   = document.getElementById('results');
+  const resSum    = document.getElementById('resSum');
+
+  let currentFiles = [];
+
+  inpFiles.addEventListener('change', () => {
+    currentFiles = Array.from(inpFiles.files || []);
+    renderFiles();
+  });
+
+  function renderFiles(){
+    filesList.innerHTML = '';
+    currentFiles.forEach(f => {
+      const div = document.createElement('div');
+      div.className = 'chip';
+      div.textContent = `${f.name} (${Math.ceil(f.size/1024)} KB)`;
+      filesList.appendChild(div);
+    });
+  }
+
+  btnValidar.addEventListener('click', onValidar);
+
+  function pickSchemaName(schemaType, xmlText){
+    if (schemaType === 'auto') {
+      const m = String(xmlText).match(/<\s*([A-Za-z_:]+)[\s>]/);
+      const root = (m ? m[1].replace(/^.*:/,'') : '').toLowerCase();
+      if (root === 'nfe')        return 'nfe_v4.00.xsd';
+      if (root === 'nfeproc')    return 'procNFe_v4.00.xsd';
+      if (root === 'envinfe')    return 'enviNFe_wrapper_relax_v4.00.xsd';
+      if (root === 'retenvinfe') return 'retEnviNFe_v4.00.xsd';
+      if (root === 'consrecinfe')return 'consReciNFe_v4.00.xsd';
+      if (root === 'inutnfe')    return 'inutNFe_v4.00.xsd';
+      return 'nfe_v4.00.xsd';
+    }
+    const map = {
+      'NFe':         'nfe_v4.00.xsd',
+      'nfeProc':     'procNFe_v4.00.xsd',
+      'enviNFe':     'enviNFe_wrapper_relax_v4.00.xsd',
+      'retEnviNFe':  'retEnviNFe_v4.00.xsd',
+      'consReciNFe': 'consReciNFe_v4.00.xsd',
+      'inutNFe':     'inutNFe_v4.00.xsd',
+    };
+    return map[schemaType] || 'nfe_v4.00.xsd';
+  }
+
+  function normalizeMessages(msgs) {
+    if (!msgs) return [];
+    if (Array.isArray(msgs) && typeof msgs[0] === 'object') return msgs;
+    const arr = Array.isArray(msgs) ? msgs : [String(msgs)];
+    return arr.map((s) => {
+      const str = String(s || '');
+      const mLn  = str.match(/line\s+(\d+)/i);
+      const mCol = str.match(/column\s+(\d+)/i);
+      const mCode= str.match(/\b([a-z_]+\.\d+)\b/i);
+      return {
+        level: /fatal|error/i.test(str) ? 'error' : (/warn/i.test(str) ? 'warning' : 'info'),
+        code: mCode ? mCode[1] : undefined,
+        message: str,
+        line: mLn ? Number(mLn[1]) : undefined,
+        col:  mCol ? Number(mCol[1]) : undefined,
+        group: 'Validação XSD'
+      };
+    });
+  }
+
+  async function onValidar(){
+    if (!currentFiles.length) { alert('Selecione ao menos 1 XML.'); return; }
+
+    btnValidar.disabled = true;
+    const prevLabel = btnValidar.textContent;
+    btnValidar.textContent = 'Validando…';
+    results.innerHTML = '';
+    resSum.textContent = '';
+
+    const cards = [];
+    for (const file of currentFiles) {
+      const xmlText = await file.text();
+      const schemaWanted = pickSchemaName(schemaSel.value, xmlText);
+
+      let ok = false, messages = [], rootGuess = '', preview = '', schemaUsed = schemaWanted, serverError = '', engine = '';
+      let valid = false, size = file.size;
+
+      try {
+        const resp = await fetch('/api/ferramentas/validar-xml', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ schema: schemaWanted, engine: 'xsd', xml: xmlText })
+        });
+        const data = await resp.json().catch(()=> ({}));
+
+        ok     = !!(resp.ok && data?.ok);
+        valid  = ok;
+        engine = data?.engine || '';
+        schemaUsed = data?.schema?.file || schemaWanted;
+        size       = file.size;
+
+        if (!ok) {
+          messages = normalizeMessages(data?.messages);
+          if ((!messages || !messages.length) && !resp.ok) {
+            serverError = data?.error || `HTTP ${resp.status}`;
+          }
+        }
+
+        rootGuess = (xmlText.match(/<\s*([A-Za-z_:]+)[\s>]/) || [,''])[1] || '';
+        preview   = xmlText.split(/\r?\n/).slice(0, 800).join('\n');
+      } catch (e) {
+        ok = false; valid = false;
+        messages = [{ level:'error', code:'NetworkError', message: 'NetworkError when attempting to fetch resource.', group: 'Rede' }];
+      }
+
+      cards.push({ fileName:file.name, size, ok, valid, engine, messages, schemaUsed, rootGuess, preview, serverError });
+    }
+
+    renderResults({ results: cards });
+    resSum.textContent = `${cards.length} arquivo(s) • ${cards.filter(c=>c.valid).length} válido(s) • ${cards.filter(c=>!c.valid).length} inválido(s)`;
+
+    btnValidar.disabled = false;
+    btnValidar.textContent = prevLabel;
+  }
+
+  function groupBy(arr, key) {
+    const g = new Map();
+    for (const it of arr) {
+      const k = it[key] || "geral";
+      if (!g.has(k)) g.set(k, []);
+      g.get(k).push(it);
+    }
+    return g;
+  }
+
+  function escapeHtml(s=''){ return String(s).replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
+
+  function renderResults(payload){
+    results.innerHTML = '';
+    const wrap = document.createElement('div');
+    wrap.className = 'grid-results';
+
+    (payload.results || []).forEach(res => {
+      const card = document.createElement('section');
+      card.className = 'panel result';
+
+      const title = document.createElement('h3');
+      title.innerHTML = `${escapeHtml(res.fileName)} ${res.valid ? '<span class="ok">✔ Válido</span>' : '<span class="err">✖ Inválido</span>'}
+        <span class="tag">schema: ${escapeHtml(res.schemaUsed || 'desconhecido')}</span>
+        ${res.rootGuess ? `<span class="tag">root: ${escapeHtml(res.rootGuess)}</span>` : ''}
+        ${res.engine ? `<span class="tag">engine: ${escapeHtml(res.engine)}</span>` : ''}`;
+      card.appendChild(title);
+
+      const meta = document.createElement('div');
+      meta.className = 'meta';
+      meta.textContent = `Tamanho: ${Math.ceil((res.size||0)/1024)} KB`;
+      card.appendChild(meta);
+
+      const body = document.createElement('div');
+      body.className = 'body';
+
+      if (!res.valid) {
+        if (res.serverError) {
+          const p = document.createElement('p');
+          p.className = 'err';
+          p.textContent = res.serverError;
+          body.appendChild(p);
+        }
+
+        const msgs = Array.isArray(res.messages) ? res.messages : [];
+        if (msgs.length){
+          const errCount  = msgs.filter(m=>m.level==='error').length;
+          const warnCount = msgs.filter(m=>m.level==='warning').length;
+
+          const counts = document.createElement('div');
+          counts.className = 'counts';
+          counts.innerHTML = `<span class="badge-err">Erros: ${errCount}</span> <span class="badge-warn">Avisos: ${warnCount}</span>`;
+          body.appendChild(counts);
+
+          const groups = groupBy(msgs, 'group');
+          for (const [groupName, items] of groups.entries()) {
+            const det = document.createElement('details');
+            det.className = 'grp';
+            det.open = true;
+            const sum = document.createElement('summary');
+            sum.innerHTML = `<b>${escapeHtml(groupName)}</b> <small>(${items.length})</small>`;
+            det.appendChild(sum);
+
+            const ol = document.createElement('ol');
+            ol.className = 'msgs';
+            items.forEach((it) => {
+              const li = document.createElement('li');
+              const pos = (Number.isFinite(it.line) || Number.isFinite(it.col))
+                ? ` <code class="pos">l:${it.line ?? "?"}${Number.isFinite(it.col) ? ', c:'+it.col : ''}</code>` : '';
+              li.innerHTML = `
+                <span class="lvl ${it.level}">${(it.level||'info').toUpperCase()}</span>
+                ${it.code ? `<strong>${escapeHtml(it.code)}</strong>:` : ''} ${escapeHtml(it.message||'')}
+                ${pos}
+              `;
+              ol.appendChild(li);
+            });
+            det.appendChild(ol);
+            body.appendChild(det);
+          }
+
+          const firstWithLine = msgs.find(m => Number.isFinite(m.line));
+          if (firstWithLine && res.preview) {
+            body.appendChild(buildViewer(res.preview, firstWithLine.line, firstWithLine.col));
+          }
+        }
+      }
+
+      card.appendChild(body);
+      wrap.appendChild(card);
+    });
+
+    results.appendChild(wrap);
+  }
+
+  function buildViewer(text, errLine, errCol){
+    const pre = document.createElement('div');
+    pre.className = 'viewer c-scroll';
+    const lines = String(text).replace(/\r\n/g,'\n').split('\n');
+    const pad = String(lines.length).length;
+    const start = Math.max(1, (errLine||1) - 4);
+    const end   = Math.min(lines.length, (errLine||1) + 4);
+
+    for (let i=start; i<=end; i++){
+      const row = document.createElement('div');
+      row.className = (i===errLine) ? 'errline' : '';
+      const num = String(i).padStart(pad,' ');
+      const code = lines[i-1]
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;');
+      row.innerHTML = `<span class="ln">${num}</span>${code}`;
+      pre.appendChild(row);
+
+      if (i===errLine && errCol && errCol>1){
+        const caret = document.createElement('div');
+        caret.className = 'caret';
+        caret.innerHTML = `<span class="ln">${' '.repeat(pad)}</span>${' '.repeat(errCol-1)}^`;
+        pre.appendChild(caret);
+      }
+    }
+    return pre;
+  }
+</script>
+
+</body>
+</html>

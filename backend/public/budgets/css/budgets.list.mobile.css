@@ -1,0 +1,555 @@
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║ FILE: budgets.list.mobile.css                               ║
+   ║ MODULE: Budgets Mobile                                      ║
+   ║ PRODNEX ERP                                                 ║
+   ║ Ajustes exclusivos para smartphones                         ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+/* ==========================================================
+   MOBILE
+   ========================================================== */
+
+@media (max-width: 768px) {
+
+    /* -------------------------------------------------------
+     AÇÕES SUPERIORES
+     ------------------------------------------------------- */
+
+    .budgets-header {
+        width: 100%;
+    }
+
+    .menu-botoes {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px;
+        width: 100%;
+    }
+
+    .menu-botoes .btn {
+        flex: 1 1 0;
+        min-width: 0;
+        padding: 8px 4px;
+        font-size: 11px;
+        white-space: nowrap;
+    }
+
+    .menu-botoes .btn i {
+        margin-right: 4px;
+    }
+
+    .menu-botoes .btn span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* -------------------------------------------------------
+     BOTÃO NOVO
+     ------------------------------------------------------- */
+
+    #btnNovo {
+        flex: 1;
+    }
+
+    /* -------------------------------------------------------
+     BOTÃO LISTA
+     ------------------------------------------------------- */
+
+    #btnLista {
+        flex: 1;
+    }
+
+    /* -------------------------------------------------------
+     BOTÃO RECARREGAR
+     ------------------------------------------------------- */
+
+    #btnRecarregar {
+        flex: 1;
+    }
+}
+
+/* ==========================================================
+   TELAS MUITO PEQUENAS
+   (iPhone SE / Galaxy antigos)
+   ========================================================== */
+
+@media (max-width: 430px) {
+
+    .menu-botoes {
+        gap: 4px;
+    }
+
+    .menu-botoes .btn {
+        padding: 6px 2px;
+        font-size: 10px;
+    }
+
+    .menu-botoes .btn i {
+        display: none;
+    }
+}
+
+/* ==========================================================
+   LISTA DE ORÇAMENTOS — MOBILE COM SCROLL HORIZONTAL
+   ========================================================== */
+
+@media (max-width: 768px) {
+
+    .table-wrapper--budgets {
+        width: 100%;
+        overflow-x: auto !important;
+        overflow-y: auto !important;
+        max-height: 330px;
+        -webkit-overflow-scrolling: touch;
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        border-radius: 14px;
+        background: #fff;
+    }
+
+    .table--budgets {
+        display: table !important;
+        width: max-content !important;
+        min-width: 980px !important;
+        border-collapse: collapse !important;
+        table-layout: fixed !important;
+    }
+
+    .table--budgets colgroup {
+        display: table-column-group !important;
+    }
+
+    .table--budgets thead {
+        display: table-header-group !important;
+    }
+
+    .table--budgets tbody {
+        display: table-row-group !important;
+    }
+
+    .table--budgets tr {
+        display: table-row !important;
+    }
+
+    .table--budgets th,
+    .table--budgets td {
+        display: table-cell !important;
+        padding: 8px 10px !important;
+        font-size: 12px;
+        white-space: nowrap !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+    }
+
+    .table--budgets th {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: #f8fafc;
+        font-weight: 700;
+    }
+
+    .table--budgets td::before,
+    .table--budgets th::before {
+        content: none !important;
+        display: none !important;
+    }
+
+    .table--budgets td:nth-child(1),
+    .table--budgets th:nth-child(1) {
+        position: sticky;
+        left: 0;
+        z-index: 3;
+        background: #fff;
+    }
+
+    .table--budgets th:nth-child(1) {
+        background: #f8fafc;
+    }
+}
+
+/* ==========================================================
+   MOBILE LANDSCAPE — LIBERAR ROLAGEM DA PÁGINA
+   ========================================================== */
+
+@media (max-width: 900px) and (orientation: landscape) {
+
+    html,
+    body {
+        height: auto !important;
+        min-height: 100vh !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+    }
+
+    .consart-container,
+    .consart-container--fixed,
+    .consart-container--full,
+    .consart-container--h-800 {
+        height: auto !important;
+        min-height: 100vh !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
+
+    .consart-layout-col {
+        height: auto !important;
+        min-height: 100vh !important;
+        max-height: none !important;
+        overflow: visible !important;
+        padding-bottom: 90px !important;
+    }
+
+    main {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
+
+    .section-card {
+        overflow: visible !important;
+    }
+
+    #painel-lista,
+    #budgets-list-container {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
+
+    .table-wrapper--budgets {
+        max-height: 260px !important;
+        overflow: auto !important;
+    }
+
+    #paginacao {
+        margin-bottom: 80px !important;
+    }
+}
+
+/* ==========================================================
+   COLUNA AÇÕES - MOBILE
+   ========================================================== */
+
+@media (max-width: 768px) {
+
+    /* aumenta bastante a largura da coluna */
+    .table--budgets th:last-child,
+    .table--budgets td:last-child {
+        width: 220px !important;
+        min-width: 220px !important;
+        max-width: 220px !important;
+    }
+
+    /* mantém os botões lado a lado */
+    .table--budgets td:last-child {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+    }
+
+    /* força os botões a ficarem pequenos */
+    .table--budgets td:last-child .btn {
+        min-width: 32px !important;
+        width: 32px !important;
+        height: 32px !important;
+        padding: 0 !important;
+    }
+}
+
+/* ==========================================================
+   MOBILE — MOSTRAR SOMENTE COLUNAS ESSENCIAIS
+   Colunas visíveis:
+   # | Data | Cliente | Total (R$) | Status | Ações
+   ========================================================== */
+
+@media (max-width: 768px) {
+
+    /* esconder Observação, CNPJ/CPF e Itens */
+    .table--budgets th:nth-child(4),
+    .table--budgets td:nth-child(4),
+    .table--budgets th:nth-child(5),
+    .table--budgets td:nth-child(5),
+    .table--budgets th:nth-child(6),
+    .table--budgets td:nth-child(6) {
+        display: none !important;
+    }
+
+    /* largura final da tabela mobile */
+    .table--budgets {
+        min-width: 560px !important;
+    }
+
+    /* # */
+    .table--budgets th:nth-child(1),
+    .table--budgets td:nth-child(1) {
+        width: 35px !important;
+        min-width: 35px !important;
+        max-width: 35px !important;
+        text-align: center !important;
+    }
+
+    /* Data */
+    .table--budgets th:nth-child(2),
+    .table--budgets td:nth-child(2) {
+        width: 70px !important;
+        min-width: 70px !important;
+        max-width: 70px !important;
+        text-align: center !important;
+    }
+
+    /* Cliente */
+    .table--budgets th:nth-child(3),
+    .table--budgets td:nth-child(3) {
+        width: 115px !important;
+        min-width: 115px !important;
+        max-width: 115px !important;
+        text-align: left !important;
+    }
+
+    /* Total (R$) */
+    .table--budgets th:nth-child(7),
+    .table--budgets td:nth-child(7) {
+        width: 75px !important;
+        min-width: 75px !important;
+        max-width: 75px !important;
+        text-align: right !important;
+    }
+
+    /* Status */
+    .table--budgets th:nth-child(8),
+    .table--budgets td:nth-child(8) {
+        width: 65px !important;
+        min-width: 65px !important;
+        max-width: 65px !important;
+        text-align: center !important;
+    }
+
+    /* Ações */
+    .table--budgets th:nth-child(9),
+    .table--budgets td:nth-child(9) {
+        width: 200px !important;
+        min-width: 200px !important;
+        max-width: 200px !important;
+        text-align: center !important;
+        white-space: nowrap !important;
+    }
+
+    .table--budgets td:nth-child(9) {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 6px !important;
+    }
+
+    .table--budgets td:nth-child(9) .btn,
+    .table--budgets td:nth-child(9) button,
+    .table--budgets td:nth-child(9) a {
+        width: 30px !important;
+        min-width: 30px !important;
+        height: 30px !important;
+        padding: 0 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 13px !important;
+        line-height: 1 !important;
+    }
+}
+
+/* ==========================================================
+   MOBILE — FORÇAR LARGURA REAL DAS COLUNAS VISÍVEIS
+   ========================================================== */
+
+@media (max-width: 700px) {
+
+    .table--budgets {
+        min-width: 520px !important;
+        width: 520px !important;
+        table-layout: fixed !important;
+    }
+
+    /* também controla o colgroup original */
+    .table--budgets col:nth-child(1) {
+        width: 38px !important;
+    }
+
+    .table--budgets col:nth-child(2) {
+        width: 72px !important;
+    }
+
+    .table--budgets col:nth-child(3) {
+        width: 200px !important;
+    }
+
+    .table--budgets col:nth-child(4),
+    .table--budgets col:nth-child(5),
+    .table--budgets col:nth-child(6) {
+        width: 0 !important;
+        display: none !important;
+    }
+
+    .table--budgets col:nth-child(7) {
+        width: 72px !important;
+    }
+
+    .table--budgets col:nth-child(8) {
+        width: 70px !important;
+    }
+
+    .table--budgets col:nth-child(9) {
+        width: 148px !important;
+    }
+
+    .table--budgets th,
+    .table--budgets td {
+        padding: 6px 6px !important;
+        font-size: 11px !important;
+    }
+
+    .table--budgets th:nth-child(1),
+    .table--budgets td:nth-child(1) {
+        width: 38px !important;
+        min-width: 38px !important;
+        max-width: 38px !important;
+    }
+
+    .table--budgets th:nth-child(2),
+    .table--budgets td:nth-child(2) {
+        width: 72px !important;
+        min-width: 72px !important;
+        max-width: 72px !important;
+    }
+
+    .table--budgets th:nth-child(3),
+    .table--budgets td:nth-child(3) {
+        width: 200px !important;
+        min-width: 120px !important;
+        max-width: 120px !important;
+    }
+
+    .table--budgets th:nth-child(7),
+    .table--budgets td:nth-child(7) {
+        width: 72px !important;
+        min-width: 72px !important;
+        max-width: 72px !important;
+    }
+
+    .table--budgets th:nth-child(8),
+    .table--budgets td:nth-child(8) {
+        width: 70px !important;
+        min-width: 70px !important;
+        max-width: 70px !important;
+    }
+
+    .table--budgets th:nth-child(9),
+    .table--budgets td:nth-child(9) {
+        width: 148px !important;
+        min-width: 148px !important;
+        max-width: 148px !important;
+    }
+}
+
+/* ==========================================================
+   RESPONSIVE HEIGHT — BUDGETS TABLE
+   ========================================================== */
+
+/* Desktop / notebook */
+@media (min-width: 1201px) {
+
+    .table-layout-integrated {
+        max-height: calc(100vh - 180px) !important;
+    }
+
+    .table-layout-integrated>.table-scroll {
+        flex: 1 1 auto !important;
+
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+
+        overflow-y: auto !important;
+        overflow-x: auto !important;
+    }
+}
+
+
+/* Notebook smaller / tablet landscape */
+@media (min-width: 769px) and (max-width: 1200px) {
+
+    .table-layout-integrated {
+        max-height: calc(100vh - 200px) !important;
+    }
+
+    .table-layout-integrated>.table-scroll {
+        flex: 1 1 auto !important;
+
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+
+        overflow: auto !important;
+    }
+}
+
+
+/* Tablet / mobile */
+@media (max-width: 768px) {
+
+    .table-layout-integrated {
+        height: auto !important;
+        max-height: none !important;
+    }
+
+    .table-layout-integrated>.table-scroll {
+        height: 330px !important;
+        min-height: 330px !important;
+        max-height: 330px !important;
+
+        flex: 0 0 330px !important;
+
+        overflow-x: auto !important;
+        overflow-y: auto !important;
+    }
+}
+
+
+/* Mobile landscape */
+@media (max-width: 900px) and (orientation: landscape) {
+
+    .table-layout-integrated {
+        height: auto !important;
+        max-height: none !important;
+    }
+
+    .table-layout-integrated>.table-scroll {
+        height: 260px !important;
+        min-height: 260px !important;
+        max-height: 260px !important;
+
+        flex: 0 0 260px !important;
+
+        overflow: auto !important;
+    }
+}
+
+
+/* Very small smartphones */
+@media (max-width: 430px) {
+
+    .table-layout-integrated>.table-scroll {
+        height: 300px !important;
+        min-height: 300px !important;
+        max-height: 300px !important;
+
+        flex-basis: 300px !important;
+    }
+}

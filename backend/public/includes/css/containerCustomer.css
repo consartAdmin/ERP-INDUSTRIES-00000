@@ -1,0 +1,185 @@
+/* ╔════════════════════════════════════════════════════════════════════════════╗
+   ║ 👥 containerCustomer.css — Container visual exclusivo do módulo Clientes  ║
+   ║ PRODNEX ERP — Layout moderno, elegante e responsivo                       ║
+   ╚════════════════════════════════════════════════════════════════════════════╝ */
+
+/* ========================================================================== */
+/* 🎨 CONTAINER BASE */
+/* ========================================================================== */
+.container-customers {
+  background: var(--card);
+  border: 1px solid rgba(43, 109, 246, 0.15);
+  border-radius: 18px;
+  padding: var(--gap-xl);
+  box-shadow: 0 6px 28px rgba(43, 109, 246, 0.08);
+  transition: all var(--t);
+  overflow: hidden;
+}
+
+.container-customers:hover {
+  box-shadow: 0 10px 36px rgba(43, 109, 246, 0.12);
+}
+
+/* ========================================================================== */
+/* 🧭 CABEÇALHO */
+/* ========================================================================== */
+.container-customers .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--gap-lg);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: var(--gap-sm);
+}
+
+.container-customers .header h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--fs-20);
+  font-weight: 700;
+  color: var(--primary-800);
+  letter-spacing: 0.2px;
+}
+
+.container-customers .header h2::before {
+  content: "👥";
+  font-size: 22px;
+  color: var(--primary);
+}
+
+/* Botões */
+.container-customers .header .menu-botoes {
+  display: flex;
+  gap: var(--gap-sm);
+}
+
+.container-customers .header .btn-primary {
+  background-color: #f0f6ff;
+  border: 1px solid #b8d2ff;
+  color: #146ef5;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(20, 110, 245, 0.1);
+}
+
+.container-customers .header .btn-primary:hover {
+  background-color: #e6f0ff;
+  transform: translateY(-1px);
+}
+
+/* ========================================================================== */
+/* 🔍 FILTROS */
+/* ========================================================================== */
+.container-customers .filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap);
+  margin-bottom: var(--gap-lg);
+}
+
+.container-customers .filters label {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--fs-14);
+  color: var(--text);
+}
+
+.container-customers .filters input,
+.container-customers .filters select {
+  height: 38px;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+/* ========================================================================== */
+/* 📋 TABELA */
+/* ========================================================================== */
+.container-customers .table-wrapper {
+  overflow-x: auto;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.container-customers table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 1000px;
+}
+
+.container-customers thead th {
+  position: sticky;
+  top: 0;
+  background: #f4f7ff;
+  color: var(--primary-800);
+  font-weight: 700;
+  text-align: left;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.container-customers tbody td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+
+.container-customers tbody tr:hover {
+  background: #f9fbff;
+}
+
+/* ========================================================================== */
+/* ⚙️ STATUS */
+/* ========================================================================== */
+.container-customers .badge-status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: var(--fs-12);
+  border: 1px solid #d1e0ff;
+}
+
+.container-customers .badge-status.ok {
+  color: #166534;
+  background: #dcfce7;
+  border-color: #a7f3d0;
+}
+
+.container-customers .badge-status.off {
+  color: #92400e;
+  background: #fef3c7;
+  border-color: #fcd34d;
+}
+
+/* ========================================================================== */
+/* 📄 PAGINAÇÃO */
+/* ========================================================================== */
+.container-customers .pagination {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: var(--gap-sm);
+  margin-top: var(--gap-lg);
+}
+
+.container-customers .pagination .btn {
+  height: 34px;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+}
+
+/* ========================================================================== */
+/* 🧾 FOOTER (contador + info de página) */
+/* ========================================================================== */
+.container-customers .footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--muted);
+  font-size: var(--fs-14);
+  margin-top: var(--gap);
+  border-top: 1px solid var(--line);
+  padding-top: var(--gap-sm);
+}

@@ -1,0 +1,247 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════════╗
+     ║ 📊 public/reportsProductsStock/reportsProductsStock.html — Relatório Estoque (CONSART)
+     ║ ✅ Barra de filtros avançados (Fornecedor/Grupo/Subgrupo/Marca/Estoque/Ativo/Custo)
+     ║ ✅ Estoque Positivo (>0) com filtro real no backend (only_stock=1)
+     ║ ✅ Tabela rolável + footer interno fixo + Paginação + PDF/EXCEL
+     ╚══════════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>RELATÓRIO | POSIÇÃO DE ESTOQUE — PRODNEX ERP</title>
+
+  <!-- 🎨 CSS — Design System CONSART -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr page-sales-report">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <!-- ===================================================== -->
+    <!-- INTEGRATED TABLE                                      -->
+    <!-- ===================================================== -->
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter">
+
+        <div class="fields fields-inline fields-gap-3">
+
+          <div>
+            <p class="muted">Custo × Quantidade (com totalização)</p>
+          </div>
+        </div>
+
+        <!-- ✅ FILTROS (BAR) -->
+        <div class="fields fields-inline fields-gap-3">
+
+          <!-- Buscar -->
+          <div class="fields fields-h-6 fields-w-8 fields-font-3">
+            <label for="txtBusca"><b>Buscar</b></label>
+            <input type="text" id="txtBusca" placeholder="Código, descrição…" />
+          </div>
+
+          <!-- Fornecedor (autocomplete) -->
+          <div class="fields fields-h-6 fields-w-8 fields-font-3">
+            <label for="txtFornecedor"><b>Fornecedor</b></label>
+            <input id="txtFornecedor" type="text" placeholder="Digite para localizar…" list="dlFornecedores"
+              autocomplete="off">
+            <datalist id="dlFornecedores"></datalist>
+            <input type="hidden" id="hidFornecedorId" value="">
+          </div>
+
+          <!-- Grupo -->
+          <div class="fields fields-h-6 fields-w-8 fields-font-3">
+            <label for="selGrupo"><b>Grupo</b></label>
+            <select id="selGrupo">
+              <option value="">Todos</option>
+            </select>
+          </div>
+
+          <!-- Subgrupo -->
+          <div class="fields fields-h-6 fields-w-8 fields-font-3">
+            <label for="selSubgrupo"><b>Subgrupo</b></label>
+            <select id="selSubgrupo" disabled>
+              <option value="">Todos</option>
+            </select>
+          </div>
+
+          <!-- Marca -->
+          <div class="fields fields-h-6 fields-w-8 fields-font-3">
+            <label for="selMarca"><b>Marca</b></label>
+            <select id="selMarca">
+              <option value="">Todas</option>
+            </select>
+          </div>
+
+          <!-- ✅ Estoque Positivo > 0 -->
+          <div class="fields fields-h-6 fields-w-8 fields-font-3">
+            <label><b>Estoque</b></label>
+            <label class="inline-check" title="Mostra apenas produtos com estoque maior que zero">
+              <input type="checkbox" id="chkOnlyStock">
+              <span>Somente positivo (&gt; 0)</span>
+            </label>
+          </div>
+
+          <!-- Ativo -->
+          <div class="fields fields-h-6 fields-w-8 fields-font-3">
+            <label for="selAtivo"><b>Ativo</b></label>
+            <select id="selAtivo">
+              <option value="">Todos</option>
+              <option value="1" selected>Somente ativos</option>
+              <option value="0">Somente inativos</option>
+            </select>
+          </div>
+
+          <!-- Custo min -->
+          <div class="fields fields-h-6 fields-w-8 fields-font-3">
+            <label for="numCustoMin"><b>Custo mín.</b></label>
+            <input id="numCustoMin" type="number" step="0.01" placeholder="0,00">
+          </div>
+
+          <!-- Custo max -->
+          <div class="fields fields-h-6 fields-w-8 fields-font-3">
+            <label for="numCustoMax"><b>Custo máx.</b></label>
+            <input id="numCustoMax" type="number" step="0.01" placeholder="0,00">
+          </div>
+
+          <!-- Ordenar -->
+          <div class="fields fields-h-6 fields-w-8 fields-font-3">
+            <label for="selOrder"><b>Ordenar</b></label>
+            <select id="selOrder" title="Ordenação">
+              <option value="description_asc" selected>Descrição (A→Z)</option>
+              <option value="description_desc">Descrição (Z→A)</option>
+              <option value="stock_desc">Estoque (Maior→Menor)</option>
+              <option value="stock_asc">Estoque (Menor→Maior)</option>
+              <option value="cost_desc">Custo (Maior→Menor)</option>
+              <option value="cost_asc">Custo (Menor→Maior)</option>
+              <option value="total_desc">Total (Maior→Menor)</option>
+              <option value="total_asc">Total (Menor→Maior)</option>
+            </select>
+          </div>
+
+          <!-- Itens por página -->
+          <div class="fields fields-h-6 fields-w-8 fields-font-3">
+            <label for="selLimit"><b>Limite</b></label>
+            <select id="selLimit" title="Itens por página">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50" selected>50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+
+          <!-- Ações -->
+          <div class="button-inline">
+            <label><b>Ações</b></label>
+            <button id="btnBuscar" class="btn btn-toolbar btn-sm" title="Buscar">Buscar</button>
+
+            <button id="btnPdf" class="btn btn-toolbar btn-sm" title="Gerar PDF">
+              <span class="btn-ico">🧾</span>
+              <span class="btn-label">PDF</span>
+            </button>
+
+            <button id="btnExcel" class="btn btn-toolbar btn-sm" title="Exportar Excel">
+              <span class="btn-ico">⎘</span>
+              <span class="btn-label">EXCEL</span>
+            </button>
+
+            <button id="btnLimpar" class="btn btn-toolbar btn-sm" title="Limpar filtros">
+              <span class="btn-ico">🧹</span>
+              <span class="btn-label">Limpar</span>
+            </button>
+          </div>
+          <div id="statusArea" class="module-status"></div>
+        </div>
+      </div>
+
+
+
+      <!-- Tabela -->
+      <div class="table-scroll table-height-550 table-row-h-28" data-table-settings="reportsproductsstock.tablebody">
+        <table class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th class="col-id">ID</th>
+              <th class="col-code">Código</th>
+              <th class="col-desc">Descrição</th>
+              <th class="col-money text-right">Custo</th>
+              <th class="col-num text-right">Estoque</th>
+              <th class="col-money text-right">Total (Custo)</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Rodapé único compartilhado pelas três abas -->
+      <footer class="table-footer">
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-5 summary-left-space-3">
+            <span id="apTableInfo">0 registros encontrados</span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button type="button" id="btnPreviousPage" class="btn btn-clean btn-sm">
+            Anterior
+          </button>
+
+          <span id="apPageInfo">Página 1 de 1</span>
+
+          <button type="button" id="btnNextPage" class="btn btn-new btn-sm">
+            Próxima
+          </button>
+        </div>
+
+        <div class="table-footer__page-size">
+          <label for="apRowsPerPage">Mostrar</label>
+
+          <select id="apRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+            <option value="10">10 linhas</option>
+            <option value="20">20 linhas</option>
+            <option value="30">30 linhas</option>
+            <option value="50" selected>50 linhas</option>
+            <option value="100">100 linhas</option>
+          </select>
+        </div>
+      </footer>
+      </div>
+    </section>
+  </main>
+
+  <!-- 🔌 Menu carregado dinamicamente (PADRÃO CONSART) -->
+  <script>
+    (async function loadConsartMenu() {
+      try {
+        const res = await fetch('/public/home/home.html');
+        if (!res.ok) throw new Error('home.html não encontrado');
+        const html = await res.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const menu = doc.querySelector('.menu-principal');
+        if (!menu) return;
+        document.getElementById('topo').appendChild(menu);
+        const applyHeight = () => {
+          const h = (menu.offsetHeight || 80);
+          document.documentElement.style.setProperty('--consart-header-height', h + 'px');
+        };
+        requestAnimationFrame(applyHeight);
+        window.addEventListener('resize', applyHeight);
+      } catch (e) {
+        console.warn('[MENU] Falha ao injetar menu:', e);
+      }
+    })();
+  </script>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="/public/reportsProductsStock/js/reportsProductsStock.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,87 @@
+<!-- ╔═══════════════════════════════════════════════════╗
+     ║ ordersLogisticsBlindCheck.html — Conferência Cega ║
+     ╚═══════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Conferência Cega | PRODNEX ERP</title>
+
+  <!-- Design System global -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <!-- CSS específico da tela -->
+  <link rel="stylesheet" href="./ordersLogisticsBlindCheck.css" />
+</head>
+
+<body class="blind-page">
+  <main class="blind-wrapper">
+
+    <!-- TÍTULO -->
+    <header class="blind-header">
+      <h1>📦 Conferência Cega</h1>
+      <p>Leia o código da nota fiscal e depois bip os produtos.</p>
+    </header>
+
+    <!-- SECTION 1 — LER CHAVE DA NF -->
+    <section class="blind-section">
+      <h2>1️⃣ Nota Fiscal</h2>
+
+      <button id="btnScanInvoice" class="btn-scan">📷 Ler Código Chave</button>
+
+      <input
+        id="invoice_key"
+        class="blind-input"
+        type="text"
+        placeholder="Ou digite a chave da NF"
+        autocomplete="off"
+      />
+
+      <small id="invoice_status" class="invoice-status status-info">
+        NF ainda não carregada.
+      </small>
+    </section>
+
+    <!-- SECTION 2 — BIPAR PRODUTOS -->
+    <section class="blind-section">
+      <h2>2️⃣ Conferência dos Itens</h2>
+
+      <button id="btnScanProduct" class="btn-scan">📷 Bipar Produto</button>
+
+      <input
+        id="product_barcode"
+        class="blind-input"
+        type="text"
+        placeholder="Ou digite/scaneie o produto"
+        autocomplete="off"
+      />
+
+      <!-- Lista de produtos esperados da NF -->
+      <ul id="expectedList" class="product-list expected-list"></ul>
+
+      <!-- Log dos bipes -->
+      <ul id="productList" class="product-list"></ul>
+    </section>
+
+    <!-- MODAL DA CÂMERA -->
+<div id="cameraModal" class="camera-modal" hidden>
+  <div class="camera-box">
+    <div id="cameraViewport" class="camera-viewport">
+      <div class="camera-aim-line"></div>
+    </div>
+    <button id="btnCloseCamera" class="btn-cancel">Fechar</button>
+  </div>
+</div>
+
+  </main>
+
+  <!-- Descobre API_BASE (window.API_BASE) -->
+  <script src="/config/apiBase.js"></script>
+
+  <!-- 📦 QuaggaJS para ler código de barras 1D -->
+  <script src="https://unpkg.com/quagga@0.12.1/dist/quagga.min.js"></script>
+
+  <!-- Lógica da Conferência Cega -->
+  <script type="module" src="./ordersLogisticsBlindCheck.js"></script>
+</body>
+</html>

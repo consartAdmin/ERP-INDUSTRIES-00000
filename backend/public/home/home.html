@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/public/imagens/brasaoConsartInfinity.png" />
+  <link rel="stylesheet" href="/public/includes/css/analyticsDashboard.css" />
+  <link rel="stylesheet" href="/public/includes/css/includeDashBoard.css" />
+  <link rel="stylesheet" href="/public/includes/css/dashBoardAlerts.css" />
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="./home.css" />
+  <title>HOME | PRODNEX ERP</title>
+</head>
+
+<body>
+  <div id="menuConsartMount"></div>
+
+  <main id="includeDashBoard" class="dashboard-is-loading" tabindex="-1" aria-label="Dashboard CONSART"
+    aria-busy="true">
+    <div class="dash-grid"></div>
+  </main>
+
+  <section class="dashboard-alerts-row"></section>
+
+  <div id="modal-budgets-orders" class="consart-modal" hidden>
+    <div class="consart-modal-backdrop" data-modal-close></div>
+    <div class="consart-modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-budgets-orders-title">
+      <header class="consart-modal-header">
+        <h2 id="modal-budgets-orders-title">Novos pedidos gerados a partir de Orçamentos</h2>
+        <button type="button" class="consart-modal-close" data-modal-close aria-label="Fechar">&times;</button>
+      </header>
+      <section class="consart-modal-body">
+        <p>Aqui você poderá visualizar os pedidos recém-criados.</p>
+        <div id="modal-budgets-orders-list" class="modal-budgets-orders-list"></div>
+      </section>
+      <footer class="consart-modal-footer">
+        <button type="button" class="btn btn-secondary" data-modal-close>Fechar</button>
+        <a href="/public/orders/ordersList.html" class="btn btn-primary">Ir para pedidos</a>
+      </footer>
+    </div>
+  </div>
+
+  <div id="productShortcutModal" class="consart-modal" hidden>
+    <div class="consart-modal-backdrop" data-close-products-shortcut></div>
+    <div class="consart-modal-content" role="dialog" aria-modal="true" aria-labelledby="product-shortcut-title">
+      <header class="consart-modal-header">
+        <h2 id="product-shortcut-title">Buscar Produto</h2>
+        <button type="button" class="consart-modal-close" data-close-products-shortcut
+          aria-label="Fechar">&times;</button>
+      </header>
+      <section class="consart-modal-body">
+        <input id="shortcutProductSearch" class="field-input" placeholder="Digite SKU, descrição ou código de barras..."
+          autocomplete="off" />
+        <div id="shortcutProductResults" style="margin-top:12px;"></div>
+      </section>
+    </div>
+  </div>
+
+  <script type="module" src="./home.js"></script>
+  <script type="module" src="/public/includes/js/menuConsart.js"></script>
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="/public/includes/js/dashBoards/includeDashboard.js"></script>
+  <script type="module" src="/public/includes/js/dashBoardAlerts.js"></script>
+</body>
+
+</html>

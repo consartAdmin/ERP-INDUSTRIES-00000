@@ -1,0 +1,186 @@
+/* ==========================================================
+   Product Header (SKU + Product Name)
+========================================================== */
+
+.page-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.page-product-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.page-product-info__code {
+    min-width: 120px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 14px;
+
+    background: #ffffff;
+    border: 1px solid #d9dee8;
+    border-radius: 8px;
+
+    font-size: 13px;
+    font-weight: 700;
+    color: #1f2937;
+
+    white-space: nowrap;
+}
+
+.page-product-info__name {
+    min-width: 350px;
+    max-width: 600px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 14px;
+
+    background: #ffffff;
+    border: 1px solid #d9dee8;
+    border-radius: 8px;
+
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.page-product-info__active {
+    flex-shrink: 0;
+    min-height: 36px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 0 12px;
+
+    background: #ffffff;
+    border: 1px solid #d9dee8;
+    border-radius: 8px;
+
+    white-space: nowrap;
+}
+/* Todas as localizações do produto (Dados Gerais) */
+.product-locations-list[hidden] {
+  display: none;
+}
+
+.product-locations-list {
+  margin-top: 8px;
+  max-width: 640px;
+}
+
+.product-locations-list__title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 4px;
+}
+
+.product-locations-list__items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.product-locations-list__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #f8fafc;
+  font-size: 12px;
+  color: #334155;
+}
+
+.product-locations-list__item.is-primary {
+  border-color: #93c5fd;
+  background: #eff6ff;
+}
+
+.product-locations-list__badge {
+  margin-left: auto;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: #2563eb;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.product-locations-list__link {
+  margin-left: 6px;
+  font-weight: 600;
+  color: #2563eb;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.product-locations-list__link:hover {
+  text-decoration: underline;
+}
+
+.product-locations-list__hint {
+  font-weight: 500;
+  color: #b45309;
+}
+
+/* ── Botões "+" de cadastro rápido (Grupo / Subgrupo / Fabricante / Fornecedor) ── */
+.quick-add-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-left: 4px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.quick-add-btn:hover,
+.quick-add-btn:focus-visible {
+  background: #dbeafe;
+  color: #2563eb;
+  outline: none;
+}
+
+.quick-add-btn:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.quick-create-error {
+  margin: 8px 0 0;
+  color: #b91c1c;
+  font-size: 12px;
+}

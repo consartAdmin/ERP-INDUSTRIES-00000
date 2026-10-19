@@ -1,0 +1,407 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ FILE: readOnlyText.css                                             ║
+   ║ MODULE: Textos e campos somente leitura | PRODNEX ERP              ║
+   ║ DESCRIPTION: Tokens e utilities de largura, altura e fonte         ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+:root {
+    /* ────────────────────────────────────────────────────────────────────
+   * Colors
+   * ──────────────────────────────────────────────────────────────────── */
+    --read-only-text-color: #0f172a;
+    --read-only-label-color: #0f172a;
+    --read-only-muted-color: #64748b;
+    --read-only-success-color: #15803d;
+    --read-only-warning-color: #b45309;
+    --read-only-danger-color: #dc2626;
+    --read-only-info-color: #2563eb;
+
+    --read-only-surface: #f8fafc;
+    --read-only-success-surface: #f0fdf4;
+    --read-only-warning-surface: #fffbeb;
+    --read-only-danger-surface: #fef2f2;
+    --read-only-info-surface: #eff6ff;
+
+    --read-only-border-color: #94a3b8;
+    --read-only-success-border: #86efac;
+    --read-only-warning-border: #fcd34d;
+    --read-only-danger-border: #fca5a5;
+    --read-only-info-border: #93c5fd;
+
+    /* Spacing and appearance */
+    --read-only-row-gap: 4px;
+    --read-only-column-gap: 10px;
+    --read-only-field-padding-x: 10px;
+    --read-only-field-padding-y: 6px;
+    --read-only-field-radius: 6px;
+
+    /* Font-size scale */
+    --read-only-font-size-1: 10px;
+    --read-only-font-size-2: 11px;
+    --read-only-font-size-3: 12px;
+    --read-only-font-size-4: 13px;
+    --read-only-font-size-5: 14px;
+    --read-only-font-size-6: 16px;
+    --read-only-font-size-7: 18px;
+
+    /* Height scale */
+    --read-only-height-1: 25px;
+    --read-only-height-2: 30px;
+    --read-only-height-3: 35px;
+    --read-only-height-4: 40px;
+    --read-only-height-5: 45px;
+    --read-only-height-6: 50px;
+    --read-only-height-7: 60px;
+
+    /* Width scale */
+    --read-only-width-1: 60px;
+    --read-only-width-2: 80px;
+    --read-only-width-3: 100px;
+    --read-only-width-4: 120px;
+    --read-only-width-5: 140px;
+    --read-only-width-6: 160px;
+    --read-only-width-7: 180px;
+    --read-only-width-8: 200px;
+    --read-only-width-9: 220px;
+    --read-only-width-10: 250px;
+    --read-only-width-11: 300px;
+    --read-only-width-12: 100%;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+ * Plain read-only text
+ * ────────────────────────────────────────────────────────────────────── */
+.read-only-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--read-only-row-gap);
+    margin: 0;
+    color: var(--read-only-text-color);
+    font-size: var(--read-only-font-size-5);
+    line-height: 1.4;
+}
+
+.read-only-text__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 4px;
+    min-width: 0;
+    margin: 0;
+}
+
+.read-only-text__label,
+.read-only-field__label {
+    color: var(--read-only-label-color);
+    font: inherit;
+    font-weight: 700;
+}
+
+.read-only-text__value {
+    min-width: 0;
+    color: var(--read-only-text-color);
+    font: inherit;
+    font-weight: 400;
+    overflow-wrap: anywhere;
+}
+
+.read-only-text--inline {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 20px;
+}
+
+.read-only-text--inline .read-only-text__row {
+    flex: 0 0 auto;
+}
+
+.read-only-text--aligned .read-only-text__row {
+    display: grid;
+    grid-template-columns: minmax(120px, max-content) minmax(0, 1fr);
+    column-gap: 8px;
+    width: 100%;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+ * Read-only fields
+ * ────────────────────────────────────────────────────────────────────── */
+.read-only-fields {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--read-only-column-gap);
+    width: 100%;
+}
+
+.read-only-field {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 auto;
+    width: fit-content;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.read-only-field__label {
+    font-size: var(--read-only-font-size-3);
+    line-height: 1.2;
+}
+
+.read-only-field__value {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+    min-height: var(--read-only-height-3);
+    padding: var(--read-only-field-padding-y) var(--read-only-field-padding-x);
+    box-sizing: border-box;
+
+    color: var(--read-only-text-color);
+    background-color: var(--read-only-surface);
+    border: 1px solid var(--read-only-border-color);
+    border-radius: var(--read-only-field-radius);
+
+    font-size: var(--read-only-font-size-5);
+    font-weight: 400;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+
+    cursor: default;
+    user-select: text;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Numbers, currencies and dates */
+.read-only-text__value--number,
+.read-only-text__value--currency,
+.read-only-text__value--date,
+.read-only-field__value--number,
+.read-only-field__value--currency,
+.read-only-field__value--date {
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+/* Semantic colors: plain text */
+.read-only-text__value--muted {
+    color: var(--read-only-muted-color);
+}
+
+.read-only-text__value--success {
+    color: var(--read-only-success-color);
+    font-weight: 600;
+}
+
+.read-only-text__value--warning {
+    color: var(--read-only-warning-color);
+    font-weight: 600;
+}
+
+.read-only-text__value--danger {
+    color: var(--read-only-danger-color);
+    font-weight: 600;
+}
+
+.read-only-text__value--info {
+    color: var(--read-only-info-color);
+    font-weight: 600;
+}
+
+/* Semantic colors: fields */
+.read-only-field__value--muted {
+    color: var(--read-only-muted-color);
+}
+
+.read-only-field__value--success {
+    color: var(--read-only-success-color);
+    background-color: var(--read-only-success-surface);
+    border-color: var(--read-only-success-border);
+    font-weight: 600;
+}
+
+.read-only-field__value--warning {
+    color: var(--read-only-warning-color);
+    background-color: var(--read-only-warning-surface);
+    border-color: var(--read-only-warning-border);
+    font-weight: 600;
+}
+
+.read-only-field__value--danger {
+    color: var(--read-only-danger-color);
+    background-color: var(--read-only-danger-surface);
+    border-color: var(--read-only-danger-border);
+    font-weight: 600;
+}
+
+.read-only-field__value--info {
+    color: var(--read-only-info-color);
+    background-color: var(--read-only-info-surface);
+    border-color: var(--read-only-info-border);
+    font-weight: 600;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+ * Width utilities
+ * Apply to .read-only-field
+ * ────────────────────────────────────────────────────────────────────── */
+.read-only-w-1 {
+    width: var(--read-only-width-1);
+}
+
+.read-only-w-2 {
+    width: var(--read-only-width-2);
+}
+
+.read-only-w-3 {
+    width: var(--read-only-width-3);
+}
+
+.read-only-w-4 {
+    width: var(--read-only-width-4);
+}
+
+.read-only-w-5 {
+    width: var(--read-only-width-5);
+}
+
+.read-only-w-6 {
+    width: var(--read-only-width-6);
+}
+
+.read-only-w-7 {
+    width: var(--read-only-width-7);
+}
+
+.read-only-w-8 {
+    width: var(--read-only-width-8);
+}
+
+.read-only-w-9 {
+    width: var(--read-only-width-9);
+}
+
+.read-only-w-10 {
+    width: var(--read-only-width-10);
+}
+
+.read-only-w-11 {
+    width: var(--read-only-width-11);
+}
+
+.read-only-w-12 {
+    width: var(--read-only-width-12);
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+ * Height utilities
+ * Apply to .read-only-field__value
+ * ────────────────────────────────────────────────────────────────────── */
+.read-only-h-1 {
+    min-height: var(--read-only-height-1);
+    height: var(--read-only-height-1);
+}
+
+.read-only-h-2 {
+    min-height: var(--read-only-height-2);
+    height: var(--read-only-height-2);
+}
+
+.read-only-h-3 {
+    min-height: var(--read-only-height-3);
+    height: var(--read-only-height-3);
+}
+
+.read-only-h-4 {
+    min-height: var(--read-only-height-4);
+    height: var(--read-only-height-4);
+}
+
+.read-only-h-5 {
+    min-height: var(--read-only-height-5);
+    height: var(--read-only-height-5);
+}
+
+.read-only-h-6 {
+    min-height: var(--read-only-height-6);
+    height: var(--read-only-height-6);
+}
+
+.read-only-h-7 {
+    min-height: var(--read-only-height-7);
+    height: var(--read-only-height-7);
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+ * Font-size utilities
+ * Apply to the container, field, label or value
+ * ────────────────────────────────────────────────────────────────────── */
+.read-only-fs-1 {
+    font-size: var(--read-only-font-size-1);
+}
+
+.read-only-fs-2 {
+    font-size: var(--read-only-font-size-2);
+}
+
+.read-only-fs-3 {
+    font-size: var(--read-only-font-size-3);
+}
+
+.read-only-fs-4 {
+    font-size: var(--read-only-font-size-4);
+}
+
+.read-only-fs-5 {
+    font-size: var(--read-only-font-size-5);
+}
+
+.read-only-fs-6 {
+    font-size: var(--read-only-font-size-6);
+}
+
+.read-only-fs-7 {
+    font-size: var(--read-only-font-size-7);
+}
+
+/* Compatibility with the first version */
+.read-only-text--small {
+    font-size: var(--read-only-font-size-3);
+}
+
+.read-only-text--medium {
+    font-size: var(--read-only-font-size-5);
+}
+
+.read-only-text--large {
+    font-size: var(--read-only-font-size-6);
+}
+
+.read-only-field--width-1 {
+    width: var(--read-only-width-3);
+}
+
+.read-only-field--width-2 {
+    width: var(--read-only-width-5);
+}
+
+.read-only-field--width-3 {
+    width: var(--read-only-width-7);
+}
+
+.read-only-field--width-4 {
+    width: var(--read-only-width-9);
+}
+
+@media (max-width: 600px) {
+    .read-only-fields>.read-only-field {
+        width: 100%;
+    }
+
+    .read-only-text--aligned .read-only-text__row {
+        grid-template-columns: 1fr;
+    }
+}

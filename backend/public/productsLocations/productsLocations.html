@@ -1,0 +1,246 @@
+<!-- ╔════════════════════════════════════════════════════════════════════╗
+     ║ productsLocations.html — Localização de Produtos (PRODNEX ERP)     ║
+     ║ Página única: Lista (aba) + Cadastro/Edição (aba)                  ║
+     ║ ✅ Design System: table-layout-integrated + fields + table-footer  ║
+     ╚════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png" />
+  <title>LOCALIZAÇÃO DE PRODUTOS | PRODNEX ERP</title>
+
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/productsLocations/productsLocations.css?v=ds-02" />
+</head>
+
+<body class="consart-theme page-locations p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <!-- HEADER -->
+    <div class="header header-row">
+      <div>
+        <h1>Mapa de Localização</h1>
+        <p>Controle onde cada produto está armazenado: local, corredor, prateleira, bin e posição</p>
+      </div>
+
+      <div class="btn-inline btn-position-right">
+        <button id="btnRecarregarLocalizacoes" class="btn btn-toolbar btn-sm" type="button">
+          <span aria-hidden="true">↻</span>
+          <span>Recarregar</span>
+        </button>
+
+        <button id="btnNovaLocalizacao" class="btn btn-toolbar btn-sm" type="button">
+          <span aria-hidden="true">＋</span>
+          <span>Nova localização</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Tabs (LISTA / EDITOR) -->
+    <nav class="pl-tabs" aria-label="Abas de localização">
+      <button type="button" class="btn btn-toolbar btn-sm is-active" data-tab="list">
+        📋 Localizações por produto
+      </button>
+      <button type="button" class="btn btn-toolbar btn-sm" data-tab="editor">
+        🧾 Cadastro / edição
+      </button>
+    </nav>
+
+    <!-- ╭──────────────────────────────────────────────╮
+         │ ABA — LISTA                                  │
+         ╰──────────────────────────────────────────────╯ -->
+    <section class="table-layout-integrated table-max-height-700 pl-panel is-active" data-panel="list">
+      <div class="table-layout-integrated__filter">
+
+        <!-- FILTERS -->
+        <div class="fields-inline fields-inline-wrap fields-gap-3 pl-filter">
+          <div class="fields fields-w-20 fields-h-6 fields-font-3">
+            <label for="qLocalizacoes">Buscar</label>
+            <input id="qLocalizacoes" type="search" placeholder="Código do produto (SKU)..." autocomplete="off" />
+          </div>
+
+          <div class="fields fields-w-16 fields-h-6 fields-font-3">
+            <label for="filtroLocal">Local</label>
+            <select id="filtroLocal">
+              <option value="">Todos</option>
+            </select>
+          </div>
+
+          <div class="btn-inline">
+            <button id="btnBuscarLocalizacoes" class="btn btn-toolbar btn-sm" type="button">🔍 Buscar</button>
+            <button id="btnLimparFiltroLocalizacoes" class="btn btn-toolbar btn-sm" type="button">Limpar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- GRID -->
+      <div class="table-scroll table-scroll--flex table-row-h-20" data-table-settings="productslocations.tbllocalizacoes">
+        <table id="tblLocalizacoes" class="table table-fixed table-zebra table-zebra-hover table-sticky-head"
+          aria-label="Localizações de produtos">
+          <thead>
+            <tr>
+              <th class="pl-col-sku">SKU</th>
+              <th class="pl-col-desc">Descrição</th>
+              <th class="pl-col-local">Local</th>
+              <th class="pl-col-corr">Corredor</th>
+              <th class="pl-col-small">Gôndola</th>
+              <th class="pl-col-small">Bandeja</th>
+              <th class="pl-col-small">Posição</th>
+              <th class="pl-col-notes">Observações</th>
+              <th class="pl-col-primary" title="Localização principal exibida na Edição de Produtos">Principal</th>
+              <th class="pl-col-actions col-acoes">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- FOOTER -->
+      <footer class="table-footer">
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+            <span id="totalInfoLocalizacoes">0 localização(ões)</span>
+          </div>
+        </div>
+      </footer>
+    </section>
+
+    <!-- ╭──────────────────────────────────────────────╮
+         │ ABA — CADASTRO / EDIÇÃO                      │
+         ╰──────────────────────────────────────────────╯ -->
+    <section id="editorLocalizacao" class="pl-card pl-panel" data-panel="editor">
+
+      <header class="pl-card__header">
+        <div>
+          <h3 id="editorLocalizacaoTitle" class="pl-card__title">Nova localização</h3>
+          <p class="pl-card__subtitle">Preencha os dados de localização física do produto.</p>
+        </div>
+
+        <div class="pl-card__header-actions">
+          <button id="btnSalvarLocalizacao" class="btn btn-toolbar btn-sm" type="button">💾 Salvar</button>
+          <button id="btnCancelarLocalizacao" class="btn btn-toolbar btn-sm" type="button">✖ Cancelar</button>
+        </div>
+      </header>
+
+      <div class="pl-card__body">
+
+        <!-- Produto -->
+        <div class="pl-section">
+          <div class="pl-section__title">📦 Produto</div>
+
+          <form id="formLocalizacao" autocomplete="off">
+            <input id="locationId" type="hidden" />
+
+            <div class="fields-inline fields-inline-wrap fields-gap-3 pl-align-end">
+              <div class="fields fields-w-12 fields-h-6 fields-font-3">
+                <label for="productCode">SKU *</label>
+                <input id="productCode" type="text" required placeholder="Código" autocomplete="off" />
+              </div>
+
+              <div class="fields fields-w-40 fields-h-6 fields-font-3">
+                <label for="productDescription">Descrição do produto</label>
+                <input id="productDescription" type="text" placeholder="Digite a descrição para pesquisar..."
+                  autocomplete="off" />
+              </div>
+
+              <button id="btnSearchProduct" type="button" class="btn btn-toolbar btn-sm" title="Buscar produto">
+                🔎 Buscar
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Estrutura hierárquica -->
+        <div class="pl-section">
+          <div class="pl-section__title">🏷️ Estrutura hierárquica (tabelas auxiliares)</div>
+
+          <div class="pl-hierarchy">
+            <div class="fields fields-w-auto fields-h-6 fields-font-3">
+              <label for="localSelect">Local</label>
+              <div class="pl-select-add">
+                <select id="localSelect">
+                  <option value="">Selecione...</option>
+                </select>
+                <button id="btnAddLocal" type="button" class="btn btn-toolbar btn-sm" title="Novo local">＋</button>
+              </div>
+            </div>
+
+            <div class="fields fields-w-auto fields-h-6 fields-font-3">
+              <label for="corridorSelect">Corredor</label>
+              <div class="pl-select-add">
+                <select id="corridorSelect">
+                  <option value="">Selecione...</option>
+                </select>
+                <button id="btnAddCorridor" type="button" class="btn btn-toolbar btn-sm" title="Novo corredor">＋</button>
+              </div>
+            </div>
+
+            <div class="fields fields-w-auto fields-h-6 fields-font-3">
+              <label for="shelfSelect">Prateleira / Gôndola</label>
+              <div class="pl-select-add">
+                <select id="shelfSelect">
+                  <option value="">Selecione...</option>
+                </select>
+                <button id="btnAddShelf" type="button" class="btn btn-toolbar btn-sm" title="Nova prateleira">＋</button>
+              </div>
+            </div>
+
+            <div class="fields fields-w-auto fields-h-6 fields-font-3">
+              <label for="binSelect">Bandeja</label>
+              <div class="pl-select-add">
+                <select id="binSelect">
+                  <option value="">Selecione...</option>
+                </select>
+                <button id="btnAddBin" type="button" class="btn btn-toolbar btn-sm" title="Nova bandeja">＋</button>
+              </div>
+            </div>
+
+            <div class="fields fields-w-auto fields-h-6 fields-font-3">
+              <label for="positionSelect">Posição</label>
+              <div class="pl-select-add">
+                <select id="positionSelect">
+                  <option value="">Selecione...</option>
+                </select>
+                <button id="btnAddPosition" type="button" class="btn btn-toolbar btn-sm" title="Nova posição">＋</button>
+              </div>
+            </div>
+          </div>
+
+          <p class="pl-mini-hint">
+            Dica: trabalhe com a estrutura hierárquica (tabelas auxiliares) para padronizar o mapa físico de produtos.
+          </p>
+        </div>
+
+        <!-- Observações -->
+        <div class="pl-section">
+          <div class="pl-section__title">📝 Observações</div>
+
+          <div class="fields fields-w-full fields-font-3 pl-notes">
+            <label for="notes">Observações gerais</label>
+            <textarea id="notes" rows="3" placeholder="Informações importantes sobre o acesso, estoque, etc."></textarea>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    window.API_BASE = window.apiBase || window.location.origin;
+  </script>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <!-- appFeature PRODUCT_LOCATIONS: LOCATIONS_DISABLED → página bloqueada com aviso -->
+  <script type="module">import { guardProductLocationsPage } from "/public/includes/js/productLocationsFeature.js"; guardProductLocationsPage();</script>
+  <script type="module" src="/public/productsLocations/productsLocations.js?v=3"></script>
+
+</body>
+
+</html>

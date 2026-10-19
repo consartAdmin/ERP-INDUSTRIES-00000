@@ -1,0 +1,195 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ createDebtsModal.css — Modal Criar/Editar Dívida                    ║
+   ║ PRODNEX ERP                                                         ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+#debtModal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+}
+
+#debtModal.hidden,
+#debtModal[hidden] {
+  display: none !important;
+}
+
+#debtModal .modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+}
+
+#debtModal .modal__panel {
+  position: relative;
+  z-index: 1;
+
+  width: min(1180px, calc(100vw - 48px));
+  max-height: calc(100vh - 48px);
+
+  background: #ffffff;
+  border: 1px solid #d5dbe5;
+  border-radius: 14px;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.35);
+
+  overflow: hidden;
+}
+
+#debtModal .modal__panel--xl {
+  width: min(1180px, calc(100vw - 48px));
+}
+
+#debtModal .modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+
+  padding: 18px 22px;
+  border-bottom: 1px solid #d5dbe5;
+  background: #f8fafc;
+}
+
+#debtModal .modal__header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+#debtModal .modal__header p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+#debtModal .icon-close {
+  width: 32px;
+  height: 32px;
+
+  border: 1px solid #d5dbe5;
+  border-radius: 8px;
+  background: #ffffff;
+
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+#debtModal .modal__body {
+  max-height: calc(100vh - 170px);
+  overflow: auto;
+
+  padding: 22px;
+  background: #ffffff;
+}
+
+#debtModal .form-grid {
+  display: grid;
+  gap: 14px;
+  align-items: end;
+}
+
+#debtModal .form-grid--4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+#debtModal .form-grid--5 {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+#debtModal .field--span-2 {
+  grid-column: span 2;
+}
+
+#debtModal .field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+#debtModal .field-group label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+#debtModal input,
+#debtModal select,
+#debtModal textarea {
+  width: 100%;
+  min-height: 34px;
+
+  border: 1px solid #d5dbe5;
+  border-radius: 8px;
+  padding: 7px 10px;
+
+  font-size: 13px;
+  color: #0f172a;
+  background: #ffffff;
+
+  box-sizing: border-box;
+}
+
+#debtModal textarea {
+  min-height: 92px;
+  resize: vertical;
+}
+
+#debtModal input[readonly] {
+  background: #f8fafc;
+  font-weight: 700;
+}
+
+#debtModal .divider {
+  height: 1px;
+  background: #d5dbe5;
+  margin: 18px 0;
+}
+
+#debtModal .modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+
+  padding-top: 16px;
+}
+
+@media (max-width: 900px) {
+  #debtModal .form-grid--4,
+  #debtModal .form-grid--5 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #debtModal .field--span-2 {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 560px) {
+  #debtModal {
+    padding: 12px;
+  }
+
+  #debtModal .modal__panel,
+  #debtModal .modal__panel--xl {
+    width: calc(100vw - 24px);
+    max-height: calc(100vh - 24px);
+  }
+
+  #debtModal .form-grid--4,
+  #debtModal .form-grid--5 {
+    grid-template-columns: 1fr;
+  }
+
+  #debtModal .field--span-2 {
+    grid-column: span 1;
+  }
+} 

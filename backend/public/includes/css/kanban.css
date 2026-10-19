@@ -1,0 +1,202 @@
+/* ╔════════════════════════════════════════════════════════════════════╗
+   ║ kanban.css — Kanban Board | PRODNEX ERP                          ║
+   ╚════════════════════════════════════════════════════════════════════╝ */
+
+/* ====================================================================
+   Variables
+==================================================================== */
+
+:root {
+  --kanban-gap: 16px;
+  --kanban-col-min: 280px;
+  --kanban-col-bg: #f8fafc;
+  --kanban-col-border: #cbd5e1;
+  --kanban-col-radius: 12px;
+  --kanban-col-padding: 12px;
+
+  --kanban-title-size: 16px;
+  --kanban-title-weight: 700;
+  --kanban-title-color: #0f172a;
+
+  --kanban-list-gap: 12px;
+  --kanban-list-min-height: 420px;
+
+  --kanban-card-bg: #ffffff;
+  --kanban-card-border: #dbeafe;
+  --kanban-card-radius: 10px;
+  --kanban-card-padding: 12px;
+  --kanban-card-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+
+  --kanban-card-title-size: 14px;
+  --kanban-card-title-weight: 700;
+  --kanban-card-title-color: #0f172a;
+
+  --kanban-card-text-size: 13px;
+  --kanban-card-text-color: #475569;
+  --kanban-card-line-height: 1.4;
+
+  --kanban-badge-bg: #eff6ff;
+  --kanban-badge-color: #1d4ed8;
+  --kanban-badge-radius: 999px;
+  --kanban-badge-padding-y: 4px;
+  --kanban-badge-padding-x: 8px;
+  --kanban-badge-font-size: 12px;
+  --kanban-badge-font-weight: 700;
+
+  --kanban-meta-gap: 8px;
+  --kanban-meta-size: 12px;
+  --kanban-meta-color: #64748b;
+
+  --kanban-actions-gap: 8px;
+}
+
+/* ====================================================================
+   Board
+==================================================================== */
+
+.kanban-board {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(var(--kanban-col-min), 1fr));
+  gap: var(--kanban-gap);
+  align-items: start;
+  width: 100%;
+}
+
+/* ====================================================================
+   Column
+==================================================================== */
+
+.kanban-column {
+  background: var(--kanban-col-bg);
+  border: 1px solid var(--kanban-col-border);
+  border-radius: var(--kanban-col-radius);
+  padding: var(--kanban-col-padding);
+  min-height: 100%;
+}
+
+.kanban-column > h3 {
+  margin: 0 0 12px;
+  font-size: var(--kanban-title-size);
+  font-weight: var(--kanban-title-weight);
+  color: var(--kanban-title-color);
+}
+
+/* ====================================================================
+   List
+==================================================================== */
+
+.kanban-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kanban-list-gap);
+  min-height: var(--kanban-list-min-height);
+}
+
+/* ====================================================================
+   Card
+==================================================================== */
+
+.kanban-card {
+  background: var(--kanban-card-bg);
+  border: 1px solid var(--kanban-card-border);
+  border-radius: var(--kanban-card-radius);
+  padding: var(--kanban-card-padding);
+  box-shadow: var(--kanban-card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.kanban-card__title {
+  margin: 0;
+  font-size: var(--kanban-card-title-size);
+  font-weight: var(--kanban-card-title-weight);
+  color: var(--kanban-card-title-color);
+  line-height: 1.3;
+}
+
+.kanban-card__description {
+  margin: 0;
+  font-size: var(--kanban-card-text-size);
+  color: var(--kanban-card-text-color);
+  line-height: var(--kanban-card-line-height);
+  white-space: pre-line;
+}
+
+.kanban-card__group {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  background: var(--kanban-badge-bg);
+  color: var(--kanban-badge-color);
+  border-radius: var(--kanban-badge-radius);
+  padding: var(--kanban-badge-padding-y) var(--kanban-badge-padding-x);
+  font-size: var(--kanban-badge-font-size);
+  font-weight: var(--kanban-badge-font-weight);
+}
+
+.kanban-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--kanban-meta-gap);
+  font-size: var(--kanban-meta-size);
+  color: var(--kanban-meta-color);
+}
+
+.kanban-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--kanban-actions-gap);
+}
+
+/* ====================================================================
+   Status accents
+==================================================================== */
+
+.kanban-column[data-status="OPEN"] {
+  border-top: 4px solid #3b82f6;
+}
+
+.kanban-column[data-status="IN_PROGRESS"] {
+  border-top: 4px solid #f59e0b;
+}
+
+.kanban-column[data-status="REVIEW"] {
+  border-top: 4px solid #8b5cf6;
+}
+
+.kanban-column[data-status="FINISHED"] {
+  border-top: 4px solid #10b981;
+}
+
+/* ====================================================================
+   Hidden tabs support
+==================================================================== */
+
+.tab-content.hidden {
+  display: none !important;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* ====================================================================
+   Responsive
+==================================================================== */
+
+@media (max-width: 1400px) {
+  .kanban-board {
+    grid-template-columns: repeat(2, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  .kanban-board {
+    grid-template-columns: 1fr;
+  }
+
+  .kanban-list {
+    min-height: auto;
+  }
+}

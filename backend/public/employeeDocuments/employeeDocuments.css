@@ -1,0 +1,211 @@
+/* ╔════════════════════════════════════════════════════════════════════╗
+   ║ employeeDocuments.css — Documentos do Colaborador                  ║
+   ║ PRODNEX ERP | Frontend (ESM)                                      ║
+   ╚════════════════════════════════════════════════════════════════════╝ */
+
+.edm-main{
+  width: min(1500px, calc(100% - 28px));
+  margin: 0 auto;
+  padding: 18px 0 34px;
+}
+
+.edm-header{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:14px;
+  margin-top: 10px;
+}
+.edm-header__description{
+  margin:0;
+  opacity:.78;
+  font-size: 13px;
+}
+
+.edm-layout{
+  margin-top: 14px;
+  display:grid;
+  grid-template-columns: 420px 1fr;
+  gap: 14px;
+}
+
+.edm-card{
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.09);
+  background: rgba(0,0,0,.14);
+  overflow:hidden;
+  min-width: 0;
+}
+
+.edm-card__header{
+  padding: 14px 14px 10px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.edm-card__title{ margin:0; font-size: 15px; }
+.edm-card__subtitle{ margin:6px 0 0; font-size: 12px; opacity:.75; max-width: 860px; }
+
+.edm-card__header-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.edm-input-group{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.edm-input{
+  height: 38px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.06);
+  color: inherit;
+  padding: 0 12px;
+  outline: none;
+}
+.edm-input::placeholder{ opacity:.6; }
+
+.edm-btn{
+  height: 38px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color: inherit;
+  padding: 0 12px;
+  cursor: pointer;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  text-decoration:none;
+}
+.edm-btn:hover{ background: rgba(255,255,255,.10); }
+.edm-btn--primary{
+  background: rgba(80,140,255,.20);
+  border-color: rgba(80,140,255,.35);
+}
+.edm-btn--ghost{ background: transparent; }
+.edm-btn--danger{
+  background: rgba(255,80,80,.18);
+  border-color: rgba(255,80,80,.35);
+}
+.edm-btn--tiny{
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+.edm-toggle{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size: 12px;
+  opacity:.9;
+  user-select:none;
+}
+.edm-toggle input{ transform: translateY(1px); }
+
+.edm-selected-employee{
+  padding: 10px 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.03);
+}
+.edm-selected-employee span{ opacity:.85; font-size: 12px; }
+
+.edm-form{
+  padding: 12px 14px 14px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.edm-form__grid{
+  display:grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+}
+.edm-form__field label{
+  display:block;
+  font-size: 11px;
+  opacity:.75;
+  margin: 0 0 6px;
+}
+.edm-span-2{ grid-column: span 2; }
+
+.edm-form__actions{
+  margin-top: 12px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+.edm-table-wrapper{ overflow:auto; }
+
+.edm-table{
+  width:100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.edm-table thead th{
+  text-align:left;
+  padding: 10px 12px;
+  font-size: 11px;
+  opacity:.75;
+  background: rgba(255,255,255,.03);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  white-space: nowrap;
+}
+.edm-table tbody td{
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  white-space: nowrap;
+}
+.edm-table tbody tr:hover{ background: rgba(255,255,255,.04); }
+
+.edm-table__col-id{ width: 90px; }
+.edm-table__col-actions{ width: 190px; text-align:right; }
+.edm-table__col-mime{ width: 140px; }
+.edm-table__col-size{ width: 120px; }
+.edm-table__col-date{ width: 170px; }
+
+.edm-row-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+}
+
+.edm-card__footer{
+  padding: 10px 14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap: 12px;
+}
+.edm-card__summary{
+  font-size: 12px;
+  opacity:.78;
+}
+
+@media (max-width: 1200px){
+  .edm-layout{ grid-template-columns: 1fr; }
+}
+@media (max-width: 980px){
+  .edm-form__grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .edm-span-2{ grid-column: span 3; }
+}
+@media (max-width: 620px){
+  .edm-form__grid{ grid-template-columns: 1fr; }
+  .edm-span-2{ grid-column: span 1; }
+}

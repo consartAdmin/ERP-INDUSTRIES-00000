@@ -1,0 +1,212 @@
+/* ╔══════════════════════════════════════════════════════════╗
+ * ║ MODAL – Largura maior + visual premium CONSART          ║
+ * ╚══════════════════════════════════════════════════════════╝ */
+
+.cs-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.cs-modal {
+  width: min(720px, 95%);
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 0;
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  animation: csModalIn 0.25s ease;
+}
+
+/* Cabeçalho do modal */
+.cs-modal-header {
+  padding: 18px 22px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cs-modal-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.cs-modal-close {
+  border: none;
+  background: transparent;
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #64748b;
+  transition: 0.2s;
+}
+
+.cs-modal-close:hover {
+  color: #1e293b;
+  transform: scale(1.15);
+}
+
+/* Formulário dentro do modal */
+.cs-form {
+  padding: 24px 26px 26px;
+  overflow-y: auto;
+}
+
+.cs-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px 24px;
+}
+
+.cs-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cs-form-group-full {
+  grid-column: 1 / -1;
+}
+
+.cs-form-group-inline {
+  grid-column: 1 / -1;
+}
+
+.cs-form-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.cs-form-group input,
+.cs-form-group textarea {
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.8);
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  outline: none;
+  background: #f9fafb;
+  resize: vertical;
+}
+
+.cs-form-group textarea {
+  min-height: 95px;
+}
+
+.cs-form-group input:focus,
+.cs-form-group textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.35);
+  background: #ffffff;
+}
+
+.cs-required {
+  color: #ef4444;
+}
+
+/* Switch */
+.cs-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.cs-switch input {
+  display: none;
+}
+
+.cs-switch-slider {
+  width: 36px;
+  height: 20px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  position: relative;
+  transition: background-color 0.15s ease;
+}
+
+.cs-switch-slider::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.4);
+  transition: transform 0.15s ease;
+}
+
+.cs-switch input:checked + .cs-switch-slider {
+  background: #22c55e;
+}
+
+.cs-switch input:checked + .cs-switch-slider::before {
+  transform: translateX(16px);
+}
+
+.cs-switch-label {
+  font-size: 1rem;
+  color: #0f172a;
+}
+
+/* Rodapé do formulário */
+.cs-form-footer {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(148, 163, 184, 0.35);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Animação de entrada do modal */
+@keyframes csModalIn {
+  from {
+    transform: translateY(25px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsivo */
+@media (max-width: 720px) {
+  .cs-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cs-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cs-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cs-filter-actions {
+    justify-content: flex-end;
+  }
+}
+
+/* Classe para esconder o modal via JS */
+.cs-hidden {
+  display: none !important;
+}

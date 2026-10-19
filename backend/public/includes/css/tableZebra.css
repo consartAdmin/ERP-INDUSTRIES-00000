@@ -1,0 +1,106 @@
+/* ╔════════════════════════════════════════════════════════════════════╗
+   ║ 🦓 tableZebra.css — Tabelas listradas (zebradas) | PRODNEX ERP     ║
+   ║ ✅ Altura de linha REAL (controlada por variável)                 ║
+   ║ ✅ Compatível com table--budgets                                  ║
+   ╚════════════════════════════════════════════════════════════════════╝ */
+
+/* =============================================================================
+   🎨 Paleta base + controle de altura
+   ========================================================================== */
+:root {
+  --zebra-row-even-bg:   #ffffff;   /* linhas pares   */
+  --zebra-row-odd-bg:    #f8fafc;   /* linhas ímpares */
+  --zebra-row-hover-bg:  #e2e8f0;   /* hover suave    */
+
+  /* ✅ Altura alvo da linha (px) — use 28/32/36/40/42/48 etc */
+  --zebra-row-min-height: 20px;
+
+  /* ✅ Tipografia base (ajustável) */
+  --zebra-cell-font-size: 13px;
+  --zebra-cell-line-height: 16px;
+
+  /* ✅ Padding horizontal padrão */
+  --zebra-cell-pad-x: 10px;
+}
+
+/* =============================================================================
+   🦓 Zebra base
+   ========================================================================== */
+.table-zebra tbody tr:nth-child(odd) {
+  background-color: var(--zebra-row-odd-bg);
+}
+
+.table-zebra tbody tr:nth-child(even) {
+  background-color: var(--zebra-row-even-bg);
+}
+
+.table-zebra tbody tr td {
+  color: inherit;
+}
+
+/* =============================================================================
+   📏 Altura REAL da linha (tabelas HTML)
+   -----------------------------------------------------------------------------
+   Em <table>, quem controla a altura é o TD/TH (padding/line-height).
+   Então a linha fica estável usando:
+   - font-size + line-height
+   - padding vertical calculado pela altura alvo
+   ========================================================================== */
+
+/* Fallback (não atrapalha; o TD manda) */
+.table-zebra tbody tr {
+  height: var(--zebra-row-min-height);
+}
+
+/* ✅ Aplica altura estável por célula */
+.table-zebra tbody td,
+.table-zebra tbody th {
+  /* tipografia */
+  font-size: var(--zebra-cell-font-size);
+  line-height: var(--zebra-cell-line-height);
+
+  /* padding vertical calculado para atingir a altura alvo:
+     paddingY = (rowHeight - lineHeight) / 2
+     com clamp para não virar negativo */
+  padding-top: max(2px, calc((var(--zebra-row-min-height) - var(--zebra-cell-line-height)) / 2));
+  padding-bottom: max(2px, calc((var(--zebra-row-min-height) - var(--zebra-cell-line-height)) / 2));
+
+  /* padding horizontal padrão */
+  padding-left: var(--zebra-cell-pad-x);
+  padding-right: var(--zebra-cell-pad-x);
+
+  vertical-align: middle;
+}
+
+/* =============================================================================
+   ✨ Hover opcional
+   ========================================================================== */
+.table-zebra-hover tbody tr:hover {
+  background-color: var(--zebra-row-hover-bg);
+}
+
+/* =============================================================================
+   🔧 Compatibilidade exclusiva p/ tabelas do módulo de ORÇAMENTOS
+   ========================================================================== */
+/*
+  Motivo: o budgets.css define background e hover mais específicos,
+  então a zebra precisa ter prioridade.
+*/
+.table-zebra.table--budgets tbody tr:nth-child(odd) {
+  background-color: var(--zebra-row-odd-bg) !important;
+}
+
+.table-zebra.table--budgets tbody tr:nth-child(even) {
+  background-color: var(--zebra-row-even-bg) !important;
+}
+
+.table-zebra-hover.table--budgets tbody tr:hover {
+  background-color: var(--zebra-row-hover-bg) !important;
+}
+
+/* =============================================================================
+   🪶 Bordas suaves para manter visual CONSART
+   ========================================================================== */
+.table-zebra tbody tr + tr td {
+  border-top: 1px solid rgba(148, 163, 184, 0.35); /* slate-400 transparente */
+}

@@ -1,0 +1,246 @@
+<!-- ╔══════════════════════════════════════════════════════╗
+     ║ sellers.html — Gestão de Vendedores (PRODNEX ERP)   ║
+     ╚══════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+
+  <title>VENDEDORES | PRODNEX ERP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <!-- 🎨 CSS — Design System CONSART -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- Estilos específicos da página de vendedores -->
+  <link rel="stylesheet" href="/public/sellers/sellers.css?v=2" />
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <!-- ===================================================== -->
+    <!-- HEADER: TITLE (separate block)                        -->
+    <!-- ===================================================== -->
+    <div class="sellers-page-header">
+      <div>
+        <h1 class="page-header__title sellers-title">
+          <img src="/iconsImagens/sellers.svg" alt="" width="28" height="28" aria-hidden="true" />
+          <span>Gestão de Vendedores</span>
+        </h1>
+        <p class="page-header__subtitle">Cadastre, edite e gerencie os vendedores utilizados em todo o ERP.</p>
+      </div>
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- INTEGRATED TABLE                                      -->
+    <!-- ===================================================== -->
+    <section class="table-layout-integrated table-max-height-600">
+      <div class="table-layout-integrated__filter">
+
+
+        <div class="fields-inline fields-gap-4">
+          <div class="fields fields-w-30 fields-h-6">
+            <label for="sellers-search" class="sellers-label">Busca</label>
+            <input type="text" id="sellers-search" class="sellers-input"
+              placeholder="Pesquisar por nome, apelido, documento, e-mail..." />
+          </div>
+
+          <div class="btn-inline">
+            <span class="btn btn-new btn-h-5 btn-icon">🔍</span>
+          </div>
+
+          <div class="fields fields-w-20 fields-h-6">
+            <label for="sellers-active" class="sellers-label">Status</label>
+            <select id="sellers-active" class="sellers-select">
+              <option value="all">Todos</option>
+              <option value="active">Apenas ativos</option>
+              <option value="inactive">Apenas inativos</option>
+            </select>
+          </div>
+
+          <div class="fields fields-w-20 fields-h-6">
+            <button id="sellers-btn-new" class="btn btn-new btn-sm">
+              + Novo vendedor
+            </button>
+          </div>
+
+          <div class="btn-inline btn-gap-3 sellers-export-actions">
+            <button id="sellers-btn-pdf" class="btn btn-toolbar btn-sm" type="button" title="Exportar PDF">
+              <img src="/iconsImagens/pdf.png" alt="" width="20" height="20" aria-hidden="true" />
+              <span>Exportar PDF</span>
+            </button>
+
+            <button id="sellers-btn-excel" class="btn btn-toolbar btn-sm" type="button" title="Exportar Excel">
+              <img src="/iconsImagens/excelIcons.png" alt="" width="20" height="20" aria-hidden="true" />
+              <span>Exportar Excel</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabela de vendedores -->
+      <div class="table-scroll--rounded table-scroll--flex" data-table-settings="sellers.tablebody">
+        <table class="table table-fixed table-zebra table-zebra-hover table-sticky-head table-row-30">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Apelido</th>
+              <th>Documento</th>
+              <th>E-mail</th>
+              <th>Telefone</th>
+              <th>Celular</th>
+              <th>Tipo Comissão</th>
+              <th>Valor Comissão</th>
+              <th>Status</th>
+              <th class="sellers-table__actions-col">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+      <div class="sellers-empty" id="sellers-empty-state">
+        Nenhum vendedor encontrado com os filtros atuais.
+      </div>
+
+      <!-- =================================================== -->
+      <!-- TABLE FOOTER                                        -->
+      <!-- =================================================== -->
+
+      <footer class="table-footer">
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill-success summary-width-5 summary-left-space-3">
+            <span id="apTableInfo">
+              0 Registros
+            </span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button id="btnPrevious" type="button" class="btn btn-toolbar btn-sm">
+            Anterior
+          </button>
+
+          <span id="pageInfo">
+            Página 1 de 1
+          </span>
+
+          <button id="btnNext" type="button" class="btn btn-toolbar btn-sm">
+            Próxima
+          </button>
+        </div>
+        <div class="table-footer__page-size">
+          <label for="pageSize">
+            Mostrar
+          </label>
+          <div class="fields fields-h-6 fields-w-3 fields-font-3">
+            <select id="pageSize" class="table-footer__page-size-select">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50" selected>50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <!-- Modal de cadastro/edição de vendedor -->
+  <div id="sellers-modal" class="sellers-modal hidden">
+    <div class="sellers-modal__dialog">
+      <header class="sellers-modal__header">
+        <h2 id="sellers-modal-title">Novo vendedor</h2>
+        <button type="button" id="sellers-modal-close" class="sellers-modal__close">&times;</button>
+      </header>
+
+      <div class="sellers-modal__body">
+        <form id="sellers-form" class="sellers-form">
+          <input type="hidden" id="seller-id" />
+
+          <div class="sellers-form__grid">
+            <div class="sellers-form__field sellers-form__field--full">
+              <label for="seller-name" class="sellers-label">Nome *</label>
+              <input type="text" id="seller-name" class="sellers-input" required />
+            </div>
+
+            <div class="sellers-form__field">
+              <label for="seller-nickname" class="sellers-label">Apelido</label>
+              <input type="text" id="seller-nickname" class="sellers-input" />
+            </div>
+
+            <div class="sellers-form__field">
+              <label for="seller-document" class="sellers-label">Documento (CPF/CNPJ)</label>
+              <input type="text" id="seller-document" class="sellers-input" />
+            </div>
+
+            <div class="sellers-form__field">
+              <label for="seller-email" class="sellers-label">E-mail</label>
+              <input type="email" id="seller-email" class="sellers-input" />
+            </div>
+
+            <div class="sellers-form__field">
+              <label for="seller-phone" class="sellers-label">Telefone</label>
+              <input type="text" id="seller-phone" class="sellers-input" />
+            </div>
+
+            <div class="sellers-form__field">
+              <label for="seller-mobile" class="sellers-label">Celular</label>
+              <input type="text" id="seller-mobile" class="sellers-input" />
+            </div>
+
+            <div class="sellers-form__field">
+              <label for="seller-commission-type" class="sellers-label">Tipo de Comissão</label>
+              <select id="seller-commission-type" class="sellers-select">
+                <option value="PERCENT">Percentual (%)</option>
+                <option value="FIXED">Valor fixo (R$)</option>
+              </select>
+            </div>
+
+            <div class="sellers-form__field">
+              <label for="seller-commission-value" class="sellers-label">Comissão</label>
+              <input type="number" id="seller-commission-value" class="sellers-input" step="0.0001" min="0" />
+            </div>
+
+            <div class="sellers-form__field">
+              <label class="sellers-label">Status</label>
+              <label class="sellers-switch">
+                <input type="checkbox" id="seller-active" checked />
+                <span class="sellers-switch__slider"></span>
+                <span class="sellers-switch__label">Ativo</span>
+              </label>
+            </div>
+
+            <div class="sellers-form__field sellers-form__field--full">
+              <label for="seller-observations" class="sellers-label">Observações</label>
+              <textarea id="seller-observations" class="sellers-textarea" rows="3"></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <footer class="sellers-modal__footer">
+        <button type="button" id="sellers-modal-save" class="btn btn-primary">
+          Salvar
+        </button>
+        <button type="button" id="sellers-modal-cancel" class="btn btn-secondary">
+          Cancelar
+        </button>
+      </footer>
+    </div>
+  </div>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <script type="module" src="/public/sellers/sellers.js?v=2"></script>
+
+</body>
+
+</html>

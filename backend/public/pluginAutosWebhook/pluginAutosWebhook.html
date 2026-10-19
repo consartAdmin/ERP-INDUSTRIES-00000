@@ -1,0 +1,200 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║         pluginAutosWebhook.html — Plguin Autos WebHook               ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Webhook Plugin Autos | PRODNEX ERP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <link rel="stylesheet" href="/public/includes/css/topGradientBar.css?v=kb-esm-01" />
+
+  <!-- 🎨 Design System CONSART -->
+  <link rel="stylesheet" href="/public/includes/css/style.css"/>
+  <link rel="stylesheet" href="/public/includes/css/centerAlertModal.css"/>
+
+  <!-- CSS específico da página -->
+  <link rel="stylesheet" href="./pluginAutosWebhook.css" />
+</head>
+<body class="consart-theme c-page page-products">
+
+      <!-- 🔹 Barra de título (topGradientBar) – markup fixo -->
+  <header class="top-gradient-bar">
+    <div class="top-gradient-bar__inner">
+      <div class="top-gradient-bar__titles">
+        <h1 class="top-gradient-bar__title">Comissões de Vendas</h1>
+        <p class="top-gradient-bar__subtitle">
+        </p>
+      </div>
+    </div>
+  </header>
+
+    <!-- Conteúdo principal -->
+    <main class="page-webhook-autos__content">
+
+      <!-- Card de Configuração -->
+      <section class="webhook-card">
+        <h2 class="webhook-card__title">Configuração do Webhook</h2>
+
+        <form id="webhookAutosForm" class="webhook-form">
+
+          <!-- Status / Habilitar -->
+          <div class="webhook-form__row">
+            <label class="webhook-form__label" for="enabled">
+              Webhook Ativo?
+            </label>
+            <div class="webhook-form__field">
+              <label class="toggle-switch">
+                <input type="checkbox" id="enabled" name="enabled" />
+                <span class="toggle-switch__slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- URL do Webhook (somente leitura) -->
+          <div class="webhook-form__row">
+            <label class="webhook-form__label" for="webhookUrl">
+              URL do Webhook
+              <span class="webhook-form__hint">
+                Essa é a URL que você deve configurar no painel do Plugin Autos.
+              </span>
+            </label>
+            <div class="webhook-form__field webhook-form__field--inline">
+              <input
+                id="webhookUrl"
+                name="webhookUrl"
+                type="text"
+                readonly
+                class="webhook-input webhook-input--readonly"
+              />
+              <button type="button" id="btnCopyUrl" class="btn btn-secondary">
+                Copiar URL
+              </button>
+            </div>
+          </div>
+
+          <!-- Segredo / Token -->
+          <div class="webhook-form__row">
+            <label class="webhook-form__label" for="secret">
+              Segredo do Webhook (Token)
+              <span class="webhook-form__hint">
+                Opcional, se o Plugin Autos suportar envio de assinatura/secret.
+              </span>
+            </label>
+            <div class="webhook-form__field webhook-form__field--inline">
+              <input
+                id="secret"
+                name="secret"
+                type="password"
+                placeholder="Informe o segredo ou deixe em branco"
+                class="webhook-input"
+              />
+              <button type="button" id="btnToggleSecret" class="btn btn-outline">
+                Mostrar
+              </button>
+            </div>
+            <p class="webhook-form__hint webhook-form__hint--small">
+              Dica: use um secret forte. Essa informação <strong>não</strong> deve ser compartilhada.
+            </p>
+          </div>
+
+          <!-- Ações principais -->
+          <div class="webhook-form__actions">
+            <button type="button" id="btnTestWebhook" class="btn btn-outline">
+              Testar Webhook
+            </button>
+            <div class="webhook-form__actions-right">
+              <button type="button" id="btnResetWebhook" class="btn btn-ghost">
+                Recarregar
+              </button>
+              <button type="submit" class="btn btn-primary">
+                Salvar Configurações
+              </button>
+            </div>
+          </div>
+
+          <!-- Mensagens de feedback -->
+          <div id="webhookFeedback" class="webhook-feedback" aria-live="polite"></div>
+
+        </form>
+      </section>
+
+      <!-- Card de Status / Últimas Entregas -->
+      <section class="webhook-card webhook-card--secondary">
+        <h2 class="webhook-card__title">Status & Últimos Eventos</h2>
+
+        <div class="webhook-status-grid">
+          <div class="webhook-status-item">
+            <span class="webhook-status-item__label">Status atual</span>
+            <span id="statusCurrent" class="webhook-status-item__value">—</span>
+          </div>
+          <div class="webhook-status-item">
+            <span class="webhook-status-item__label">Último disparo</span>
+            <span id="statusLastDelivery" class="webhook-status-item__value">—</span>
+          </div>
+          <div class="webhook-status-item">
+            <span class="webhook-status-item__label">Último código HTTP</span>
+            <span id="statusLastCode" class="webhook-status-item__value">—</span>
+          </div>
+        </div>
+
+        <div class="webhook-log">
+          <div class="webhook-log__header">
+            <span>Últimos logs</span>
+            <button type="button" id="btnRefreshLogs" class="btn btn-ghost btn-ghost--sm">
+              Atualizar
+            </button>
+          </div>
+
+          <div class="webhook-log__body">
+            <table class="webhook-log__table">
+              <thead>
+                <tr>
+                  <th>Data/Hora</th>
+                  <th>Evento</th>
+                  <th>Código</th>
+                  <th>Mensagem</th>
+                </tr>
+              </thead>
+              <tbody id="webhookLogTableBody">
+                <tr>
+                  <td colspan="4" class="webhook-log__empty">
+                    Nenhum log carregado ainda.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+  </div>      <!-- 🔹 Top gradient bar: apenas atualiza o texto se precisar -->
+
+<script type="module">
+import { initTopGradientBar } from '/public/includes/js/topGradientBar.js';
+
+initTopGradientBar({
+  title: 'WebHook PlugNotas',
+  subtitle: 'Gestão de Documentos Fiscais Via integração PlugNtoas (TecnoSpeed).',
+});
+</script>
+
+  <!-- 🔹 Primeiro: base de API global (cria window.getApiBase) -->
+  <script src="/backend/config/apiBase.js"></script>
+
+  <!-- Núcleo do front CONSART -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <!-- JS específico (ESM) -->
+  <script type="module" src="./pluginAutosWebhook.js"></script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+/* ===========================================================
+   Tabela / Movimentações
+   backend/public/caixa/css/caixa.movs-table.css
+   =========================================================== */
+.movs-card{ display:flex; flex-direction:column; flex:1 1 auto; min-height:0; }
+.movs-card .card-header{ position: sticky; top: calc(var(--topbar-h) + var(--tabs-h)); z-index: 4; background:#fff; }
+.movs-card .card-body{ display:flex; flex-direction:column; flex:1 1 auto; min-height:0; }
+
+.movs-card .tabela-wrapper{
+  flex:1 1 auto;
+  min-height:0;
+  overflow:auto;
+  border:1px solid var(--c-border,#e5e7eb);
+  border-radius:10px;
+  background:#fff;
+  max-height: calc(100dvh - var(--topbar-h) - var(--tabs-h) - var(--page-pad) - var(--filtros-movs-h) - 120px);
+}
+
+@media (max-width: 1400px){
+  .movs-card .tabela-wrapper{
+    max-height: calc(100dvh - var(--topbar-h) - var(--tabs-h) - var(--page-pad) - var(--filtros-movs-h) - 140px);
+  }
+}
+
+.movs-card .tabela{ min-width: clamp(1100px, 95vw, var(--tabela-min-w)); }
+
+.tabela{ width:100%; border-collapse:separate; border-spacing:0; background:#fff; }
+.tabela thead th{
+  background:#f8fafc;
+  color:#334155;
+  font-weight:700;
+  text-align:left;
+  padding:10px 12px;
+  border-bottom:1px solid #e5e7eb;
+  white-space:nowrap;
+  border-radius:0 !important;
+  background-clip:padding-box;
+  box-shadow:none;
+  border-right:1px solid #eef2f7;
+}
+.tabela thead th:last-child{ border-right:0; }
+.tabela tbody td{ padding:10px 12px; border-bottom:1px solid #eef2f7; vertical-align:top; }
+.tabela tbody tr:hover{ background:#fafbff; }
+
+#tabelaMovimentacoes{
+  table-layout:fixed;
+  width:100%;
+  font-size:var(--mov-font-size-base) !important;
+  border-collapse:separate;
+  border-spacing:0;
+}
+
+#tabelaMovimentacoes thead th{ font-size:var(--mov-font-size-header) !important; }
+
+#tabelaMovimentacoes thead th,
+#tabelaMovimentacoes tbody td{
+  padding:4px 8px !important;
+  height:var(--mov-row-h) !important;
+  line-height:1.15 !important;
+  vertical-align:middle;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+/* larguras (ajuste livre) */
+#tabelaMovimentacoes th:nth-child(1),
+#tabelaMovimentacoes td:nth-child(1)  { width:100px; }
+#tabelaMovimentacoes th:nth-child(2),
+#tabelaMovimentacoes td:nth-child(2)  { width:80px; }
+#tabelaMovimentacoes th:nth-child(3),
+#tabelaMovimentacoes td:nth-child(3)  { width:200px; }
+
+/* Data/Hora */
+#tabelaMovimentacoes th:nth-child(4),
+#tabelaMovimentacoes td:nth-child(4){
+  width:120px;
+}
+
+#tabelaMovimentacoes th:nth-child(5),
+#tabelaMovimentacoes td:nth-child(5)  { width:100px; text-align:right !important; }
+#tabelaMovimentacoes th:nth-child(6),
+#tabelaMovimentacoes td:nth-child(6)  { width:80px;  text-align:right !important; }
+#tabelaMovimentacoes th:nth-child(7),
+#tabelaMovimentacoes td:nth-child(7)  { width:80px;  text-align:right !important; }
+#tabelaMovimentacoes th:nth-child(8),
+#tabelaMovimentacoes td:nth-child(8)  { width:90px;  text-align:right !important; }
+#tabelaMovimentacoes th:nth-child(9),
+#tabelaMovimentacoes td:nth-child(9)  { width:100px; text-align:right !important; }
+
+/* Conta */
+#tabelaMovimentacoes th:nth-child(10),
+#tabelaMovimentacoes td:nth-child(10){
+  width:80px;
+}
+
+#tabelaMovimentacoes th:nth-child(11),
+#tabelaMovimentacoes td:nth-child(11) { width:160px; }
+#tabelaMovimentacoes th:nth-child(12),
+#tabelaMovimentacoes td:nth-child(12) { width:auto; }
+/* 13 = Observação, 14 = Anexos, 15 = Ações */
+#tabelaMovimentacoes th:nth-child(13),
+#tabelaMovimentacoes td:nth-child(13) {
+  width:100px;
+  text-align:center !important;
+}
+
+/* Anexos */
+#tabelaMovimentacoes th:nth-child(14),
+#tabelaMovimentacoes td:nth-child(14){
+  width:90px;
+}
+
+#tabelaMovimentacoes th:nth-child(15),
+#tabelaMovimentacoes td:nth-child(15) {
+  width:110px;
+  text-align:center !important;
+}
+
+/* zebra + hover */
+#tabelaMovimentacoes tbody tr:nth-child(odd)  td{ background:var(--zebra-odd) !important; }
+#tabelaMovimentacoes tbody tr:nth-child(even) td{ background:var(--zebra-even) !important; }
+#tabelaMovimentacoes tbody tr:hover td{ background:#eef2ff !important; }
+
+/* Colunas fixas esquerda (CORRIGIDO) */
+#tabelaMovimentacoes thead th:nth-child(1),
+#tabelaMovimentacoes tbody td:nth-child(1){
+  position: sticky;
+  left: 0px;
+  z-index: 3;
+  background:#f8fafc;
+  box-shadow: 2px 0 0 #e5e7eb inset;
+  border-left:1px solid #e5e7eb;
+}
+
+#tabelaMovimentacoes thead th:nth-child(2),
+#tabelaMovimentacoes tbody td:nth-child(2){
+  position: sticky;
+  left: 100px; /* col 1 */
+  z-index: 3;
+  background:#f8fafc;
+  box-shadow: 2px 0 0 #e5e7eb inset;
+}
+
+#tabelaMovimentacoes thead th:nth-child(3),
+#tabelaMovimentacoes tbody td:nth-child(3){
+  position: sticky;
+  left: calc(100px + 80px); /* col 1 + col 2 */
+  z-index: 3;
+  background:#f8fafc;
+  box-shadow: 2px 0 0 #e5e7eb inset;
+}
+
+#tabelaMovimentacoes thead th:nth-child(4),
+#tabelaMovimentacoes tbody td:nth-child(4){
+  position: sticky;
+  left: calc(100px + 80px + 200px); /* ✅ col 3 = 200px (não 260) */
+  z-index: 3;
+  background:#f8fafc;
+  box-shadow: 2px 0 0 #e5e7eb inset;
+}
+
+#tabelaMovimentacoes thead th:nth-child(5),
+#tabelaMovimentacoes tbody td:nth-child(5){
+  position: sticky;
+  left: calc(100px + 80px + 200px + 120px);
+  z-index: 3;
+  background:#f8fafc;
+  box-shadow: 2px 0 0 #e5e7eb inset;
+}
+
+/* Colunas fixas direita */
+#tabelaMovimentacoes thead th:nth-child(15),
+#tabelaMovimentacoes tbody td:nth-child(15){
+  position: sticky;
+  right: 0px;
+  z-index: 3;
+  background:#f8fafc;
+  box-shadow: -2px 0 0 #e5e7eb inset;
+  border-right:1px solid #e5e7eb;
+}
+
+#tabelaMovimentacoes thead th:nth-child(14),
+#tabelaMovimentacoes tbody td:nth-child(14){
+  position: sticky;
+  right: 110px; /* mesma largura da col 15 (Ações) */
+  z-index: 3;
+  background:#f8fafc;
+  box-shadow: -2px 0 0 #e5e7eb inset;
+}
+
+/* Header por cima */
+#tabelaMovimentacoes thead th{ z-index:4; }
+
+/* Reset do tema nos TH (evita “quadrados” e pseudo-elementos) */
+#tabelaMovimentacoes thead th,
+#tabelaMovimentacoes thead th *,
+#tabelaMovimentacoes thead th::before,
+#tabelaMovimentacoes thead th::after{
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  background-image: none !important;
+  border-radius: 0 !important;
+}
+#tabelaMovimentacoes thead th{
+  background:#f8fafc !important;
+  border-right:1px solid #eef2f7 !important;
+}
+#tabelaMovimentacoes thead th:last-child{ border-right:0 !important; }
+#tabelaMovimentacoes thead th:not(.sortable)::after{ content:none !important; }
+#tabelaMovimentacoes thead th > button,
+#tabelaMovimentacoes thead th > div{
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  padding:0 !important;
+}
+
+/* Ordenação (ícones simples) */
+#tabelaMovimentacoes thead th.sortable{
+  cursor:pointer;
+  user-select:none;
+  position:relative;
+  padding-right:18px !important;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  vertical-align:middle;
+}
+#tabelaMovimentacoes thead th.sortable::after{
+  content:"↕";
+  position:absolute;
+  right:6px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:12px;
+  opacity:.55;
+}
+#tabelaMovimentacoes thead th.sortable.th-sort-asc::after{ content:"↑"; opacity:.9; }
+#tabelaMovimentacoes thead th.sortable.th-sort-desc::after{ content:"↓"; opacity:.9; }
+
+/* Números à direita */
+#tabelaMovimentacoes th:nth-child(5),
+#tabelaMovimentacoes td:nth-child(5),
+#tabelaMovimentacoes th:nth-child(6),
+#tabelaMovimentacoes td:nth-child(6),
+#tabelaMovimentacoes th:nth-child(7),
+#tabelaMovimentacoes td:nth-child(7),
+#tabelaMovimentacoes th:nth-child(8),
+#tabelaMovimentacoes td:nth-child(8),
+#tabelaMovimentacoes th:nth-child(9),
+#tabelaMovimentacoes td:nth-child(9){
+  text-align:right !important;
+}
+
+/* Responsivo: esconde colunas menos críticas em telas menores */
+@media (max-width:1024px){
+  #tabelaMovimentacoes thead th:nth-child(11),
+  #tabelaMovimentacoes tbody td:nth-child(11){ display:none; }
+}
+@media (max-width:900px){
+  #tabelaMovimentacoes thead th:nth-child(10),
+  #tabelaMovimentacoes tbody td:nth-child(10){ display:none; }
+}
+@media (max-width:768px){
+  .linha{ flex-direction:column; }
+  .campo{ flex:1 1 100%; }
+}

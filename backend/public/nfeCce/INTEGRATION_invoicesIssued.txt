@@ -1,0 +1,51 @@
+PRODNEX ERP — CC-e x public."invoicesIssued"
+
+Frontend atualizado para carregar uma NF-e já emitida antes de criar a CC-e.
+
+O frontend tenta, nesta ordem:
+1. GET /api/invoices-issued?limit=100&search=...
+2. GET /api/invoicesIssued?limit=100&search=...
+3. GET /api/invoices/issued?limit=100&search=...
+
+O endpoint pode retornar diretamente um array ou um destes envelopes:
+- { data: [...] }
+- { rows: [...] }
+- { items: [...] }
+- { invoices: [...] }
+- { data: { rows: [...] } }
+- { data: { items: [...] } }
+- { data: { invoices: [...] } }
+
+Campos reconhecidos da tabela public."invoicesIssued":
+- invoice_id
+- order_id
+- nfe_number
+- nfe_key
+- nfe_status
+- nfe_protocol
+- nfe_environment
+- issued_at / issued_date
+- total_amount
+- nfe_provider_id
+
+Ao selecionar a NF-e:
+- invoiceId <- invoice_id
+- nfeNumber <- nfe_number
+- orderId <- order_id
+- nfeKey <- nfe_key
+- nfePlugnotasId <- nfe_provider_id
+- idOuChave <- nfe_provider_id; se vazio, usa nfe_key
+
+O POST de emissão continua usando a API existente:
+POST /api/nfe/cce
+{
+  idOuChave,
+  orderId,
+  nfeKey,
+  nfePlugnotasId,
+  correcao,
+  createdBy
+}
+
+IMPORTANTE:
+O ZIP enviado continha somente o frontend do módulo nfeCce. Portanto, caso nenhum dos três endpoints de NF-e emitidas exista no backend atual, será necessário conectar a rota real do seu invoicesIssued em js/nfeCce.config.js.

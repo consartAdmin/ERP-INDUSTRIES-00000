@@ -1,0 +1,71 @@
+<!-- 📄 produtosFiscalLote.html – Edição Fiscal em Lote -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🧾 Atualização Fiscal em Lote – Produtos</title>
+
+  <!-- Estilo específico -->
+  <link rel="stylesheet" href="/public/includes/theme-consart.css">
+  <link rel="stylesheet" href="/public/includes/home.css">
+  <link rel="stylesheet" href="/public/includes/menu.css">
+  <link rel="stylesheet" href="produtosFiscalLote.css" />
+  <link rel="stylesheet" href="/public/statusUsuario/statusUsuario.css" />
+</head>
+
+<body class="consart-theme c-page">
+    <main class="c-main">
+    <div class="c-container c-container--2xl">
+
+    <h1>📦 Atualização Fiscal em Lote</h1>
+    <!-- 🔍 FILTROS -->
+    <section class="bloco">
+      <h2>🔍 Filtro por Grupo/Subgrupo</h2>
+      <div class="linha">
+        <div class="campo">
+          <label for="grupo">Grupo:</label>
+          <select id="grupo"></select>
+        </div>
+        <div class="campo">
+          <label for="subgrupo">Subgrupo:</label>
+          <select id="subgrupo"></select>
+        </div>
+      </div>
+    </section>
+
+    <!-- 🧾 DADOS FISCAIS -->
+    <section class="bloco">
+      <h2>🧾 Dados Fiscais a Aplicar</h2>
+      <div class="linha">
+        <div class="campo">
+          <label for="classificacao_fiscal_id">Classificação Fiscal:</label>
+          <select id="classificacao_fiscal_id"></select>
+        </div>
+        <div class="campo">
+          <label for="perfil_fiscal_id">Perfil Fiscal:</label>
+          <select id="perfil_fiscal_id"></select>
+        </div>
+      </div>
+    </section>
+
+    <!-- ✅ AÇÃO -->
+    <section class="bloco-acao">
+      <button id="btnAplicar" class="btn-aplicar">💾 Aplicar em Lote</button>
+
+      <!-- Mensagem de sucesso -->
+      <div id="resultado" class="resultado" style="display: none;"></div>
+
+      <!-- Lista de SKUs atualizados -->
+      <div id="skus-atualizados" class="lista-skus" style="display: none;"></div>
+    </section>
+  </main>
+
+  <!-- Script JS -->
+  <script src="/public/verificarLogin/verificarLogin.js"></script>
+  <script src="/public/statusUsuario/statusUsuario.js" defer></script>
+  <script src="/public/includes/menu.js"></script>
+  <script src="/public/includes/sessionTimeout.js" defer></script>
+  <script src="produtosFiscalLote.js"></script>
+</body>
+</html>

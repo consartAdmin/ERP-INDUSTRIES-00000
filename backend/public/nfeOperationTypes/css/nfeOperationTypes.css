@@ -1,0 +1,75 @@
+.op-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.op-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.op-form input:not([type="checkbox"]) {
+    width: 100%;
+}
+
+.op-span {
+    grid-column: 1 / -1;
+}
+
+.op-check {
+    flex-direction: row !important;
+    align-items: center;
+}
+
+.op-actions {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+}
+
+.op-delete {
+    color: #b42318;
+    border-color: #fda29b;
+}
+
+.op-delete:hover {
+    color: #fff;
+    background: #b42318;
+}
+
+@media (max-width: 700px) {
+    .op-form {
+        grid-template-columns: 1fr;
+    }
+
+    .op-span {
+        grid-column: auto;
+    }
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+}
+
+.header>div {
+    min-width: 0;
+}
+
+.header h1 {
+    margin: 0;
+}
+
+.header p {
+    margin: 4px 0 0;
+}
+
+#opNew {
+    flex: 0 0 auto;
+    margin-left: auto;
+}

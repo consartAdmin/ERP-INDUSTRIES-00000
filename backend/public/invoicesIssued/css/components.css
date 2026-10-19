@@ -1,0 +1,222 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ FILE: components.css                                               ║
+   ║ MODULE: invoicesIssued                                             ║
+   ║ DESCRIPTION: Inputs, botões, badges, ações e paginação             ║
+   ║ PRODNEX ERP                                                        ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+input,
+select {
+  width: 100%;
+  max-width: 100%;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  padding: 9px 11px;
+  font-size: 13px;
+  outline: none;
+  background: #ffffff;
+  color: #0f172a;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.12);
+}
+
+
+.sync-status {
+  flex: 0 0 auto;
+  padding: 9px 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.sync-status.info {
+  background: #e0f2fe;
+  color: #075985;
+  border: 1px solid #bae6fd;
+}
+
+.sync-status.success {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.sync-status.error {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.sync-status.is-hidden {
+  display: none;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.badge.autorizada {
+  background: #dcfce7;
+  color: var(--success);
+}
+
+.badge.cancelada {
+  background: #fee2e2;
+  color: var(--danger);
+}
+
+.badge.rejeitada {
+  background: #ffedd5;
+  color: var(--warning);
+}
+
+.badge.processando {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.badge.default {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
+.action-btn {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #0f172a;
+  border-radius: 7px;
+  padding: 6px 9px;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 11px;
+  line-height: 1.2;
+  transition: 0.14s ease;
+}
+
+.action-btn:hover {
+  filter: brightness(0.96);
+  transform: translateY(-1px);
+}
+
+.action-btn.edit {
+  background: #111827;
+  color: #ffffff;
+  border-color: #111827;
+}
+
+.action-btn.xml,
+.action-btn.danfe,
+.action-btn.download-all {
+  background: #ffffff;
+  border: 1px solid #dbe3ef;
+  width: 38px;
+  height: 32px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-btn.xml:hover,
+.action-btn.danfe:hover,
+.action-btn.download-all:hover {
+  background: #f8fafc;
+}
+
+.action-btn.download-all {
+  color: #166534;
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+}
+
+.action-btn.download-all:hover {
+  background: #dcfce7;
+}
+
+.download-all-icon {
+  font-size: 23px;
+  font-weight: 900;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.action-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.action-btn.disabled {
+  background: #e5e7eb;
+  color: #64748b;
+  border-color: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.pagination {
+  flex: 0 0 auto;
+  min-height: 52px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+  padding: 10px 0 6px;
+  background: #ffffff;
+  position: sticky;
+  bottom: 0;
+  z-index: 15;
+}
+
+#pageInfo {
+  font-weight: 800;
+  color: #0f172a;
+  min-width: 130px;
+  text-align: center;
+}
+
+.pagination .btn {
+  min-width: 105px;
+  height: 38px;
+  padding: 8px 14px;
+}
+
+.sync-status.warning {
+  background: #fff7ed;
+  color: #9a3412;
+  border: 1px solid #fed7aa;
+}
+
+.sync-alert-list {
+  margin: 7px 0 0 20px;
+  padding: 0;
+  font-weight: 600;
+  line-height: 1.45;
+  max-height: 210px;
+  overflow: auto;
+}
+
+.sync-alert-list li + li {
+  margin-top: 4px;
+}

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>📦 Pedidos – PRODNEX ERP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Tema base + globais -->
+  <link rel="stylesheet" href="/public/includes/theme-consart.css">
+  <link rel="stylesheet" href="/public/includes/home.css" />
+  <link rel="stylesheet" href="/public/includes/menu.css" />
+  <link rel="stylesheet" href="/public/statusUsuario/statusUsuario.css" />
+
+  <!-- Estilos da página -->
+  <link rel="stylesheet" href="pedidos.css" />
+</head>
+<body class="consart-theme c-page">
+  <main class="c-main">
+    <div class="c-container c-container--2xl">
+      <h1>📦 Pedidos</h1>
+
+      <!-- 🔎 Filtros + paginação (sticky sob o header global) -->
+      <section class="sticky-toolbar" aria-label="Filtros de pedidos">
+        <div class="toolbar-row">
+          <div class="toolbar-left">
+            <input type="text" id="filtroCliente" placeholder="🔍 Cliente ou CNPJ..." />
+            <input type="date" id="filtroDataInicio" />
+            <input type="date" id="filtroDataFim" />
+            <button id="btnBuscarPedidos" class="btn">🔎 Buscar</button>
+          </div>
+          <div class="toolbar-right">
+            <span id="pagInfo" class="muted">—</span>
+            <label class="pagesize muted">
+              Itens por página:
+              <select id="selPageSize">
+                <option value="10" selected>10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+              </select>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- 📋 Tabela -->
+      <section class="card tabela-wrapper" aria-labelledby="titulo-tabela">
+        <h2 id="titulo-tabela" class="card-title">Lista de Pedidos</h2>
+        <div class="c-scroll c-scroll--table">
+          <table class="tabela" id="tabelaPedidos">
+            <colgroup>
+              <col style="width:10%">
+              <col style="width:16%">
+              <col style="width:auto">
+              <col style="width:16%">
+              <col style="width:14%">
+              <col style="width:12%">
+            </colgroup>
+            <thead>
+              <tr>
+                <th>Nº Pedido</th>
+                <th>Data</th>
+                <th>Cliente</th>
+                <th class="num">Total</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="listaPedidos">
+              <!-- JS irá preencher -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- API base opcional -->
+  <script> window.apiBase = window.apiBase || ''; </script>
+
+  <!-- Scripts globais -->
+  <script src="/public/verificarLogin/verificarLogin.js"></script>
+  <script src="/public/statusUsuario/statusUsuario.js" defer></script>
+  <script src="/public/includes/menu.js"></script>
+  <script src="/public/includes/sessionTimeout.js" defer></script>
+
+  <!-- Lógica da página -->
+  <script src="pedidos.js"></script>
+</body>
+</html>

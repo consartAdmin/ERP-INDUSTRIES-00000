@@ -1,0 +1,35 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ FILE: chartOfAccountsModal.css                                      ║
+   ║ MODULE: Chart Of Accounts                                           ║
+   ║ DESCRIPTION: Complementos dos modais do Plano de Contas             ║
+   ║ (estrutura/visual vêm do padrão global: includes/css/modals.css)    ║
+   ║ PRODNEX ERP                                                         ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+/* Texto auxiliar no topo do corpo do modal */
+.coa-modal__subtitle{
+  margin: 0 0 12px 0;
+  font-size: 12.5px;
+  color: #667085;
+}
+
+/* Caixa de erro dentro do modal */
+.coa-modal__error{
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #fff1f2;
+  border: 1px solid #ffd8dd;
+  color: #b42318;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.coa-modal__error.hidden{
+  display: none;
+}
+
+/* Modal "Nova Conta Pai" abre por cima do modal "Nova Conta" */
+#coaParentModal{
+  --modal-z-index: 10000;
+}

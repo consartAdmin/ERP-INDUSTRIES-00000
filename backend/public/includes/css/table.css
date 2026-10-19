@@ -1,0 +1,1630 @@
+/* ╔════════════════════════════════════════════════════════════════════╗
+   ║ table.css — Tabelas padrão | PRODNEX ERP                           ║
+   ║ ✅ Zebra / hover / altura real                                     ║
+   ║ ✅ Scroll interno reutilizável                                     ║
+   ╚════════════════════════════════════════════════════════════════════╝ */
+
+:root {
+    --table-row-even-bg: #ffffff;
+    --table-row-odd-bg: #f8fafc;
+    --table-row-hover-bg: #f3f4f6;
+
+    --table-row-min-height: 20px;
+    --table-cell-font-size: 13px;
+    --table-cell-line-height: 16px;
+    --table-cell-pad-x: 10px;
+
+    --table-scroll-height: 420px;
+    --table-scroll-max-height: 65vh;
+
+    /* =========================================================
+   Table Layout (Around the table)
+========================================================= */
+    --table-shell-bg: #2c609f;
+
+    /* =========================================================
+   Header
+========================================================= */
+    --table-head-height: 34px;
+
+    --table-head-bg: #f3f4f6;
+
+    --table-head-color: #0f172a;
+
+    --table-head-font-size: 13px;
+
+    --table-head-font-weight: 700;
+
+    --table-head-padding-x: 10px;
+
+    --table-head-border-color: #02080f;
+
+
+    /* =========================================================
+   Height Size From The table
+========================================================= */
+    --table-height-100: 100px;
+    --table-height-200: 200px;
+    --table-height-300: 300px;
+    --table-height-400: 400px;
+    --table-height-500: 500px;
+    --table-height-550: 550px;
+    --table-height-570: 570px;
+    --table-height-600: 600px;
+
+    /* Vertical column lines */
+    --table-column-border-color: rgba(2, 8, 15, 0.28);
+    --table-column-border-width: 1px;
+
+    /* =========================================================
+   INTO TEXT POSITION
+========================================================= */
+
+    /* Text alignment */
+    --table-text-left: left;
+    --table-text-center: center;
+    --table-text-right: right;
+
+    /* Default alignments */
+    --table-head-text-align: var(--table-text-center);
+    --table-body-text-align: var(--table-text-center);
+
+    /* =========================================================
+   Table Footer
+========================================================= */
+
+    --table-footer-height: 60px;
+    --table-footer-bg: #f3f4f6;
+    --table-footer-color: #0f172a;
+    --table-footer-font-size: 12px;
+    --table-footer-font-weight: 600;
+    --table-footer-padding-x: 0px;
+    --table-footer-border-color: #02080f;
+    --table-footer-text-align: var(--table-text-center);
+
+    /* Rows per page */
+    --table-footer-page-size-gap: 8px;
+    --table-footer-page-size-height: 30px;
+    --table-footer-page-size-width: 70px;
+    --table-footer-page-size-padding-x: 8px;
+    --table-footer-page-size-radius: 8px;
+    --table-footer-page-size-border: #9ca3af;
+    --table-footer-page-size-bg: #ffffff;
+    --table-footer-page-size-color: #111827;
+
+    /* =========================================================
+       Fixed column widths
+    ========================================================= */
+
+    --table-column-width-1: 50px;
+    --table-column-width-2: 70px;
+    --table-column-width-3: 90px;
+    --table-column-width-4: 110px;
+    --table-column-width-5: 130px;
+    --table-column-width-6: 150px;
+    --table-column-width-7: 180px;
+    --table-column-width-8: 220px;
+    --table-column-width-9: 260px;
+    --table-column-width-10: 320px;
+
+    /* =========================================================
+Integrated 
+========================================================= */
+    --table-filter-bg: #f3f4f6;
+    --table-filter-color: #0f172a;
+    --table-filter-border-color: #02080f;
+    --table-filter-padding: 12px;
+    --table-filter-gap: 1px;
+
+    /* =========================================================
+   Row Height Utilities
+========================================================= */
+
+    --table-row-h-20: 20px;
+    --table-row-h-24: 24px;
+    --table-row-h-28: 28px;
+    --table-row-h-32: 32px;
+    --table-row-h-36: 36px;
+    --table-row-h-40: 40px;
+
+    /* =========================================================
+   Table Border and Radius
+========================================================= */
+
+    --table-border-width: 1px;
+    --table-border-color: #02080f;
+
+    --table-radius-top: 10px;
+    --table-radius-bottom: 10px;
+
+    --table-integrated-max-height-100: 100px;
+    --table-integrated-max-height-150: 150px;
+    --table-integrated-max-height-200: 200px;
+    --table-integrated-max-height-250: 250px;
+    --table-integrated-max-height-300: 300px;
+    --table-integrated-max-height-350: 350px;
+    --table-integrated-max-height-400: 400px;
+    --table-integrated-max-height-450: 450px;
+    --table-integrated-max-height-500: 500px;
+    --table-integrated-max-height-550: 550px;
+    --table-integrated-max-height-600: 600px;
+    --table-integrated-max-height-650: 650px;
+    --table-integrated-max-height-700: 700px;
+    --table-integrated-max-height-750: 750px;
+    --table-integrated-max-height-800: 800px;
+
+    --table-freeze-col-1-width: var(--table-column-width-1);
+    --table-freeze-col-2-width: var(--table-column-width-1);
+    --table-freeze-col-3-width: var(--table-column-width-1);
+
+    --table-freeze-body-bg: var(--table-row-even-bg);
+    --table-freeze-body-odd-bg: var(--table-row-odd-bg);
+    --table-freeze-hover-bg: var(--table-row-hover-bg);
+    --table-freeze-head-bg: var(--table-head-bg);
+
+    --table-freeze-divider-color: rgba(15, 23, 42, 0.22);
+    --table-freeze-body-z-index: 4;
+    --table-freeze-head-z-index: 8;
+
+}
+
+.table-max-height-100 {
+    --table-integrated-max-height: var(--table-integrated-max-height-100);
+}
+
+.table-max-height-150 {
+    --table-integrated-max-height: var(--table-integrated-max-height-150);
+}
+
+.table-max-height-200 {
+    --table-integrated-max-height: var(--table-integrated-max-height-200);
+}
+
+.table-max-height-250 {
+    --table-integrated-max-height: var(--table-integrated-max-height-250);
+}
+
+.table-max-height-300 {
+    --table-integrated-max-height: var(--table-integrated-max-height-300);
+}
+
+.table-max-height-350 {
+    --table-integrated-max-height: var(--table-integrated-max-height-350);
+}
+
+.table-max-height-400 {
+    --table-integrated-max-height: var(--table-integrated-max-height-400);
+}
+
+.table-max-height-450 {
+    --table-integrated-max-height: var(--table-integrated-max-height-450);
+}
+
+.table-max-height-500 {
+    --table-integrated-max-height: var(--table-integrated-max-height-500);
+}
+
+.table-max-height-550 {
+    --table-integrated-max-height: var(--table-integrated-max-height-550);
+}
+
+.table-max-height-600 {
+    --table-integrated-max-height: var(--table-integrated-max-height-600);
+}
+
+.table-max-height-650 {
+    --table-integrated-max-height: var(--table-integrated-max-height-650);
+}
+
+.table-max-height-700 {
+    --table-integrated-max-height: var(--table-integrated-max-height-700);
+}
+
+.table-max-height-750 {
+    --table-integrated-max-height: var(--table-integrated-max-height-750);
+}
+
+.table-max-height-800 {
+    --table-integrated-max-height: var(--table-integrated-max-height-800);
+}
+
+.table-row-h-20 {
+    --table-row-min-height: var(--table-row-h-20);
+}
+
+.table-row-h-24 {
+    --table-row-min-height: var(--table-row-h-24);
+}
+
+.table-row-h-28 {
+    --table-row-min-height: var(--table-row-h-28);
+}
+
+.table-row-h-32 {
+    --table-row-min-height: var(--table-row-h-32);
+}
+
+.table-row-h-36 {
+    --table-row-min-height: var(--table-row-h-36);
+}
+
+.table-row-h-40 {
+    --table-row-min-height: var(--table-row-h-40);
+}
+
+/* Wrapper com scroll interno */
+.table-scroll {
+    width: 100%;
+    max-height: var(--table-scroll-max-height);
+    overflow: auto;
+
+    border: 1px solid #01040a;
+    border-radius: 10px 10px 0 0;
+
+    background: #f5f5f5;
+    /* caixa branca da tabela */
+}
+
+/* Altura fixa opcional */
+.table-scroll--fixed {
+    height: var(--table-scroll-height);
+    max-height: var(--table-scroll-height);
+}
+
+/* Table base */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* Zebra */
+.table-zebra tbody tr:nth-child(odd),
+.table.table-zebra tbody tr:nth-child(odd) {
+    background-color: var(--table-row-odd-bg);
+}
+
+.table-zebra tbody tr:nth-child(even),
+.table.table-zebra tbody tr:nth-child(even) {
+    background-color: var(--table-row-even-bg);
+}
+
+.table-zebra tbody tr {
+    height: var(--table-row-min-height);
+}
+
+.table-zebra tbody td,
+.table-zebra tbody th {
+    font-size: var(--table-cell-font-size);
+    line-height: var(--table-cell-line-height);
+
+    padding-top: max(2px, calc((var(--table-row-min-height) - var(--table-cell-line-height)) / 2));
+    padding-bottom: max(2px, calc((var(--table-row-min-height) - var(--table-cell-line-height)) / 2));
+    padding-left: var(--table-cell-pad-x);
+    padding-right: var(--table-cell-pad-x);
+
+    vertical-align: middle;
+    color: inherit;
+}
+
+/* Hover */
+.table-zebra-hover tbody tr:hover {
+    background-color: var(--table-row-hover-bg);
+}
+
+/* Selectable table rows */
+.table-zebra-hover tbody tr {
+    cursor: pointer;
+}
+
+/* Bordas suaves */
+.table-zebra tbody tr+tr>td,
+.table-zebra tbody tr+tr>th {
+    border-top: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+/* =========================================================
+   Table Header
+========================================================= */
+
+.table thead th {
+    height: var(--table-head-height);
+    padding: 0 var(--table-head-padding-x);
+
+    background: var(--table-head-bg);
+    color: var(--table-head-color);
+
+    font-size: var(--table-head-font-size);
+    font-weight: var(--table-head-font-weight);
+
+    text-align: var(--table-head-text-align);
+    vertical-align: middle;
+
+    border-bottom: 1px solid var(--table-head-border-color);
+    white-space: nowrap;
+}
+
+/* Default body alignment */
+.table tbody td,
+.table tbody th {
+    text-align: var(--table-body-text-align);
+    vertical-align: middle;
+}
+
+.table-sticky-head thead th {
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 2;
+
+    background: var(--table-head-bg);
+
+    box-shadow: 0 1px 0 var(--table-head-border-color);
+
+}
+
+/* Compatibilidade com budgets */
+.table-zebra.table--budgets tbody tr:nth-child(odd) {
+    background-color: var(--table-row-odd-bg) !important;
+}
+
+.table-zebra.table--budgets tbody tr:nth-child(even) {
+    background-color: var(--table-row-even-bg) !important;
+}
+
+.table-zebra-hover.table--budgets tbody tr:hover {
+    background-color: var(--table-row-hover-bg) !important;
+}
+
+/*------------------------------------------
+To define the widght size from the columns
+-------------------------------------------*/
+.th-actions {
+    width: 90px;
+}
+
+.th-xs {
+    width: 70px;
+}
+
+.th-sm {
+    width: 120px;
+}
+
+.th-md {
+    width: 180px;
+}
+
+.th-lg {
+    width: 260px;
+}
+
+.table-layout>.table-scroll {
+    border-radius: 10px 10px 0 0;
+}
+
+.table-layout>.table-footer {
+    margin-top: -1px;
+    border-radius: 0 0 10px 10px;
+}
+
+.table-scroll--page {
+    height: calc(100vh - 315px);
+    max-height: calc(100vh - 315px);
+    overflow: auto;
+}
+
+.table-height-100 {
+    height: var(--table-height-100);
+    max-height: var(--table-height-100);
+}
+
+.table-height-200 {
+    height: var(--table-height-200);
+    max-height: var(--table-height-200);
+}
+
+.table-height-300 {
+    height: var(--table-height-300);
+    max-height: var(--table-height-300);
+}
+
+.table-height-400 {
+    height: var(--table-height-400);
+    max-height: var(--table-height-400);
+}
+
+.table-height-550 {
+    height: var(--table-height-550);
+    max-height: var(--table-height-550);
+}
+
+.table-height-570 {
+    height: var(--table-height-570);
+    max-height: var(--table-height-570);
+}
+
+.table-height-500 {
+    height: var(--table-height-500);
+    max-height: var(--table-height-500);
+}
+
+.table-height-600 {
+    height: var(--table-height-600);
+    max-height: var(--table-height-600);
+}
+
+/* =========================================================
+   Flexible Table Layout
+========================================================= */
+
+.table-layout {
+    display: flex;
+    flex-direction: column;
+
+    flex: 1 1 auto;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+}
+
+/* Flexible scroll area */
+.table-layout>.table-scroll--flex {
+    flex: 1 1 auto;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+
+    height: auto;
+    max-height: none;
+
+    overflow: auto;
+}
+
+/* =========================================================
+   Table Footer
+========================================================= */
+
+.table-footer {
+    min-height: var(--table-footer-height);
+    padding: 0 var(--table-footer-padding-x);
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 12px;
+
+    background-color: var(--table-footer-bg);
+    color: var(--table-footer-color);
+
+    font-size: var(--table-footer-font-size);
+    font-weight: var(--table-footer-font-weight);
+
+    border: 1px solid var(--table-footer-border-color);
+    border-radius: 0 0 10px 10px;
+
+    box-sizing: border-box;
+    margin-top: -1px;
+}
+
+/* Left: record counter */
+.table-footer__info {
+    grid-column: 1;
+    justify-self: start;
+
+    display: flex;
+    align-items: center;
+    min-width: 0;
+}
+
+/* Center: pagination */
+.table-footer__pagination {
+    grid-column: 2;
+    justify-self: center;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    white-space: nowrap;
+}
+
+/* Right: rows per page */
+.table-footer__page-size {
+    grid-column: 3;
+    justify-self: end;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--table-footer-page-size-gap);
+
+    min-width: 0;
+    white-space: nowrap;
+
+    color: var(--table-footer-color);
+    font-size: var(--table-footer-font-size);
+    font-weight: var(--table-footer-font-weight);
+}
+
+.table-footer__page-size label {
+    margin: 0;
+
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+
+    cursor: pointer;
+}
+
+.table-footer__page-size-select {
+    width: var(--table-footer-page-size-width);
+    min-width: var(--table-footer-page-size-width);
+    height: var(--table-footer-page-size-height);
+
+    padding: 0 var(--table-footer-page-size-padding-x);
+
+    border: 1px solid var(--table-footer-page-size-border);
+    border-radius: var(--table-footer-page-size-radius);
+    outline: none;
+
+    background-color: var(--table-footer-page-size-bg);
+    color: var(--table-footer-page-size-color);
+
+    font-family: inherit;
+    font-size: var(--table-footer-font-size);
+    font-weight: var(--table-footer-font-weight);
+
+    cursor: pointer;
+}
+
+.table-footer__page-size-select:hover {
+    border-color: #64748b;
+}
+
+.table-footer__page-size-select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.16);
+}
+
+/* Footer alignment utilities */
+.table-footer-left {
+    justify-content: flex-start;
+    text-align: var(--table-text-left);
+}
+
+.table-footer-center {
+    justify-content: center;
+    text-align: var(--table-text-center);
+}
+
+.table-footer-right {
+    justify-content: flex-end;
+    text-align: var(--table-text-right);
+}
+
+.table-footer-between {
+    justify-content: space-between;
+}
+
+/* Responsive footer */
+@media (max-width: 800px) {
+    .table-footer {
+        grid-template-columns: 1fr;
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .table-footer__info,
+    .table-footer__pagination,
+    .table-footer__page-size {
+        grid-column: 1;
+        justify-self: center;
+    }
+
+    .table-footer__page-size {
+        justify-content: center;
+    }
+}
+
+.table-footer__info {
+    grid-column: 1;
+    justify-self: start;
+    display: flex;
+    align-items: center;
+}
+
+.table-footer__pagination {
+    grid-column: 2;
+    justify-self: center;
+}
+
+.table-footer__page-size {
+    grid-column: 3;
+    justify-self: end;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+
+    padding-right: 12px;
+    white-space: nowrap;
+}
+
+.table-footer__page-size-select {
+    display: block;
+
+    width: 95px;
+    min-width: 95px;
+    height: 30px;
+
+    padding: 0 8px;
+
+    border: 1px solid #9ca3af;
+    border-radius: 8px;
+
+    background-color: #ffffff;
+    color: #111827;
+
+    font: inherit;
+    cursor: pointer;
+}
+
+/* ==================================================================
+   Main Content
+================================================================== */
+
+.c-main {
+
+    flex: 1 1 auto;
+
+    min-width: 0;
+    min-height: 0;
+
+    padding: var(--gap-lg) 20px;
+
+    box-sizing: border-box;
+}
+
+/* =========================================================
+   Vertical Column Lines
+========================================================= */
+
+/* Header columns */
+.table thead th:not(:last-child) {
+    border-right: var(--table-column-border-width) solid var(--table-column-border-color);
+}
+
+/* Body columns */
+.table tbody td:not(:last-child),
+.table tbody th:not(:last-child) {
+    border-right: var(--table-column-border-width) solid var(--table-column-border-color);
+}
+
+/* =========================================================
+   Text Position
+========================================================= */
+.th-left,
+.td-left {
+    text-align: var(--table-text-left);
+}
+
+.th-center,
+.td-center {
+    text-align: var(--table-text-center);
+}
+
+.th-right,
+.td-right {
+    text-align: var(--table-text-right);
+}
+
+/* =========================================================
+   Column width utilities
+========================================================= */
+
+.table-col-w-1 {
+    width: var(--table-column-width-1);
+}
+
+.table-col-w-2 {
+    width: var(--table-column-width-2);
+}
+
+.table-col-w-3 {
+    width: var(--table-column-width-3);
+}
+
+.table-col-w-4 {
+    width: var(--table-column-width-4);
+}
+
+.table-col-w-5 {
+    width: var(--table-column-width-5);
+}
+
+.table-col-w-6 {
+    width: var(--table-column-width-6);
+}
+
+.table-col-w-7 {
+    width: var(--table-column-width-7);
+}
+
+.table-col-w-8 {
+    width: var(--table-column-width-8);
+}
+
+.table-col-w-9 {
+    width: var(--table-column-width-9);
+}
+
+.table-col-w-10 {
+    width: var(--table-column-width-10);
+}
+
+/* =========================================================
+   Fixed Table and Controlled Column Widths
+   Final priority
+========================================================= */
+
+.table.table-fixed,
+.table-layout-integrated .table.table-fixed {
+    width: max-content;
+    min-width: 100%;
+
+    table-layout: fixed;
+}
+
+.table.table-fixed th,
+.table.table-fixed td {
+    min-width: 0;
+    max-width: 100%;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    box-sizing: border-box;
+}
+
+/* Inputs must not force the column to become wider */
+.table.table-fixed td input,
+.table.table-fixed td select,
+.table.table-fixed td textarea {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+
+    box-sizing: border-box;
+}
+
+/* Text and button inside the same cell */
+.table-cell-inline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+
+    overflow: hidden;
+}
+
+/* Text occupies only the available space */
+.table-cell-inline__text {
+    flex: 1 1 auto;
+
+    min-width: 0;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    font-size: 0.8rem;
+}
+
+/* Button keeps its natural size */
+.table-cell-inline__action {
+    flex: 0 0 auto;
+}
+
+/* =========================================================
+   Seleção e exclusão em lote
+========================================================= */
+
+.table-col-select,
+.table-cell-select {
+    width: 42px;
+    min-width: 42px;
+    max-width: 42px;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+    text-align: center !important;
+}
+
+.table-col-select input[type="checkbox"],
+.table-cell-select input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    vertical-align: middle;
+    cursor: pointer;
+    accent-color: #2563eb;
+}
+
+.table tbody tr.is-selected {
+    background-color: #dbeafe !important;
+}
+
+.table tbody tr.is-selected:hover {
+    background-color: #bfdbfe !important;
+}
+
+#btnExcluirSelecionados {
+    white-space: nowrap;
+}
+
+#btnExcluirSelecionados:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* =========================================================
+   Integrated Table Layout
+   Filter + Table + Footer
+========================================================= */
+
+:root {
+    /* Integrated filter */
+    --table-filter-bg: #f3f4f6;
+    --table-filter-color: #0f172a;
+    --table-filter-border-color: #02080f;
+    --table-filter-padding: 12px;
+    --table-filter-gap: 10px;
+
+    /* Minimum component dimensions */
+    --table-integrated-min-height: 0px;
+    --table-integrated-scroll-min-height: 250px;
+}
+
+/* =========================================================
+   Complete Component
+========================================================= */
+
+.table-layout-integrated {
+    display: flex;
+    flex-direction: column;
+
+    flex: 1 1 auto;
+
+    width: 100%;
+    min-width: 0;
+    min-height: var(--table-integrated-min-height);
+
+    overflow: hidden;
+
+    border: var(--table-border-width) solid var(--table-border-color);
+
+    border-radius:
+        var(--table-radius-top) var(--table-radius-top) var(--table-radius-bottom) var(--table-radius-bottom);
+
+    background-color: var(--table-shell-bg);
+
+    box-sizing: border-box;
+}
+
+/* =========================================================
+   Integrated Filter
+========================================================= */
+
+.table-layout-integrated__filter {
+    /* Filter retains its natural height */
+    flex: 0 0 auto;
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--table-filter-gap);
+
+    width: 100%;
+    min-width: 0;
+
+    padding: var(--table-filter-padding);
+
+    background-color: var(--table-filter-bg);
+    color: var(--table-filter-color);
+
+    border-bottom: 1px solid var(--table-filter-border-color);
+
+    box-sizing: border-box;
+}
+
+/* Optional filter title */
+.table-layout-integrated__filter-title {
+    margin: 0;
+
+    color: var(--table-filter-color);
+
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+/*
+ * Supports both structures:
+ *
+ * 1. .table-layout-integrated__filter-fields
+ * 2. .table-layout-integrated__filter > .fields-inline
+ */
+.table-layout-integrated__filter-fields,
+.table-layout-integrated__filter>.fields-inline {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: var(--table-filter-gap);
+
+    width: 100%;
+    min-width: 0;
+
+    box-sizing: border-box;
+}
+
+/* Prevent individual fields from overflowing */
+.table-layout-integrated__filter-fields>.fields,
+.table-layout-integrated__filter>.fields-inline>.fields {
+    min-width: 0;
+
+    box-sizing: border-box;
+}
+
+/* Inputs cannot exceed their field containers */
+.table-layout-integrated__filter input,
+.table-layout-integrated__filter select,
+.table-layout-integrated__filter textarea {
+    max-width: 100%;
+
+    box-sizing: border-box;
+}
+
+/* Keep filter buttons aligned and readable */
+.table-layout-integrated__filter .btn {
+    flex: 0 0 auto;
+
+    margin: 0;
+
+    white-space: nowrap;
+}
+
+/* =========================================================
+   Integrated Table Scroll
+========================================================= */
+
+.table-layout-integrated>.table-scroll {
+    /*
+     * Table occupies the remaining available space.
+     * min-height: 0 allows internal scrolling without
+     * compressing the superior CONSART menu.
+     */
+    flex: 1 1 auto;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+
+    height: auto;
+    max-height: none;
+
+    overflow-x: auto;
+    overflow-y: auto;
+
+    border: 0;
+    border-radius: 0;
+
+    background-color: var(--table-row-even-bg);
+
+    box-sizing: border-box;
+}
+
+/*
+ * Overrides the generic flexible-scroll configuration
+ * when used inside the integrated component.
+ */
+.table-layout-integrated>.table-scroll--flex {
+    flex: 1 1 auto;
+
+    min-height: 0;
+    height: auto;
+    max-height: none;
+}
+
+/* Avoid double external borders */
+.table-layout-integrated .table {
+    width: 100%;
+    min-width: 100%;
+
+    border: 0;
+    border-collapse: collapse;
+}
+
+/* Keep the table header above the scrolling body */
+.table-layout-integrated .table-sticky-head thead th {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+
+    background-color: var(--table-head-bg);
+}
+
+/* =========================================================
+   Integrated Footer
+========================================================= */
+
+.table-layout-integrated>.table-footer {
+    flex: 0 0 auto;
+
+    width: 100%;
+    min-width: 0;
+    min-height: var(--table-footer-height);
+
+    margin-top: 0;
+
+    border-top: 1px solid var(--table-footer-border-color);
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+
+    border-radius:
+        0 0 var(--table-radius-bottom) var(--table-radius-bottom);
+
+    overflow: hidden;
+
+    box-sizing: border-box;
+}
+
+/* =========================================================
+   Fixed Table Height Utilities
+========================================================= */
+
+.table-scroll.table-height-100 {
+    --table-fixed-height: var(--table-height-100);
+}
+
+.table-scroll.table-height-200 {
+    --table-fixed-height: var(--table-height-200);
+}
+
+.table-scroll.table-height-300 {
+    --table-fixed-height: var(--table-height-300);
+}
+
+.table-scroll.table-height-400 {
+    --table-fixed-height: var(--table-height-400);
+}
+
+.table-scroll.table-height-500 {
+    --table-fixed-height: var(--table-height-500);
+}
+
+.table-scroll.table-height-550 {
+    --table-fixed-height: var(--table-height-550);
+}
+
+.table-scroll.table-height-570 {
+    --table-fixed-height: var(--table-height-570);
+}
+
+.table-scroll.table-height-600 {
+    --table-fixed-height: var(--table-height-600);
+}
+
+/* Applies the selected height */
+.table-layout-integrated>.table-scroll[class*="table-height-"] {
+    flex: 0 0 var(--table-fixed-height);
+
+    height: var(--table-fixed-height);
+    min-height: var(--table-fixed-height);
+    max-height: var(--table-fixed-height);
+}
+
+/* Standalone table with rounded corners */
+.table-scroll--rounded {
+    border: 1px solid var(--table-border-color, #02080f);
+    border-radius: var(--table-radius, 10px);
+    overflow: auto;
+}
+
+/* =========================================================
+   Fixed column widths — final priority
+========================================================= */
+
+.table.table-fixed,
+.table-layout-integrated .table.table-fixed {
+    width: max-content;
+    min-width: 100%;
+    table-layout: fixed;
+}
+
+.table.table-fixed th,
+.table.table-fixed td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   Flexible integrated table — maximum total height: 450px
+========================================================= */
+
+.table-layout-integrated {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+
+    min-width: 0;
+    min-height: 0;
+    max-height: var(--table-integrated-max-height);
+
+    overflow: hidden;
+}
+
+.table-layout-integrated>.table-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto;
+    max-height: none;
+    overflow: auto;
+}
+
+/* =========================================================
+   Responsive — Tablet
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .table-layout-integrated__filter-fields,
+    .table-layout-integrated__filter>.fields-inline {
+        align-items: stretch;
+    }
+
+    .table-layout-integrated__filter-fields>.fields,
+    .table-layout-integrated__filter>.fields-inline>.fields {
+        flex: 1 1 180px;
+
+        width: auto;
+        max-width: none;
+    }
+}
+
+/* =========================================================
+   Responsive — Mobile
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .table-layout-integrated__filter-fields>.fields,
+    .table-layout-integrated__filter>.fields-inline>.fields {
+        flex: 1 1 100%;
+
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .table-layout-integrated__filter .btn {
+        width: 100%;
+    }
+}
+
+/* Footer arranged in vertical rows */
+.table-footer-column {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+}
+
+/* Each summary line */
+.table-footer-column .summary {
+    width: 100%;
+}
+
+/* Footer action buttons */
+.table-footer__actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding-left: 305px;
+    /* optional: preserves current button position */
+}
+
+/* External space above the footer */
+.table-footer-mt-4 {
+    margin-top: 16px;
+}
+
+/* =========================================================
+   BUDGET EDITOR FOOTER
+   ========================================================= */
+
+.table-footer.budget-footer {
+    display: grid;
+    grid-template-columns: minmax(600px, 1fr) auto;
+    align-items: end;
+    column-gap: 32px;
+
+    min-height: auto;
+    padding: 14px 16px;
+    margin-top: 16px;
+
+    background: #f3f4f6;
+    border: 1px solid var(--table-footer-border-color);
+    border-radius: 10px;
+}
+
+/* Summary area */
+.budget-footer__summaries {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+}
+
+.budget-footer__group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.budget-footer__label {
+    color: #475569;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.budget-footer__values {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(130px, 1fr));
+    gap: 8px;
+}
+
+/* Consistent summary cards */
+.budget-footer .summary-pill {
+    width: auto;
+    min-width: 0;
+    height: 38px;
+    padding: 0 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.budget-footer .summary-pill span {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    white-space: nowrap;
+}
+
+/* Action area */
+.budget-footer__actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(130px, 1fr));
+    gap: 8px;
+
+    min-width: 280px;
+}
+
+.budget-footer__actions .btn {
+    width: 100%;
+    min-height: 25px;
+    padding: 6px 12px;
+
+    justify-content: flex-start;
+    white-space: nowrap;
+}
+
+/* Tablet */
+@media (max-width: 1100px) {
+    .table-footer.budget-footer {
+        grid-template-columns: 1fr;
+        row-gap: 16px;
+    }
+
+    .budget-footer__actions {
+        grid-template-columns: repeat(3, minmax(120px, 1fr));
+        width: 100%;
+    }
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+    .budget-footer__values {
+        grid-template-columns: repeat(2, minmax(130px, 1fr));
+    }
+
+    .budget-footer__actions {
+        grid-template-columns: repeat(2, minmax(120px, 1fr));
+    }
+}
+
+/* Must override display:flex from table-layout-integrated */
+.tabpanel[hidden],
+.table-layout-integrated[hidden] {
+    display: none !important;
+}
+
+/* =========================================================
+   INBOUND FORM — ITEMS + INSTALLMENTS
+========================================================= */
+
+.inbound-form-section {
+    display: block;
+    width: 100%;
+    max-height: none;
+    overflow: hidden;
+
+    background-color: var(--table-row-even-bg);
+}
+
+.inbound-form-section__content {
+    display: block;
+    width: 100%;
+    min-width: 0;
+
+    background-color: var(--table-row-even-bg);
+}
+
+/* Items: fixed height with internal vertical scroll */
+.inbound-form-section__content>.table-height-400 {
+    display: block;
+
+    width: 100%;
+    height: 400px;
+    min-height: 400px;
+    max-height: 400px;
+
+    overflow-x: auto;
+    overflow-y: auto;
+
+    border: 0;
+    border-radius: 0;
+
+    background-color: var(--table-row-even-bg);
+    box-sizing: border-box;
+}
+
+/* Empty items message */
+.inbound-form-section #itemsEmpty {
+    margin: 0;
+    padding: 8px 12px;
+
+    background-color: var(--table-row-even-bg);
+}
+
+/* Installments title */
+.inbound-installments-title {
+    display: flex;
+    align-items: center;
+
+    position: static;
+
+    width: 100%;
+    min-height: 42px;
+
+    margin: 0;
+    padding: 0 12px;
+
+    background-color: var(--table-filter-bg);
+    color: var(--table-filter-color);
+
+    border-top: 1px solid var(--table-border-color);
+    border-bottom: 1px solid var(--table-border-color);
+
+    box-sizing: border-box;
+}
+
+.inbound-installments-title h3 {
+    margin: 0;
+    padding: 0;
+
+    background-color: transparent;
+    color: var(--table-filter-color);
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* Installments table */
+.inbound-installments-table {
+    display: block;
+
+    width: 100%;
+    height: auto;
+    max-height: 220px;
+
+    overflow-x: auto;
+    overflow-y: auto;
+
+    border: 0;
+    border-radius: 0;
+
+    background-color: var(--table-row-even-bg);
+    box-sizing: border-box;
+}
+
+/* Empty installments message */
+.inbound-form-section #instEmpty {
+    margin: 0;
+    padding: 8px 12px;
+
+    background-color: var(--table-row-even-bg);
+}
+
+/* =========================================================
+   Frozen / Sticky Columns
+   ========================================================= */
+/* ---------------------------------------------------------
+   Base
+--------------------------------------------------------- */
+
+.table[class*="table-freeze-left-"] :is(th, td),
+.table[class*="table-freeze-right-"] :is(th, td) {
+    background-clip: padding-box;
+}
+
+/* ---------------------------------------------------------
+   Freeze first column
+--------------------------------------------------------- */
+
+.table.table-freeze-left-1 :is(th, td):nth-child(1),
+.table.table-freeze-left-2 :is(th, td):nth-child(1),
+.table.table-freeze-left-3 :is(th, td):nth-child(1) {
+    position: sticky;
+    left: 0;
+    z-index: var(--table-freeze-body-z-index);
+
+    width: var(--table-freeze-col-1-width);
+    min-width: var(--table-freeze-col-1-width);
+    max-width: var(--table-freeze-col-1-width);
+
+    background-color: var(--table-freeze-body-bg);
+}
+
+/* ---------------------------------------------------------
+   Freeze second column
+--------------------------------------------------------- */
+
+.table.table-freeze-left-2 :is(th, td):nth-child(2),
+.table.table-freeze-left-3 :is(th, td):nth-child(2) {
+    position: sticky;
+    left: var(--table-freeze-col-1-width);
+    z-index: var(--table-freeze-body-z-index);
+
+    width: var(--table-freeze-col-2-width);
+    min-width: var(--table-freeze-col-2-width);
+    max-width: var(--table-freeze-col-2-width);
+
+    background-color: var(--table-freeze-body-bg);
+}
+
+/* ---------------------------------------------------------
+   Freeze third column
+--------------------------------------------------------- */
+
+.table.table-freeze-left-3 :is(th, td):nth-child(3) {
+    position: sticky;
+
+    left: calc(var(--table-freeze-col-1-width) + var(--table-freeze-col-2-width));
+
+    z-index: var(--table-freeze-body-z-index);
+
+    width: var(--table-freeze-col-3-width);
+    min-width: var(--table-freeze-col-3-width);
+    max-width: var(--table-freeze-col-3-width);
+
+    background-color: var(--table-freeze-body-bg);
+
+    box-shadow:
+        6px 0 8px -8px var(--table-freeze-divider-color);
+}
+
+/* ---------------------------------------------------------
+   Freeze last column
+--------------------------------------------------------- */
+
+.table.table-freeze-right-1 :is(th, td):last-child {
+    position: sticky;
+    right: 0;
+    z-index: var(--table-freeze-body-z-index);
+
+    background-color: var(--table-freeze-body-bg);
+
+    box-shadow:
+        -6px 0 8px -8px var(--table-freeze-divider-color);
+}
+
+/* ---------------------------------------------------------
+   Frozen headers
+--------------------------------------------------------- */
+
+.table.table-sticky-head[class*="table-freeze-left-"] thead th:nth-child(1),
+.table.table-sticky-head.table-freeze-left-2 thead th:nth-child(2),
+.table.table-sticky-head.table-freeze-left-3 thead th:nth-child(2),
+.table.table-sticky-head.table-freeze-left-3 thead th:nth-child(3),
+.table.table-sticky-head.table-freeze-right-1 thead th:last-child {
+    top: 0;
+    z-index: var(--table-freeze-head-z-index);
+    background-color: var(--table-freeze-head-bg);
+}
+
+/* ---------------------------------------------------------
+   Zebra backgrounds
+--------------------------------------------------------- */
+
+.table.table-zebra[class*="table-freeze-left-"] tbody tr:nth-child(odd)>td:nth-child(1),
+
+.table.table-zebra.table-freeze-left-2 tbody tr:nth-child(odd)>td:nth-child(2),
+
+.table.table-zebra.table-freeze-left-3 tbody tr:nth-child(odd)> :is(td:nth-child(2),
+    td:nth-child(3)),
+
+.table.table-zebra.table-freeze-right-1 tbody tr:nth-child(odd)>td:last-child {
+    background-color: var(--table-freeze-body-odd-bg);
+}
+
+.table.table-zebra[class*="table-freeze-left-"] tbody tr:nth-child(even)>td:nth-child(1),
+
+.table.table-zebra.table-freeze-left-2 tbody tr:nth-child(even)>td:nth-child(2),
+
+.table.table-zebra.table-freeze-left-3 tbody tr:nth-child(even)> :is(td:nth-child(2),
+    td:nth-child(3)),
+
+.table.table-zebra.table-freeze-right-1 tbody tr:nth-child(even)>td:last-child {
+    background-color: var(--table-freeze-body-bg);
+}
+
+/* ---------------------------------------------------------
+   Hover backgrounds
+--------------------------------------------------------- */
+
+.table.table-zebra-hover[class*="table-freeze-left-"] tbody tr:hover>td:nth-child(1),
+
+.table.table-zebra-hover.table-freeze-left-2 tbody tr:hover>td:nth-child(2),
+
+.table.table-zebra-hover.table-freeze-left-3 tbody tr:hover> :is(td:nth-child(2),
+    td:nth-child(3)),
+
+.table.table-zebra-hover.table-freeze-right-1 tbody tr:hover>td:last-child {
+    background-color: var(--table-freeze-hover-bg);
+}
+
+/* ---------------------------------------------------------
+   Selected rows
+--------------------------------------------------------- */
+
+.table[class*="table-freeze-left-"] tbody tr.is-selected>td:nth-child(1),
+
+.table.table-freeze-left-2 tbody tr.is-selected>td:nth-child(2),
+
+.table.table-freeze-left-3 tbody tr.is-selected> :is(td:nth-child(2),
+    td:nth-child(3)),
+
+.table.table-freeze-right-1 tbody tr.is-selected>td:last-child {
+    background-color: #dbeafe !important;
+}

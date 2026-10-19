@@ -1,0 +1,113 @@
+/* ===========================================================
+   🧩 BOTÕES COMPACTOS (apenas tamanho, sem mexer em cores)
+   Ativo porque o <body> tem a classe .compact-btns
+   =========================================================== */
+.compact-btns .btn{
+  padding: 4px 8px !important;
+  font-size: .80rem !important;
+  line-height: 1 !important;
+  border-radius: 6px !important;
+  min-width: auto !important;
+  width: auto !important;
+  white-space: nowrap !important;
+}
+.compact-btns .btn-sm{
+  padding: 3px 6px !important;
+  font-size: .75rem !important;
+  border-radius: 6px !important;
+  min-width: auto !important;
+}
+.compact-btns .paginacao .btn{
+  padding: 3px 6px !important;
+  font-size: .75rem !important;
+  min-width: auto !important;
+}
+.compact-btns .btn,
+.compact-btns .btn *{
+  line-height: 1 !important;
+}
+
+/* Ellipsis para rótulos longos */
+.compact-btns .btn--ellipsis{
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 180px;
+}
+
+/* Ações: botões menores na última coluna */
+.compact-btns #tabelaMovimentacoes td:last-child .btn{
+  height: calc(var(--mov-row-h) * .7) !important;
+  padding: 0 6px !important;
+  font-size: .75rem !important;
+  border-radius: 6px !important;
+  min-width: auto !important;
+}
+.compact-btns #tabelaMovimentacoes td:last-child .btn-icon{
+  width: calc(var(--mov-row-h) * .7) !important;
+  height: calc(var(--mov-row-h) * .7) !important;
+  padding: 0 !important;
+}
+
+/* Toolbar de filtros */
+.compact-btns .mov-toolbar .campo > .btn,
+.compact-btns .mov-toolbar .btn{
+  min-width: 0 !important;
+  padding: 3px 6px !important;
+  font-size: .76rem !important;
+}
+
+/* remove min-width herdado de variantes */
+.compact-btns .btn.btn-secondary,
+.compact-btns .btn.btn-flat{
+  min-width: 0 !important;
+}
+
+/* Botões estreitos com reticências */
+.compact-btns .mov-toolbar .btn{
+  max-width: 140px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  padding: 3px 8px !important;
+  font-size: .74rem !important;
+}
+
+/* Ajustes finos por ID (opcional) */
+#btnRelatorioPdf{     max-width: 130px !important; }
+#btnBaixarZipPeriodo{ max-width: 150px !important; }
+#btnNovaMov{          max-width: 120px !important; }
+
+/* ===========================================================
+   🎯 Toolbar de Filtros — compactar campos
+   =========================================================== */
+.compact-btns .mov-toolbar{
+  gap: 8px !important;
+  flex-wrap: nowrap !important;
+  align-items: end !important;
+}
+
+.compact-btns .mov-toolbar .campo{
+  min-width: 0 !important;
+  flex: 0 0 auto !important;
+}
+
+.compact-btns .mov-toolbar input,
+.compact-btns .mov-toolbar select{
+  height: 28px !important;
+  padding: 2px 8px !important;
+  font-size: .80rem !important;
+}
+
+.compact-btns .mov-toolbar label{
+  font-size: .80rem !important;
+  margin-bottom: 4px !important;
+}
+
+.compact-btns .mov-toolbar #filtroQ{
+  width: 260px !important;
+  max-width: 30vw !important;
+}
+.compact-btns .mov-toolbar #filtroPeriodo{   width: 256px !important; }
+.compact-btns .mov-toolbar #filtroConta{      width: 170px !important; }
+.compact-btns .mov-toolbar #filtroTipo{       width: 140px !important; }

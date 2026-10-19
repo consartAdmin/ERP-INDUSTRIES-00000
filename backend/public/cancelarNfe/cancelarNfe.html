@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>CANCELAR NF-e | PRODNEX ERP</title>
+
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/cancelarNfe/cancelarNfe.css" />
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <!-- =============================================================== -->
+    <!-- CABEÇALHO                                                       -->
+    <!-- =============================================================== -->
+    <div class="header header-h-5">
+      <div class="fields-inline">
+        <div class="fields fields-h-6 fields-w-full fields-font-3">
+          <div>
+            <h1 class="module-title">Cancelamento de NF-e 🚫</h1>
+            <p class="module-subtitle">
+              Consulte o status da NF-e e realize o cancelamento com justificativa.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =============================================================== -->
+    <!-- AÇÕES PRINCIPAIS                                                -->
+    <!-- =============================================================== -->
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter table-max-height-500">
+        <div class="btn-inline btn-gap-3">
+          <button id="btnAbrirCancelamento" class="btn btn-new btn-sm" type="button">
+            🚫 Cancelar NF-e
+          </button>
+
+          <button id="btnAbrirConsultaStatus" class="btn btn-new btn-sm" type="button">
+            🔍 Consultar Status
+          </button>
+        </div>
+      </div>
+
+      <!-- =============================================================== -->
+      <!-- HISTÓRICO / RETORNO RESUMIDO                                    -->
+      <!-- =============================================================== -->
+
+      <div class="table-scroll table-height-flex table-row-h-28" data-table-settings="cancelarnfe.table-1">
+        <table class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th>Situação</th>
+              <th>Número</th>
+              <th>Chave</th>
+              <th>Protocolo</th>
+              <th>Cliente / Destinatário</th>
+              <th>Documento</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td id="nfSituacao">—</td>
+              <td id="nfNumero">—</td>
+              <td id="nfChave">—</td>
+              <td id="nfProtocolo">—</td>
+              <td id="nfCliente">—</td>
+              <td id="nfDocumento">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ✅ FOOTER INTERNO -->
+      <footer class="table-footer">
+
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+            <span id="limit">0 registros encontrados</span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+
+          <button type="button" id="pagAnterior" class="btn btn-clean btn-sm">
+            Anterior
+          </button>
+
+          <span id="infoPagina">Página 1 de 1</span>
+
+          <button type="button" id="pagProxima" class="btn btn-new btn-sm">
+            Próxima
+          </button>
+
+        </div>
+
+        <div class="table-footer__page-size">
+          <label for="apRowsPerPage">Mostrar</label>
+
+          <select id="apRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+            <option value="10">10 linhas</option>
+            <option value="20">20 linhas</option>
+            <option value="30">30 linhas</option>
+            <option value="50" selected>50 linhas</option>
+            <option value="100">100 linhas</option>
+          </select>
+        </div>
+        </div>
+      </footer>
+    </section>
+
+    <!-- =============================================================== -->
+    <!-- MODAL: CANCELAR NF-e                                            -->
+    <!-- =============================================================== -->
+    <div id="modalCancelarNfe" class="modal modal-width-8" aria-hidden="true">
+      <div class="modal__backdrop" data-modal-cancelar-close></div>
+
+      <div class="modal__dialog">
+        <section class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modalCancelarNfeTitle">
+
+          <header class="modal__header modal-header-color-3">
+
+            <div class="modal-cancel-header-content">
+
+              <h2 id="modalCancelarNfeTitle" class="modal__title">
+                Cancelar NF-e
+              </h2>
+
+              <p class="modal-cancel-warning">
+                Apenas notas fiscais com emissão inferior a 24 horas podem ser canceladas de maneira direta.
+                Para cancelamento após 24 horas, execute cancelamento extemporâneo no SIARE e depois retorne
+                a este módulo para finalizar.
+              </p>
+
+            </div>
+
+            <button class="modal__close" type="button" aria-label="Fechar" data-modal-cancelar-close>
+              &times;
+            </button>
+
+          </header>
+
+          <div class="modal__body">
+            <div class="fields-inline fields-gap-3 cancelar-nfe-form-row">
+
+              <div class="fields fields-h-6 fields-w-10 fields-font-3">
+                <label>NF-e emitida</label>
+                <button id="btnBuscarNfeEmitida" class="btn btn-secondary btn-sm" type="button">
+                  Buscar em NF-e
+                </button>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                <label for="idNota">
+                  ID / Chave / Protocolo da NF-e
+                  <span class="field-info-icon" title="Preenchido automaticamente pela NF-e selecionada."
+                    aria-label="Preenchido automaticamente pela NF-e selecionada.">
+                    ⓘ
+                  </span>
+                </label> <input type="text" id="idNota" class="form-control" placeholder="Selecione uma NF-e emitida"
+                  autocomplete="off" readonly />
+              </div>
+
+              <div class="fields fields-h-6 fields-w-8 fields-font-3">
+                <label for="nfeNumberSelecionada">Nº NF-e</label>
+                <input type="text" id="nfeNumberSelecionada" class="form-control" placeholder="—" readonly />
+              </div>
+
+              <div class="fields fields-h-6 fields-w-8 fields-font-3">
+                <label for="orderIdSelecionado">Pedido</label>
+                <input type="text" id="orderIdSelecionado" class="form-control" placeholder="—" readonly />
+              </div>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-full fields-font-3 cancelar-nfe-justificativa">
+              <label for="justificativa">Justificativa do Cancelamento</label>
+              <textarea id="justificativa" class="form-control textarea-lg" rows="5" maxlength="255"
+                placeholder="Descreva a justificativa do cancelamento com no mínimo 15 caracteres..."></textarea>
+
+              <div class="field-footer">
+                <small id="contadorJustificativa">0 caracteres</small>
+                <small>Mínimo exigido: 15 caracteres</small>
+              </div>
+            </div>
+
+            <div id="loadingBox" class="fields fields-h-6 fields-w-12 fields-font-3 hidden">
+              <div class="spinner"></div>
+              <span>Processando solicitação...</span>
+            </div>
+          </div>
+
+          <footer class="modal__footer modal-footer-color-3">
+            <button id="btnLimpar" class="btn btn-secondary btn-sm" type="button">
+              Limpar
+            </button>
+
+            <button id="btnCancelar" class="btn btn-new btn-sm" type="button">
+              🚫 Cancelar NF-e
+            </button>
+
+            <button class="btn btn-secondary btn-sm" type="button" data-modal-cancelar-close>
+              Fechar
+            </button>
+          </footer>
+        </section>
+      </div>
+    </div>
+
+    <!-- =============================================================== -->
+    <!-- MODAL: CONSULTAR STATUS                                         -->
+    <!-- =============================================================== -->
+    <div id="modalConsultaStatus" class="modal modal-width-8" aria-hidden="true">
+      <div class="modal__backdrop" data-modal-status-close></div>
+
+      <div class="modal__dialog">
+        <section class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modalConsultaStatusTitle">
+
+          <header class="modal__header modal-header-color-3">
+            <h2 id="modalConsultaStatusTitle" class="modal__title">Consultar Status da NF-e</h2>
+
+            <button class="modal__close" type="button" aria-label="Fechar" data-modal-status-close>&times;</button>
+          </header>
+
+          <div class="modal__body">
+            <div class="fields-inline fields-gap-3 cancelar-nfe-form-row">
+              <div class="fields fields-h-6 fields-w-10 fields-font-3">
+                <label>NF-e emitida</label>
+                <button id="btnBuscarNfeStatus" class="btn btn-secondary btn-sm" type="button">
+                  Buscar em NF-e
+                </button>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                <label>NF-e selecionada</label>
+                <input id="statusNfeSelecionada" type="text" class="form-control"
+                  placeholder="Selecione uma NF-e emitida" readonly />
+              </div>
+            </div>
+
+            <div class="fields-inline fields-gap-3 cancelar-nfe-status-grid">
+              <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                <span class="info-label">Situação</span>
+                <strong id="modalNfSituacao">—</strong>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                <span class="info-label">Número</span>
+                <strong id="modalNfNumero">—</strong>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                <span class="info-label">Chave</span>
+                <strong id="modalNfChave" class="break-all">—</strong>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                <span class="info-label">Protocolo</span>
+                <strong id="modalNfProtocolo">—</strong>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                <span class="info-label">Cliente</span>
+                <strong id="modalNfCliente">—</strong>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                <span class="info-label">Documento</span>
+                <strong id="modalNfDocumento">—</strong>
+              </div>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-full fields-font-3">
+              <label for="retornoApi">Retorno detalhado</label>
+              <pre id="retornoApi" class="json-box">Nenhuma operação executada ainda.</pre>
+            </div>
+          </div>
+
+          <footer class="modal__footer modal-footer-color-3">
+            <button id="btnConsultar" class="btn btn-new btn-sm" type="button">
+              🔍 Consultar Status
+            </button>
+
+            <button class="btn btn-secondary btn-sm" type="button" data-modal-status-close>
+              Fechar
+            </button>
+          </footer>
+        </section>
+      </div>
+    </div>
+
+    <!-- =============================================================== -->
+    <!-- MODAL: BUSCAR NF-e EMITIDA                                     -->
+    <!-- =============================================================== -->
+    <div id="modalBuscarNfeEmitida" class="modal modal-width-10" aria-hidden="true">
+      <div class="modal__backdrop" data-modal-nfe-emitida-close></div>
+
+      <div class="modal__dialog">
+        <section class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modalBuscarNfeEmitidaTitle">
+
+          <header class="modal__header modal-header-color-3">
+            <h2 id="modalBuscarNfeEmitidaTitle" class="modal__title">
+              Selecionar NF-e Emitida
+            </h2>
+
+            <button class="modal__close" type="button" aria-label="Fechar modal"
+              data-modal-nfe-emitida-close>&times;</button>
+          </header>
+
+          <div class="modal__body">
+            <div class="fields-inline fields-gap-3">
+              <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                <label for="buscaNfeEmitida">Pesquisar NF-e</label>
+                <input id="buscaNfeEmitida" type="text"
+                  placeholder="NF-e, chave, pedido, protocolo ou ID do provedor" />
+              </div>
+
+              <div class="btn-inline">
+                <button id="btnExecutarBuscaNfeEmitida" class="btn btn-new btn-sm" type="button">
+                  Pesquisar
+                </button>
+              </div>
+            </div>
+
+            <div class="table-scroll table-height-400" data-table-settings="cancelarnfe.tbodynfesemitidas">
+              <table class="table table-sticky-head">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>NF-e</th>
+                    <th>Pedido</th>
+                    <th>Chave</th>
+                    <th>Status</th>
+                    <th>Emissão</th>
+                    <th>Valor</th>
+                    <th>Ação</th>
+                  </tr>
+                </thead>
+
+                <tbody id="tbodyNfesEmitidas">
+                  <tr>
+                    <td colspan="8" class="text-center">Carregando...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div id="nfesEmitidasInfo" class="font-normal">0 NF-e encontrada</div>
+          </div>
+
+          <footer class="modal__footer modal-footer-color-3">
+            <button class="btn btn-secondary btn-sm" type="button" data-modal-nfe-emitida-close>
+              Fechar
+            </button>
+          </footer>
+        </section>
+      </div>
+    </div>
+
+  </main>
+
+  <div id="toastContainer" class="toast-container"></div>
+  <script type="module" src="/public/cancelarNfe/js/cancelarNfe.init.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,456 @@
+/* ╔════════════════════════════════════════════════════════════╗
+   ║ cashMovimentsMobile.css — Mobile CAIXA / Movimentações    ║
+   ╚════════════════════════════════════════════════════════════╝ */
+
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .consart-container {
+    padding: 10px !important;
+  }
+
+  .tabs {
+    margin-top: 10px !important;
+  }
+
+  .tablist {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+  }
+
+  .tab {
+    flex: 1 0 auto;
+    min-width: 140px;
+    justify-content: center;
+    white-space: nowrap;
+    padding: 10px 12px !important;
+    font-size: 14px;
+  }
+
+  .card {
+    border-radius: 12px;
+    margin-top: 10px !important;
+  }
+
+  .card-header {
+    padding: 12px 14px !important;
+  }
+
+  .card-title {
+    font-size: 17px !important;
+  }
+
+  .card-body {
+    padding: 12px !important;
+    overflow-x: hidden;
+  }
+
+  /* ================= FORM CADASTRO ================= */
+
+  #formMovimentacao .linha {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: flex-start !important;
+    gap: 6px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
+    margin-top: 8px !important;
+  }
+
+  #formMovimentacao .campo {
+    flex: 0 0 120px !important;
+    width: 120px !important;
+    min-width: 120px !important;
+    max-width: 120px !important;
+  }
+
+  #formMovimentacao .campo input,
+  #formMovimentacao .campo select,
+  #formMovimentacao .campo textarea {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 28px !important;
+    font-size: 13px !important;
+    padding: 3px 5px !important;
+    box-sizing: border-box !important;
+  }
+
+  #formMovimentacao .campo label {
+    font-size: 13px !important;
+    line-height: 1.15 !important;
+    margin-bottom: 4px !important;
+  }
+
+  #formMovimentacao .campo > div[style*="display:flex"] {
+    width: 100% !important;
+    gap: 4px !important;
+  }
+
+  #btnBuscarFornecedor {
+    flex: 0 0 28px !important;
+    width: 28px !important;
+    min-width: 28px !important;
+    height: 28px !important;
+    min-height: 28px !important;
+    padding: 0 !important;
+  }
+
+  #formMovimentacao #fornecedor {
+    min-width: 0 !important;
+  }
+
+  #formMovimentacao input[type="file"] {
+    font-size: 11px !important;
+    padding: 2px !important;
+  }
+
+  #formMovimentacao #anexoHint {
+    display: block !important;
+    font-size: 12px !important;
+    line-height: 1.25 !important;
+    margin-top: 6px !important;
+  }
+
+  #formMovimentacao #isDeductible {
+    width: 22px !important;
+    height: 22px !important;
+    min-width: 22px !important;
+  }
+
+  #formMovimentacao label:has(#isDeductible) {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    font-size: 12px !important;
+    line-height: 1.1 !important;
+    margin-top: 6px !important;
+  }
+
+  #formMovimentacao .linha:nth-of-type(3) .campo:last-child {
+    flex: 0 0 260px !important;
+    width: 260px !important;
+    min-width: 260px !important;
+    max-width: 260px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-end !important;
+    gap: 6px !important;
+  }
+
+  #btnAbrirObservacao,
+  #formMovimentacao button[type="submit"] {
+    width: 100% !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    font-size: 12px !important;
+    padding: 4px 6px !important;
+    white-space: normal !important;
+  }
+
+  #btnUploadAnexo {
+    width: 100% !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    font-size: 12px !important;
+    padding: 3px 6px !important;
+    margin-top: 4px !important;
+  }
+
+  /* ================= FILTROS ================= */
+
+  .mov-toolbar {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: flex-end !important;
+    gap: 6px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px !important;
+  }
+
+  .mov-toolbar .campo {
+    flex: 0 0 130px !important;
+    width: 130px !important;
+    min-width: 130px !important;
+    max-width: 130px !important;
+  }
+
+  .mov-toolbar .campo input,
+  .mov-toolbar .campo select {
+    width: 100% !important;
+    height: 28px !important;
+    font-size: 13px !important;
+    padding: 3px 5px !important;
+    box-sizing: border-box !important;
+  }
+
+  .mov-toolbar .btn {
+    width: 100% !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    font-size: 12px !important;
+    padding: 4px 6px !important;
+    white-space: normal !important;
+  }
+
+  /* ================= TABELA MOVIMENTAÇÕES ================= */
+
+  .movs-card {
+    overflow: hidden !important;
+  }
+
+  .movs-card .card-body {
+    overflow: hidden !important;
+    padding: 8px !important;
+  }
+
+  .tabela-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    padding-bottom: 8px !important;
+  }
+
+  .tabela-movs {
+    display: table !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    table-layout: fixed !important;
+    border-collapse: collapse !important;
+    font-size: 10px !important;
+  }
+
+  .tabela-movs thead {
+    display: table-header-group !important;
+  }
+
+  .tabela-movs tbody {
+    display: table-row-group !important;
+  }
+
+  .tabela-movs tr {
+    display: table-row !important;
+    height: 26px !important;
+  }
+
+  .tabela-movs th,
+  .tabela-movs td {
+    display: table-cell !important;
+    padding: 4px 3px !important;
+    font-size: 10px !important;
+    line-height: 1.1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    vertical-align: middle !important;
+  }
+
+  /* Esconde colunas no mobile */
+  .tabela-movs th:nth-child(2),
+  .tabela-movs td:nth-child(2),
+  .tabela-movs th:nth-child(6),
+  .tabela-movs td:nth-child(6),
+  .tabela-movs th:nth-child(7),
+  .tabela-movs td:nth-child(7),
+  .tabela-movs th:nth-child(8),
+  .tabela-movs td:nth-child(8),
+  .tabela-movs th:nth-child(9),
+  .tabela-movs td:nth-child(9),
+  .tabela-movs th:nth-child(10),
+  .tabela-movs td:nth-child(10),
+  .tabela-movs th:nth-child(11),
+  .tabela-movs td:nth-child(11),
+  .tabela-movs th:nth-child(12),
+  .tabela-movs td:nth-child(12),
+  .tabela-movs th:nth-child(13),
+  .tabela-movs td:nth-child(13) {
+    display: none !important;
+  }
+
+  /* Colunas visíveis */
+  .tabela-movs th:nth-child(1),
+  .tabela-movs td:nth-child(1) {
+    width: 15% !important;
+  }
+
+  .tabela-movs th:nth-child(3),
+  .tabela-movs td:nth-child(3) {
+    width: 35% !important;
+  }
+
+  .tabela-movs th:nth-child(4),
+  .tabela-movs td:nth-child(4) {
+    width: 15% !important;
+  }
+
+  .tabela-movs th:nth-child(5),
+  .tabela-movs td:nth-child(5) {
+    width: 15% !important;
+    font-weight: 700 !important;
+  }
+
+  .tabela-movs th:nth-child(14),
+  .tabela-movs td:nth-child(14) {
+    width: 8% !important;
+    text-align: center !important;
+  }
+
+  .tabela-movs th:nth-child(15),
+  .tabela-movs td:nth-child(15) {
+    width: 12% !important;
+    text-align: center !important;
+  }
+
+  .tabela-movs td:nth-child(15) {
+    white-space: nowrap !important;
+  }
+
+  .tabela-movs td:nth-child(15) .btn {
+    width: 20px !important;
+    height: 22px !important;
+    min-width: 20px !important;
+    min-height: 22px !important;
+    padding: 0 !important;
+    font-size: 9px !important;
+    line-height: 1 !important;
+  }
+
+  .tabela-movs td:nth-child(14) .badge,
+  .tabela-movs td:nth-child(14) span {
+    font-size: 9px !important;
+  }
+
+  /* ================= PAGINAÇÃO ================= */
+
+  .paginacao {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px !important;
+  }
+
+  .paginacao .btn {
+    min-height: 34px;
+    font-size: 12px;
+  }
+
+  #infoPagina {
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  /* ================= MODAIS ================= */
+
+  .modal {
+    padding: 10px !important;
+  }
+
+  .modal-content,
+  .cx-modal {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 92vh;
+    overflow-y: auto;
+    border-radius: 14px;
+  }
+
+  .modal-header,
+  .cx-modal__header {
+    padding: 14px !important;
+  }
+
+  .modal-body,
+  .cx-modal__body {
+    padding: 14px !important;
+  }
+
+  .cx-edit-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .cx-field,
+  .cx-field--wide,
+  .cx-field--full {
+    grid-column: 1 / -1 !important;
+  }
+
+  .cx-attach-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .cx-attach-row input,
+  .cx-attach-row button {
+    width: 100%;
+  }
+
+  .modal-footer,
+  .cx-modal__footer {
+    display: flex !important;
+    flex-direction: column-reverse !important;
+    gap: 8px !important;
+  }
+
+  .modal-footer .btn,
+  .cx-modal__footer .btn {
+    width: 100%;
+  }
+}
+
+/* ================= PHONES SMALL ================= */
+
+@media (max-width: 480px) {
+  .card-title {
+    font-size: 16px !important;
+  }
+
+  .tab {
+    min-width: 135px;
+    font-size: 13px;
+  }
+
+  #formMovimentacao .campo {
+    flex-basis: 115px !important;
+    width: 115px !important;
+    min-width: 115px !important;
+    max-width: 115px !important;
+  }
+
+  #formMovimentacao .linha:nth-of-type(3) .campo:last-child {
+    flex-basis: 260px !important;
+    width: 260px !important;
+    min-width: 260px !important;
+    max-width: 260px !important;
+  }
+
+  .tabela-movs th,
+  .tabela-movs td {
+    font-size: 9px !important;
+    padding: 3px 2px !important;
+  }
+
+  .tabela-movs td:nth-child(15) .btn {
+    width: 18px !important;
+    height: 20px !important;
+    min-width: 18px !important;
+    min-height: 20px !important;
+    font-size: 8px !important;
+  }
+}

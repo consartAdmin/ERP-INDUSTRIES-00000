@@ -1,0 +1,90 @@
+/* ╔════════════════════════════════════════════════════════════════════╗
+   ║ inboundInvoicesDfeModal.css — Complementos do modal "Importar     ║
+   ║ do DF-e" | PRODNEX ERP                                            ║
+   ║                                                                   ║
+   ║ A estrutura, o tamanho e as cores vêm de                          ║
+   ║ /public/includes/css/modals.css (.modal, .modal__panel,           ║
+   ║ .modal-width-*, .modal-header-color-*).                           ║
+   ║ Aqui ficam apenas os detalhes que a folha global não cobre.       ║
+   ╚════════════════════════════════════════════════════════════════════╝ */
+
+/* O checkbox fica na linha de base dos demais campos do grid. */
+#dfeImportModal .dfe-check-field {
+    align-self: end;
+}
+
+#dfeImportModal .dfe-check {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    color: var(--modal-muted);
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+
+    cursor: pointer;
+}
+
+/* A tabela rola dentro do .modal__body, que já tem overflow próprio. */
+#dfeImportModal .dfe-table-scroll {
+    max-height: 100%;
+    overflow: auto;
+    overscroll-behavior: contain;
+}
+
+#dfeImportModal .dfe-col-right {
+    text-align: right;
+}
+
+#dfeImportModal .dfe-empty {
+    padding: 28px 12px !important;
+    color: var(--modal-muted);
+    text-align: center;
+}
+
+#dfeImportModal .dfe-badge {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 3px 8px;
+    border-radius: 999px;
+
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+#dfeImportModal .dfe-badge--done {
+    background: var(--modal-header-color-3);
+    color: var(--modal-header-text-color-3);
+}
+
+/* O rodapé do modal alinha à direita; o status precisa da esquerda. */
+#dfeImportModal .modal__footer {
+    justify-content: flex-start;
+}
+
+#dfeImportModal .dfe-status {
+    color: var(--modal-muted);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+#dfeImportModal .dfe-status[data-tone='error'] {
+    color: var(--modal-header-text-color-9);
+}
+
+#dfeImportModal .dfe-status[data-tone='warn'] {
+    color: #b45309;
+}
+
+/* ====================================================================
+   CADASTRO RÁPIDO DE FORNECEDOR
+   Estrutura vem de modals.css. Aqui só o empilhamento: o modal pode
+   ser aberto por cima do editor da nota, que usa o mesmo z-index.
+   ==================================================================== */
+
+#supplierModal {
+    z-index: 1300;
+}

@@ -1,0 +1,447 @@
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ ordersConsart.html — Pedidos | PRODNEX ERP                               ║
+     ║ ✅ Inclui botão "Return Order" no editor                          ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>PEDIDOS | PRODNEX ERP</title>
+
+  <!-- Design system global -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <!-- Componentes reutilizáveis (botões) -->
+  <link rel="stylesheet" href="/public/includes/css/components.css" />
+
+  <!-- Tabelas / tabs / barra topo -->
+  <link rel="stylesheet" href="/public/includes/css/tableZebra.css" />
+  <link rel="stylesheet" href="/public/includes/css/tableColumnsOrders.css" />
+  <link rel="stylesheet" href="/public/includes/css/tabs.css" />
+
+  <!-- Estilos específicos da página de pedidos -->
+  <link rel="stylesheet" href="/public/ordersConsart/ordersConsart.css" />
+
+  <!-- ✅ CONSART: menu fixo (sem “pulo” do conteúdo) -->
+  <link rel="stylesheet" href="/public/includes/css/menuConsart.css" />
+  <link rel="stylesheet" href="/public/includes/css/modalsGlobal.css" />
+  <link rel="stylesheet" href="/public/includes/css/statusUsuario.css" />
+  <link rel="stylesheet" href="/public/includes/css/centerAlertModal.css" />
+  <link rel="stylesheet" href="/public/includes/css/containerStatic.css" />
+  <link rel="stylesheet" href="/public/includes/css/scroll.css" />
+</head>
+
+<body class="consart-theme c-page page-orders with-fixed-header">
+
+  <!-- ✅ Mount fixo do menu (seu menuConsart.js injeta aqui) -->
+  <div id="menuConsartMount"></div>
+
+  <main class="c-main">
+    <div class="c-container c-container--2xl container-static container-static--full">
+
+      <!-- CARD PRINCIPAL -->
+      <section class="section-card">
+
+        <!-- Cabeçalho da página -->
+        <header class="row between center page-orders__header">
+          <div class="stack" style="gap: 4px;">
+            <!-- micro-subtítulo opcional -->
+          </div>
+
+          <div class="menu-botoes">
+            <button id="btnNovoPedido" class="btn btn-primary">
+              + Novo pedido
+            </button>
+            <button id="btnRecarregarPedidos" class="btn btn-flat">
+              ⟳ Recarregar
+            </button>
+          </div>
+        </header>
+
+        <!-- ABAS -->
+        <div class="tabs-wrapper">
+          <div class="row" style="gap: var(--gap-sm);">
+            <button class="btn btn-primary tab is-active" data-tab="list">Pedidos</button>
+            <button class="btn btn-flat tab" data-tab="editor">Pedido em andamento</button>
+          </div>
+        </div>
+
+        <!-- ========================= LISTA DE PEDIDOS ========================= -->
+        <section class="tab-panel is-active" data-panel="list">
+
+          <!-- Toolbar -->
+          <div class="toolbar-row page-orders__toolbar">
+
+            <label class="toolbar-label">
+              <span>Buscar</span>
+              <input id="qPedidos" type="text" placeholder="por número, cliente, CNPJ/CPF" />
+            </label>
+
+            <label class="toolbar-label">
+              <span>De</span>
+              <input id="dtDePedidos" type="date" />
+            </label>
+
+            <label class="toolbar-label">
+              <span>Até</span>
+              <input id="dtAtePedidos" type="date" />
+            </label>
+
+            <label class="toolbar-label">
+              <span>Status</span>
+              <select id="statusFiltroPedidos">
+                <option value="TODOS">Todos</option>
+                <option value="ABERTO">Aberto</option>
+                <option value="CONVERTIDO">Convertido</option>
+                <option value="FATURADO">Faturado</option>
+                <option value="CANCELADO">Cancelado</option>
+              </select>
+            </label>
+
+            <label class="toolbar-label">
+              <span>Mostrar</span>
+              <select id="limitPedidos">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50" selected>50</option>
+              </select>
+            </label>
+
+            <button id="btnBuscarPedidos" class="btn btn-primary">
+              🔍 Buscar
+            </button>
+
+            <button id="btnRelatorioPedidos" class="btn btn-flat btn-sm">
+              📄 Relatório PDF
+            </button>
+
+          </div>
+
+          <!-- Tabela -->
+          <div class="table table-zebra table-zebra-hover page-orders__table-wrapper page-orders__table--compact">
+            <table id="tblPedidos" class="table table-zebra table-zebra-hover page-orders__table--compact">
+              <thead>
+                <tr>
+                  <th class="col-expand"></th>
+                  <th class="col-id">#</th>
+                  <th class="col-data">Data</th>
+                  <th class="col-cliente">Cliente</th>
+                  <th class="col-cnpj">CNPJ/CPF</th>
+                  <th class="col-total">Total (R$)</th>
+                  <th class="col-status">Status</th>
+                  <th class="col-acoes">Ações</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+
+          <!-- Paginação -->
+          <footer class="pager page-orders__pager">
+            <div id="totalInfoPedidos">0 pedido(s)</div>
+
+            <div class="row center" style="gap: var(--gap-sm);">
+              <button id="prevPedidos" class="btn btn-flat btn-sm">◀</button>
+              <span id="pageInfoPedidos">Página 1 de 1</span>
+              <button id="nextPedidos" class="btn btn-flat btn-sm">▶</button>
+            </div>
+          </footer>
+        </section>
+
+        <!-- ========================= EDITOR DO PEDIDO ========================= -->
+        <section id="editorPedido" class="tab-panel page-orders__editor" data-panel="editor">
+
+          <!-- Header editor -->
+          <header class="row between center page-orders__editor-header">
+            <div class="stack" style="gap: 2px;">
+              <h2 id="editorPedidoTitle" class="page-orders__editor-title">Novo pedido</h2>
+              <p class="page-orders__editor-subtitle">Preencha os dados do pedido, NF-e, pagamento e itens.</p>
+            </div>
+
+            <div class="menu-botoes">
+              <!-- ✅ NOVO: Return Order -->
+              <button id="btnReturnOrder" class="btn btn-flat" title="Cancela o pedido e retorna para orçamento">
+                ↩ Return Order
+              </button>
+
+              <button id="btnEmitirNFe" class="btn btn-secondary">🧾 Emitir NF-e</button>
+              <button id="btnSalvarPedido" class="btn btn-primary">💾 Salvar</button>
+              <button id="btnFecharPedido" class="btn btn-flat">✖ Fechar</button>
+            </div>
+          </header>
+
+          <!-- BLOCO INTERNO DO EDITOR -->
+          <div class="page-orders__editor-body stack">
+
+            <!-- ==================== DADOS DO PEDIDO ==================== -->
+            <section class="stack page-orders__section">
+              <h3 class="section-title">Dados do pedido</h3>
+
+              <form id="formPedido" class="stack page-orders__form">
+                <input id="orderIdPedido" type="hidden" />
+
+                <div class="row page-orders__row">
+                  <div class="field">
+                    <label>Número</label>
+                    <input id="numeroPedido" type="text" readonly />
+                  </div>
+
+                  <div class="field">
+                    <label>Data</label>
+                    <input id="dtPedido" type="date" />
+                  </div>
+
+                  <div class="field">
+                    <label>Status</label>
+                    <select id="statusPedido">
+                      <option value="ABERTO">Aberto</option>
+                      <option value="CONVERTIDO">Convertido</option>
+                      <option value="FATURADO">Faturado</option>
+                      <option value="CANCELADO">Cancelado</option>
+                    </select>
+                  </div>
+
+                  <div class="field">
+                    <label>Status NF-e</label>
+                    <input id="nfeStatusPedido" type="text" readonly />
+                  </div>
+                </div>
+
+                <div class="field page-orders__field-full">
+                  <label>Observações</label>
+                  <textarea id="obsPedido" rows="2"></textarea>
+                </div>
+              </form>
+            </section>
+
+            <!-- ==================== DADOS DA NF-e ==================== -->
+            <section class="stack page-orders__section">
+              <h3 class="section-title">Dados da NF-e</h3>
+
+              <div class="page-orders__row-nfe-singleline">
+                <div class="field">
+                  <label>Número NF-e</label>
+                  <input id="nfeNumeroPedido" type="text" readonly />
+                </div>
+
+                <div class="field">
+                  <label>Série</label>
+                  <input id="nfeSeriePedido" type="text" readonly />
+                </div>
+
+                <div class="field">
+                  <label>Protocolo</label>
+                  <input id="nfeProtocoloPedido" type="text" readonly />
+                </div>
+
+                <div class="field">
+                  <label>Ambiente</label>
+                  <input id="nfeAmbientePedido" type="text" readonly />
+                </div>
+
+                <div class="field field-big">
+                  <label>Chave de acesso</label>
+                  <input id="nfeChavePedido" type="text" readonly />
+                </div>
+              </div>
+            </section>
+
+            <!-- ==================== DADOS DE PAGAMENTO ==================== -->
+            <section class="stack page-orders__section">
+              <h3 class="section-title">Dados de pagamento</h3>
+
+              <div class="row page-orders__row">
+                <div class="field">
+                  <label for="paymentMethodPedido">Forma de pagamento</label>
+                  <select id="paymentMethodPedido">
+                    <option value="">Selecione...</option>
+                  </select>
+                </div>
+
+                <div class="field field-grow">
+                  <label for="paymentTermsPedido">Condição / Observação de pagamento</label>
+                  <input id="paymentTermsPedido" type="text" placeholder="Ex: À vista | 30/60 dias | Cartão crédito, etc." />
+                </div>
+              </div>
+            </section>
+
+            <!-- ==================== DADOS DO CLIENTE ==================== -->
+            <section class="stack page-orders__section">
+              <h3 class="section-title">Dados do cliente (NF-e / XML)</h3>
+
+              <div class="row page-orders__row">
+                <div class="field field-grow">
+                  <label>Nome / Razão Social</label>
+                  <input id="cliPedido" type="text" readonly />
+                </div>
+
+                <div class="field">
+                  <label>CNPJ/CPF</label>
+                  <input id="docPedido" type="text" readonly />
+                </div>
+
+                <div class="field">
+                  <label>Inscrição Estadual</label>
+                  <input id="cliIePedido" type="text" readonly />
+                </div>
+              </div>
+
+              <div class="row page-orders__row">
+                <div class="field field-grow">
+                  <label>Endereço</label>
+                  <input id="cliEnderecoPedido" type="text" readonly />
+                </div>
+
+                <div class="field">
+                  <label>Número</label>
+                  <input id="cliNumeroPedido" type="text" readonly />
+                </div>
+
+                <div class="field">
+                  <label>Bairro / Distrito</label>
+                  <input id="cliBairroPedido" type="text" readonly />
+                </div>
+              </div>
+
+              <div class="row page-orders__row">
+                <div class="field">
+                  <label>CEP</label>
+                  <input id="cliCepPedido" type="text" readonly />
+                </div>
+
+                <div class="field field-grow">
+                  <label>Município</label>
+                  <input id="cliMunicipioPedido" type="text" readonly />
+                </div>
+
+                <div class="field">
+                  <label>UF</label>
+                  <input id="cliUfPedido" type="text" readonly />
+                </div>
+
+                <div class="field">
+                  <label>Código IBGE</label>
+                  <input id="cliIbgeCidadeLabelPedido" type="text" readonly />
+                </div>
+
+                <div class="field field-grow">
+                  <label>Fone / Fax</label>
+                  <input id="cliFonePedido" type="text" readonly />
+                </div>
+
+                <div class="field field-grow">
+                  <label>E-mail</label>
+                  <input id="cliEmailPedido" type="text" readonly />
+                </div>
+              </div>
+
+              <!-- Auxiliares -->
+              <input id="cliIbgeCidadePedido" type="hidden" />
+              <input id="cliPaisCodigoPedido" type="hidden" />
+              <input id="cliPaisNomePedido" type="hidden" />
+            </section>
+
+            <!-- ==================== INFORMAÇÕES COMPLEMENTARES ==================== -->
+            <section class="stack page-orders__section">
+              <h3 class="section-title">Informações complementares (Orçamento)</h3>
+
+              <div class="field page-orders__field-full">
+                <label>Observações do orçamento</label>
+                <textarea
+                  id="complementaryInfoPedido"
+                  rows="4"
+                  readonly
+                  placeholder="Sem informações complementares."
+                ></textarea>
+              </div>
+            </section>
+
+            <!-- ==================== ITENS DO PEDIDO ==================== -->
+            <section class="stack page-orders__section page-orders__section-items">
+              <div class="page-orders__section-header row between center">
+                <h3 class="section-title">Itens do pedido</h3>
+                <div class="page-orders__section-header-right">
+                  <span class="tag tag-soft">
+                    <span id="qtdItensPedido">0</span> item(s)
+                  </span>
+                </div>
+              </div>
+
+              <div class="page-orders__items-card">
+
+                <div class="page-orders__itens-table table table-zebra table-zebra-hover page-orders__table--compact">
+                  <table id="tblItensPedido" class="table table-zebra table-zebra-hover page-orders__table--compact">
+                    <thead>
+                      <tr>
+                        <th>SKU</th>
+                        <th>Descrição</th>
+                        <th>NCM</th>
+                        <th>CEST</th>
+                        <th>Grade</th>
+                        <th>U.M</th>
+                        <th class="ta-right">Qtd</th>
+                        <th class="ta-right">Unitário</th>
+                        <th class="ta-right">Desc (R$)</th>
+                        <th class="ta-right">Total</th>
+                        <th>Perfil fiscal</th>
+                        <th>Classificação fiscal</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+
+                <div class="page-orders__totals-bar">
+                  <div class="page-orders__totals">
+                    <div class="totais-group">
+                      <span class="totais-label">Subtotal</span>
+                      <strong id="subtotalPedido">0,00</strong>
+                    </div>
+                    <div class="totais-group">
+                      <span class="totais-label">Descontos</span>
+                      <strong id="totdescPedido">0,00</strong>
+                    </div>
+                    <div class="totais-group">
+                      <span class="totais-label">Frete</span>
+                      <strong id="fretePedido">0,00</strong>
+                    </div>
+                    <div class="totais-group totais-group--total">
+                      <span class="totais-label">Total geral</span>
+                      <span id="totalGeralPedido">0,00</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </section>
+
+          </div><!-- /editor-body -->
+        </section><!-- /EDITOR -->
+
+      </section><!-- /CARD -->
+
+    </div>
+  </main>
+
+  <!-- API_BASE fallback -->
+  <script>
+    window.API_BASE = window.apiBase || window.location.origin;
+  </script>
+
+  <!-- ✅ Core + containerStatic (mantém scroll interno e header fixo) -->
+  <script type="module" src="/public/includes/js/containerStatic.js"></script>
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <!-- ✅ Seu script do módulo -->
+  <script type="module" src="/public/ordersConsart/ordersConsart.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,387 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ budgetsPayments.css — Frontend Pagamentos do Orçamento             ║
+   ║ Path: backend/public/budgetsPayments/budgetsPayments.css           ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+* {
+  box-sizing: border-box;
+}
+
+.bp-page {
+  min-height: 100vh;
+  padding: 24px;
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 34%),
+    #f4f7fb;
+  color: #0f172a;
+}
+
+.bp-hero {
+  padding: 30px;
+  border-radius: 22px;
+  margin-bottom: 22px;
+  color: #fff;
+  background: linear-gradient(135deg, #0f172a, #1e3a8a, #64748b);
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.22);
+}
+
+.bp-eyebrow {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: #bfdbfe;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.bp-hero h1 {
+  margin: 0 0 8px;
+  font-size: 32px;
+  letter-spacing: -0.4px;
+}
+
+.bp-hero p {
+  margin: 0;
+  max-width: 780px;
+  line-height: 1.5;
+  opacity: 0.92;
+}
+
+.bp-card {
+  padding: 22px;
+  margin-bottom: 22px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  box-shadow: 0 12px 26px rgba(15, 23, 42, 0.08);
+}
+
+.bp-card-head,
+.bp-list-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.bp-card h2,
+.bp-list-head h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.bp-card p,
+.bp-list-head p {
+  margin: 5px 0 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.bp-budget-search {
+  display: grid;
+  grid-template-columns: minmax(240px, 420px) auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.bp-form {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr 0.7fr 1fr;
+  gap: 16px;
+}
+
+.bp-full {
+  grid-column: 1 / -1;
+}
+
+.bp-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.bp-card input,
+.bp-card select,
+.bp-card textarea {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 13px;
+  padding: 11px 12px;
+  background: #fff;
+  color: #0f172a;
+  font-size: 14px;
+  outline: none;
+}
+
+.bp-card input:focus,
+.bp-card select:focus,
+.bp-card textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+.bp-check {
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 13px;
+  background: #f8fafc;
+}
+
+.bp-check input {
+  width: auto;
+}
+
+.bp-validation {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(120px, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.bp-validation.hidden,
+.hidden {
+  display: none !important;
+}
+
+.bp-validation > div {
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid #dbeafe;
+  background: linear-gradient(135deg, #eff6ff, #f8fafc);
+}
+
+.bp-validation small {
+  display: block;
+  margin-bottom: 5px;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.bp-validation strong {
+  display: block;
+  font-size: 15px;
+  color: #0f172a;
+}
+
+.bp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.bp-btn-primary,
+.bp-btn-secondary,
+.bp-btn-light,
+.bp-btn-danger {
+  border: none;
+  border-radius: 13px;
+  padding: 11px 18px;
+  cursor: pointer;
+  font-weight: 900;
+  transition: 0.16s ease;
+}
+
+.bp-btn-primary {
+  background: #2563eb;
+  color: #fff;
+}
+
+.bp-btn-primary:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.bp-btn-secondary {
+  background: #0f172a;
+  color: #fff;
+}
+
+.bp-btn-secondary:hover {
+  background: #1e293b;
+  transform: translateY(-1px);
+}
+
+.bp-btn-light {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.bp-btn-light:hover {
+  background: #cbd5e1;
+}
+
+.bp-btn-danger {
+  background: #dc2626;
+  color: #fff;
+}
+
+.bp-btn-danger:hover {
+  background: #b91c1c;
+  transform: translateY(-1px);
+}
+
+.bp-btn-primary:disabled,
+.bp-btn-secondary:disabled,
+.bp-btn-light:disabled,
+.bp-btn-danger:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.bp-table-wrap {
+  overflow: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+}
+
+.bp-table-wrap table {
+  width: 100%;
+  min-width: 1050px;
+  border-collapse: collapse;
+}
+
+.bp-table-wrap th {
+  padding: 13px 12px;
+  background: #0f172a;
+  color: #fff;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.bp-table-wrap td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  color: #334155;
+  font-size: 13px;
+}
+
+.bp-table-wrap tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+.bp-table-wrap tbody tr:hover {
+  background: #eff6ff;
+}
+
+.bp-row-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.bp-mini-btn {
+  border: none;
+  border-radius: 10px;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.bp-mini-edit {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.bp-mini-installments {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.bp-mini-delete {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.bp-status-ok {
+  color: #15803d !important;
+}
+
+.bp-status-alert {
+  color: #b91c1c !important;
+}
+
+.bp-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 82px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.bp-pill-pendente {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.bp-pill-pago {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.bp-pill-parcial {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.bp-pill-cancelado {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+@media (max-width: 1100px) {
+  .bp-form,
+  .bp-validation {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .bp-budget-search {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .bp-page {
+    padding: 14px;
+  }
+
+  .bp-card-head,
+  .bp-list-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .bp-form,
+  .bp-validation {
+    grid-template-columns: 1fr;
+  }
+
+  .bp-actions {
+    flex-direction: column;
+  }
+
+  .bp-btn-primary,
+  .bp-btn-secondary,
+  .bp-btn-light,
+  .bp-btn-danger {
+    width: 100%;
+  }
+}

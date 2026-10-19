@@ -1,0 +1,398 @@
+<!-- ╔════════════════════════════════════════════════════════════════════╗ -->
+<!-- ║ 📈 salesPerformance.html – Desempenho dos Vendedores – CONSART   ║ -->
+<!-- ║ ✅ Relatório com KPIs operacionais                               ║ -->
+<!-- ║ ✅ Botão para gerar PDF                                          ║ -->
+<!-- ║ ✅ Configuração do conteúdo do PDF                               ║ -->
+<!-- ║ ✅ Detalhamento de contatos inseridos                            ║ -->
+<!-- ╚════════════════════════════════════════════════════════════════════╝ -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>📊 Desempenho de Vendedores – PRODNEX ERP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  
+  <link rel="stylesheet" href="salesPerformance.css" />
+</head>
+
+<body class="consart-theme c-page page" style="--consart-input-h: 30px;">
+
+  <main class="consart-container consart-container--fixed consart-container--full consart-container--slim">
+    <div class="consart-layout-col sales-performance-page">
+
+      <h1>📊 Desempenho de Vendedores</h1>
+
+      <nav class="tabs" aria-label="Abas do relatório">
+        <button type="button" class="tab active" data-tab="aba-relatorio">Relatório</button>
+        <button type="button" class="tab" data-tab="aba-dashboard">Dashboard</button>
+      </nav>
+
+      <!-- ╭─────────────────────────── Aba: RELATÓRIO ───────────────────────────╮ -->
+      <section id="aba-relatorio" class="tab-panel active" role="tabpanel">
+        <div class="tab-panel-body">
+
+          <section class="filtros" aria-label="Filtros do Relatório">
+            <label for="dataInicio">
+              <span>Data Início:</span>
+              <input type="date" id="dataInicio" />
+            </label>
+
+            <label for="dataFim">
+              <span>Data Fim:</span>
+              <input type="date" id="dataFim" />
+            </label>
+
+            <label for="filtroResponsavel">
+              <span>Responsável:</span>
+              <select id="filtroResponsavel">
+                <option value="">Todos</option>
+              </select>
+            </label>
+
+            <div class="filtros__acoes">
+              <button type="button" id="btnBuscar">🔎 Buscar</button>
+              <button type="button" id="btnConfigPdf" class="btn-pdf-config">⚙️ PDF</button>
+              <button type="button" id="btnGerarPdf" class="btn-pdf">📄 Gerar PDF</button>
+            </div>
+          </section>
+
+          <section class="kpis kpis-relatorio">
+            <article class="kpi kpi--report">
+              <h3>Quantos Contatos Foram Inseridos</h3>
+              <div id="kpiContatosInseridos" class="val">0</div>
+              <small>Leads/contatos criados no período</small>
+            </article>
+
+            <article class="kpi kpi--report">
+              <h3>Quantos Leads Foram Encerrados</h3>
+              <div id="kpiLeadsEncerrados" class="val">0</div>
+              <small>Conversão + perda + sem êxito</small>
+            </article>
+
+            <article class="kpi kpi--report">
+              <h3>Quantos Leads Foram Convertidos</h3>
+              <div id="kpiLeadsConvertidos" class="val">0</div>
+              <small>Negócios ganhos / conversão</small>
+            </article>
+
+            <article class="kpi kpi--report">
+              <h3>Quantos Leads Foram Perdidos</h3>
+              <div id="kpiLeadsPerdidos" class="val">0</div>
+              <small>Perdas, cancelamentos e quedas</small>
+            </article>
+
+            <article class="kpi kpi--report">
+              <h3>Movimentações de Etapa</h3>
+              <div id="kpiMoveStage" class="val">0</div>
+              <small>Avanços/trocas de estágio</small>
+            </article>
+
+            <article class="kpi kpi--report">
+              <h3>Atualizações Realizadas</h3>
+              <div id="kpiAtualizacoes" class="val">0</div>
+              <small>Edições e interações no lead</small>
+            </article>
+
+            <article class="kpi kpi--report">
+              <h3>Total de Ações</h3>
+              <div id="kpiTotalAcoes" class="val">0</div>
+              <small>Todas as movimentações listadas</small>
+            </article>
+
+            <article class="kpi kpi--report">
+              <h3>Clientes Únicos</h3>
+              <div id="kpiClientesUnicos" class="val">0</div>
+              <small>Clientes com atividade no período</small>
+            </article>
+          </section>
+
+          <section class="resumo-box">
+            <div class="resumo-box__header">
+              <h2>📋 Detalhamento dos Contatos Inseridos</h2>
+              <span id="badgeContatosInseridos" class="badge-info">0 registros</span>
+            </div>
+
+            <div class="table-wrapper table-wrapper--compact">
+              <table class="table table-zebra table-zebra-hover">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Hora</th>
+                    <th>Cliente</th>
+                    <th>Vendedor</th>
+                    <th>Tipo</th>
+                  </tr>
+                </thead>
+                <tbody id="tabelaContatosInseridos">
+                  <tr>
+                    <td colspan="5" style="text-align:center; color:#888;">
+                      Nenhum contato inserido no período.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="resumo-box">
+            <div class="resumo-box__header">
+              <h2>📦 Quantidade de Leads Atendidos por Vendedor</h2>
+            </div>
+            <div id="resumoOrigem" class="resumo-origem"></div>
+          </section>
+
+          <section class="consart-scroll-area consart-table-sticky">
+            <div class="table-wrapper">
+              <table class="table table-zebra table-zebra-hover" style="min-width:1100px;">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Hora</th>
+                    <th>Vendedor</th>
+                    <th>Cliente</th>
+                    <th>Tipo</th>
+                  </tr>
+                </thead>
+                <tbody id="tabelaMovimentacoes"></tbody>
+              </table>
+            </div>
+          </section>
+
+        </div>
+      </section>
+      <!-- ╰──────────────────────────────────────────────────────────────────────╯ -->
+
+      <!-- ╭─────────────────────────── Aba: DASHBOARD ───────────────────────────╮ -->
+      <section id="aba-dashboard" class="tab-panel" role="tabpanel">
+        <div class="tab-panel-body tab-panel-body--dashboard">
+
+          <section class="filtros" aria-label="Filtros do Dashboard">
+            <label for="dashInicio">
+              <span>Data Início:</span>
+              <input type="date" id="dashInicio" />
+            </label>
+
+            <label for="dashFim">
+              <span>Data Fim:</span>
+              <input type="date" id="dashFim" />
+            </label>
+
+            <label for="dashResponsavel">
+              <span>Responsável:</span>
+              <select id="dashResponsavel">
+                <option value="">Todos</option>
+              </select>
+            </label>
+
+            <button type="button" id="dashBuscar">📈 Atualizar</button>
+          </section>
+
+          <section class="kpis">
+            <article class="kpi">
+              <h3>Leads Atendidos</h3>
+              <div id="kpiLeads" class="val">0</div>
+            </article>
+
+            <article class="kpi">
+              <h3>Vendedores Ativos</h3>
+              <div id="kpiVendedores" class="val">0</div>
+            </article>
+
+            <article class="kpi">
+              <h3>Média por Vendedor</h3>
+              <div id="kpiMedia" class="val">0</div>
+            </article>
+
+            <article class="kpi">
+              <h3>Período</h3>
+              <div id="kpiPeriodo" class="val">—</div>
+            </article>
+          </section>
+
+          <section class="status-section">
+            <h2>📌 Leads por Status do Cliente</h2>
+
+            <div class="status-cards-scroll">
+              <div class="kpis-status" id="wrapResumoStatus"></div>
+            </div>
+          </section>
+
+          <section class="grafico-dashboard">
+            <h2>📦 Leads Atendidos por Vendedor</h2>
+            <div class="grafico-dashboard__body">
+              <canvas id="chartLeadsPorVendedor"></canvas>
+            </div>
+          </section>
+
+          <section class="tabela-detalhada tabela-dashboard-resumo consart-table-sticky">
+            <h2>📋 Resumo por Vendedor</h2>
+            <div class="table-wrapper">
+              <table class="table table-zebra table-zebra-hover">
+                <thead>
+                  <tr>
+                    <th>Vendedor</th>
+                    <th>Leads Atendidos</th>
+                  </tr>
+                </thead>
+                <tbody id="tabelaResumoDashboard"></tbody>
+              </table>
+            </div>
+          </section>
+
+        </div>
+      </section>
+      <!-- ╰──────────────────────────────────────────────────────────────────────╯ -->
+
+    </div>
+  </main>
+
+  <!-- ╔════════════════════════════════════════════════════════════════════╗ -->
+  <!-- ║ MODAL: CONFIGURAÇÃO DO RELATÓRIO PDF                              ║ -->
+  <!-- ╚════════════════════════════════════════════════════════════════════╝ -->
+  <div id="modalConfigPdf" class="pdf-modal hidden" aria-hidden="true">
+    <div class="pdf-modal__backdrop" data-close-pdf-modal></div>
+
+    <section class="pdf-modal__content" role="dialog" aria-modal="true" aria-labelledby="pdfConfigTitle">
+      <header class="pdf-modal__header">
+        <h2 id="pdfConfigTitle">⚙️ Configurar Relatório PDF</h2>
+        <button type="button" class="pdf-modal__close" data-close-pdf-modal aria-label="Fechar">×</button>
+      </header>
+
+      <div class="pdf-modal__body">
+
+        <h3>Seções do PDF</h3>
+
+        <label class="pdf-check">
+          <input type="checkbox" id="pdfSecIndicadores" checked />
+          Indicadores / KPIs
+        </label>
+
+        <label class="pdf-check">
+          <input type="checkbox" id="pdfSecLeadsVendedor" checked />
+          Leads atendidos por vendedor
+        </label>
+
+        <label class="pdf-check">
+          <input type="checkbox" id="pdfSecMovimentacoes" checked />
+          Movimentações detalhadas
+        </label>
+
+        <h3>Indicadores que aparecerão no PDF</h3>
+
+        <div class="pdf-grid">
+          <label>
+            <input type="checkbox" class="pdf-kpi" value="contatosInseridos" checked />
+            Contatos Inseridos
+          </label>
+
+          <label>
+            <input type="checkbox" class="pdf-kpi" value="leadsEncerrados" checked />
+            Leads Encerrados
+          </label>
+
+          <label>
+            <input type="checkbox" class="pdf-kpi" value="leadsConvertidos" checked />
+            Leads Convertidos
+          </label>
+
+          <label>
+            <input type="checkbox" class="pdf-kpi" value="leadsPerdidos" checked />
+            Leads Perdidos
+          </label>
+
+          <label>
+            <input type="checkbox" class="pdf-kpi" value="movimentosEtapa" checked />
+            Movimentações de Etapa
+          </label>
+
+          <label>
+            <input type="checkbox" class="pdf-kpi" value="atualizacoes" checked />
+            Atualizações Realizadas
+          </label>
+
+          <label>
+            <input type="checkbox" class="pdf-kpi" value="totalAcoes" checked />
+            Total de Ações
+          </label>
+
+          <label>
+            <input type="checkbox" class="pdf-kpi" value="clientesUnicos" checked />
+            Clientes Únicos
+          </label>
+        </div>
+
+        <h3>Colunas da tabela de movimentações</h3>
+
+        <div class="pdf-grid">
+          <label>
+            <input type="checkbox" class="pdf-col" value="data" checked />
+            Data
+          </label>
+
+          <label>
+            <input type="checkbox" class="pdf-col" value="hora" checked />
+            Hora
+          </label>
+
+          <label>
+            <input type="checkbox" class="pdf-col" value="vendedor" checked />
+            Vendedor
+          </label>
+
+          <label>
+            <input type="checkbox" class="pdf-col" value="cliente" checked />
+            Cliente
+          </label>
+
+          <label>
+            <input type="checkbox" class="pdf-col" value="tipo" checked />
+            Tipo
+          </label>
+
+          <label>
+            <input type="checkbox" class="pdf-col" value="valor" checked />
+            Valor
+          </label>
+        </div>
+
+      </div>
+
+      <footer class="pdf-modal__footer">
+        <button type="button" id="btnPdfMarcarTudo">Marcar Tudo</button>
+        <button type="button" id="btnPdfLimparTudo">Limpar Tudo</button>
+        <button type="button" id="btnPdfSalvarConfig" class="btn-pdf">Salvar Configuração</button>
+      </footer>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
+
+  <script>
+    document.addEventListener('click', (ev) => {
+      const btn = ev.target.closest('.tab');
+      if (!btn) return;
+
+      const id = btn.getAttribute('data-tab');
+
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.toggle('active', tab === btn);
+      });
+
+      document.querySelectorAll('.tab-panel').forEach(panel => {
+        panel.classList.toggle('active', panel.id === id);
+      });
+    });
+  </script>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script src="salesPerformance.js"></script>
+  <script src="salesPerformanceDashboard.js"></script>
+</body>
+
+</html>

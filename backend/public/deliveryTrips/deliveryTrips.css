@@ -1,0 +1,230 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ deliveryTrips.css — Entregas e Motoristas                            ║
+   ║ PRODNEX ERP                                                          ║
+   ║ Layout (header, tabs, tabelas, modais) vem do Design System global   ║
+   ║ (/public/includes/css/style.css). Aqui ficam só os itens do módulo:  ║
+   ║ ✅ badges de status / movimento                                      ║
+   ║ ✅ barra de progresso, resumo da rota, sub-linhas                    ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+/* Tab panels: garante que [hidden] vence qualquer display do painel */
+.tab-panel[hidden],
+.table-layout-integrated[hidden],
+.dt-summary[hidden],
+#addStopsPanel[hidden] {
+  display: none !important;
+}
+
+.tab-panel {
+  padding-top: 10px;
+}
+
+.dt-mt {
+  margin-top: 12px;
+}
+
+/* Títulos de seção */
+.dt-section-title {
+  margin: 0 0 4px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.dt-subtitle {
+  color: #64748b;
+  font-size: .88rem;
+}
+
+.dt-form {
+  margin-top: 10px;
+}
+
+.dt-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  font-size: .88rem;
+  min-height: 32px;
+}
+
+/* Linhas das tabelas */
+.table tr.is-selected {
+  background: #e0f2fe !important;
+}
+
+.table tr.is-muted td {
+  color: #94a3b8;
+  text-decoration: line-through;
+}
+
+.dt-empty {
+  text-align: center;
+  color: #94a3b8;
+  padding: 18px !important;
+}
+
+.dt-sub {
+  display: block;
+  color: #64748b;
+  font-size: .8rem;
+  margin-top: 2px;
+}
+
+.dt-num {
+  text-align: right !important;
+  white-space: nowrap;
+}
+
+.dt-actions {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+/* Badges */
+.dt-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  white-space: nowrap;
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.dt-badge--PLANEJADA {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.dt-badge--EM_ROTA {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.dt-badge--CONCLUIDA {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.dt-badge--CANCELADA {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.dt-badge--PENDENTE {
+  background: #e0f2fe;
+  color: #075985;
+}
+
+.dt-badge--FALHOU {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.dt-badge--ENTREGA {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.dt-badge--COLETA {
+  background: #fae8ff;
+  color: #86198f;
+}
+
+.dt-badge--warn {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Progress */
+.dt-progress {
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.dt-progress>span {
+  display: block;
+  height: 100%;
+  background: #22c55e;
+}
+
+/* Resumo da rota */
+.dt-summary {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: .88rem;
+  color: #334155;
+}
+
+.dt-summary strong {
+  color: #0f172a;
+}
+
+.dt-summary .is-over {
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+/* Modal "Adicionar paradas": tabela rola dentro do modal com cabeçalho fixo */
+#addStopsModal .table-scroll {
+  max-height: 60vh;
+  overflow: auto;
+}
+
+#addStopsModal .modal__footer {
+  align-items: center;
+}
+
+#addStopsModal .modal__footer .summary-pill {
+  margin-right: auto;
+}
+
+#addStopsModal [hidden] {
+  display: none !important;
+}
+
+/* Alternância Documentos / Manual */
+.dt-mode-switch {
+  display: inline-flex;
+  gap: 4px;
+  padding: 3px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+}
+
+.dt-mode-btn {
+  border: 0;
+  background: transparent;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: .88rem;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+}
+
+.dt-mode-btn:hover {
+  color: #0f172a;
+}
+
+.dt-mode-btn.is-active {
+  background: #fff;
+  color: #1d4ed8;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, .15);
+}

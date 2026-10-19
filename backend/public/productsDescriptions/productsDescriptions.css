@@ -1,0 +1,159 @@
+/* ╔══════════════════════════════════════════════════════════════╗
+ * ║ productsDescriptions.css — PRODNEX ERP                       ║
+ * ║ Usa containerConsart.css como base (layout + form-controls)   ║
+ * ╚══════════════════════════════════════════════════════════════╝ */
+
+.pd-toolbar{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  padding: 12px 14px;
+  border: 1px solid rgba(15,23,42,.10);
+  border-radius: 14px;
+  background: rgba(255,255,255,.65);
+}
+
+.pd-title{ display:flex; flex-direction:column; gap:4px; min-width:0; }
+.pd-h1{ margin:0; font-size: 20px; color:#0f172a; }
+.pd-sub{ margin:0; font-size: 12px; color: rgba(15,23,42,.55); }
+
+.pd-toolbar-actions{ display:flex; gap:10px; }
+
+.pd-filters{
+  display:grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid rgba(15,23,42,.10);
+  border-radius: 14px;
+  background: rgba(255,255,255,.65);
+}
+
+.pd-field{ display:flex; flex-direction:column; gap:6px; min-width:0; }
+.pd-field label{ font-size: 12px; color: rgba(15,23,42,.60); }
+
+.pd-filter-actions{
+  display:flex;
+  align-items:flex-end;
+  gap:10px;
+}
+
+.pd-card{
+  padding: 12px 14px;
+  border: 1px solid rgba(15,23,42,.10);
+  border-radius: 14px;
+  background: rgba(255,255,255,.65);
+}
+
+.pd-card-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom: 10px;
+}
+
+.pd-h2{ margin:0; font-size: 14px; color:#0f172a; }
+
+.pd-pill{
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(59,130,246,.12);
+  color: rgba(37,99,235,.95);
+  border: 1px solid rgba(59,130,246,.20);
+}
+
+/* GRID FORM */
+.pd-form{
+  display:grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 12px;
+}
+
+.pd-span-2{ grid-column: span 2; }
+.pd-span-6{ grid-column: span 6; }
+.pd-span-8{ grid-column: span 8; }
+
+.pd-form textarea{
+  min-height: 92px;
+  resize: vertical;
+}
+
+.pd-actions{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:flex-end;
+}
+
+/* TABELA */
+.pd-table-wrap{
+  border: 1px solid rgba(15,23,42,.10);
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(255,255,255,.70);
+}
+
+.pd-table{
+  width:100%;
+  border-collapse: collapse;
+}
+
+.pd-table td{
+  border-bottom: 1px solid rgba(15,23,42,.08);
+  padding: 10px 12px;
+  vertical-align: top;
+  font-size: 13px;
+  color:#0f172a;
+}
+
+/* zebra */
+.pd-table tbody tr:nth-child(even){
+  background: rgba(15,23,42,.03);
+}
+
+.pd-actions-cell{
+  display:flex;
+  gap:8px;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+}
+
+/* botões menores na coluna ações */
+.pd-btn-sm{
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+/* estado vazio */
+.pd-empty{
+  padding: 14px;
+  text-align:center;
+  color: rgba(15,23,42,.55);
+  font-size: 13px;
+}
+
+/* UX: campo SKU abre modal (F2/dblclick) */
+#product_code{ cursor: pointer; }
+#product_code:focus{ cursor: text; }
+
+/* responsivo */
+@media (max-width: 900px){
+  .pd-filters{
+    grid-template-columns: 1fr;
+  }
+  .pd-filter-actions{
+    justify-content:flex-start;
+    align-items: stretch;
+  }
+  .pd-form{
+    grid-template-columns: 1fr;
+  }
+  .pd-span-2, .pd-span-6, .pd-span-8{ grid-column: span 1; }
+  .pd-actions{ justify-content:flex-start; flex-wrap:wrap; }
+}

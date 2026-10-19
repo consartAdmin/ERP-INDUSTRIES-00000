@@ -1,0 +1,158 @@
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║ parametrosFiscais.css – visual CONSART (cards azul-claros)   ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+/* =====================  Correções de layout globais  ===================== */
+/* Remove qualquer fundo violeta/gradiente do theme e garante espaço
+   para o menu superior (fixo) não sobrepor o conteúdo. */
+:root{
+  --navbar-h: 68px;                 /* ajuste fino se o topo mudar */
+  --page-bg: #f7fafc;               /* fundo claro padrão CONSART */
+}
+
+body.consart-theme.c-page{
+  background: var(--page-bg) !important;
+  background-image: none !important;
+  padding-top: var(--navbar-h);     /* evita sobreposição do menu */
+  min-height: 100dvh;
+}
+
+/* Alguns temas injetam decor via pseudo-elemento. Mata isso. */
+body.consart-theme.c-page::before,
+body.consart-theme.c-page::after{
+  content: none !important;
+  display: none !important;
+}
+
+/* Container principal da página */
+.c-main{ margin-top: 8px; }
+
+/* ==========================  Utilidades  ========================== */
+.muted{ color:#64748b; }
+.lead { font-weight:700; }
+
+/* ==========================  Cabeçalho  ========================== */
+.c-page header h1{
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing:.2px;
+  margin:0 0 6px 0;
+}
+.c-page header p{ margin:0; }
+
+/* =====================  Cards / painéis  ===================== */
+.card{
+  background:#fff;
+  border:1px solid var(--c-input-bd);     /* azul clarinho do theme */
+  border-radius:12px;
+  padding:24px;
+  box-shadow:
+    0 2px 6px rgba(2,6,23,.04),
+    0 1px 0 rgba(255,255,255,.9) inset;    /* brilho leve interno */
+}
+.card + .card{ margin-top:0; }
+
+.card__header{
+  display:flex; align-items:baseline; gap:10px;
+  margin-bottom:14px;
+}
+.card__header h2{
+  margin:0; font-size:18px; font-weight:800;
+}
+.card__header small{ color:#7c8aa0; }
+
+/* =====================  Formulário em grid  ===================== */
+.form-grid{
+  display:grid; gap:14px;
+  grid-template-columns: 1fr 1fr;
+}
+.field{ display:flex; flex-direction:column; gap:6px; }
+.field label{
+  font-size:13px; font-weight:700; color:#243b53;
+}
+.field--full{ grid-column: 1 / -1; }
+
+/* Campos leitura/disabled com leve azul */
+input[disabled], input[readonly]{
+  background:#f1f7ff !important;
+  color:#334e68;
+}
+
+/* Focus visível e consistente */
+input, select, textarea{
+  outline: none;
+  transition: box-shadow .15s ease, border-color .15s ease;
+}
+input:focus, select:focus, textarea:focus{
+  box-shadow: 0 0 0 3px rgba(59,130,246,.25);
+  border-color:#93c5fd;
+}
+
+/* Radios em linha, iguais ao estilo da Central */
+.radio-row{ display:flex; gap:18px; align-items:center; flex-wrap:wrap; }
+.radio{ display:flex; gap:8px; align-items:center; font-weight:600; }
+
+/* =========================  Ações / Botões  ========================= */
+.actions{
+  grid-column: 1 / -1;
+  display:flex; gap:12px; justify-content:flex-end; margin-top:6px;
+}
+
+/* Botão “outline” variando para azul do tema */
+.btn--outline-primary{
+  background:#ffffff;
+  border:1px solid var(--c-input-bd);
+  color:#0f172a;
+}
+.btn--outline-primary:hover{
+  background:#f6faff;
+  border-color:var(--c-primary);
+}
+
+/* Botão sólido (para salvar) no azul do tema */
+.btn--solid-primary{
+  background: var(--c-primary);
+  border-color: var(--c-primary);
+  color:#0b2239;
+}
+.btn--solid-primary:hover{
+  background: var(--c-primary-600);
+  border-color: var(--c-primary-600);
+}
+
+/* =====================  Tabela/scroll (opcional)  ===================== */
+.c-scroll--table {
+  max-height: 550px;
+  padding: 8px;
+  border:1px solid var(--c-input-bd);
+  border-radius: var(--radius);
+  background: var(--c-input-bg);
+}
+.c-scroll--table table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+.c-scroll--table thead th {
+  position: sticky; top: 0; z-index: 1;
+  background: #ffffff;
+  border-bottom: 1px solid var(--c-input-bd);
+  box-shadow: 0 2px 0 rgba(0,0,0,.03);
+}
+.c-scroll--table th,
+.c-scroll--table td {
+  padding: 10px 12px;
+  font-size: 14px;
+  border-bottom: 1px solid var(--c-input-bd);
+}
+.c-scroll--table tbody tr:hover { background: #f8fbff; }
+
+/* ===========================  Responsivo  =========================== */
+@media (max-width: 1024px){
+  :root{ --navbar-h: 72px; }   /* topo costuma ocupar um pouco mais */
+}
+@media (max-width: 768px){
+  .form-grid{ grid-template-columns: 1fr; }
+  .actions{ justify-content: stretch; }
+  :root{ --navbar-h: 78px; }   /* garante respiro em telas pequenas */
+}

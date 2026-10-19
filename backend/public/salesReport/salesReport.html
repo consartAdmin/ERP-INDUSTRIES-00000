@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png" />
+
+  <title>RELATÓRIO DE VENDAS | PRODNEX ERP</title>
+
+  <!-- 🎨 Design System CONSART -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/includes/css/date-range-field.css" />
+  <link rel="stylesheet" href="/public/modalsSearch/sellersModalSearch.css" />
+
+  <!-- Ajustes exclusivos desta página -->
+  <style>
+    html,
+    body.page-sales-report {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    .page-sales-report .consart-container,
+    .page-sales-report .table-layout-integrated,
+    .page-sales-report .table-layout-integrated__filter,
+    .page-sales-report .tabs,
+    .page-sales-report .tab-panel {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .page-sales-report .table-scroll {
+      display: block;
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: auto;
+      scrollbar-gutter: stable;
+    }
+
+    .page-sales-report #tab-panel-day table,
+    .page-sales-report #tab-panel-customer table {
+      width: 100%;
+      min-width: 100%;
+    }
+
+    .page-sales-report #tab-panel-product table {
+      width: 100%;
+      min-width: 1180px;
+    }
+
+    .page-sales-report th,
+    .page-sales-report td {
+      white-space: nowrap;
+    }
+
+    .page-sales-report .tab-panel[hidden] {
+      display: none !important;
+    }
+
+    .page-sales-report .sr-filter-hint {
+      margin: 0;
+      align-self: center;
+    }
+  </style>
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr page-sales-report">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <!-- ╔══════════════════════════════════════════════════════════════╗
+         ║ FILTROS                                                     ║
+         ╚══════════════════════════════════════════════════════════════╝ -->
+    <section class="table-layout-integrated" aria-labelledby="sales-filters-title">
+      <div class="table-layout-integrated__filter">
+        <h2 class="sr-section-title" id="sales-filters-title">Filtros</h2>
+
+        <div class="fields fields-inline fields-gap-3">
+          <div class="fields fields-w-14 fields-h-6 fields-font-3">
+            <date-range-field id="filter-date-range" class="drf-width-3 drf-height-3" label="Emissão" locale="pt-BR"
+              name-start="dateStart" name-end="dateEnd"></date-range-field>
+          </div>
+
+          <div class="fields fields-h-6 fields-w-12 fields-font-3">
+            <label for="filter-seller-id">Vendedor</label>
+            <input id="filter-seller-id" class="sr-modal-input" type="text" placeholder="Clique para selecionar"
+              autocomplete="off" readonly />
+          </div>
+
+          <div class="fields fields-h-6 fields-w-12 fields-font-3">
+            <label for="filter-customer-id">Cliente</label>
+            <input id="filter-customer-id" class="sr-modal-input" type="text" placeholder="Clique para selecionar"
+              autocomplete="off" readonly />
+          </div>
+
+          <div class="fields fields-h-6 fields-w-12 fields-font-3">
+            <label for="filter-product-id">Produto</label>
+            <input id="filter-product-id" class="sr-modal-input" type="text" placeholder="Clique para selecionar"
+              autocomplete="off" readonly />
+          </div>
+
+          <div class="fields fields-h-6 fields-w-5 fields-font-3">
+            <label for="filter-month">Mês</label>
+            <select id="filter-month">
+              <option value="">Todos</option>
+              <option value="1">Janeiro</option>
+              <option value="2">Fevereiro</option>
+              <option value="3">Março</option>
+              <option value="4">Abril</option>
+              <option value="5">Maio</option>
+              <option value="6">Junho</option>
+              <option value="7">Julho</option>
+              <option value="8">Agosto</option>
+              <option value="9">Setembro</option>
+              <option value="10">Outubro</option>
+              <option value="11">Novembro</option>
+              <option value="12">Dezembro</option>
+            </select>
+          </div>
+
+          <div class="fields fields-h-6 fields-w-8 fields-font-3">
+            <label for="filter-year">Ano</label>
+            <select id="filter-year">
+              <option value="">Ano opcional</option>
+            </select>
+          </div>
+
+          <button id="btn-apply-filters" class="btn btn-toolbar btn-sm" type="button">
+            🔍 Aplicar
+          </button>
+
+          <button id="btn-reset-filters" class="btn btn-toolbar btn-sm" type="button">
+            ♻️ Limpar
+          </button>
+
+        </div>
+
+        <div class="btn-inline">
+          <button id="btn-pdf-full" class="btn btn-toolbar btn-sm" type="button">
+            🧾 PDF Completo
+          </button>
+
+          <button id="btn-pdf-products" class="btn btn-toolbar btn-sm" type="button">
+            📦 PDF Produto
+          </button>
+
+          <button id="btn-pdf-orders" class="btn btn-toolbar btn-sm" type="button">
+            📄 PDF Pedido
+          </button>
+
+          <button id="btn-export-csv" class="btn btn-toolbar btn-sm" type="button">
+            ⬇️ Excel
+          </button>
+
+          <button id="btn-cost-mode" class="btn btn-toolbar btn-sm" type="button" aria-pressed="false">
+            🧾 Custo: Atual
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ╔══════════════════════════════════════════════════════════════╗
+         ║ INDICADORES E DETALHAMENTO                                  ║
+         ╚══════════════════════════════════════════════════════════════╝ -->
+    <section class="table-layout-integrated" aria-labelledby="sales-details-title">
+      <div class="tabs">
+        <div class="table-layout-integrated__filter">
+          <section aria-labelledby="sales-summary-title">
+            <h2 class="sr-section-title" id="sales-summary-title">Indicadores</h2>
+
+            <div class="summary summary--left summary-gap-8 summary--mobile-full">
+              <div class="summary-pill summary-pill--success summary-width-7 summary-height-5">
+                Total vendido:&nbsp;
+                <strong id="summary-total">R$ 0,00</strong>
+              </div>
+
+              <div class="summary-pill summary-pill--info summary-width-5 summary-height-5">
+                Pedidos:&nbsp;
+                <strong id="summary-orders">0</strong>
+              </div>
+
+              <div class="summary-pill summary-pill--info summary-width-6 summary-height-5">
+                Itens vendidos:&nbsp;
+                <strong id="summary-items">0</strong>
+              </div>
+
+              <div class="summary-pill summary-pill--warning summary-width-7 summary-height-5">
+                Ticket médio:&nbsp;
+                <strong id="summary-ticket">R$ 0,00</strong>
+              </div>
+
+              <div class="summary-pill summary-pill--success summary-width-8 summary-height-5">
+                Lucro bruto:&nbsp;
+                <strong id="summary-gross-profit">R$ 0,00</strong>
+              </div>
+            </div>
+          </section>
+
+          <h2 class="sr-section-title" id="sales-details-title">Detalhamento</h2>
+
+          <nav class="tab-list" role="tablist" aria-label="Visualização do relatório de vendas">
+            <button class="tab is-active" id="tab-day" type="button" role="tab" data-tab="day" aria-selected="true"
+              aria-controls="tab-panel-day" tabindex="0">
+              📅 Por dia
+            </button>
+
+            <button class="tab" id="tab-customer" type="button" role="tab" data-tab="customer" aria-selected="false"
+              aria-controls="tab-panel-customer" tabindex="-1">
+              👤 Por cliente
+            </button>
+
+            <button class="tab" id="tab-product" type="button" role="tab" data-tab="product" aria-selected="false"
+              aria-controls="tab-panel-product" tabindex="-1">
+              📦 Por produto
+            </button>
+          </nav>
+        </div>
+
+        <!-- ABA: POR DIA -->
+        <div class="tab-panel is-active" id="tab-panel-day" role="tabpanel" data-panel="day" aria-labelledby="tab-day"
+          tabindex="0">
+          <div class="table-scroll table-height-300 table-row-h-28" data-table-settings="salesreport.tbody-by-day">
+            <table class="table table-zebra table-zebra-hover table-sticky-head">
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Pedidos</th>
+                  <th>Itens</th>
+                  <th>Total vendido</th>
+                </tr>
+              </thead>
+
+              <tbody id="tbody-by-day">
+                <tr>
+                  <td colspan="4" class="sr-table-empty">
+                    Nenhum dado carregado. Aplique um filtro para visualizar.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ABA: POR CLIENTE -->
+        <div class="tab-panel" id="tab-panel-customer" role="tabpanel" data-panel="customer"
+          aria-labelledby="tab-customer" tabindex="0" hidden>
+          <div class="table-scroll table-height-300 table-row-h-28" data-table-settings="salesreport.tbody-by-customer">
+            <table class="table table-zebra table-zebra-hover table-sticky-head">
+              <thead>
+                <tr>
+                  <th>Cliente</th>
+                  <th>ID</th>
+                  <th>Pedidos</th>
+                  <th>Total vendido</th>
+                </tr>
+              </thead>
+
+              <tbody id="tbody-by-customer">
+                <tr>
+                  <td colspan="4" class="sr-table-empty">
+                    Nenhum dado carregado. Aplique um filtro para visualizar.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ABA: POR PRODUTO -->
+        <div class="tab-panel" id="tab-panel-product" role="tabpanel" data-panel="product" aria-labelledby="tab-product"
+          tabindex="0" hidden>
+          <div class="table-scroll table-height-300 table-row-h-28" data-table-settings="salesreport.tbody-by-product">
+            <table class="table table-zebra table-zebra-hover table-sticky-head">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Descrição</th>
+                  <th>U.M.</th>
+                  <th>Qtde. vendida</th>
+                  <th>Preço méd. venda</th>
+                  <th id="th-avg-cost">Custo méd. unit. (Atual)</th>
+                  <th>Total vendido</th>
+                  <th>Custo total</th>
+                  <th>Lucro bruto</th>
+                </tr>
+              </thead>
+
+              <tbody id="tbody-by-product">
+                <tr>
+                  <td colspan="9" class="sr-table-empty">
+                    Nenhum dado carregado. Aplique um filtro para visualizar.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Rodapé único compartilhado pelas três abas -->
+        <footer class="table-footer">
+          <div class="table-footer__info">
+            <div class="summary-pill summary-pill--success summary-width-5 summary-left-space-3">
+              <span id="apTableInfo">0 registros encontrados</span>
+            </div>
+          </div>
+
+          <div class="table-footer__pagination">
+            <button type="button" id="btnPreviousPage" class="btn btn-clean btn-sm">
+              Anterior
+            </button>
+
+            <span id="apPageInfo">Página 1 de 1</span>
+
+            <button type="button" id="btnNextPage" class="btn btn-new btn-sm">
+              Próxima
+            </button>
+          </div>
+
+          <div class="table-footer__page-size">
+            <label for="apRowsPerPage">Mostrar</label>
+
+            <select id="apRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+              <option value="10">10 linhas</option>
+              <option value="20">20 linhas</option>
+              <option value="30">30 linhas</option>
+              <option value="50" selected>50 linhas</option>
+              <option value="100">100 linhas</option>
+            </select>
+          </div>
+        </footer>
+      </div>
+    </section>
+  </main>
+
+  <!-- Core (ESM) -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <!-- Campo reutilizável de intervalo de datas -->
+  <script type="module" src="/public/includes/js/date-range-field.js"></script>
+
+  <!-- Relatório de Vendas (ESM) -->
+  <script type="module" src="/public/salesReport/js/salesReport.init.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ customersRegistration.css — Cadastro de Clientes | PRODNEX ERP      ║
+   ║ Layout alinhado ao customersEdit                                    ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+/* Valores preenchidos em negrito; placeholders permanecem leves. */
+#formCliente input,
+#formCliente select,
+#formCliente textarea {
+  font-weight: 700;
+}
+
+#formCliente input::placeholder,
+#formCliente textarea::placeholder {
+  font-weight: 400;
+}
+
+/* Garante que hidden realmente remova o campo do fluxo do layout. */
+#formCliente [hidden] {
+  display: none !important;
+}
+
+/* Ações do cadastro seguem o alinhamento visual do módulo de edição. */
+.page-customers-registration .customer-actions {
+  display: flex;
+  align-items: end;
+  margin-left: auto;
+}
+
+.page-customers-registration .customer-empty-state {
+  text-align: center;
+  padding: 32px 16px;
+}
+
+.page-customers-registration .customer-empty-icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+}

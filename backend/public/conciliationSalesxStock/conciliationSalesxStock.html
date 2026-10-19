@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CONCILIAÇÃO ESTOQUE | PRODNEX ERP</title>
+
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png" />
+
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <link rel="stylesheet" href="/public/conciliationSalesxStock/conciliationSalesxStock.css" />
+</head>
+
+<body class="page consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim conciliation-page">
+
+    <section class="summary summary--between summary-gap-12 conciliation-summary" aria-label="Resumo">
+      <article class="summary-pill summary-flex-1 summary-height-7 conciliation-summary__item">
+        <span>Produtos vendidos</span>
+        <strong id="csProductsCount">0</strong>
+      </article>
+
+      <article class="summary-pill summary-flex-1 summary-height-7 conciliation-summary__item">
+        <span>Produtos para comprar</span>
+        <strong id="csProductsToBuy">0</strong>
+      </article>
+
+      <article class="summary-pill summary-flex-1 summary-height-7 conciliation-summary__item">
+        <span>Quantidade vendida</span>
+        <strong id="csQuantitySold">0</strong>
+      </article>
+
+      <article class="summary-pill summary-flex-1 summary-height-7 conciliation-summary__item">
+        <span>Quantidade recebida</span>
+        <strong id="csQuantityInbound">0</strong>
+      </article>
+
+      <article class="summary-pill summary-flex-1 summary-height-7 conciliation-summary__item">
+        <span>Estoque disponível</span>
+        <strong id="csAvailableStock">0</strong>
+      </article>
+
+      <article class="summary-pill summary-pill--warning summary-flex-1 summary-height-7 conciliation-summary__item">
+        <span>Quantidade a comprar</span>
+        <strong id="csQuantityToBuy">0</strong>
+      </article>
+    </section>
+
+    <section class="table-layout-integrated table-max-height-600">
+      <div class="table-layout-integrated-filter">
+        <div class="header">
+          <div class="fields-inline fields-gap-3">
+
+            <div class="fields fields-h-6 fields-w-16 fields-font-3">
+              <date-range-field id="csDateRange" class="drf-width-3 drf-height-3" label="Período"
+                locale="pt-BR"></date-range-field>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-20">
+              <label for="csSearch">Produto</label>
+              <input id="csSearch" type="search" placeholder="Código ou descrição" />
+            </div>
+
+            <div class="fields fields-h-6 fields-w-10">
+              <label for="csMovementType">Movimento</label>
+              <select id="csMovementType" name="movementType">
+                <option value="all">Entradas e saídas</option>
+                <option value="INBOUND">Entrada</option>
+                <option value="OUTBOUND">Saída</option>
+              </select>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-10">
+              <label for="csViewMode">Visualização</label>
+              <select id="csViewMode" name="viewMode">
+                <option value="operation" selected>Por Operação</option>
+                <option value="total">Somatório</option>
+              </select>
+            </div>
+
+            <div class="fields fields-h-6 fields-w-20 conciliation-check-field">
+              <label for="csOnlyNeedBuy">
+                <input id="csOnlyNeedBuy" type="checkbox" checked />
+                Somente itens para comprar
+              </label>
+            </div>
+
+            <div class="btn-inline btn-gap-3">
+              <button id="csClear" class="btn btn-toolbar btn-sm" type="button">Limpar</button>
+              <button id="csApply" class="btn btn-toolbar btn-sm" type="button">Aplicar</button>
+            </div>
+
+            <div class="btn-position-right">
+              <div class="export-actions">
+                <button id="btnExportPdf" class="btn btn-toolbar btn-sm" type="button" title="Exportar PDF">
+                  <img src="/iconsImagens/pdf.png" alt="" width="20" height="20" aria-hidden="true" />
+                  <span>Exportar PDF</span>
+                </button>
+
+                <button id="btnExportExcel" class="btn btn-toolbar btn-sm" type="button" title="Exportar Excel">
+                  <img src="/iconsImagens/excelIcons.png" alt="" width="20" height="20" aria-hidden="true" />
+                  <span>Exportar Excel</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-scroll table-height-flex table-row-h-20" data-table-settings="conciliationsalesxstock.cstable">
+        <table id="csTable" class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th class="table-sortable" data-sort-column="sku" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  <span data-sort-label>SKU</span>
+                  <span data-sort-icon>↕</span>
+                </button>
+              </th>
+
+              <th class="table-sortable" data-sort-column="description" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  <span data-sort-label>Produto</span>
+                  <span data-sort-icon>↕</span>
+                </button>
+              </th>
+
+              <th id="csMovementHeader" class="table-sortable" data-sort-column="movement_type" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  <span data-sort-label>Movimento</span>
+                  <span data-sort-icon>↕</span>
+                </button>
+              </th>
+
+              <th id="csInvoiceHeader" class="table-sortable" data-sort-column="invoice_number" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  <span data-sort-label>Nº NF-e</span>
+                  <span data-sort-icon>↕</span>
+                </button>
+              </th>
+
+              <th id="csDateHeader" class="table-sortable" data-sort-column="movement_date" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  <span data-sort-label>Data</span>
+                  <span data-sort-icon>↕</span>
+                </button>
+              </th>
+
+              <th id="csQuantityHeader" class="table-sortable" data-sort-column="movement_quantity" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  <span data-sort-label>Quantidade por Operação</span>
+                  <span data-sort-icon>↕</span>
+                </button>
+              </th>
+
+              <th class="table-sortable" data-sort-column="stock_after" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  <span data-sort-label>Antes / Depois</span>
+                  <span data-sort-icon>↕</span>
+                </button>
+              </th>
+
+              <th class="table-sortable" data-sort-column="quantity_to_buy" aria-sort="none">
+                <button type="button" class="table-sort-button" data-sort-button>
+                  <span data-sort-label>Comprar</span>
+                  <span data-sort-icon>↕</span>
+                </button>
+              </th>
+            </tr>
+          </thead>
+
+          <tbody id="csTableBody"></tbody>
+        </table>
+      </div>
+
+      <footer class="table-footer conciliation-table-footer">
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-4 summary-border-space-2">
+            <span id="apTableInfo">0 Registros</span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button type="button" id="pagAnterior" class="btn btn-clean btn-sm">Anterior</button>
+          <span id="infoPagina">Página 1 de 1</span>
+          <button type="button" id="pagProxima" class="btn btn-new btn-sm">Próxima</button>
+        </div>
+
+        <div class="table-footer__page-size">
+          <label for="apRowsPerPage">Mostrar</label>
+          <div class="fields-inline fields-gap-3">
+            <select id="apRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+              <option value="10">10 linhas</option>
+              <option value="20">20 linhas</option>
+              <option value="30">30 linhas</option>
+              <option value="50" selected>50 linhas</option>
+              <option value="100">100 linhas</option>
+            </select>
+          </div>
+        </div>
+      </footer>
+
+      <div id="csMessage" class="status-message" role="status" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="/public/conciliationSalesxStock/js/conciliationSalesxStock.init.js"></script>
+</body>
+
+</html>

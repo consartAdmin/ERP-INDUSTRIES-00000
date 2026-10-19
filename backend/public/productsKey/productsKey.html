@@ -1,0 +1,197 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════════╗
+     ║ public/productsKey/productsKey.html — Products Key | PRODNEX ERP        ║
+     ║ UI no padrão "Grupos & Subgrupos"                                      ║
+     ║ - Card Esquerdo: Cadastro + Lista (ProductsKey)                         ║
+     ║ - Card Direito: Resolve (texto → produto) + utilitários                 ║
+     ║ API Base: /api/products-key                                             ║
+     ╚══════════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR" class="page-products-key">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+
+  <title>PRODUCTS KEY | PRODNEX ERP</title>
+
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/productsKey/productsKey.css" />
+</head>
+
+<body class="consart-theme c-page page-products-key">
+
+  <!-- ✅ Menu global CONSART -->
+  <div id="menuConsartMount"></div>
+
+  <!-- ✅ Header padrão -->
+  <header class="pk-header">
+    <div class="pk-header__left">
+      <div class="pk-kicker">PRODUCTS KEY</div>
+      <h1 class="pk-title">Products Key</h1>
+      <div class="pk-subtitle">IA • Dicionário de palavras-chave → Produto</div>
+    </div>
+
+    <div class="pk-header__right">
+      <button id="btnEnsureTables" class="pk-btn pk-btn--ghost" type="button" title="Criar/garantir tabela e índices">
+        🧱 Ensure Tables
+      </button>
+      <button id="btnRefreshAll" class="pk-btn pk-btn--primary" type="button" title="Recarregar tudo">
+        ⟳ Atualizar tudo
+      </button>
+    </div>
+  </header>
+
+  <main class="pk-wrap">
+    <section class="pk-grid">
+
+      <!-- ╔══════════════════════════════════════════════════════════════╗ -->
+      <!-- ║ CARD ESQUERDO — Products Key                                 ║ -->
+      <!-- ╚══════════════════════════════════════════════════════════════╝ -->
+      <article class="pk-card">
+        <div class="pk-card__top">
+          <div>
+            <div class="pk-card__title">Palavras-chave de Produtos</div>
+            <div class="pk-card__hint">Cadastre termos usados pelo cliente para localizar o produto automaticamente.</div>
+          </div>
+
+          <div class="pk-card__tools">
+            <div class="pk-search">
+              <input id="qKeys" type="text" placeholder="Buscar por palavra / normalização..." />
+              <button id="btnSearch" class="pk-iconbtn" type="button" title="Buscar">🔎</button>
+            </div>
+
+            <input id="qProductCode" class="pk-input pk-input--sm" type="text" placeholder="Product Code" />
+
+            <button id="btnNew" class="pk-btn pk-btn--primary" type="button">＋ Novo Key</button>
+          </div>
+        </div>
+
+        <!-- Form compact -->
+        <div class="pk-formbox">
+          <form id="formKey" class="pk-form">
+            <input id="products_key_id" type="hidden" />
+
+            <div class="pk-field">
+              <label for="product_code">Product Code</label>
+              <div class="pk-inputbtn">
+                <input id="product_code" type="text" placeholder="Ex: SKU123" autocomplete="off" />
+                <button id="btnPickProduct" class="pk-iconbtn" type="button" title="Buscar produto">
+                  🔎
+                </button>
+              </div>
+            </div>
+
+            <div class="pk-field">
+              <label for="word_keys">Word Keys</label>
+              <input id="word_keys" type="text" placeholder='Ex: "DET YPÊ 500ML"' autocomplete="off" />
+            </div>
+
+            <div class="pk-field">
+              <label for="word_keys_norm">Word Keys Norm (opcional)</label>
+              <input id="word_keys_norm" type="text" placeholder="Deixe vazio para o sistema normalizar" autocomplete="off" />
+            </div>
+
+            <div class="pk-actions">
+              <button class="pk-btn pk-btn--primary" type="submit">💾 Salvar</button>
+              <button id="btnCancel" class="pk-btn pk-btn--ghost" type="button">✖ Cancelar</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Table -->
+        <div class="pk-tablewrap">
+          <table class="pk-table">
+            <thead>
+              <tr>
+                <th style="width:80px;">ID</th>
+                <th style="width:180px;">Product</th>
+                <th>Word Keys</th>
+                <th style="width:260px;">Norm</th>
+                <th style="width:140px;">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyKeys">
+              <tr><td colspan="5" class="pk-muted">Carregando…</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pk-footerhint" id="keysFooterHint">—</div>
+      </article>
+
+      <!-- ╔══════════════════════════════════════════════════════════════╗ -->
+      <!-- ║ CARD DIREITO — Resolver / Utilitários                         ║ -->
+      <!-- ╚══════════════════════════════════════════════════════════════╝ -->
+      <article class="pk-card">
+        <div class="pk-card__top">
+          <div>
+            <div class="pk-card__title">Resolver Texto → Produto</div>
+            <div class="pk-card__hint">Cole o texto do cliente e veja match exato e candidatos.</div>
+          </div>
+        </div>
+
+        <div class="pk-formbox">
+          <div class="pk-field">
+            <label for="resolveText">Texto do cliente</label>
+            <input id="resolveText" type="text" placeholder='Ex: "Detergente Ypê 500ml"' />
+          </div>
+
+          <div class="pk-grid2">
+            <div class="pk-field">
+              <label for="resolveProductCode">Filtrar por Product Code (opcional)</label>
+              <div class="pk-inputbtn">
+                <input id="resolveProductCode" type="text" placeholder="Ex: SKU123" />
+                <button id="btnPickProductResolve" class="pk-iconbtn" type="button" title="Buscar produto">
+                  🔎
+                </button>
+              </div>
+            </div>
+
+            <div class="pk-field">
+              <label for="resolveLimit">Limite</label>
+              <input id="resolveLimit" type="number" min="1" max="50" value="10" />
+            </div>
+          </div>
+
+          <div class="pk-actions">
+            <button id="btnResolve" class="pk-btn pk-btn--primary" type="button">🧠 Resolver</button>
+            <button id="btnClearResolve" class="pk-btn pk-btn--ghost" type="button">Limpar</button>
+          </div>
+        </div>
+
+        <div class="pk-result">
+          <div class="pk-result__title">Resultado</div>
+          <div class="pk-result__row">
+            <div class="pk-pill">Normalized:</div>
+            <div id="resolveNorm" class="pk-mono pk-muted">—</div>
+          </div>
+
+          <div class="pk-result__cols">
+            <div class="pk-result__col">
+              <div class="pk-result__sub">Match exato</div>
+              <div id="resolveExact" class="pk-result__box pk-muted">—</div>
+            </div>
+
+            <div class="pk-result__col">
+              <div class="pk-result__sub">Candidatos</div>
+              <div id="resolveCandidates" class="pk-result__box pk-muted">—</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pk-note">
+          Próximo passo: depois do resolve, você pode gerar itens de orçamento automaticamente (Budgets Builder).
+        </div>
+      </article>
+
+    </section>
+  </main>
+
+  <!-- scripts globais -->
+  <script type="module" src="/public/includes/js/apiBase.js"></script>
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <!-- page -->
+  <script type="module" src="/public/productsKey/productsKey.js"></script>
+</body>
+</html>

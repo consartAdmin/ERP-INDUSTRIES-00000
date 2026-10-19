@@ -1,0 +1,165 @@
+/* ╔══════════════════════════════════════════════════════════════════╗
+   ║ 🧩 grids.css — Grid System (Utility) | PRODNEX ERP               ║
+   ║ Padrão: estrutura de grid + gaps + spans                         ║
+   ║ ❌ Não define larguras específicas de campos                     ║
+   ║                                                                  ║ 
+   ║ Use like this: <div class="c-grid g-4 gap-x-12 gap-y-6">         ║  
+   ╚══════════════════════════════════════════════════════════════════╝ */
+
+.c-grid {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+}
+
+/* ==================================================================
+   GAPS GERAIS
+================================================================== */
+
+.gap-0  { gap: 0; }
+.gap-4  { gap: 4px; }
+.gap-6  { gap: 6px; }
+.gap-8  { gap: 8px; }
+.gap-10 { gap: 10px; }
+.gap-12 { gap: 12px; }
+.gap-14 { gap: 14px; }
+.gap-16 { gap: 16px; }
+.gap-20 { gap: 20px; }
+.gap-24 { gap: 24px; }
+
+/* Gap horizontal */
+.gap-x-0  { column-gap: 0; }
+.gap-x-4  { column-gap: 4px; }
+.gap-x-6  { column-gap: 6px; }
+.gap-x-8  { column-gap: 8px; }
+.gap-x-10 { column-gap: 10px; }
+.gap-x-12 { column-gap: 12px; }
+.gap-x-16 { column-gap: 16px; }
+.gap-x-20 { column-gap: 20px; }
+.gap-x-24 { column-gap: 24px; }
+
+/* Gap vertical */
+.gap-y-0  { row-gap: 0; }
+.gap-y-4  { row-gap: 4px; }
+.gap-y-6  { row-gap: 6px; }
+.gap-y-8  { row-gap: 8px; }
+.gap-y-10 { row-gap: 10px; }
+.gap-y-12 { row-gap: 12px; }
+.gap-y-16 { row-gap: 16px; }
+.gap-y-20 { row-gap: 20px; }
+.gap-y-24 { row-gap: 24px; }
+
+/* ==================================================================
+   ALINHAMENTO
+================================================================== */
+
+.a-start   { align-items: start; }
+.a-center  { align-items: center; }
+.a-end     { align-items: end; }
+.a-stretch { align-items: stretch; }
+
+.j-start   { justify-items: start; }
+.j-center  { justify-items: center; }
+.j-end     { justify-items: end; }
+.j-stretch { justify-items: stretch; }
+
+/* ==================================================================
+   COLUNAS IGUAIS
+================================================================== */
+
+.g-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.g-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.g-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.g-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.g-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.g-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.g-8 { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+
+/* ==================================================================
+   COLUNAS AUTO
+================================================================== */
+
+.g-auto {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.g-auto-sm {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.g-auto-md {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.g-auto-lg {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* ==================================================================
+   SPANS
+================================================================== */
+
+.span-1 { grid-column: span 1; }
+.span-2 { grid-column: span 2; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-8 { grid-column: span 8; }
+
+.full,
+.break {
+  grid-column: 1 / -1;
+}
+
+/* ==================================================================
+   SEGURANÇA
+================================================================== */
+
+.c-grid > * {
+  min-width: 0;
+}
+
+.c-grid input,
+.c-grid select,
+.c-grid textarea {
+  width: 100%;
+  min-width: 0;
+}
+
+/* ==================================================================
+   INLINE FIELD — input + botão
+================================================================== */
+
+.inline-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.inline-field input,
+.inline-field select,
+.inline-field textarea {
+  flex: 1;
+  min-width: 0;
+}
+
+.inline-field button {
+  flex: 0 0 auto;
+}
+
+/* ==================================================================
+   MOBILE
+================================================================== */
+
+@media (max-width: 900px) {
+  .m-1 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .m-span-1,
+  .m-span-reset {
+    grid-column: auto !important;
+  }
+}

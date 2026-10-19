@@ -1,0 +1,76 @@
+/* ===========================================================
+   Tabs
+   =========================================================== */
+.tabs{
+  display:flex;
+  flex-direction:column;
+  flex:1 1 auto;
+  min-height:0;
+  background:#fff;
+  border:1px solid var(--c-border,#e5e7eb);
+  border-radius:12px;
+}
+
+.tablist{
+  display:flex;
+  gap:6px;
+  padding:10px;
+  border-bottom:1px solid var(--c-border,#e5e7eb);
+  background:#f8fafc;
+  border-top-left-radius:12px;
+  border-top-right-radius:12px;
+  flex:0 0 auto;
+}
+
+/* botão de aba (inativa) */
+.tabs .tab{
+  appearance: none;
+  border: 1px solid var(--c-border,#e5e7eb);
+  background: #ffffff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #111827 !important;
+  transition: background .15s ease, color .15s ease, border-color .15s ease;
+}
+
+/* hover na aba inativa */
+.tabs .tab:not(.ativa):hover{
+  background: #f3f4f6;
+  color: #0f172a;
+}
+
+/* aba ativa */
+.tabs .tab.ativa,
+.tabs .tab[aria-selected="true"]{
+  background: #111827;
+  color: #ffffff !important;
+  border-color: #111827;
+}
+
+.tabpanel{ padding:12px; flex:0 0 auto; }
+.tabpanel[hidden]{ display:none !important; }
+
+/* ===========================================================
+   Card e formulários
+   =========================================================== */
+.card{
+  background:#fff;
+  border-radius:10px;
+  box-shadow:0 0 15px rgba(0,0,0,.06);
+  border:1px solid var(--c-border,#e5e7eb);
+}
+.card-header{ padding:14px 18px; border-bottom:1px solid var(--c-border,#e5e7eb); }
+.card-title{ margin:0; color:#1d4ed8; font-size:1.1rem; font-weight:700; }
+.card-body{ padding:16px 18px 20px; }
+
+form#formMovimentacao{ display:flex; flex-direction:column; gap:var(--c-space-6); }
+.linha{ display:flex; gap:var(--c-space-4); flex-wrap:wrap; }
+.campo{ flex:1 1 30%; display:flex; flex-direction:column; min-width:220px; }
+label{ font-weight:600; color:#1e293b; margin-bottom:6px; font-size:.95rem; }
+input,select,textarea{ font-size:14px; font-family:inherit; }
+textarea{ min-height:90px; }
+
+/* apenas controle de gap na toolbar (sem mexer nas cores dos botões) */
+.mov-toolbar{ gap:10px !important; }

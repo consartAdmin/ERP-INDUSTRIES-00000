@@ -1,0 +1,13 @@
+/* ╔══════════════════════════════════════════════════════════════════╗
+   ║ batchProductsPrices.css — Reajuste de Preços em Lote (CONSART)  ║
+   ║ Versão light / clean, pastéis e cards brancos                   ║
+   ╚══════════════════════════════════════════════════════════════════╝ */
+
+
+/* Layout 2 colunas */
+.bpp-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.4fr);
+  gap: 1.5rem;
+}
+

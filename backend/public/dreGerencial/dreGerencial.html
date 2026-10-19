@@ -1,0 +1,221 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ dreGerencial.html — DRE Gerencial                                   ║
+     ║ PRODNEX ERP | Frontend                                              ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>📊 DRE Gerencial — PRODNEX ERP</title>
+
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="./dreGerencial.css" />
+</head>
+
+<body>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <main class="dre-page">
+
+    <section class="dre-header">
+      <div>
+        <h1>📊 DRE Gerencial</h1>
+        <p>Demonstrativo de Resultado em Tempo Real</p>
+      </div>
+
+      <div class="dre-actions">
+        <input type="month" id="dreMonth" />
+
+        <button id="btnAtualizar" type="button">
+          🔄 Atualizar
+        </button>
+
+        <button id="btnGerarPdfDre" type="button">
+          📄 Gerar PDF
+        </button>
+      </div>
+    </section>
+
+    <section class="dre-kpis">
+      <div class="dre-kpi receita">
+        <span>💰 Receita Bruta</span>
+        <strong id="kpiReceitaBruta">R$ 0,00</strong>
+      </div>
+
+      <div class="dre-kpi impostos">
+        <span>🏛️ Impostos Venda</span>
+        <strong id="kpiImpostos">R$ 0,00</strong>
+      </div>
+
+      <div class="dre-kpi receita-liquida">
+        <span>📈 Receita Líquida</span>
+        <strong id="kpiReceitaLiquida">R$ 0,00</strong>
+      </div>
+
+      <div class="dre-kpi cmv">
+        <span>📦 C.M.V</span>
+        <strong id="kpiCMV">R$ 0,00</strong>
+      </div>
+
+      <div class="dre-kpi lucro-bruto">
+        <span>🟢 Lucro Bruto</span>
+        <strong id="kpiLucroBruto">R$ 0,00</strong>
+      </div>
+
+      <div class="dre-kpi despesas">
+        <span>💸 Despesas Operacionais Totais</span>
+        <strong id="kpiDespesas">R$ 0,00</strong>
+      </div>
+
+      <div class="dre-kpi despesas-dedutiveis">
+        <span>✅ Despesas Dedutíveis</span>
+        <strong id="kpiDespesasDedutiveis">R$ 0,00</strong>
+      </div>
+
+      <div class="dre-kpi irpj">
+        <span>🏦 IRPJ + CSLL</span>
+        <strong id="kpiIrpjCsll">R$ 0,00</strong>
+      </div>
+
+      <div class="dre-kpi lucro-liquido">
+        <span>🏆 Lucro Líquido</span>
+        <strong id="kpiLucroLiquido">R$ 0,00</strong>
+      </div>
+    </section>
+
+    <section class="dre-card">
+      <div class="dre-card-header">
+        <h2>📋 Resumo DRE</h2>
+      </div>
+
+      <div class="dre-table-wrapper">
+        <table class="dre-table">
+          <tbody>
+            <tr>
+              <td>Receita Bruta</td>
+              <td id="dreReceitaBruta">R$ 0,00</td>
+            </tr>
+
+            <tr>
+              <td>(-) Impostos Venda</td>
+              <td id="dreImpostosVenda">R$ 0,00</td>
+            </tr>
+
+            <tr class="highlight">
+              <td>(=) Receita Líquida</td>
+              <td id="dreReceitaLiquida">R$ 0,00</td>
+            </tr>
+
+            <tr class="linha-resumo-cmv">
+              <td>(-) C.M.V</td>
+              <td id="dreCMV">R$ 0,00</td>
+            </tr>
+
+            <tr class="highlight lucro">
+              <td>(=) Lucro Bruto</td>
+              <td id="dreLucroBruto">R$ 0,00</td>
+            </tr>
+
+            <tr>
+              <td>(-) Despesas Dedutíveis</td>
+              <td id="dreDespesasDedutiveis">R$ 0,00</td>
+            </tr>
+
+            <tr>
+              <td>(-) Despesas Não Dedutíveis</td>
+              <td id="dreDespesasNaoDedutiveis">R$ 0,00</td>
+            </tr>
+
+            <tr class="despesas-total">
+              <td>(-) Total Despesas Operacionais</td>
+              <td id="dreDespesas">R$ 0,00</td>
+            </tr>
+
+            <tr class="highlight">
+              <td>(=) Resultado Operacional</td>
+              <td id="dreResultadoOperacional">R$ 0,00</td>
+            </tr>
+
+            <tr>
+              <td>(-) IRPJ</td>
+              <td id="dreIRPJ">R$ 0,00</td>
+            </tr>
+
+            <tr>
+              <td>(-) CSLL</td>
+              <td id="dreCSLL">R$ 0,00</td>
+            </tr>
+
+            <tr class="highlight lucro-liquido">
+              <td>(=) Lucro Líquido</td>
+              <td id="dreLucroLiquido">R$ 0,00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="dre-card dre-lancamentos-card">
+      <div class="dre-card-header between">
+        <h2>📋 Lançamentos da DRE</h2>
+        <button id="btnNovaDespesa">➕ Nova Despesa</button>
+      </div>
+
+      <div class="dre-lancamentos-toolbar">
+        <input type="search" id="filtroLancamentosQ"
+          placeholder="🔎 Buscar por descrição, categoria, subcategoria, status..." />
+
+        <select id="filtroLancamentosTipo">
+          <option value="">Todos os tipos</option>
+          <option value="CMV">C.M.V</option>
+          <option value="DEDUTIVEL">Dedutível</option>
+          <option value="NAO_DEDUTIVEL">Não Dedutível</option>
+        </select>
+
+        <select id="filtroLancamentosStatus">
+          <option value="">Todos os status</option>
+        </select>
+
+        <select id="filtroLancamentosCategoria">
+          <option value="">Todas as categorias</option>
+        </select>
+
+        <button id="btnLimparFiltrosLancamentos" type="button">
+          🧹 Limpar
+        </button>
+      </div>
+
+      <div class="dre-lancamentos-info">
+        <span id="infoLancamentosDre">0 lançamento(s)</span>
+      </div>
+
+      <div class="dre-table-wrapper dre-lancamentos-scroll">
+        <table class="dre-table dre-lancamentos-table excel-table">
+          <thead>
+            <tr>
+              <th>Descrição</th>
+              <th>Tipo DRE</th>
+              <th>Categoria</th>
+              <th>Subcategoria</th>
+              <th>Valor</th>
+              <th>Data</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          <tbody id="tbodyDespesas"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <script type="module" src="./dreGerencial.js"></script>
+
+</body>
+
+</html>

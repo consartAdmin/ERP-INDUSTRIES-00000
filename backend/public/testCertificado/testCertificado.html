@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🔐 Teste de Certificado A1 (PFX) – Consart</title>
+
+    <!-- ✅ CSSs -->
+  <link rel="stylesheet" href="/public/includes/theme-consart.css" />
+  <link rel="stylesheet" href="/public/includes/menu.css" />
+  <link rel="stylesheet" href="/public/includes/home.css">
+  <link rel="stylesheet" href="/public/statusUsuario/statusUsuario.css" />
+
+  <style>
+    :root { --bd:#e5e7eb; --txt:#111827; --muted:#6b7280; --ok:#065f46; --err:#991b1b; }
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; background:#f3f4f6; color:var(--txt); }
+    .wrap { max-width: 1100px; margin: 24px auto; padding: 16px; background:#fff; border:1px solid var(--bd); border-radius:12px; }
+    h1 { font-size: 22px; margin-bottom: 4px; }
+    h2 { font-size: 16px; margin: 0 0 8px; }
+    .muted { color:var(--muted); margin-bottom: 16px; }
+    .grid { display:grid; grid-template-columns: 1fr 1fr; gap:16px; }
+    @media (max-width: 980px){ .grid { grid-template-columns: 1fr; } }
+    .card { border:1px solid var(--bd); border-radius:12px; padding:16px; background:#fafafa; }
+    .row { display:flex; gap:8px; align-items:center; margin:8px 0; }
+    label { min-width: 150px; color:#374151; }
+    input[type="text"], input[type="password"], textarea, select {
+      width:100%; padding:8px; border:1px solid #d1d5db; border-radius:8px; background:#fff;
+    }
+    input[type="password"] { letter-spacing: .1em; }
+    textarea { min-height: 140px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .actions { display:flex; gap:8px; flex-wrap:wrap; margin-top: 6px; }
+    button { padding:8px 12px; border-radius:10px; border:1px solid #111827; background:#111827; color:#fff; cursor:pointer; }
+    button.secondary { background:#fff; color:#111827; }
+    button:disabled { opacity:.6; cursor:not-allowed; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .ok { color:var(--ok); font-weight:600; }
+    .err { color:var(--err); font-weight:600; }
+    .kv { display:grid; grid-template-columns: 220px 1fr; gap:8px; }
+    .small { font-size:12px; color:#6b7280; }
+    .footer { margin-top: 18px; font-size: 12px; color:#6b7280; }
+  </style>
+</head>
+<body class="consart-theme c-page">
+  <main class="wrap">
+    <h1>🔐 Teste de Certificado A1 (PFX) – Consart</h1>
+    <div class="muted">Valide o PFX, visualize dados do certificado e assine um texto/XML para teste.</div>
+
+    <section class="card">
+      <h2>1) Carregar PFX</h2>
+      <div class="row">
+        <label>Arquivo PFX</label>
+        <input id="inpPfx" type="file" accept=".pfx,.p12" />
+      </div>
+      <div class="row">
+        <label>Senha</label>
+        <input id="inpPass" type="password" placeholder="Senha do PFX" autocomplete="off" />
+      </div>
+      <div class="actions">
+        <button id="btnInfo">Ler informações</button>
+        <button id="btnClear" class="secondary" type="button">Limpar</button>
+      </div>
+      <div id="infoStatus" class="small" style="margin-top:6px"></div>
+      <div id="infoCert" class="kv mono small" style="margin-top:10px"></div>
+    </section>
+
+    <div class="grid" style="margin-top:16px">
+      <section class="card">
+        <h2>2) Assinatura de Texto</h2>
+        <div class="row"><label>Algoritmo</label>
+          <select id="selAlgTxt">
+            <option value="sha1">RSA-SHA1 (NF-e)</option>
+            <option value="sha256">RSA-SHA256</option>
+          </select>
+        </div>
+        <div class="row">
+          <label>Texto</label>
+          <textarea id="txtToSign" placeholder="Digite um texto qualquer para assinar..."></textarea>
+        </div>
+        <div class="actions">
+          <button id="btnSignTxt">Assinar Texto</button>
+          <button id="btnCopyTxt" class="secondary" type="button">Copiar</button>
+          <button id="btnDownloadTxt" class="secondary" type="button">Baixar PEM</button>
+        </div>
+        <div class="small" style="margin-top:6px">Resultado (Base64 da assinatura)</div>
+        <div id="outTxtSig" class="mono small" style="white-space:pre-wrap"></div>
+      </section>
+
+      <section class="card">
+        <h2>3) Assinatura de XML (Enveloped)</h2>
+        <div class="row"><label>Algoritmo</label>
+          <select id="selAlgXml">
+            <option value="sha1">RSA-SHA1 (NF-e)</option>
+            <option value="sha256">RSA-SHA256</option>
+          </select>
+        </div>
+        <div class="row">
+          <label>XML</label>
+          <textarea id="xmlToSign" placeholder="Cole aqui um XML com atributo Id na tag alvo (ex.: &lt;infNFe Id='NFe123'&gt;)..."></textarea>
+        </div>
+        <div class="row"><label>Reference (Id)</label><input id="inpRefId" type="text" placeholder="Ex.: NFe123" /></div>
+        <div class="actions">
+          <button id="btnSignXml">Assinar XML</button>
+          <button id="btnCopyXml" class="secondary" type="button">Copiar</button>
+          <button id="btnDownloadXml" class="secondary" type="button">Baixar XML</button>
+        </div>
+        <div class="small" style="margin-top:6px">XML Assinado</div>
+        <div id="outXmlSig" class="mono small" style="white-space:pre-wrap"></div>
+      </section>
+    </div>
+
+    <div class="footer">Dica: use SHA1 para NF-e 4.00. Para outros usos modernos, prefira SHA256.</div>
+  </main>
+
+  <script src="/public/includes/SecurityModules.js" defer></script>
+  <script src="/public/verificarLogin/verificarLogin.js"></script>
+  <script src="/public/statusUsuario/statusUsuario.js" defer></script>
+  <script src="/public/includes/menu.js"></script>
+  <script src="/public/includes/sessionTimeout.js" defer></script>
+  
+  <script src="/public/testCertificado/testCertificado.js"></script>
+</body>
+</html>

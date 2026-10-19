@@ -1,0 +1,741 @@
+/* ╔════════════════════════════════════════════════════════════════════╗
+   ║ fields.css — Estilos padrões para campos | PRODNEX ERP           ║
+   ║ Inputs, selects, textareas, dimensões, linhas e responsividade    ║
+   ╚════════════════════════════════════════════════════════════════════╝ */
+
+:root {
+  /* Cores */
+  --fields-background: #ffffff;
+  --fields-background-disabled: #f3f4f6;
+  --fields-color: #111827;
+  --fields-color-disabled: #6b7280;
+  --fields-placeholder-color: #6b7280;
+  --fields-border-color: #020508;
+  --fields-border-focus: #2563eb;
+  --fields-focus-ring: rgb(37 99 235 / 0.18);
+  --fields-error-color: #dc2626;
+
+  /* Alturas */
+  --fields-height-1: 5px;
+  --fields-height-2: 10px;
+  --fields-height-3: 15px;
+  --fields-height-4: 20px;
+  --fields-height-5: 25px;
+  --fields-height-6: 30px;
+  --fields-height-7: 35px;
+  --fields-height-8: 40px;
+
+  /* Larguras */
+  --fields-width-1: 30px;
+  --fields-width-2: 40px;
+  --fields-width-3: 50px;
+  --fields-width-4: 60px;
+  --fields-width-5: 70px;
+  --fields-width-6: 80px;
+  --fields-width-7: 90px;
+  --fields-width-8: 100px;
+  --fields-width-9: 110px;
+  --fields-width-10: 120px;
+  --fields-width-11: 125px;
+  --fields-width-12: 130px;
+  --fields-width-13: 140px;
+  --fields-width-14: 145px;
+  --fields-width-15: 150px;
+  --fields-width-16: 200px;
+  --fields-width-20: 250px;
+  --fields-width-25: 300px;
+  --fields-width-30: 350px;
+  --fields-width-40: 450px;
+  --fields-width-full: 100%;
+
+  /* Fontes */
+  --fields-font-size-1: 10px;
+  --fields-font-size-2: 11px;
+  --fields-font-size-3: 12px;
+  --fields-font-size-4: 13px;
+  --fields-font-size-5: 14px;
+
+  /* Espaçamentos e aparência */
+  --fields-gap-0: 0;
+  --fields-gap-1: 4px;
+  --fields-gap-2: 8px;
+  --fields-gap-3: 12px;
+  --fields-gap-4: 16px;
+  --fields-gap-5: 20px;
+  --fields-gap-6: 24px;
+  --fields-gap-7: 28px;
+  --fields-gap-8: 32px;
+  --fields-gap-9: 36px;
+  --fields-gap-10: 40px;
+
+  /* Default */
+  --fields-gap: var(--fields-gap-0);
+
+  --fields-label-gap: 4px;
+  --fields-padding-x: 4px;
+  --fields-padding-y: 0;
+  --fields-border-width: 1px;
+  --fields-border-radius: 6px;
+  --fields-transition-duration: 150ms;
+
+  /* Valores padrão */
+  --fields-width: var(--fields-width-20);
+  --fields-height: var(--fields-height-5);
+  --fields-font-size: var(--fields-font-size-3);
+
+  /* Padding sizes */
+  --fields-padding-1: 1px;
+  --fields-padding-2: 2px;
+  --fields-padding-3: 3px;
+  --fields-padding-4: 4px;
+  --fields-padding-5: 5px;
+  --fields-padding-6: 6px;
+  --fields-padding-7: 7px;
+  --fields-padding-8: 8px;
+  --fields-padding-9: 9px;
+  --fields-padding-10: 10px;
+
+}
+
+/* ====================================================================
+   CONTAINER PADRÃO
+==================================================================== */
+.fields {
+  box-sizing: border-box;
+  width: var(--fields-width);
+  min-width: 0;
+}
+
+.fields>label,
+.fields>.fields-label {
+  display: block;
+  margin: 0 0 var(--fields-label-gap);
+  color: var(--fields-color);
+  font-size: var(--fields-font-size);
+  line-height: 1.2;
+}
+
+.fields input,
+.fields select,
+.fields textarea {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: var(--fields-height);
+  margin: 0;
+  padding: var(--fields-padding-y) var(--fields-padding-x);
+
+  border: var(--fields-border-width) solid var(--fields-border-color);
+  border-radius: var(--fields-border-radius);
+  outline: none;
+
+  background-color: var(--fields-background);
+  color: var(--fields-color);
+
+  font-family: inherit;
+  font-size: var(--fields-font-size);
+  line-height: 1.2;
+
+  transition:
+    border-color var(--fields-transition-duration) ease,
+    box-shadow var(--fields-transition-duration) ease,
+    background-color var(--fields-transition-duration) ease;
+}
+
+/* ====================================================================
+   DATE-RANGE-FIELD — INTEGRAÇÃO COM O SISTEMA .fields
+==================================================================== */
+.fields>date-range-field {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  color: var(--fields-color);
+  font-family: inherit;
+  font-size: var(--fields-font-size);
+}
+
+.fields date-range-field .date-range-field-root {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+
+.fields date-range-field .date-range-field-label {
+  display: block;
+  margin: 0 0 var(--fields-label-gap);
+  color: var(--fields-color);
+  font-size: var(--fields-font-size);
+  line-height: 1.2;
+}
+
+.fields date-range-field .date-range-field-trigger {
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+  height: var(--fields-height);
+  min-height: var(--fields-height);
+  margin: 0;
+  padding: var(--fields-padding-y) var(--fields-padding-x);
+
+  color: var(--fields-color);
+  font-family: inherit;
+  font-size: var(--fields-font-size);
+  line-height: 1.2;
+  text-align: left;
+
+  background-color: var(--fields-background);
+  border: var(--fields-border-width) solid var(--fields-border-color);
+  border-radius: var(--fields-border-radius);
+  outline: none;
+  cursor: pointer;
+
+  transition:
+    border-color var(--fields-transition-duration) ease,
+    box-shadow var(--fields-transition-duration) ease,
+    background-color var(--fields-transition-duration) ease;
+}
+
+.fields date-range-field .date-range-field-display {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fields date-range-field .date-range-field-icon {
+  flex: 0 0 auto;
+  line-height: 1;
+}
+
+.fields date-range-field .date-range-field-trigger:focus-visible {
+  border-color: var(--fields-border-focus);
+  box-shadow: 0 0 0 3px var(--fields-focus-ring);
+}
+
+.fields date-range-field .date-range-field-trigger:disabled {
+  color: var(--fields-color-disabled);
+  background-color: var(--fields-background-disabled);
+  cursor: not-allowed;
+}
+
+.fields-required>date-range-field .date-range-field-label::after,
+.fields>date-range-field[required] .date-range-field-label::after {
+  content: ' *';
+  color: var(--fields-error-color);
+}
+
+.fields-error date-range-field .date-range-field-trigger,
+.fields date-range-field .date-range-field-trigger[aria-invalid='true'] {
+  border-color: var(--fields-error-color);
+}
+
+/* Hidden compatibility values must never receive visible field styling. */
+.fields input[type='hidden'] {
+  display: none !important;
+}
+
+.fields input::placeholder,
+.fields textarea::placeholder {
+  color: var(--fields-placeholder-color);
+  opacity: 1;
+}
+
+.fields input:focus,
+.fields select:focus,
+.fields textarea:focus {
+  border-color: var(--fields-border-focus);
+  box-shadow: 0 0 0 3px var(--fields-focus-ring);
+}
+
+.fields input:disabled,
+.fields select:disabled,
+.fields textarea:disabled,
+.fields input[readonly],
+.fields textarea[readonly] {
+  background-color: var(--fields-background-disabled);
+  color: var(--fields-color-disabled);
+  cursor: not-allowed;
+}
+
+/* Textarea cresce verticalmente */
+.fields textarea {
+  min-height: var(--fields-height);
+  height: auto;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  resize: vertical;
+}
+
+/* Remove o estilo de largura total de controles específicos */
+.fields input[type='checkbox'],
+.fields input[type='radio'] {
+  display: inline-block;
+  width: auto;
+  min-width: auto;
+  height: auto;
+  padding: 0;
+  accent-color: var(--fields-border-focus);
+}
+
+/* ====================================================================
+   ALTURAS
+==================================================================== */
+.fields-h-1 {
+  --fields-height: var(--fields-height-1);
+}
+
+.fields-h-2 {
+  --fields-height: var(--fields-height-2);
+}
+
+.fields-h-3 {
+  --fields-height: var(--fields-height-3);
+}
+
+.fields-h-4 {
+  --fields-height: var(--fields-height-4);
+}
+
+.fields-h-5 {
+  --fields-height: var(--fields-height-5);
+}
+
+.fields-h-6 {
+  --fields-height: var(--fields-height-6);
+}
+
+.fields-h-7 {
+  --fields-height: var(--fields-height-7);
+}
+
+.fields-h-8 {
+  --fields-height: var(--fields-height-8);
+}
+
+/* ====================================================================
+   LARGURAS
+==================================================================== */
+.fields-w-1 {
+  --fields-width: var(--fields-width-1);
+}
+
+.fields-w-2 {
+  --fields-width: var(--fields-width-2);
+}
+
+.fields-w-3 {
+  --fields-width: var(--fields-width-3);
+}
+
+.fields-w-4 {
+  --fields-width: var(--fields-width-4);
+}
+
+.fields-w-5 {
+  --fields-width: var(--fields-width-5);
+}
+
+.fields-w-6 {
+  --fields-width: var(--fields-width-6);
+}
+
+.fields-w-7 {
+  --fields-width: var(--fields-width-7);
+}
+
+.fields-w-8 {
+  --fields-width: var(--fields-width-8);
+}
+
+.fields-w-9 {
+  --fields-width: var(--fields-width-9);
+}
+
+.fields-w-10 {
+  --fields-width: var(--fields-width-10);
+}
+
+.fields-w-11 {
+  --fields-width: var(--fields-width-11);
+}
+
+.fields-w-12 {
+  --fields-width: var(--fields-width-12);
+}
+
+.fields-w-13 {
+  --fields-width: var(--fields-width-13);
+}
+
+.fields-w-14 {
+  --fields-width: var(--fields-width-14);
+}
+
+.fields-w-15 {
+  --fields-width: var(--fields-width-15);
+}
+
+.fields-w-16 {
+  --fields-width: var(--fields-width-16);
+}
+
+.fields-w-17 {
+  --fields-width: var(--fields-width-17);
+}
+
+.fields-w-20 {
+  --fields-width: var(--fields-width-20);
+}
+
+.fields-w-25 {
+  --fields-width: var(--fields-width-25);
+}
+
+.fields-w-30 {
+  --fields-width: var(--fields-width-30);
+}
+
+.fields-w-40 {
+  --fields-width: var(--fields-width-40);
+}
+
+.fields-w-full {
+  --fields-width: var(--fields-width-full);
+}
+
+.fields-w-auto {
+  --fields-width: auto;
+}
+
+/* Campo flexível: ocupa o espaço restante */
+.fields-grow {
+  flex: 1 1 0 !important;
+  width: auto;
+  min-width: 120px;
+}
+
+/* ====================================================================
+   POSICIONAMENTO
+==================================================================== */
+.fields-inline {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  gap: var(--fields-gap);
+}
+
+/* Mantém cada campo com a largura definida em fields-w-* */
+.fields-inline>.fields {
+  flex: 0 0 var(--fields-width);
+  min-width: 0;
+}
+
+/* Permite quebra para a próxima linha */
+.fields-inline-wrap {
+  flex-wrap: wrap;
+}
+
+/* Mantém uma linha e cria scroll quando necessário */
+.fields-inline-scroll {
+  overflow-x: auto;
+  overflow-y: visible;
+  padding-bottom: 4px;
+  overscroll-behavior-inline: contain;
+}
+
+.fields-align-start {
+  align-items: flex-start;
+}
+
+.fields-align-center {
+  align-items: center;
+}
+
+.fields-align-end {
+  align-items: flex-end;
+}
+
+.fields-justify-between {
+  justify-content: space-between;
+}
+
+/* Gap selectors */
+.fields-gap-0 {
+  --fields-gap: var(--fields-gap-0);
+}
+
+.fields-gap-1 {
+  --fields-gap: var(--fields-gap-1);
+}
+
+.fields-gap-2 {
+  --fields-gap: var(--fields-gap-2);
+}
+
+.fields-gap-3 {
+  --fields-gap: var(--fields-gap-3);
+}
+
+.fields-gap-4 {
+  --fields-gap: var(--fields-gap-4);
+}
+
+.fields-gap-5 {
+  --fields-gap: var(--fields-gap-5);
+}
+
+.fields-gap-6 {
+  --fields-gap: var(--fields-gap-6);
+}
+
+.fields-gap-7 {
+  --fields-gap: var(--fields-gap-7);
+}
+
+.fields-gap-8 {
+  --fields-gap: var(--fields-gap-8);
+}
+
+.fields-gap-9 {
+  --fields-gap: var(--fields-gap-9);
+}
+
+.fields-gap-10 {
+  --fields-gap: var(--fields-gap-10);
+}
+
+/* Vertical field-line container */
+.fields-lines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fields-gap, 0);
+  min-width: 0;
+}
+
+/* Optional grid container */
+.fields-lines-grid {
+  display: grid;
+  gap: var(--fields-gap, 0);
+  min-width: 0;
+}
+
+/* ====================================================================
+   INPUT/SELECT COM BOTÃO NA MESMA LINHA
+==================================================================== */
+.inline-field {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  gap: 6px;
+}
+
+.fields .inline-field input,
+.fields .inline-field select,
+.inline-field>input,
+.inline-field>select {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+}
+
+.inline-field>button,
+.inline-field>.btn,
+.inline-field>.status-badge {
+  flex: 0 0 auto;
+}
+
+/* ====================================================================
+   TAMANHOS DE FONTE
+==================================================================== */
+.fields-font-1 {
+  --fields-font-size: var(--fields-font-size-1);
+}
+
+.fields-font-2 {
+  --fields-font-size: var(--fields-font-size-2);
+}
+
+.fields-font-3 {
+  --fields-font-size: var(--fields-font-size-3);
+}
+
+.fields-font-4 {
+  --fields-font-size: var(--fields-font-size-4);
+}
+
+.fields-font-5 {
+  --fields-font-size: var(--fields-font-size-5);
+}
+
+/* ====================================================================
+   ESTADOS E MENSAGENS
+==================================================================== */
+.fields-required>label::after,
+.fields-required>.fields-label::after {
+  content: ' *';
+  color: var(--fields-error-color);
+}
+
+.fields-error input,
+.fields-error select,
+.fields-error textarea {
+  border-color: var(--fields-error-color);
+}
+
+.fields-error input:focus,
+.fields-error select:focus,
+.fields-error textarea:focus {
+  box-shadow: 0 0 0 3px rgb(220 38 38 / 0.16);
+}
+
+.fields-message,
+.fields-help,
+.fields-error-message {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.fields-help {
+  color: #6b7280;
+}
+
+.fields-error-message {
+  color: var(--fields-error-color);
+}
+
+/* Padding left */
+.fields-p-left-1 {
+  padding-left: var(--fields-padding-1);
+}
+
+.fields-p-left-2 {
+  padding-left: var(--fields-padding-2);
+}
+
+.fields-p-left-3 {
+  padding-left: var(--fields-padding-3);
+}
+
+.fields-p-left-4 {
+  padding-left: var(--fields-padding-4);
+}
+
+.fields-p-left-5 {
+  padding-left: var(--fields-padding-5);
+}
+
+.fields-p-left-6 {
+  padding-left: var(--fields-padding-6);
+}
+
+.fields-p-left-7 {
+  padding-left: var(--fields-padding-7);
+}
+
+.fields-p-left-8 {
+  padding-left: var(--fields-padding-8);
+}
+
+.fields-p-left-9 {
+  padding-left: var(--fields-padding-9);
+}
+
+.fields-p-left-10 {
+  padding-left: var(--fields-padding-10);
+}
+
+/* Padding right */
+.fields-p-right-1 {
+  padding-right: var(--fields-padding-1);
+}
+
+.fields-p-right-2 {
+  padding-right: var(--fields-padding-2);
+}
+
+.fields-p-right-3 {
+  padding-right: var(--fields-padding-3);
+}
+
+.fields-p-right-4 {
+  padding-right: var(--fields-padding-4);
+}
+
+.fields-p-right-5 {
+  padding-right: var(--fields-padding-5);
+}
+
+.fields-p-right-6 {
+  padding-right: var(--fields-padding-6);
+}
+
+.fields-p-right-7 {
+  padding-right: var(--fields-padding-7);
+}
+
+.fields-p-right-8 {
+  padding-right: var(--fields-padding-8);
+}
+
+.fields-p-right-9 {
+  padding-right: var(--fields-padding-9);
+}
+
+.fields-p-right-10 {
+  padding-right: var(--fields-padding-10);
+}
+
+/* Prevent padding from increasing the declared width */
+[class*="fields-p-left-"],
+[class*="fields-p-right-"] {
+  box-sizing: border-box;
+}
+
+/* ====================================================================
+   RESPONSIVIDADE
+==================================================================== */
+@media (max-width: 900px) {
+  .fields-inline-responsive {
+    flex-wrap: wrap;
+  }
+
+  .fields-inline-responsive>.fields {
+    flex: 1 1 min(100%, var(--fields-width));
+  }
+}
+
+@media (max-width: 600px) {
+  .fields-inline-mobile {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .fields-inline-mobile>.fields {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .fields input,
+  .fields select,
+  .fields textarea,
+  .fields date-range-field .date-range-field-trigger {
+    transition: none;
+  }
+}

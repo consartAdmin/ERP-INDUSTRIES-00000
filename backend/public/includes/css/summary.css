@@ -1,0 +1,437 @@
+/* ╔════════════════════════════════════════════════════════════════════╗
+   ║ summary.css — Summary / KPI / Totals Pills | PRODNEX ERP          ║
+   ║ ✅ Altura e largura controladas por classes numeradas             ║
+   ╚════════════════════════════════════════════════════════════════════╝ */
+
+:root {
+  /* Container */
+  --summary-gap: 8px;
+
+  /* Internal spacing */
+  --summary-pill-padding-y: 8px;
+  --summary-pill-padding-x: 12px;
+
+  /* Heights */
+  --summary-pill-height-1: 20px;
+  --summary-pill-height-2: 25px;
+  --summary-pill-height-3: 30px;
+  --summary-pill-height-4: 35px;
+  --summary-pill-height-5: 40px;
+  --summary-pill-height-6: 45px;
+  --summary-pill-height-7: 50px;
+
+  /* Widths */
+  --summary-pill-width-1: 80px;
+  --summary-pill-width-2: 100px;
+  --summary-pill-width-3: 120px;
+  --summary-pill-width-4: 140px;
+  --summary-pill-width-5: 160px;
+  --summary-pill-width-6: 180px;
+  --summary-pill-width-7: 200px;
+  --summary-pill-width-8: 220px;
+  --summary-pill-width-9: 240px;
+  --summary-pill-width-10: 260px;
+
+  /* Appearance */
+  --summary-pill-radius: 999px;
+  --summary-pill-border-width: 1px;
+  --summary-pill-border: #020508;
+  --summary-pill-bg: #ffffff;
+  --summary-pill-text: #111827;
+
+  /* Typography */
+  --summary-pill-font-size: 12px;
+  --summary-pill-font-weight: 700;
+  --summary-pill-line-height: 1.2;
+
+  /* Success */
+  --summary-pill-success-bg: #f3f5f4;
+  --summary-pill-success-bd: #010201;
+  --summary-pill-success-tx: #166534;
+
+  /* Warning */
+  --summary-pill-warning-bg: #fffbeb;
+  --summary-pill-warning-bd: #fcd34d;
+  --summary-pill-warning-tx: #92400e;
+
+  /* Danger */
+  --summary-pill-danger-bg: #fef2f2;
+  --summary-pill-danger-bd: #fca5a5;
+  --summary-pill-danger-tx: #991b1b;
+
+  /* Information */
+  --summary-pill-info-bg: #eff6ff;
+  --summary-pill-info-bd: #93c5fd;
+  --summary-pill-info-tx: #1d4ed8;
+
+  /* External lateral spacing */
+  --summary-side-space-0: 0;
+  --summary-side-space-1: 4px;
+  --summary-side-space-2: 8px;
+  --summary-side-space-3: 12px;
+  --summary-side-space-4: 16px;
+  --summary-side-space-5: 20px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   Container
+   ══════════════════════════════════════════════════════════════════════ */
+
+.summary {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--summary-gap);
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   Alignment
+   ══════════════════════════════════════════════════════════════════════ */
+
+.summary--left {
+  justify-content: flex-start;
+}
+
+.summary--center {
+  justify-content: center;
+}
+
+.summary--right {
+  justify-content: flex-end;
+}
+
+.summary--between {
+  justify-content: space-between;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   Gap helpers
+   ══════════════════════════════════════════════════════════════════════ */
+
+.summary-gap-0 {
+  gap: 0;
+}
+
+.summary-gap-4 {
+  gap: 4px;
+}
+
+.summary-gap-6 {
+  gap: 6px;
+}
+
+.summary-gap-8 {
+  gap: 8px;
+}
+
+.summary-gap-10 {
+  gap: 10px;
+}
+
+.summary-gap-12 {
+  gap: 12px;
+}
+
+.summary-gap-16 {
+  gap: 16px;
+}
+
+.summary-gap-20 {
+  gap: 20px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   Base pill
+   ══════════════════════════════════════════════════════════════════════ */
+
+.summary-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 0;
+  min-height: var(--summary-pill-height-3);
+  padding: var(--summary-pill-padding-y) var(--summary-pill-padding-x);
+
+  border: var(--summary-pill-border-width) solid var(--summary-pill-border);
+  border-radius: var(--summary-pill-radius);
+
+  background: var(--summary-pill-bg);
+  color: var(--summary-pill-text);
+
+  font-size: var(--summary-pill-font-size);
+  font-weight: var(--summary-pill-font-weight);
+  line-height: var(--summary-pill-line-height);
+  text-align: center;
+
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   Height helpers
+   ══════════════════════════════════════════════════════════════════════ */
+
+.summary-height-1 {
+  height: var(--summary-pill-height-1);
+  min-height: var(--summary-pill-height-1);
+}
+
+.summary-height-2 {
+  height: var(--summary-pill-height-2);
+  min-height: var(--summary-pill-height-2);
+}
+
+.summary-height-3 {
+  height: var(--summary-pill-height-3);
+  min-height: var(--summary-pill-height-3);
+}
+
+.summary-height-4 {
+  height: var(--summary-pill-height-4);
+  min-height: var(--summary-pill-height-4);
+}
+
+.summary-height-5 {
+  height: var(--summary-pill-height-5);
+  min-height: var(--summary-pill-height-5);
+}
+
+.summary-height-6 {
+  height: var(--summary-pill-height-6);
+  min-height: var(--summary-pill-height-6);
+}
+
+.summary-height-7 {
+  height: var(--summary-pill-height-7);
+  min-height: var(--summary-pill-height-7);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   Width helpers
+   ══════════════════════════════════════════════════════════════════════ */
+
+.summary-width-auto {
+  width: auto;
+}
+
+.summary-width-full {
+  width: 100%;
+}
+
+.summary-width-1 {
+  width: var(--summary-pill-width-1);
+}
+
+.summary-width-2 {
+  width: var(--summary-pill-width-2);
+}
+
+.summary-width-3 {
+  width: var(--summary-pill-width-3);
+}
+
+.summary-width-4 {
+  width: var(--summary-pill-width-4);
+}
+
+.summary-width-5 {
+  width: var(--summary-pill-width-5);
+}
+
+.summary-width-6 {
+  width: var(--summary-pill-width-6);
+}
+
+.summary-width-7 {
+  width: var(--summary-pill-width-7);
+}
+
+.summary-width-8 {
+  width: var(--summary-pill-width-8);
+}
+
+.summary-width-9 {
+  width: var(--summary-pill-width-9);
+}
+
+.summary-width-10 {
+  width: var(--summary-pill-width-10);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   Flexible width helpers
+   ══════════════════════════════════════════════════════════════════════ */
+
+.summary-flex-1 {
+  flex: 1 1 0;
+}
+
+.summary-flex-auto {
+  flex: 1 1 auto;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   Color variants
+   ══════════════════════════════════════════════════════════════════════ */
+
+.summary-pill--success {
+  background: var(--summary-pill-success-bg);
+  border-color: var(--summary-pill-success-bd);
+  color: var(--summary-pill-success-tx);
+}
+
+.summary-pill--warning {
+  background: var(--summary-pill-warning-bg);
+  border-color: var(--summary-pill-warning-bd);
+  color: var(--summary-pill-warning-tx);
+}
+
+.summary-pill--danger {
+  background: var(--summary-pill-danger-bg);
+  border-color: var(--summary-pill-danger-bd);
+  color: var(--summary-pill-danger-tx);
+}
+
+.summary-pill--info {
+  background: var(--summary-pill-info-bg);
+  border-color: var(--summary-pill-info-bd);
+  color: var(--summary-pill-info-tx);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   External lateral spacing
+   ══════════════════════════════════════════════════════════════════════ */
+
+.summary-side-0 {
+  margin-inline: var(--summary-side-space-0);
+}
+
+.summary-side-1 {
+  margin-inline: var(--summary-side-space-1);
+}
+
+.summary-side-2 {
+  margin-inline: var(--summary-side-space-2);
+}
+
+.summary-side-3 {
+  margin-inline: var(--summary-side-space-3);
+}
+
+.summary-side-4 {
+  margin-inline: var(--summary-side-space-4);
+}
+
+.summary-side-5 {
+  margin-inline: var(--summary-side-space-5);
+}
+
+/* Only the left side */
+.summary-left-space-1 {
+  margin-left: var(--summary-side-space-1);
+}
+
+.summary-left-space-2 {
+  margin-left: var(--summary-side-space-2);
+}
+
+.summary-left-space-3 {
+  margin-left: var(--summary-side-space-3);
+}
+
+.summary-left-space-4 {
+  margin-left: var(--summary-side-space-4);
+}
+
+.summary-left-space-5 {
+  margin-left: var(--summary-side-space-5);
+}
+
+/* Only the right side */
+.summary-right-space-1 {
+  margin-right: var(--summary-side-space-1);
+}
+
+.summary-right-space-2 {
+  margin-right: var(--summary-side-space-2);
+}
+
+.summary-right-space-3 {
+  margin-right: var(--summary-side-space-3);
+}
+
+.summary-right-space-4 {
+  margin-right: var(--summary-side-space-4);
+}
+
+.summary-right-space-5 {
+  margin-right: var(--summary-side-space-5);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   Responsive
+   ══════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .summary {
+    align-items: stretch;
+  }
+
+  .summary-pill {
+    max-width: 100%;
+  }
+
+  .summary--mobile-full .summary-pill {
+    width: 100%;
+  }
+}
+
+/* Space between the summary pill and the footer borders */
+.summary-border-space-1 {
+  margin: 4px;
+}
+
+.summary-border-space-2 {
+  margin: 8px;
+}
+
+.summary-border-space-3 {
+  margin: 12px;
+}
+
+.summary-border-space-4 {
+  margin: 16px;
+}
+
+.summary-border-space-5 {
+  margin: 20px;
+}
+
+/* Inline group: sized to its content, never wraps */
+.summary--inline {
+  display: inline-flex;
+  width: auto;
+  flex-wrap: nowrap;
+}
+
+/* Space between label and value inside a pill */
+.summary-pill {
+  gap: 4px;
+}
+
+/* Primary variant (used in the HTML but not defined yet) */
+:root {
+  --summary-pill-primary-bg: #ffffff;
+  --summary-pill-primary-bd: #020508;
+  --summary-pill-primary-tx: #111827;
+}
+
+.summary-pill--primary {
+  background: var(--summary-pill-primary-bg);
+  border-color: var(--summary-pill-primary-bd);
+  color: var(--summary-pill-primary-tx);
+}

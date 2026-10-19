@@ -1,0 +1,645 @@
+/* ╔════════════════════════════════════════════════════════════════════╗
+   ║ section.css — Seções / Blocos de conteúdo | PRODNEX ERP          ║
+   ║ Controle por tokens, tamanhos, cores, bordas, sombras e overflow  ║
+   ╚════════════════════════════════════════════════════════════════════╝ */
+
+/* ────────────────────────────────────────────────────────────────────
+   ROOT / TOKENS GLOBAIS
+   Estes valores são os padrões de todas as seções.
+   Podem ser sobrescritos em uma classe ou diretamente no HTML.
+──────────────────────────────────────────────────────────────────── */
+:root {
+    /* Dimensões padrão */
+    --section-width: 100%;
+    --section-min-width: 0;
+    --section-max-width: none;
+    --section-height: auto;
+    --section-min-height: 0;
+    --section-max-height: none;
+
+    /* Espaçamentos padrão */
+    --section-padding-y: 12px;
+    --section-padding-x: 12px;
+    --section-margin-y: 0;
+    --section-margin-x: 0;
+    --section-gap: 12px;
+
+    /* Aparência padrão */
+    --section-background: #ffffff;
+    --section-color: #111827;
+    --section-border-width: 1px;
+    --section-border-style: solid;
+    --section-border-color: #d1d5db;
+    --section-radius: 8px;
+    --section-shadow: none;
+    --section-opacity: 1;
+
+    /* Layout padrão */
+    --section-display: flex;
+    --section-direction: column;
+    --section-wrap: nowrap;
+    --section-align: stretch;
+    --section-justify: flex-start;
+    --section-position: relative;
+    --section-overflow-x: visible;
+    --section-overflow-y: visible;
+
+    /* Transição */
+    --section-transition-duration: 160ms;
+    --section-transition-timing: ease;
+
+    /* Escala de padding */
+    --section-padding-0: 0;
+    --section-padding-1: 4px;
+    --section-padding-2: 8px;
+    --section-padding-3: 12px;
+    --section-padding-4: 16px;
+    --section-padding-5: 20px;
+    --section-padding-6: 24px;
+    --section-padding-8: 32px;
+
+    /* Escala de gap */
+    --section-gap-0: 0;
+    --section-gap-1: 4px;
+    --section-gap-2: 8px;
+    --section-gap-3: 12px;
+    --section-gap-4: 16px;
+    --section-gap-5: 20px;
+    --section-gap-6: 24px;
+
+    /* Escala de raio */
+    --section-radius-0: 0;
+    --section-radius-1: 4px;
+    --section-radius-2: 6px;
+    --section-radius-3: 8px;
+    --section-radius-4: 12px;
+    --section-radius-pill: 999px;
+
+    /* Larguras máximas */
+    --section-max-width-sm: 640px;
+    --section-max-width-md: 768px;
+    --section-max-width-lg: 1024px;
+    --section-max-width-xl: 1280px;
+    --section-max-width-2xl: 1440px;
+
+    /* Alturas prontas */
+    --section-height-1: 100px;
+    --section-height-2: 200px;
+    --section-height-3: 300px;
+    --section-height-4: 400px;
+    --section-height-5: 500px;
+
+    /* Cores */
+    --section-bg-white: #ffffff;
+    --section-bg-soft: #f8fafc;
+    --section-bg-gray: #f3f4f6;
+    --section-bg-blue: #eff6ff;
+    --section-bg-green: #f0fdf4;
+    --section-bg-yellow: #fffbeb;
+    --section-bg-red: #fef2f2;
+
+    --section-border-neutral: #d1d5db;
+    --section-border-dark: #111827;
+    --section-border-blue: #93c5fd;
+    --section-border-green: #86efac;
+    --section-border-yellow: #fcd34d;
+    --section-border-red: #fca5a5;
+
+    /* Sombras */
+    --section-shadow-sm: 0 1px 2px rgb(15 23 42 / 0.08);
+    --section-shadow-md: 0 4px 12px rgb(15 23 42 / 0.10);
+    --section-shadow-lg: 0 10px 25px rgb(15 23 42 / 0.14);
+}
+
+/* ====================================================================
+   SEÇÃO PADRÃO
+==================================================================== */
+.section {
+    box-sizing: border-box;
+    width: var(--section-width);
+    min-width: var(--section-min-width);
+    max-width: var(--section-max-width);
+    height: var(--section-height);
+    min-height: var(--section-min-height);
+    max-height: var(--section-max-height);
+
+    padding: var(--section-padding-y) var(--section-padding-x);
+    margin: var(--section-margin-y) var(--section-margin-x);
+
+    display: var(--section-display);
+    flex-direction: var(--section-direction);
+    flex-wrap: var(--section-wrap);
+    align-items: var(--section-align);
+    justify-content: var(--section-justify);
+    gap: var(--section-gap);
+
+    position: var(--section-position);
+    overflow-x: var(--section-overflow-x);
+    overflow-y: var(--section-overflow-y);
+
+    color: var(--section-color);
+    background: var(--section-background);
+    border: var(--section-border-width) var(--section-border-style) var(--section-border-color);
+    border-radius: var(--section-radius);
+    box-shadow: var(--section-shadow);
+    opacity: var(--section-opacity);
+
+    transition:
+        background-color var(--section-transition-duration) var(--section-transition-timing),
+        border-color var(--section-transition-duration) var(--section-transition-timing),
+        box-shadow var(--section-transition-duration) var(--section-transition-timing);
+}
+
+/* Evita que filhos flex/grid ultrapassem a seção */
+.section>* {
+    min-width: 0;
+}
+
+/* ====================================================================
+   ESTRUTURA INTERNA OPCIONAL
+==================================================================== */
+.section__header,
+.section__body,
+.section__footer {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+}
+
+.section__header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    text-align: left;
+}
+
+.section__body {
+    flex: 1 1 auto;
+}
+
+.section__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.section__title {
+    margin: 0;
+    color: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.25;
+    text-align: left;
+}
+
+/* ====================================================================
+   PADDING
+==================================================================== */
+.section-p-0 {
+    --section-padding-y: var(--section-padding-0);
+    --section-padding-x: var(--section-padding-0);
+}
+
+.section-p-1 {
+    --section-padding-y: var(--section-padding-1);
+    --section-padding-x: var(--section-padding-1);
+}
+
+.section-p-2 {
+    --section-padding-y: var(--section-padding-2);
+    --section-padding-x: var(--section-padding-2);
+}
+
+.section-p-3 {
+    --section-padding-y: var(--section-padding-3);
+    --section-padding-x: var(--section-padding-3);
+}
+
+.section-p-4 {
+    --section-padding-y: var(--section-padding-4);
+    --section-padding-x: var(--section-padding-4);
+}
+
+.section-p-5 {
+    --section-padding-y: var(--section-padding-5);
+    --section-padding-x: var(--section-padding-5);
+}
+
+.section-p-6 {
+    --section-padding-y: var(--section-padding-6);
+    --section-padding-x: var(--section-padding-6);
+}
+
+.section-p-8 {
+    --section-padding-y: var(--section-padding-8);
+    --section-padding-x: var(--section-padding-8);
+}
+
+.section-px-0 {
+    --section-padding-x: 0;
+}
+
+.section-px-2 {
+    --section-padding-x: var(--section-padding-2);
+}
+
+.section-px-3 {
+    --section-padding-x: var(--section-padding-3);
+}
+
+.section-px-4 {
+    --section-padding-x: var(--section-padding-4);
+}
+
+.section-px-6 {
+    --section-padding-x: var(--section-padding-6);
+}
+
+.section-py-0 {
+    --section-padding-y: 0;
+}
+
+.section-py-2 {
+    --section-padding-y: var(--section-padding-2);
+}
+
+.section-py-3 {
+    --section-padding-y: var(--section-padding-3);
+}
+
+.section-py-4 {
+    --section-padding-y: var(--section-padding-4);
+}
+
+.section-py-6 {
+    --section-padding-y: var(--section-padding-6);
+}
+
+/* ====================================================================
+   GAP
+==================================================================== */
+.section-gap-0 {
+    --section-gap: var(--section-gap-0);
+}
+
+.section-gap-1 {
+    --section-gap: var(--section-gap-1);
+}
+
+.section-gap-2 {
+    --section-gap: var(--section-gap-2);
+}
+
+.section-gap-3 {
+    --section-gap: var(--section-gap-3);
+}
+
+.section-gap-4 {
+    --section-gap: var(--section-gap-4);
+}
+
+.section-gap-5 {
+    --section-gap: var(--section-gap-5);
+}
+
+.section-gap-6 {
+    --section-gap: var(--section-gap-6);
+}
+
+/* ====================================================================
+   LAYOUT
+==================================================================== */
+.section-row {
+    --section-direction: row;
+    --section-align: center;
+}
+
+.section-column {
+    --section-direction: column;
+}
+
+.section-wrap {
+    --section-wrap: wrap;
+}
+
+.section-nowrap {
+    --section-wrap: nowrap;
+}
+
+.section-align-start {
+    --section-align: flex-start;
+}
+
+.section-align-center {
+    --section-align: center;
+}
+
+.section-align-end {
+    --section-align: flex-end;
+}
+
+.section-justify-start {
+    --section-justify: flex-start;
+}
+
+.section-justify-center {
+    --section-justify: center;
+}
+
+.section-justify-end {
+    --section-justify: flex-end;
+}
+
+.section-justify-between {
+    --section-justify: space-between;
+}
+
+.section-justify-around {
+    --section-justify: space-around;
+}
+
+.section-grid {
+    --section-display: grid;
+    grid-template-columns: repeat(var(--section-grid-columns, 1), minmax(0, 1fr));
+}
+
+.section-grid-2 {
+    --section-grid-columns: 2;
+}
+
+.section-grid-3 {
+    --section-grid-columns: 3;
+}
+
+.section-grid-4 {
+    --section-grid-columns: 4;
+}
+
+/* ====================================================================
+   LARGURA / ALTURA
+==================================================================== */
+.section-w-auto {
+    --section-width: auto;
+}
+
+.section-w-full {
+    --section-width: 100%;
+}
+
+.section-w-fit {
+    --section-width: fit-content;
+}
+
+.section-max-sm {
+    --section-max-width: var(--section-max-width-sm);
+}
+
+.section-max-md {
+    --section-max-width: var(--section-max-width-md);
+}
+
+.section-max-lg {
+    --section-max-width: var(--section-max-width-lg);
+}
+
+.section-max-xl {
+    --section-max-width: var(--section-max-width-xl);
+}
+
+.section-max-2xl {
+    --section-max-width: var(--section-max-width-2xl);
+}
+
+.section-center {
+    --section-margin-x: auto;
+}
+
+.section-h-auto {
+    --section-height: auto;
+}
+
+.section-h-1 {
+    --section-height: var(--section-height-1);
+}
+
+.section-h-2 {
+    --section-height: var(--section-height-2);
+}
+
+.section-h-3 {
+    --section-height: var(--section-height-3);
+}
+
+.section-h-4 {
+    --section-height: var(--section-height-4);
+}
+
+.section-h-5 {
+    --section-height: var(--section-height-5);
+}
+
+.section-h-full {
+    --section-height: 100%;
+}
+
+/* ====================================================================
+   BACKGROUNDS / CORES
+==================================================================== */
+.section-white {
+    --section-background: var(--section-bg-white);
+}
+
+.section-soft {
+    --section-background: var(--section-bg-soft);
+}
+
+.section-gray {
+    --section-background: var(--section-bg-gray);
+}
+
+.section-blue {
+    --section-background: var(--section-bg-blue);
+    --section-border-color: var(--section-border-blue);
+}
+
+.section-green {
+    --section-background: var(--section-bg-green);
+    --section-border-color: var(--section-border-green);
+}
+
+.section-yellow {
+    --section-background: var(--section-bg-yellow);
+    --section-border-color: var(--section-border-yellow);
+}
+
+.section-red {
+    --section-background: var(--section-bg-red);
+    --section-border-color: var(--section-border-red);
+}
+
+.section-transparent {
+    --section-background: transparent;
+}
+
+/* ====================================================================
+   BORDAS / RAIOS / SOMBRAS
+==================================================================== */
+.section-border-none {
+    --section-border-width: 0;
+}
+
+.section-border-thin {
+    --section-border-width: 1px;
+}
+
+.section-border-medium {
+    --section-border-width: 2px;
+}
+
+.section-border-dark {
+    --section-border-color: var(--section-border-dark);
+}
+
+.section-radius-0 {
+    --section-radius: var(--section-radius-0);
+}
+
+.section-radius-1 {
+    --section-radius: var(--section-radius-1);
+}
+
+.section-radius-2 {
+    --section-radius: var(--section-radius-2);
+}
+
+.section-radius-3 {
+    --section-radius: var(--section-radius-3);
+}
+
+.section-radius-4 {
+    --section-radius: var(--section-radius-4);
+}
+
+.section-radius-pill {
+    --section-radius: var(--section-radius-pill);
+}
+
+.section-shadow-none {
+    --section-shadow: none;
+}
+
+.section-shadow-sm {
+    --section-shadow: var(--section-shadow-sm);
+}
+
+.section-shadow-md {
+    --section-shadow: var(--section-shadow-md);
+}
+
+.section-shadow-lg {
+    --section-shadow: var(--section-shadow-lg);
+}
+
+/* ====================================================================
+   OVERFLOW / SCROLL
+==================================================================== */
+.section-overflow-hidden {
+    --section-overflow-x: hidden;
+    --section-overflow-y: hidden;
+}
+
+.section-scroll {
+    --section-overflow-x: auto;
+    --section-overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+}
+
+.section-scroll-x {
+    --section-overflow-x: auto;
+    --section-overflow-y: hidden;
+}
+
+.section-scroll-y {
+    --section-overflow-x: hidden;
+    --section-overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+}
+
+/* ====================================================================
+   VARIANTES ÚTEIS PARA O ERP
+==================================================================== */
+.section-panel {
+    --section-background: #ffffff;
+    --section-border-color: #d1d5db;
+    --section-radius: 8px;
+    --section-shadow: var(--section-shadow-sm);
+}
+
+.section-toolbar {
+    --section-direction: row;
+    --section-wrap: wrap;
+    --section-align: center;
+    --section-justify: space-between;
+    --section-background: #f8fafc;
+    --section-padding-y: 8px;
+    --section-padding-x: 10px;
+    --section-gap: 8px;
+}
+
+.section-table {
+    --section-padding-y: 0;
+    --section-padding-x: 0;
+    --section-overflow-x: auto;
+    --section-overflow-y: visible;
+}
+
+.section-disabled {
+    --section-opacity: 0.55;
+    pointer-events: none;
+    user-select: none;
+}
+
+.section-clickable {
+    cursor: pointer;
+}
+
+.section-clickable:hover {
+    --section-border-color: #94a3b8;
+    --section-shadow: var(--section-shadow-md);
+}
+
+/* ====================================================================
+   RESPONSIVIDADE
+==================================================================== */
+@media (max-width: 768px) {
+    .section-row-responsive {
+        --section-direction: column;
+        --section-align: stretch;
+    }
+
+    .section-grid-2,
+    .section-grid-3,
+    .section-grid-4 {
+        --section-grid-columns: 1;
+    }
+
+    .section__header,
+    .section__footer {
+        flex-wrap: wrap;
+    }
+}
+
+/* Respeita usuários que preferem menos animações */
+@media (prefers-reduced-motion: reduce) {
+    .section {
+        transition: none;
+    }
+}

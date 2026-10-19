@@ -1,0 +1,241 @@
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ prices.html — Cadastro de Tabelas de Preço | PRODNEX ERP       ║
+     ║ Caminho sugerido: backend/app/prices/prices.html               ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TABELA DE PREÇOS | PRODNEX ERP</title>
+
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="stylesheet" href="/public/includes/css/style.css">
+
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <header class="header header-h-5">
+      <!-- Container for all vertical lines -->
+      <div class="fields-lines fields-gap-3">
+
+        <!-- Line 1: fields side by side -->
+        <div class="fields-inline">
+
+          <div>
+            <h2 class="font-bold">Tabela de Preços</h2>
+
+            <p class="font-normal">
+              Gerencie as tabelas de preço utilizadas no sistema com pesquisa, paginação e controle de status.
+            </p>
+          </div>
+
+          <div class="btn btn-inline btn-position-right">
+            <button id="btnNovo" class="btn btn-toolbar btn-sm" type="button">+ Nova Tabela</button>
+          </div>
+        </div>
+    </header>
+
+    <!-- ===================================================== -->
+    <!-- INTEGRATED TABLE                                      -->
+    <!-- ===================================================== -->
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter">
+
+        <div class="fields-inline fields-gap-3">
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <label for="searchInput">Pesquisar 🔎</label>
+            <input id="searchInput" type="text" placeholder="Buscar por nome ou descrição..." autocomplete="off" />
+          </div>
+
+          <div class="fields fields-h-6 fields-w-12 fields-font-3"> <label for="filterStatus">Status</label>
+            <select id="filterStatus">
+              <option value="all">Todos</option>
+              <option value="active">Somente ativos</option>
+              <option value="inactive">Somente inativos</option>
+            </select>
+          </div>
+
+          <div class="fields fields-h-6 fields-w-12 fields-font-3"> <label for="sortField">Ordenar por</label>
+            <select id="sortField">
+              <option value="name">Nome</option>
+              <option value="price_id">ID</option>
+              <option value="created_at">Data de criação</option>
+              <option value="updated_at">Última atualização</option>
+            </select>
+          </div>
+
+          <div class="fields fields-h-6 fields-w-12 fields-font-3"> <label for="sortDir">Direção</label>
+            <select id="sortDir">
+              <option value="asc">Crescente</option>
+              <option value="desc">Decrescente</option>
+            </select>
+          </div>
+
+          <button id="btnPesquisar" class="btn btn-toolbar btn-sm" type="button">Pesquisar</button>
+          <button id="btnLimpar" class="btn btn-toolbar btn-sm" type="button">Limpar</button>
+        </div>
+      </div>
+      </header>
+
+      <div class="table-scroll--rounded table-height-flex table-row-h-28" data-table-settings="prices.tablebody">
+        <table class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th style="width: 80px;">ID</th>
+              <th>Nome</th>
+              <th>Descrição</th>
+              <th style="width: 120px;">Status</th>
+              <th style="width: 180px;">Criado em</th>
+              <th style="width: 180px;">Atualizado em</th>
+              <th style="width: 280px;">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr>
+              <td colspan="7" class="table-empty">Carregando...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- =================================================== -->
+      <!-- TABLE FOOTER                                        -->
+      <!-- =================================================== -->
+
+      <footer class="table-footer">
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill-success summary-width-5 summary-left-space-3">
+            <span id="apTableInfo">
+              0 Registros
+            </span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button id="btnPrevious" type="button" class="btn btn-toolbar btn-sm">
+            Anterior
+          </button>
+
+          <span id="pageInfo">
+            Página 1 de 1
+          </span>
+
+          <button id="btnNext" type="button" class="btn btn-toolbar btn-sm">
+            Próxima
+          </button>
+        </div>
+        <div class="table-footer__page-size">
+          <label for="pageSize">
+            Mostrar
+          </label>
+          <div class="fields fields-h-6 fields-w-3 fields-font-3">
+            <select id="pageSize" class="table-footer__page-size-select">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50" selected>50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
+      </footer>
+
+      <!--MODAL-->
+
+      <div id="priceEditorModal" class="modal modal-width-5 modal-height-4" aria-hidden="true">
+        <div class="modal__backdrop" data-shortcut-modal-close></div>
+
+        <div class="modal__dialog">
+          <section class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="formTitle">
+            <header class="modal__header modal-header-color-3">
+              <div>
+                <h2 id="formTitle" class="modal__title">
+                  Nova Tabela de Preço
+                </h2>
+
+                <p id="formSubtitle" class="modal__subtitle">
+                  Preencha os campos abaixo para cadastrar uma nova tabela.
+                </p>
+              </div>
+              <button id="btnCloseShortcutModal" class="btn btn-inline" type="button" aria-label="Fechar modal"
+                title="Fechar">
+                ×
+              </button>
+            </header>
+
+            <div class="modal__body">
+              <form id="priceForm" novalidate>
+                <input type="hidden" id="priceId">
+
+                <div class="fields fields-inline fields-gap-3">
+                  <label for="priceName">
+                    Nome da Tabela <span class="required">*</span>
+                  </label>
+                </div>
+
+                <div class="fields fields-inline fields-gap-3">
+                  <input id="priceName" name="priceName" type="text" maxlength="100"
+                    placeholder="Ex.: VAREJO, ATACADO, PROMOCIONAL" required>
+                </div>
+
+                <div class="fields fields-inline fields-gap-3"> <label class="checkbox-line" for="priceActive">
+                    <input id="priceActive" type="checkbox" checked>
+                    <span>Ativa</span>
+                  </label>
+                </div>
+
+                <div class="fields fields-inline fields-gap-3">
+                  <label for="priceDescription">Descrição</label>
+                </div>
+
+                <textarea id="description"
+                  class="textarea textarea-border-1  textarea-radius-4 textarea-h-3 textarea-w-10 textarea-resize-vertical"
+                  placeholder="Descreva a finalidade desta tabela de preço..."></textarea>
+
+                <div class="fields fields-inline fields-gap-3">
+                  <label for="createdAt">Criado em</label>
+                </div>
+
+                <div class="fields fields-inline fields-gap-3">
+                  <input id="createdAt" type="text" readonly placeholder="Será preenchido automaticamente">
+                </div>
+
+                <div class="fields fields-inline fields-gap-3">
+                  <label for="updatedAt">Atualizado em</label>
+                </div>
+
+
+                <div class="fields fields-inline fields-gap-3">
+                  <input id="updatedAt" type="text" readonly placeholder="Será preenchido automaticamente">
+                </div>
+              </form>
+            </div>
+
+            <footer class="modal__footer modal-footer-color-3">
+              <div class="fields fields-inline fields-gap-3">
+
+                <button id="btnSave" class="btn btn-toolbar btn-sm" type="submit" form="priceForm">
+                  Salvar
+                </button>
+
+                <button id="btnCancel" class="btn btn-toolbar btn-sm" type="button">
+                  Cancelar
+                </button>
+
+              </div>
+            </footer>
+          </section>
+        </div>
+  </main>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <script type="module" src="./js/prices.init.js"></script>
+
+</body>
+
+</html>

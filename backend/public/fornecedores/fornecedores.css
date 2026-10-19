@@ -1,0 +1,168 @@
+/* ╔════════════════════════════════════════════════════════════╗ */
+/* ║ 🎨 fornecedores.css – Estilo da Página de Fornecedores     ║ */
+/* ╚════════════════════════════════════════════════════════════╝ */
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f7fa;
+}
+
+.container {
+  max-width: 1200px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+h1 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 30px;
+}
+
+h2 {
+  margin-top: 40px;
+  color: #34495e;
+  font-size: 22px;
+}
+
+.card-formulario {
+  padding: 20px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #dee2e6;
+}
+
+/* 🧾 Blocos com legenda (fieldset) */
+.bloco {
+  margin-bottom: 30px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fdfdfd;
+}
+
+.bloco legend {
+  font-weight: bold;
+  color: #2c3e50;
+  padding: 0 10px;
+  font-size: 15px;
+}
+
+/* 🧩 Grid de campos */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.form-grid label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-grid input,
+.form-grid select,
+.form-grid textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccd;
+  border-radius: 5px;
+  font-size: 14px;
+  background-color: #fdfdfd;
+}
+
+/* 🔘 Botões */
+.botoes-form {
+  text-align: right;
+  margin-top: 20px;
+}
+
+.botoes-form button {
+  padding: 10px 20px;
+  margin-left: 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+#btnSalvar {
+  background-color: #28a745;
+  color: white;
+}
+
+#btnSalvar:hover {
+  background-color: #218838;
+}
+
+#btnNovoFornecedor {
+  background-color: #007bff;
+  color: white;
+}
+
+#btnNovoFornecedor:hover {
+  background-color: #0069d9;
+}
+
+/* 🔍 Campo de filtro */
+#filtroFornecedor {
+  width: 100%;
+  padding: 10px;
+  margin: 20px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+/* 📊 Tabela */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+table th,
+table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+  font-size: 14px;
+}
+
+table th {
+  background-color: #f0f3f5;
+  font-weight: 600;
+  color: #2d3e50;
+}
+
+table tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .botoes-form {
+    text-align: center;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}

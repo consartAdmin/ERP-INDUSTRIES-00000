@@ -1,0 +1,199 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ nfeXmlAntigas.html — Repositório de XML de NF-e Antigas            ║
+     ║ PRODNEX ERP — Upload, consulta e gestão de XML históricas          ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>NF-e XML Antigas | PRODNEX ERP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="./nfeXmlAntigas.css" />
+</head>
+<body>
+  <div class="page-wrapper">
+    <header class="page-header">
+      <div>
+        <h1>Repositório de NF-e XML Antigas</h1>
+        <p>Importe e consulte XML históricas já emitidas pela empresa.</p>
+      </div>
+      <button type="button" class="btn-outlined" onclick="history.back()">← Voltar</button>
+    </header>
+
+    <!-- Upload -->
+<section class="card" id="uploadSection">
+  <div class="card-header">
+    <h2>Importar XML antigas</h2>
+    <p>Selecione um ou mais arquivos .xml para inserir no repositório.</p>
+  </div>
+
+<form id="uploadForm"
+      method="POST"
+      enctype="multipart/form-data">
+
+    <div class="form-group">
+      <label for="xmlFiles">Arquivos XML</label>
+      <input type="file" id="xmlFiles" name="xmlFiles" accept=".xml" multiple />
+    </div>
+
+    <button type="submit" class="btn-primary">Enviar XML</button>
+    <span id="uploadStatus" class="upload-status"></span>
+  </form>
+</section>
+
+    <!-- Filtros -->
+    <section class="card" id="filtersSection">
+      <div class="card-header">
+        <h2>Filtros de consulta</h2>
+        <p>Refine a pesquisa pelas NF-e antigas armazenadas.</p>
+      </div>
+
+      <form id="filterForm" class="filters-grid">
+        <div class="form-group">
+          <label for="q">Busca geral</label>
+          <input type="text" id="q" placeholder="Destinatário, emitente, chave..." />
+        </div>
+
+        <div class="form-group">
+          <label for="accessKey">Chave de acesso</label>
+          <input type="text" id="accessKey" maxlength="44" />
+        </div>
+
+        <div class="form-group">
+          <label for="cnpj">CNPJ/CPF Destinatário</label>
+          <input type="text" id="cnpj" placeholder="Somente números" />
+        </div>
+
+        <div class="form-group">
+          <label for="number">Número NF-e</label>
+          <input type="number" id="number" min="0" />
+        </div>
+
+        <div class="form-group">
+          <label for="series">Série</label>
+          <input type="text" id="series" />
+        </div>
+
+        <div class="form-group">
+          <label for="status">Status SEFAZ</label>
+          <input type="text" id="status" placeholder="Ex: 100, 101, 135..." />
+        </div>
+
+        <div class="form-group">
+          <label for="startDate">Data emissão inicial</label>
+          <input type="date" id="startDate" />
+        </div>
+
+        <div class="form-group">
+          <label for="endDate">Data emissão final</label>
+          <input type="date" id="endDate" />
+        </div>
+
+        <div class="form-group">
+          <label for="pageSize">Registros por página</label>
+          <select id="pageSize">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50" selected>50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+
+        <div class="filter-actions">
+          <button type="submit" class="btn-primary">Aplicar filtros</button>
+          <button type="button" id="clearFilters" class="btn-ghost">Limpar</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Resultados -->
+    <section class="card" id="resultsSection">
+      <div class="results-header">
+        <h2>NF-e encontradas</h2>
+        <span id="resultsInfo" class="results-info"></span>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="nfe-table">
+          <thead>
+            <tr>
+              <th>Emissão</th>
+              <th>Número/Série</th>
+              <th>Chave de acesso</th>
+              <th>Destinatário</th>
+              <th>CNPJ/CPF</th>
+              <th>Valor total</th>
+              <th>Status</th>
+              <th>Ambiente</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="nfeTableBody">
+            <!-- linhas injetadas via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <button type="button" id="prevPage" class="btn-ghost">← Anterior</button>
+        <span id="pageInfo" class="page-info"></span>
+        <button type="button" id="nextPage" class="btn-ghost">Próxima →</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- Modal de detalhes -->
+  <div id="detailsModal" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <header class="modal-header">
+        <h3>Detalhes da NF-e</h3>
+        <button type="button" class="modal-close" id="modalCloseBtn">×</button>
+      </header>
+
+      <section class="modal-body">
+        <div class="modal-grid">
+          <div>
+            <strong>Chave:</strong>
+            <div id="modalAccessKey" class="mono"></div>
+          </div>
+          <div>
+            <strong>Emissão:</strong>
+            <div id="modalIssueDate"></div>
+          </div>
+          <div>
+            <strong>Emitente:</strong>
+            <div id="modalEmitter"></div>
+          </div>
+          <div>
+            <strong>Destinatário:</strong>
+            <div id="modalDest"></div>
+          </div>
+          <div>
+            <strong>Valor total:</strong>
+            <div id="modalTotal"></div>
+          </div>
+          <div>
+            <strong>Status SEFAZ:</strong>
+            <div id="modalStatus"></div>
+          </div>
+        </div>
+
+        <div class="modal-xml-block">
+          <strong>XML bruto:</strong>
+          <pre id="modalXml" class="xml-block"></pre>
+        </div>
+      </section>
+
+      <footer class="modal-footer">
+        <button type="button" id="deleteNfeBtn" class="btn-danger">Excluir NF-e do repositório</button>
+        <button type="button" id="modalCloseBtnFooter" class="btn-outlined">Fechar</button>
+      </footer>
+    </div>
+  </div>
+
+  <script src="./nfeXmlAntigas.js" type="module"></script>
+</body>
+</html>

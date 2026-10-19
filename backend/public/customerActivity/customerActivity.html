@@ -1,0 +1,327 @@
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ FILE: customerActivity.html                                     ║
+     ║ MODULE: Customer Activity                                       ║
+     ║ DESCRIPTION: Tela de gestão de atividade e reativação           ║
+     ║ PRODNEX ERP · Frontend                                          ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>CUSTOMER ACTIVITY | PRODNEX ERP</title>
+
+  <link rel="icon" type="image/png" href="/public/imagens/brasaoConsartInfinity.png" />
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/customerActivity/customerActivity.css" />
+</head>
+<body class="page-customer-activity">
+
+  <main class="ca-shell">
+    <header class="ca-header">
+      <div class="ca-header__left">
+        <p class="ca-eyebrow">PRODNEX ERP</p>
+        <h1 class="ca-title">Customer Activity</h1>
+        <p class="ca-subtitle">
+          Gestão de clientes ativos, em risco, inativos e perdidos com follow-up integrado.
+        </p>
+      </div>
+
+      <div class="ca-header__actions">
+        <button id="btnReload" class="ca-btn ca-btn--ghost" type="button">
+          Recarregar
+        </button>
+        <button id="btnRecalculate" class="ca-btn ca-btn--primary" type="button">
+          Recalcular Status
+        </button>
+      </div>
+    </header>
+
+    <section class="ca-summary" aria-label="Resumo de status">
+      <article class="ca-card ca-card--summary">
+        <span class="ca-card__label">Total</span>
+        <strong id="sumTotal" class="ca-card__value">0</strong>
+      </article>
+
+      <article class="ca-card ca-card--summary ca-card--active">
+        <span class="ca-card__label">Active</span>
+        <strong id="sumActive" class="ca-card__value">0</strong>
+      </article>
+
+      <article class="ca-card ca-card--summary ca-card--risk">
+        <span class="ca-card__label">At Risk</span>
+        <strong id="sumAtRisk" class="ca-card__value">0</strong>
+      </article>
+
+      <article class="ca-card ca-card--summary ca-card--inactive">
+        <span class="ca-card__label">Inactive</span>
+        <strong id="sumInactive" class="ca-card__value">0</strong>
+      </article>
+
+      <article class="ca-card ca-card--summary ca-card--lost">
+        <span class="ca-card__label">Lost</span>
+        <strong id="sumLost" class="ca-card__value">0</strong>
+      </article>
+    </section>
+
+    <section class="ca-filters">
+      <div class="ca-filter">
+        <label for="searchInput">Pesquisar</label>
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="Cliente, tax_id, e-mail, telefone..."
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="ca-filter">
+        <label for="statusFilter">Status</label>
+        <select id="statusFilter">
+          <option value="">Todos</option>
+          <option value="active">Active</option>
+          <option value="at_risk">At Risk</option>
+          <option value="inactive">Inactive</option>
+          <option value="lost">Lost</option>
+        </select>
+      </div>
+
+      <div class="ca-filter">
+        <label for="limitFilter">Registros</label>
+        <select id="limitFilter">
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="50" selected>50</option>
+          <option value="100">100</option>
+        </select>
+      </div>
+
+      <div class="ca-filter ca-filter--checkbox">
+        <label for="needsFollowupOnly">
+          <input id="needsFollowupOnly" type="checkbox" />
+          Apenas clientes que precisam de follow-up
+        </label>
+      </div>
+    </section>
+
+    <section class="ca-table-wrap">
+      <div class="ca-table-topbar">
+        <div id="tableInfo" class="ca-table-info">Carregando...</div>
+        <div id="statusMessage" class="ca-status-message"></div>
+      </div>
+
+      <div class="ca-table-scroll" data-table-settings="customeractivity.activitytablebody">
+        <table class="ca-table">
+          <thead>
+            <tr>
+              <th>Customer ID</th>
+              <th>Trade Name</th>
+              <th>Legal Name</th>
+              <th>Tax ID</th>
+              <th>Status</th>
+              <th>Days Without Purchase</th>
+              <th>Last Purchase</th>
+              <th>Last Follow-up</th>
+              <th>Follow-up Type</th>
+              <th>City / State</th>
+              <th>Salesperson</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="activityTableBody">
+            <tr>
+              <td colspan="12" class="ca-empty">Carregando registros...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="ca-pagination">
+        <button id="btnPrevPage" class="ca-btn ca-btn--ghost" type="button">Anterior</button>
+        <span id="paginationInfo" class="ca-pagination__info">Página 1</span>
+        <button id="btnNextPage" class="ca-btn ca-btn--ghost" type="button">Próxima</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL DETALHES -->
+  <div id="detailsModal" class="ca-modal" aria-hidden="true">
+    <div class="ca-modal__backdrop" data-close-details></div>
+
+    <div class="ca-modal__dialog ca-modal__dialog--lg" role="dialog" aria-modal="true" aria-labelledby="detailsModalTitle">
+      <header class="ca-modal__header">
+        <div>
+          <h2 id="detailsModalTitle">Customer Activity Details</h2>
+          <p id="detailsModalSubtitle" class="ca-modal__subtitle">Detalhes do cliente</p>
+        </div>
+        <button id="btnCloseDetailsModal" class="ca-modal__close" type="button" aria-label="Fechar">×</button>
+      </header>
+
+      <div class="ca-modal__body">
+        <section class="ca-details-grid">
+          <div class="ca-detail-box">
+            <span class="ca-detail-box__label">Customer ID</span>
+            <strong id="detailCustomerId">-</strong>
+          </div>
+
+          <div class="ca-detail-box">
+            <span class="ca-detail-box__label">Trade Name</span>
+            <strong id="detailTradeName">-</strong>
+          </div>
+
+          <div class="ca-detail-box">
+            <span class="ca-detail-box__label">Legal Name</span>
+            <strong id="detailLegalName">-</strong>
+          </div>
+
+          <div class="ca-detail-box">
+            <span class="ca-detail-box__label">Tax ID</span>
+            <strong id="detailTaxId">-</strong>
+          </div>
+
+          <div class="ca-detail-box">
+            <span class="ca-detail-box__label">Status</span>
+            <strong id="detailStatus">-</strong>
+          </div>
+
+          <div class="ca-detail-box">
+            <span class="ca-detail-box__label">Days Without Purchase</span>
+            <strong id="detailDaysWithoutPurchase">-</strong>
+          </div>
+
+          <div class="ca-detail-box">
+            <span class="ca-detail-box__label">Last Purchase</span>
+            <strong id="detailLastPurchase">-</strong>
+          </div>
+
+          <div class="ca-detail-box">
+            <span class="ca-detail-box__label">Last Contact</span>
+            <strong id="detailLastContact">-</strong>
+          </div>
+
+          <div class="ca-detail-box">
+            <span class="ca-detail-box__label">Last Follow-up Type</span>
+            <strong id="detailLastFollowupType">-</strong>
+          </div>
+
+          <div class="ca-detail-box">
+            <span class="ca-detail-box__label">Last Follow-up At</span>
+            <strong id="detailLastFollowupAt">-</strong>
+          </div>
+
+          <div class="ca-detail-box">
+            <span class="ca-detail-box__label">Follow-up Count</span>
+            <strong id="detailFollowupCount">-</strong>
+          </div>
+
+          <div class="ca-detail-box">
+            <span class="ca-detail-box__label">Salesperson</span>
+            <strong id="detailSalesperson">-</strong>
+          </div>
+
+          <div class="ca-detail-box">
+            <span class="ca-detail-box__label">E-mail</span>
+            <strong id="detailEmail">-</strong>
+          </div>
+
+          <div class="ca-detail-box">
+            <span class="ca-detail-box__label">Phone</span>
+            <strong id="detailPhone">-</strong>
+          </div>
+
+          <div class="ca-detail-box">
+            <span class="ca-detail-box__label">Mobile</span>
+            <strong id="detailMobile">-</strong>
+          </div>
+
+          <div class="ca-detail-box">
+            <span class="ca-detail-box__label">City / State</span>
+            <strong id="detailCityState">-</strong>
+          </div>
+        </section>
+
+        <section class="ca-form-section">
+          <h3>Register Follow-up</h3>
+
+          <form id="followupForm" class="ca-form-grid">
+            <input type="hidden" id="followupCustomerId" />
+
+            <div class="ca-field">
+              <label for="followupType">Follow-up Type</label>
+              <select id="followupType" required>
+                <option value="">Selecione</option>
+                <option value="whatsapp">WhatsApp</option>
+                <option value="call">Call</option>
+                <option value="email">Email</option>
+              </select>
+            </div>
+
+            <div class="ca-field">
+              <label for="followupStatus">Status após follow-up</label>
+              <select id="followupStatus">
+                <option value="">Manter atual</option>
+                <option value="active">Active</option>
+                <option value="at_risk">At Risk</option>
+                <option value="inactive">Inactive</option>
+                <option value="lost">Lost</option>
+              </select>
+            </div>
+
+            <div class="ca-field ca-field--full">
+              <label for="followupReason">Reason / Note</label>
+              <textarea id="followupReason" rows="3" placeholder="Ex.: price, competitor, no_need, bad_experience..."></textarea>
+            </div>
+
+            <div class="ca-form-actions">
+              <button type="submit" class="ca-btn ca-btn--primary">Salvar Follow-up</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="ca-form-section">
+          <h3>Update Customer Activity</h3>
+
+          <form id="activityUpdateForm" class="ca-form-grid">
+            <input type="hidden" id="updateCustomerId" />
+
+            <div class="ca-field">
+              <label for="updateLastPurchaseDate">Last Purchase Date</label>
+              <input id="updateLastPurchaseDate" type="date" />
+            </div>
+
+            <div class="ca-field">
+              <label for="updateStatus">Status</label>
+              <select id="updateStatus">
+                <option value="">Selecione</option>
+                <option value="active">Active</option>
+                <option value="at_risk">At Risk</option>
+                <option value="inactive">Inactive</option>
+                <option value="lost">Lost</option>
+              </select>
+            </div>
+
+            <div class="ca-field">
+              <label for="updateDaysWithoutPurchase">Days Without Purchase</label>
+              <input id="updateDaysWithoutPurchase" type="number" min="0" step="1" />
+            </div>
+
+            <div class="ca-field ca-field--full">
+              <label for="updateInactivityReason">Inactivity Reason</label>
+              <textarea id="updateInactivityReason" rows="3" placeholder="Motivo ou observação"></textarea>
+            </div>
+
+            <div class="ca-form-actions">
+              <button type="submit" class="ca-btn ca-btn--primary">Atualizar Registro</button>
+            </div>
+          </form>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <script type="module" src="/public/customerActivity/customerActivity.js"></script>
+</body>
+</html>

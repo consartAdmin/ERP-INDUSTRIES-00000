@@ -1,0 +1,101 @@
+/* ╔══════════════════════════════════════════════════════════════════╗
+   ║ 📄 pagination.css — Universal Pagination | PRODNEX ERP          ║
+   ║ - Reusable pagination component                                 ║
+   ║ - Left info + centered buttons                                  ║
+   ║ - Responsive                                                     ║
+   ╚══════════════════════════════════════════════════════════════════╝ */
+
+/* ──────────────────────────────────────────────────────────────
+   ROOT / TOKENS
+────────────────────────────────────────────────────────────── */
+
+:root {
+
+    --pagination-gap: 30px;
+    --pagination-font-size: .85rem;
+    --pagination-margin-top: 30px;
+
+}
+
+/* ==================================================================== */
+/* Paginação                                                            */
+/* ==================================================================== */
+.fc-pagination {
+    margin-top: 10px;
+
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+
+    font-size: .85rem;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Information
+────────────────────────────────────────────────────────────── */
+
+.pagination__info {
+    justify-self: start;
+
+    display: flex;
+    align-items: center;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Buttons
+────────────────────────────────────────────────────────────── */
+
+.pagination__buttons {
+    justify-self: center;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: var(--pagination-gap);
+}
+
+/* Optional right area */
+.pagination__right {
+    justify-self: end;
+
+    display: flex;
+    align-items: center;
+    gap: var(--pagination-gap);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Mobile
+────────────────────────────────────────────────────────────── */
+
+@media (max-width:768px) {
+
+    .pagination {
+
+        grid-template-columns: 1fr;
+        gap: 10px;
+
+        text-align: center;
+
+    }
+
+    .pagination__info {
+
+        justify-self: center;
+
+    }
+
+    .pagination__buttons {
+
+        justify-self: center;
+        flex-wrap: wrap;
+
+    }
+
+    .pagination__right {
+
+        justify-self: center;
+
+    }
+
+}

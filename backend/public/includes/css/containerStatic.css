@@ -1,0 +1,61 @@
+/* ╔══════════════════════════════════════════════════════╗
+   ║ containerStatic.css — Containers estáticos centrais ║
+   ╚══════════════════════════════════════════════════════╝ */
+
+/* Base: sempre centralizado, com padding lateral */
+.container-static {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+/* Altura cheia sob o header fixo
+   👉 ESTE é o container que vai rolar (vertical e horizontal) */
+.container-static-full {
+  /* Altura dinâmica: viewport - altura do topo (via CSS var) */
+  height: calc(120vh - var(--app-header-h, 64px));
+  display: flex;
+  flex-direction: column;
+
+  /* rolagem nos dois sentidos, se precisar */
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+/* ──────────────────────────────────────────────────────── */
+/*  Variantes de largura                                   */
+/*  (combinar SEMPRE com .container-static)               */
+/* ──────────────────────────────────────────────────────── */
+
+/* Bem compacto — formulários pequenos, cadastros simples */
+.container-static--sm {
+  max-width: 960px;
+}
+
+/* Padrão — a maioria das telas (clientes, produtos, etc.) */
+.container-static--md {
+  max-width: 1200px;
+}
+
+/* Largura “dashboard” — tabelas mais largas (ex.: budgets) */
+.container-static--lg {
+  max-width: 1400px;
+}
+
+/* Bem amplo — relatórios grandes, grids extensos */
+.container-static--xl {
+  max-width: 1600px;
+}
+
+/* Full width (quase fluido, respeitando só o padding) */
+.container-static--full {
+  max-width: 100%;
+}
+
+/* Opcional, mas ajuda a travar o body:
+   👉 a página não rola, só o container-static-full */
+body.c-page.with-fixed-header {
+  overflow: hidden;
+}

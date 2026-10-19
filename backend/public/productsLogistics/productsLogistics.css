@@ -1,0 +1,309 @@
+/*╔══════════════════════════════════════════════════════════════════════╗
+  ║ productsLogistics.css — Produtos • Logística (PRODNEX ERP)           ║
+  ║ Path: backend/public/productsLogistics/productsLogistics.css         ║
+  ╚══════════════════════════════════════════════════════════════════════╝*/
+
+:root{
+  --plx-bg: #f8fafc;
+  --plx-card: #ffffff;
+  --plx-line: #e5e7eb;
+  --plx-text: #0f172a;
+  --plx-muted: #64748b;
+  --plx-primary: #2563eb;
+  --plx-danger: #ef4444;
+  --plx-radius: 14px;
+  --plx-gap: 14px;
+}
+
+.plx-topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 14px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--plx-line);
+  background: var(--plx-card);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+.plx-title{ display:flex; gap: 12px; align-items:center; }
+.plx-badge{
+  width: 40px; height: 40px;
+  display:flex; align-items:center; justify-content:center;
+  border-radius: 12px;
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+}
+.plx-h1{ font-weight: 800; color: var(--plx-text); font-size: 16px; line-height: 1.1; }
+.plx-sub{ color: var(--plx-muted); font-size: 12px; margin-top: 2px; }
+
+.plx-wrap{
+  padding: 16px 18px 26px;
+  background: var(--plx-bg);
+  min-height: calc(100vh - 70px);
+}
+
+.c-card{
+  background: var(--plx-card);
+  border: 1px solid var(--plx-line);
+  border-radius: var(--plx-radius);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+}
+
+/* =========================================================
+   ORDER CONTEXT (Pedido -> Importar Itens)
+   ========================================================= */
+.plx-order{
+  padding: 14px;
+  margin-bottom: var(--plx-gap);
+}
+.plx-order__row{
+  grid-template-columns: 1.6fr 1fr; /* 2 colunas */
+}
+@media (max-width: 980px){
+  .plx-order__row{ grid-template-columns: 1fr; }
+}
+
+/* Toolbar */
+.plx-toolbar{ padding: 14px; margin-bottom: var(--plx-gap); }
+.plx-toolbar__row{
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 0.9fr 0.9fr 1.2fr;
+  gap: var(--plx-gap);
+  align-items: end;
+}
+@media (max-width: 980px){
+  .plx-toolbar__row{ grid-template-columns: 1fr; }
+}
+
+.plx-field label{
+  display:block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--plx-text);
+  margin-bottom: 6px;
+}
+.plx-field input, .plx-field select{
+  width: 100%;
+  border: 1px solid var(--plx-line);
+  border-radius: 12px;
+  padding: 10px 12px;
+  outline: none;
+  background: #fff;
+}
+.plx-field input:focus, .plx-field select:focus{
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 3px rgba(147,197,253,0.35);
+}
+.plx-hint{
+  display:block;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--plx-muted);
+}
+
+.plx-inputIcon{ position: relative; }
+.plx-icon{
+  position:absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: .7;
+}
+.plx-inputIcon input{ padding-left: 34px; }
+
+.plx-actions{
+  display: flex;
+  gap: 10px;
+  flex-wrap: nowrap; /* ✅ prevents breaking into multiple lines */
+}
+
+/* Table */
+.plx-tableCard{ padding: 0; overflow: hidden; }
+.plx-tableHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--plx-line);
+}
+.plx-tableTitle{ font-weight: 800; color: var(--plx-text); }
+.plx-pager{ display:flex; align-items:center; gap: 10px; }
+.plx-pageInfo{ color: var(--plx-muted); font-size: 12px; }
+
+.plx-tableWrap{ overflow:auto; }
+.plx-table{
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 980px;
+}
+.plx-table th, .plx-table td{
+  padding: 10px 10px;
+  border-bottom: 1px solid var(--plx-line);
+  font-size: 12px;
+  color: var(--plx-text);
+  white-space: nowrap;
+}
+.plx-table thead th{
+  position: sticky;
+  top: 0;
+  background: #f8fafc;
+  z-index: 2;
+  font-weight: 800;
+}
+.plx-table tbody tr:nth-child(even){
+  background: #fbfdff;
+}
+
+.plx-table--compact{
+  min-width: 760px;
+}
+.plx-table--compact th, .plx-table--compact td{
+  padding: 9px 10px;
+}
+
+.t-right{ text-align:right; }
+.t-center{ text-align:center; }
+
+.plx-empty{
+  text-align:center;
+  color: var(--plx-muted);
+  padding: 18px !important;
+}
+
+.plx-chip{
+  display:inline-flex;
+  align-items:center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--plx-line);
+  background: #fff;
+  font-size: 11px;
+  color: var(--plx-muted);
+}
+
+/* Modal */
+.plx-modal{
+  position: fixed;
+  inset: 0;
+  display:none;
+  z-index: 60;
+}
+.plx-modal.is-open{ display:block; }
+.plx-modal__backdrop{
+  position:absolute; inset:0;
+  background: rgba(15,23,42,0.45);
+}
+.plx-modal__card{
+  position:relative;
+  width: min(980px, calc(100vw - 24px));
+  margin: 6vh auto;
+  background: #fff;
+  border-radius: 18px;
+  border: 1px solid var(--plx-line);
+  box-shadow: 0 24px 60px rgba(15,23,42,0.25);
+  overflow:hidden;
+}
+.plx-modal__head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--plx-line);
+  background: #fbfdff;
+}
+.plx-modal__title{ font-weight: 900; color: var(--plx-text); }
+.plx-modal__sub{ color: var(--plx-muted); font-size: 12px; margin-top: 2px; }
+.plx-modal__body{ padding: 14px 16px 16px; }
+
+.plx-grid{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+@media (max-width: 980px){
+  .plx-grid{ grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px){
+  .plx-grid{ grid-template-columns: 1fr; }
+}
+
+.plx-switch{
+  display:flex;
+  flex-direction: column;
+  justify-content:flex-end;
+}
+.plx-toggle{
+  display:inline-flex;
+  align-items:center;
+  gap: 10px;
+}
+.plx-toggle input{ display:none; }
+.plx-toggle span{
+  width: 46px;
+  height: 26px;
+  border-radius: 999px;
+  border: 1px solid var(--plx-line);
+  background: #f1f5f9;
+  position: relative;
+  transition: .15s ease;
+}
+.plx-toggle span::after{
+  content:'';
+  position:absolute;
+  width: 22px;
+  height: 22px;
+  top: 50%;
+  left: 2px;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  background:#fff;
+  border: 1px solid var(--plx-line);
+  transition: .15s ease;
+}
+.plx-toggle input:checked + span{
+  background: rgba(37,99,235,0.15);
+  border-color: rgba(37,99,235,0.35);
+}
+.plx-toggle input:checked + span::after{
+  left: 22px;
+}
+
+.plx-volumeRow{
+  display:flex;
+  gap: 10px;
+  align-items:center;
+}
+.plx-volumeRow input{ flex: 1; }
+
+.plx-form__footer{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--plx-line);
+  margin-top: 12px;
+}
+.plx-leftMeta{
+  color: var(--plx-muted);
+  font-size: 12px;
+}
+
+/* =========================================================
+   ORDER PICKER MODAL (lista)
+   ========================================================= */
+.plx-orderSearch{
+  display:grid;
+  gap: 12px;
+}
+.plx-orderListWrap{
+  border: 1px solid var(--plx-line);
+  border-radius: 14px;
+  overflow: hidden;
+}

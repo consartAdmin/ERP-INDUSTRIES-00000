@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>CONTAS À PAGAR | PRODNEX ERP</title>
+
+  <!-- CSS global do tema -->
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+
+  <link rel="stylesheet" href="/accountsPayable/css/accountsPayable.css" />
+
+  <link rel="stylesheet" href="/accountsPayable/css/sortableTable.css" />
+
+  <link rel="stylesheet" href="/public/includes/css/modals.css?v=2" />
+
+  <link rel="stylesheet" href="/public/modalsSearch/suppliersModalSearch.css" />
+
+  <link rel="stylesheet" href="/public/modalsSearch/chartAccountsModalSearch.css" />
+
+  <link rel="stylesheet" href="/accountsPayable/modal/batchAccountsPayableModal.css?v=1" />
+
+
+
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <section class="table-layout-integrated table-max-height-700">
+
+      <!-- FILTER AREA -->
+      <div class="table-layout-integrated__filter">
+
+        <div class="filters-row">
+
+          <div class="fields-inline fields-gap-3">
+
+
+            <div class="fields-inline fields-gap-3">
+              <div class="fields fields-h-6 fields-w-16 fields-font-3">
+                <label for="filterSearch">Buscar</label>
+                <input type="text" id="filterSearch" name="search"
+                  placeholder="Fornecedor, número da fatura, descrição..." />
+              </div>
+
+              <div class="fields fields-h-6 fields-w-5 fields-font-3">
+                <label for="filterStatus">Status</label>
+                <select id="filterStatus" name="status">
+                  <option value="">Todos</option>
+                  <option value="PENDING">Pendente</option>
+                  <option value="PAID">Pago</option>
+                  <option value="OVERDUE">Vencido</option>
+                  <option value="CANCELLED">Cancelado</option>
+                </select>
+              </div>
+
+              <!-- Due date range -->
+
+              <div class="fields fields-h-6 fields-w-16 fields-font-3">
+                <date-range-field id="filterDateRange" class="drf-width-3 drf-height-3" label="Período"
+                  locale="pt-BR"></date-range-field>
+              </div>
+
+              <!-- =========================================================
+     FILTER ACTIONS
+========================================================= -->
+
+              <button type="button" id="btnApplyFilters" class="btn btn-filter btn-sm">
+                Aplicar Filtros
+              </button>
+
+              <button type="button" id="btnClearFilters" class="btn btn-clean btn-sm">
+                Limpar
+              </button>
+
+              <div class="ap-filter-actions">
+
+                <button type="button" id="btnBatch" class="btn btn-new btn-sm">
+                  Gerar Lote
+                </button>
+
+                <button type="button" id="btnNew" class="btn btn-new btn-sm">
+                  + Novo Pagamento
+                </button>
+
+                <button type="button" id="btnExportPdf" class="btn btn-toolbar btn-sm" title="Exportar PDF">
+                  <img src="/iconsImagens/pdf.png" alt="" width="20" height="20" aria-hidden="true" />
+
+                  <span>Exportar PDF</span>
+                </button>
+
+                <button id="btnExportExcel" class="btn btn-toolbar btn-sm" type="button" title="Exportar Excel">
+                  <img src="/iconsImagens/excelIcons.png" alt="" width="20" height="20" aria-hidden="true" />
+                  <span>Exportar Excel</span>
+                </button>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      </div>
+      </div>
+
+      <div class="table-scroll table-height-flex table-row-h-20" data-table-settings="accountspayable.accountspayabletable">
+        <table id="accountsPayableTable" class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th class="table-col-w-1 table-sortable" data-sort-column="id" aria-sort="none"><button type="button"
+                  class="table-sort-button" data-sort-button>ID <span data-sort-icon
+                    aria-hidden="true">↕</span></button></th>
+              <th class="table-col-w-4 table-sortable" data-sort-column="supplier_id" aria-sort="none"><button
+                  type="button" class="table-sort-button" data-sort-button>Fornecedor (ID) <span data-sort-icon
+                    aria-hidden="true">↕</span></button></th>
+              <th class="table-col-w-10 table-sortable" data-sort-column="supplier_name" aria-sort="none"><button
+                  type="button" class="table-sort-button" data-sort-button>Fornecedor <span data-sort-icon
+                    aria-hidden="true">↕</span></button></th>
+              <th class="table-col-w-6 table-sortable" data-sort-column="invoice_number" aria-sort="none"><button
+                  type="button" class="table-sort-button" data-sort-button>Nº Fatura <span data-sort-icon
+                    aria-hidden="true">↕</span></button></th>
+              <th class="table-col-w-5 table-sortable" data-sort-column="issue_date" aria-sort="none"><button
+                  type="button" class="table-sort-button" data-sort-button>Emissão <span data-sort-icon
+                    aria-hidden="true">↕</span></button></th>
+              <th class="table-col-w-5 table-sortable" data-sort-column="due_date" aria-sort="ascending"><button
+                  type="button" class="table-sort-button is-sorted" data-sort-button
+                  data-sort-direction="asc">Vencimento <span data-sort-icon aria-hidden="true">↑</span></button></th>
+              <th class="table-col-w-4 table-sortable" data-sort-column="status" aria-sort="none"><button type="button"
+                  class="table-sort-button" data-sort-button>Status <span data-sort-icon
+                    aria-hidden="true">↕</span></button></th>
+              <th class="table-col-w-5 table-sortable" data-sort-column="total_value" aria-sort="none"><button
+                  type="button" class="table-sort-button" data-sort-button>Total <span data-sort-icon
+                    aria-hidden="true">↕</span></button></th>
+              <th class="table-col-w-5 table-sortable" data-sort-column="amount_paid" aria-sort="none"><button
+                  type="button" class="table-sort-button" data-sort-button>Pago <span data-sort-icon
+                    aria-hidden="true">↕</span></button></th>
+              <th class="table-col-w-5 table-sortable" data-sort-column="balance" aria-sort="none"><button type="button"
+                  class="table-sort-button" data-sort-button>Saldo <span data-sort-icon
+                    aria-hidden="true">↕</span></button></th>
+              <th class="table-col-w-6">Ações</th>
+            </tr>
+          </thead>
+
+          <tbody id="apTableBody"></tbody>
+        </table>
+      </div>
+
+      <footer class="table-footer">
+
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+            <span id="apTableInfo">0 Registros </span>
+          </div>
+
+          <div class="ap-topbar__right summary summary--center summary-gap-8">
+            <div class="summary-pill" id="apTotalTitulos">
+              Total (filtro) R$ 0,00
+            </div>
+
+            <div class="summary-pill summary-pill--success" id="apTotalPago">
+              Pago R$ 0,00
+            </div>
+
+            <div class="summary-pill summary-pill--warning" id="apSaldoAberto">
+              Aberto R$ 0,00
+            </div>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button type="button" id="btnPreviousPage" class="btn btn-clean btn-sm">
+            Anterior
+          </button>
+
+          <span id="apPageInfo">Página 1 de 1</span>
+
+          <button type="button" id="btnNextPage" class="btn btn-new btn-sm">
+            Próxima
+          </button>
+        </div>
+
+        <div class="table-footer__page-size">
+          <label for="apRowsPerPage">Mostrar</label>
+
+          <select id="apRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+            <option value="10">10 linhas</option>
+            <option value="20">20 linhas</option>
+            <option value="30">30 linhas</option>
+            <option value="50" selected>50 linhas</option>
+            <option value="100">100 linhas</option>
+          </select>
+        </div>
+
+      </footer>
+    </section>
+  </main>
+
+  <!-- Modal Pagar Conta -->
+  <div class="modal" id="payModal" role="dialog" aria-modal="true" aria-labelledby="payModalTitle" aria-hidden="true"
+    hidden>
+    <div class="modal__backdrop" data-modal-close="backdrop"></div>
+    <div class="modal__dialog">
+      <section class="modal__panel modal__panel--lg" role="document">
+        <header class="modal__header">
+          <h3 class="modal__title" id="payModalTitle">💸 Pagar Conta a Pagar</h3>
+          <button type="button" class="modal__close" id="fecharModalPagar" aria-label="Fechar"
+            title="Fechar">&times;</button>
+        </header>
+
+        <form id="payForm" autocomplete="off" style="display:flex; flex:1 1 auto; min-height:0; flex-direction:column;">
+          <div class="modal__body modal-section">
+            <input type="hidden" id="pay_account_id" />
+
+            <div class="ap-modal-section-title">Informações da Conta</div>
+
+            <div class="fields-inline fields-gap-3">
+
+              <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                <label for="pay_fornecedor">Fornecedor</label>
+                <input type="text" id="pay_fornecedor" readonly />
+              </div>
+
+              <div class="fields fields-h-6 fields-w-15 fields-font-3">
+                <label for="pay_document_type_id">Tipo de Doc.</label>
+
+                <div style="display:flex; align-items:center; gap:4px;">
+                  <select id="pay_document_type_id" name="document_type_id" style="flex:1 1 auto; min-width:0;">
+                    <option value="">Selecione...</option>
+                  </select>
+
+                  <button type="button" id="btnCashDocumentTypes" class="btn btn-icon"
+                    title="Cadastrar tipos de documento" aria-label="Cadastrar tipos de documento"
+                    style="width:auto; min-width:0; height:auto; padding:0 4px; border:0; background:transparent; box-shadow:none; color:#2c609f; font-size:22px; font-weight:700; line-height:1;">
+                    ＋
+                  </button>
+                </div>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                <label for="pay_documento">Nº Fatura</label>
+                <input type="text" id="pay_documento" readonly />
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                <label for="pay_vencimento">Vencimento</label>
+                <input type="date" id="pay_vencimento" readonly />
+              </div>
+            </div>
+
+            <div class="ap-modal-section-title">Pagamento</div>
+
+            <div class="fields-inline fields-gap-3">
+
+              <div class="fields fields-h-6 fields-w-15 fields-font-3">
+                <label for="pay_data_hora">Data/Hora Pagamento</label>
+                <input type="datetime-local" id="pay_data_hora" required />
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                <label for="pay_conta_caixa">Conta Bancária</label>
+                <select id="pay_conta_caixa" required>
+                  <option value="">Selecione...</option>
+                </select>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                <label for="pay_valor_original">Valor Original (R$)</label>
+                <input type="number" id="pay_valor_original" step="0.01" min="0" required />
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                <label for="pay_multa">Multa (R$)</label>
+                <input type="number" id="pay_multa" step="0.01" min="0" />
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                <label for="pay_juros">Juros (R$)</label>
+                <input type="number" id="pay_juros" step="0.01" min="0" />
+              </div>
+
+              <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                <label for="pay_encargos">Encargos (R$)</label>
+                <input type="number" id="pay_encargos" step="0.01" min="0" />
+              </div>
+            </div>
+
+            <div class="ap-modal-section-title">Classificação Financeira</div>
+
+            <div class="fields-inline fields-gap-3">
+
+              <div class="fields fields-h-6 fields-w-20 fields-font-3 ap-chart-account-field">
+                <label for="pay_chart_account_display">Conta Contábil</label>
+                <input type="hidden" id="pay_chart_account_id" />
+                <div class="ap-chart-account-picker">
+                  <input type="text" id="pay_chart_account_display" readonly placeholder="Selecione..."
+                    title="Clique para buscar uma conta contábil" />
+                  <button type="button" id="btnPaySearchChartAccount" class="btn btn-toolbar btn-sm"
+                    aria-label="Buscar conta contábil" title="Buscar conta contábil">🔍</button>
+                  <button type="button" id="btnPayClearChartAccount" class="btn btn-toolbar btn-sm"
+                    aria-label="Limpar conta contábil" title="Limpar conta contábil">✕</button>
+                </div>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-15 fields-font-3">
+                <label for="pay_categoria">Categoria</label>
+                <select id="pay_categoria">
+                  <option value="">(opcional)</option>
+                </select>
+              </div>
+
+              <div class="fields fields-h-6 fields-w-15 fields-font-3">
+                <label for="pay_subcategoria">Subcategoria</label>
+                <select id="pay_subcategoria">
+                  <option value="">(opcional)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="modal-divider"></div>
+
+            <div class="ap-modal-section-title">Anexos e Observações</div>
+
+            <div class="modal-payment-files-layout">
+              <!-- Box 1: upload -->
+              <div class="modal-box-column">
+                <label for="pay_anexoFile" class="modal-box-title">
+                  Anexo da movimentação (opcional)
+                </label>
+
+                <div id="pay_dropzone" class="modal-dropzone ap-dropzone" role="button" tabindex="0"
+                  aria-label="Selecionar ou arrastar um arquivo" aria-describedby="pay_anexoHelp">
+                  <input type="file" id="pay_anexoFile" accept=".pdf,.xml,.png,.jpg,.jpeg,.webp" hidden>
+
+                  <div class="ap-dropzone-content modal-dropzone-font-10">
+                    <strong>📎 Arraste o arquivo aqui</strong>
+
+                    <span>ou clique para selecionar</span>
+
+                    <small id="pay_anexoHelp" class="help-text">
+                      O arquivo será vinculado à movimentação no Caixa
+                      após confirmar o pagamento.
+                    </small>
+                  </div>
+                </div>
+
+                <progress id="pay_anexoProgress" max="100" value="0" aria-label="Progresso do envio" hidden></progress>
+              </div>
+
+              <!-- Boxes 2, 3 and 4 -->
+              <div class="modal-box-column">
+                <div class="modal-box-titles-grid">
+                  <span id="payAttachmentsLabel" class="modal-box-title modal-box-title--attachments">
+                    Anexos da Nota
+                  </span>
+
+                  <label for="pay_observacao" class="modal-box-title modal-box-title--observation">
+                    Observação
+                  </label>
+                </div>
+
+                <div class="pay-attachments-observation-grid">
+                  <div id="pay_attachmentsBox" class="pay-attachments-inline" role="list"
+                    aria-labelledby="payAttachmentsLabel" aria-live="polite"></div>
+
+                  <div class="pay-observation-card pay-observation-card--clean">
+                    <textarea id="pay_observacao" rows="5" maxlength="1000" aria-label="Observação"
+                      placeholder="Digite uma observação..."></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Close modal body -->
+          </div>
+
+          <footer class="modal__footer">
+            <button type="button" class="btn btn-cancel btn-sm" id="btnCancelarPagamento">
+              Cancelar
+            </button>
+
+            <button type="submit" class="btn btn-save btn-sm">
+              Confirmar Pagamento
+            </button>
+          </footer>
+        </form>
+      </section>
+    </div>
+  </div>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <script type="module" src="/public/accountsPayable/js/accountsPayable.init.js?v=4"></script>
+
+</body>
+
+</html>

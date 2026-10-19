@@ -1,0 +1,18 @@
+/* Centraliza explicitamente na viewport (evita herdar margin/top globais) */
+.products-lm-ref-modal { position: fixed; inset: 0; margin: auto; width: min(720px, calc(100vw - 32px)); height: fit-content; max-height: calc(100vh - 32px); overflow: auto; padding: 0; border: 0; border-radius: 10px; }
+.products-lm-ref-modal::backdrop { background: rgb(15 23 42 / 55%); }
+.products-lm-ref-modal__header, .products-lm-ref-modal__footer { display: flex; align-items: center; gap: 12px; padding: 16px 20px; }
+.products-lm-ref-modal__header { justify-content: space-between; border-bottom: 1px solid #dfe4ec; }
+.products-lm-ref-modal__header h2 { margin: 0; }
+.products-lm-ref-modal__body { padding: 20px; }
+.products-lm-ref-modal__footer { justify-content: flex-end; border-top: 1px solid #dfe4ec; }
+.products-lm-ref-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.products-lm-ref-form-grid__full { grid-column: 1 / -1; }
+.products-lm-ref-error { min-height: 16px; color: #b42318; font-size: 12px; }
+.products-lm-ref-checkbox { display: flex; align-items: center; gap: 8px; }
+.products-lm-ref-lookup { display: flex; align-items: stretch; gap: 6px; }
+.products-lm-ref-lookup input { flex: 1 1 auto; min-width: 0; }
+.products-lm-ref-lookup input[readonly] { cursor: pointer; background: #f8fafc; }
+.products-lm-ref-lookup .btn { flex: 0 0 auto; }
+@media (max-width: 640px) { .products-lm-ref-form-grid { grid-template-columns: 1fr; } }
+

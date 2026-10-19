@@ -1,0 +1,4345 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ analyticsDashboard.css — Sales Analytics Dashboard                 ║
+   ║ PRODNEX ERP                                                        ║
+   ║ Key: sales-analytics                                               ║
+   ║                                                                      ║
+   ║ ✅ Centralized parameters in :root                                  ║
+   ║ ✅ Main dashboard                                                   ║
+   ║ ✅ KPI column                                                       ║
+   ║ ✅ 4 ABC panels in one horizontal row                               ║
+   ║ ✅ Filters                                                          ║
+   ║ ✅ Loading                                                          ║
+   ║ ✅ Drag & drop / free layout                                        ║
+   ║ ✅ Responsive                                                       ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ ROOT — SALES ANALYTICS PARAMETERS                                  ║
+   ║                                                                      ║
+   ║ Change the dashboard appearance ONLY here whenever possible.        ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ KPI SIZE UTILITIES — OUTSIDE :root                                  ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+/* ================================================================
+   KPI HEIGHT — kpi-h-1 ... kpi-h-20
+   ================================================================ */
+
+.kpi-h-1 {
+    height: 40px !important;
+    min-height: 40px !important;
+}
+
+.kpi-h-2 {
+    height: 50px !important;
+    min-height: 50px !important;
+}
+
+.kpi-h-3 {
+    height: 60px !important;
+    min-height: 60px !important;
+}
+
+.kpi-h-4 {
+    height: 70px !important;
+    min-height: 70px !important;
+}
+
+.kpi-h-5 {
+    height: 80px !important;
+    min-height: 80px !important;
+}
+
+.kpi-h-6 {
+    height: 90px !important;
+    min-height: 90px !important;
+}
+
+.kpi-h-7 {
+    height: 100px !important;
+    min-height: 100px !important;
+}
+
+.kpi-h-8 {
+    height: 110px !important;
+    min-height: 110px !important;
+}
+
+.kpi-h-9 {
+    height: 120px !important;
+    min-height: 120px !important;
+}
+
+.kpi-h-10 {
+    height: 130px !important;
+    min-height: 130px !important;
+}
+
+.kpi-h-11 {
+    height: 140px !important;
+    min-height: 140px !important;
+}
+
+.kpi-h-12 {
+    height: 150px !important;
+    min-height: 150px !important;
+}
+
+.kpi-h-13 {
+    height: 160px !important;
+    min-height: 160px !important;
+}
+
+.kpi-h-14 {
+    height: 170px !important;
+    min-height: 170px !important;
+}
+
+.kpi-h-15 {
+    height: 180px !important;
+    min-height: 180px !important;
+}
+
+.kpi-h-16 {
+    height: 190px !important;
+    min-height: 190px !important;
+}
+
+.kpi-h-17 {
+    height: 200px !important;
+    min-height: 200px !important;
+}
+
+.kpi-h-18 {
+    height: 225px !important;
+    min-height: 225px !important;
+}
+
+.kpi-h-19 {
+    height: 250px !important;
+    min-height: 250px !important;
+}
+
+.kpi-h-20 {
+    height: 300px !important;
+    min-height: 300px !important;
+}
+
+
+/* ================================================================
+   KPI WIDTH — kpi-w-1 ... kpi-w-20
+   ================================================================ */
+
+.kpi-w-1 {
+    width: 5% !important;
+}
+
+.kpi-w-2 {
+    width: 10% !important;
+}
+
+.kpi-w-3 {
+    width: 15% !important;
+}
+
+.kpi-w-4 {
+    width: 20% !important;
+}
+
+.kpi-w-5 {
+    width: 25% !important;
+}
+
+.kpi-w-6 {
+    width: 30% !important;
+}
+
+.kpi-w-7 {
+    width: 35% !important;
+}
+
+.kpi-w-8 {
+    width: 40% !important;
+}
+
+.kpi-w-9 {
+    width: 45% !important;
+}
+
+.kpi-w-10 {
+    width: 50% !important;
+}
+
+.kpi-w-11 {
+    width: 55% !important;
+}
+
+.kpi-w-12 {
+    width: 60% !important;
+}
+
+.kpi-w-13 {
+    width: 65% !important;
+}
+
+.kpi-w-14 {
+    width: 70% !important;
+}
+
+.kpi-w-15 {
+    width: 75% !important;
+}
+
+.kpi-w-16 {
+    width: 80% !important;
+}
+
+.kpi-w-17 {
+    width: 85% !important;
+}
+
+.kpi-w-18 {
+    width: 90% !important;
+}
+
+.kpi-w-19 {
+    width: 95% !important;
+}
+
+.kpi-w-20 {
+    width: 100% !important;
+}
+
+
+/* ================================================================
+   KPI PADDING — kpi-p-1 ... kpi-p-20
+   ================================================================ */
+
+.kpi-p-1 {
+    padding: 2px !important;
+}
+
+.kpi-p-2 {
+    padding: 4px !important;
+}
+
+.kpi-p-3 {
+    padding: 6px !important;
+}
+
+.kpi-p-4 {
+    padding: 8px !important;
+}
+
+.kpi-p-5 {
+    padding: 10px !important;
+}
+
+.kpi-p-6 {
+    padding: 12px !important;
+}
+
+.kpi-p-7 {
+    padding: 14px !important;
+}
+
+.kpi-p-8 {
+    padding: 16px !important;
+}
+
+.kpi-p-9 {
+    padding: 18px !important;
+}
+
+.kpi-p-10 {
+    padding: 20px !important;
+}
+
+.kpi-p-11 {
+    padding: 22px !important;
+}
+
+.kpi-p-12 {
+    padding: 24px !important;
+}
+
+.kpi-p-13 {
+    padding: 26px !important;
+}
+
+.kpi-p-14 {
+    padding: 28px !important;
+}
+
+.kpi-p-15 {
+    padding: 30px !important;
+}
+
+.kpi-p-16 {
+    padding: 32px !important;
+}
+
+.kpi-p-17 {
+    padding: 36px !important;
+}
+
+.kpi-p-18 {
+    padding: 40px !important;
+}
+
+.kpi-p-19 {
+    padding: 48px !important;
+}
+
+.kpi-p-20 {
+    padding: 60px !important;
+}
+
+
+/* ================================================================
+   KPI BORDER RADIUS — kpi-radius-1 ... kpi-radius-20
+   ================================================================ */
+
+.kpi-radius-1 {
+    border-radius: 0 !important;
+}
+
+.kpi-radius-2 {
+    border-radius: 2px !important;
+}
+
+.kpi-radius-3 {
+    border-radius: 4px !important;
+}
+
+.kpi-radius-4 {
+    border-radius: 6px !important;
+}
+
+.kpi-radius-5 {
+    border-radius: 8px !important;
+}
+
+.kpi-radius-6 {
+    border-radius: 10px !important;
+}
+
+.kpi-radius-7 {
+    border-radius: 12px !important;
+}
+
+.kpi-radius-8 {
+    border-radius: 14px !important;
+}
+
+.kpi-radius-9 {
+    border-radius: 16px !important;
+}
+
+.kpi-radius-10 {
+    border-radius: 18px !important;
+}
+
+.kpi-radius-11 {
+    border-radius: 20px !important;
+}
+
+.kpi-radius-12 {
+    border-radius: 22px !important;
+}
+
+.kpi-radius-13 {
+    border-radius: 24px !important;
+}
+
+.kpi-radius-14 {
+    border-radius: 26px !important;
+}
+
+.kpi-radius-15 {
+    border-radius: 28px !important;
+}
+
+.kpi-radius-16 {
+    border-radius: 30px !important;
+}
+
+.kpi-radius-17 {
+    border-radius: 32px !important;
+}
+
+.kpi-radius-18 {
+    border-radius: 36px !important;
+}
+
+.kpi-radius-19 {
+    border-radius: 40px !important;
+}
+
+.kpi-radius-20 {
+    border-radius: 999px !important;
+}
+
+
+/* ================================================================
+   KPI GAP — kpi-gap-1 ... kpi-gap-20
+   ================================================================ */
+
+.kpi-gap-1 {
+    gap: 2px !important;
+}
+
+.kpi-gap-2 {
+    gap: 4px !important;
+}
+
+.kpi-gap-3 {
+    gap: 6px !important;
+}
+
+.kpi-gap-4 {
+    gap: 8px !important;
+}
+
+.kpi-gap-5 {
+    gap: 10px !important;
+}
+
+.kpi-gap-6 {
+    gap: 12px !important;
+}
+
+.kpi-gap-7 {
+    gap: 14px !important;
+}
+
+.kpi-gap-8 {
+    gap: 16px !important;
+}
+
+.kpi-gap-9 {
+    gap: 18px !important;
+}
+
+.kpi-gap-10 {
+    gap: 20px !important;
+}
+
+.kpi-gap-11 {
+    gap: 22px !important;
+}
+
+.kpi-gap-12 {
+    gap: 24px !important;
+}
+
+.kpi-gap-13 {
+    gap: 26px !important;
+}
+
+.kpi-gap-14 {
+    gap: 28px !important;
+}
+
+.kpi-gap-15 {
+    gap: 30px !important;
+}
+
+.kpi-gap-16 {
+    gap: 32px !important;
+}
+
+.kpi-gap-17 {
+    gap: 36px !important;
+}
+
+.kpi-gap-18 {
+    gap: 40px !important;
+}
+
+.kpi-gap-19 {
+    gap: 48px !important;
+}
+
+.kpi-gap-20 {
+    gap: 60px !important;
+}
+
+
+:root {
+
+    /* ==================================================================
+       MAIN CARD — COLORS
+       ================================================================== */
+
+    --sa-bg-start: #303846;
+    --sa-bg-end: #252c37;
+
+    --sa-text-color: #ffffff;
+    --sa-text-muted: #cbd5e1;
+
+    --sa-border-color: #566170;
+    --sa-border-width: 1px;
+
+    --sa-shadow-color: rgba(15, 23, 42, 0.22);
+
+    --sa-shadow-hover-color: rgba(15, 23, 42, 0.30);
+
+
+    /* ==================================================================
+       MAIN CARD — SIZE
+       ================================================================== */
+
+    --sa-card-width: 100%;
+    --sa-card-min-width: 0;
+
+    --sa-card-min-height: 0;
+
+    --sa-card-padding-top: 18px;
+    --sa-card-padding-right: 18px;
+    --sa-card-padding-bottom: 18px;
+    --sa-card-padding-left: 18px;
+
+    --sa-card-radius: 16px;
+
+    --sa-card-overflow: hidden;
+
+
+    /* ==================================================================
+       MAIN CARD — GRADIENT
+       ================================================================== */
+
+    --sa-gradient-angle: 145deg;
+
+
+    /* ==================================================================
+       INTERNAL DASHBOARD LAYOUT
+       ================================================================== */
+
+    --sa-layout-sidebar-width: 190px;
+
+    --sa-layout-gap: 18px;
+
+    --sa-layout-width: 100%;
+    --sa-layout-min-width: 0;
+
+    --sa-layout-min-height: 100px;
+
+
+    /* ==================================================================
+       LEFT KPI COLUMN
+       ================================================================== */
+
+    --sa-summary-gap: 12px;
+
+    --sa-summary-min-width: 0;
+
+
+    /* ==================================================================
+       KPI CARD — SIZE
+       ================================================================== */
+
+    --sa-kpi-min-height: 92px;
+
+    --sa-kpi-padding-y: 12px;
+    --sa-kpi-padding-x: 10px;
+
+    --sa-kpi-radius: 10px;
+
+
+    /* ==================================================================
+       KPI CARD — COLORS
+       ================================================================== */
+
+    --sa-kpi-bg: rgba(255, 255, 255, 0.04);
+
+    --sa-kpi-border: rgba(255, 255, 255, 0.20);
+
+    --sa-kpi-value-color: #ffffff;
+
+    --sa-kpi-label-color: #cbd5e1;
+
+
+    /* ==================================================================
+       KPI VALUE
+       ================================================================== */
+
+    --sa-kpi-value-font-size: 1.45rem;
+    --sa-kpi-value-font-weight: 800;
+
+    --sa-kpi-value-line-height: 1.1;
+
+    --sa-kpi-value-margin-bottom: 5px;
+
+
+    /* ==================================================================
+       KPI LABEL
+       ================================================================== */
+
+    --sa-kpi-label-font-size: 0.70rem;
+    --sa-kpi-label-font-weight: 600;
+
+    --sa-kpi-label-letter-spacing: 0.04em;
+
+    --sa-kpi-label-transform: uppercase;
+
+
+    /* ==================================================================
+       TOP PRODUCT
+       ================================================================== */
+
+    --sa-product-color: #ffffff;
+
+    --sa-product-font-size: 0.92rem;
+    --sa-product-font-weight: 700;
+
+    --sa-product-line-height: 1.25;
+
+    --sa-product-margin-bottom: 6px;
+
+    --sa-product-max-lines: 3;
+
+
+    /* ==================================================================
+       RIGHT CONTENT
+       ================================================================== */
+
+    --sa-content-gap: 18px;
+
+    --sa-content-min-width: 0;
+
+
+    /* ==================================================================
+       TOP CHARTS LAYOUT
+       ================================================================== */
+
+    --sa-top-category-min-width: 280px;
+    --sa-top-category-grow: 0.85fr;
+
+    --sa-top-month-min-width: 420px;
+    --sa-top-month-grow: 1.45fr;
+
+    --sa-top-gap: 18px;
+
+    /* ==================================================================
+       THREE CHARTS — HORIZONTAL ROW
+       ================================================================== */
+
+    --sa-top-chart-columns: 3;
+    --sa-top-chart-min-width: 0;
+    --sa-top-align-items: stretch;
+
+    /* Individual chart column proportions */
+    --sa-category-column-size: 1fr;
+    --sa-monthly-sales-column-size: 1fr;
+    --sa-monthly-quantity-column-size: 1fr;
+
+    /* Right-side filters */
+    --sa-filters-width: 190px;
+    --sa-filters-min-width: 170px;
+    --sa-filters-max-width: 240px;
+    --sa-filters-height: 225px;
+    --sa-filters-overflow-y: auto;
+
+
+    /* ==================================================================
+       BOTTOM LAYOUT
+       ================================================================== */
+
+    --sa-bottom-filter-width: 170px;
+
+    --sa-bottom-gap: 18px;
+
+
+    /* ==================================================================
+       CHART PANEL
+       ================================================================== */
+
+    --sa-chart-min-width: 0;
+
+    --sa-chart-min-height: 270px;
+
+    --sa-chart-padding: 14px;
+
+    --sa-chart-radius: 12px;
+
+    --sa-chart-bg: rgba(255, 255, 255, 0.025);
+
+    --sa-chart-border: rgba(255, 255, 255, 0.20);
+
+
+    /* ==================================================================
+       CHART HEADER
+       ================================================================== */
+
+    --sa-chart-header-margin-bottom: 10px;
+
+
+    /* ==================================================================
+       CHART TITLE
+       ================================================================== */
+
+    --sa-chart-title-color: #ffffff;
+
+    --sa-chart-title-font-size: 0.82rem;
+    --sa-chart-title-font-weight: 700;
+
+    --sa-chart-title-letter-spacing: 0.03em;
+
+    --sa-chart-title-align: center;
+
+    --sa-chart-title-transform: uppercase;
+
+
+    /* ==================================================================
+       CHART BODY
+       ================================================================== */
+
+    --sa-chart-body-min-height: 220px;
+
+
+    /* ==================================================================
+       WIDE CHART
+       ================================================================== */
+
+    --sa-wide-chart-min-height: 150px;
+
+
+    /* ==================================================================
+       FILTER CONTAINER
+       ================================================================== */
+
+    --sa-filter-gap: 18px;
+
+    --sa-filter-padding: 12px;
+
+    --sa-filter-radius: 12px;
+
+    --sa-filter-bg: rgba(255, 255, 255, 0.025);
+
+    --sa-filter-border: rgba(255, 255, 255, 0.20);
+
+
+    /* ==================================================================
+       FILTER GROUP
+       ================================================================== */
+
+    --sa-filter-group-gap: 7px;
+
+
+    /* ==================================================================
+       FILTER TITLE
+       ================================================================== */
+
+    --sa-filter-title-color: #ffffff;
+
+    --sa-filter-title-font-size: 0.72rem;
+    --sa-filter-title-font-weight: 700;
+
+    --sa-filter-title-letter-spacing: 0.04em;
+
+    --sa-filter-title-transform: uppercase;
+
+
+    /* ==================================================================
+       FILTER OPTIONS
+       ================================================================== */
+
+    --sa-filter-options-gap: 5px;
+
+
+    /* ==================================================================
+       FILTER BUTTON — NORMAL
+       ================================================================== */
+
+    --sa-filter-button-width: 100%;
+
+    --sa-filter-button-padding-y: 7px;
+    --sa-filter-button-padding-x: 9px;
+
+    --sa-filter-button-radius: 6px;
+
+    --sa-filter-button-bg: rgba(255, 255, 255, 0.05);
+
+    --sa-filter-button-border: rgba(255, 255, 255, 0.16);
+
+    --sa-filter-button-color: #dbe4ef;
+
+    --sa-filter-button-font-size: 0.72rem;
+    --sa-filter-button-font-weight: 600;
+
+    --sa-filter-button-text-align: left;
+
+
+    /* ==================================================================
+       FILTER BUTTON — HOVER
+       ================================================================== */
+
+    --sa-filter-button-hover-bg: rgba(255, 255, 255, 0.11);
+
+    --sa-filter-button-hover-border: rgba(255, 255, 255, 0.30);
+
+    --sa-filter-button-hover-color: #ffffff;
+
+
+    /* ==================================================================
+       FILTER BUTTON — ACTIVE
+       ================================================================== */
+
+    --sa-filter-button-active-bg: #ffffff;
+
+    --sa-filter-button-active-border: #ffffff;
+
+    --sa-filter-button-active-color: #253044;
+
+    --sa-filter-button-active-font-weight: 800;
+
+
+    /* ==================================================================
+       TRANSITIONS
+       ================================================================== */
+
+    --sa-transition-speed: 0.15s;
+
+    --sa-transition-easing: ease;
+
+
+    /* ==================================================================
+       LOADING
+       ================================================================== */
+
+    --sa-loading-opacity: 0.65;
+
+
+    /* ==================================================================
+       DRAGGING
+       ================================================================== */
+
+    --sa-drag-opacity: 0.94;
+
+    --sa-drag-scale: 1.005;
+
+
+    /* ==================================================================
+       FREE LAYOUT
+       ================================================================== */
+
+    --sa-free-width: 100%;
+
+    --sa-free-min-width: 0;
+
+    --sa-free-min-height: 0;
+
+
+    /* ==================================================================
+       RESPONSIVE <= 1200px
+       ================================================================== */
+
+    --sa-medium-sidebar-width: 160px;
+
+    --sa-medium-category-grow: 1fr;
+
+    --sa-medium-month-grow: 1.2fr;
+
+    --sa-medium-top-chart-columns: 3;
+
+    --sa-medium-free-min-width: 760px;
+
+
+    /* ==================================================================
+       RESPONSIVE <= 900px
+       ================================================================== */
+
+    --sa-tablet-free-width: calc(100vw - 40px);
+
+    --sa-tablet-summary-columns: 2;
+
+    --sa-tablet-filter-columns: 3;
+
+
+    /* ==================================================================
+       RESPONSIVE <= 600px
+       ================================================================== */
+
+    --sa-mobile-card-padding: 10px;
+
+    --sa-mobile-summary-columns: 1;
+
+    --sa-mobile-filter-columns: 2;
+
+    --sa-mobile-chart-min-height: 240px;
+
+    --sa-mobile-chart-body-min-height: 190px;
+
+}
+
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ ANALYTICS SIZE UTILITIES — PRODNEX ERP                             ║
+   ║                                                                      ║
+   ║ 20 HEIGHT sizes                                                     ║
+   ║ 20 WIDTH sizes                                                      ║
+   ║ 20 MIN-HEIGHT sizes                                                 ║
+   ║ 20 MIN-WIDTH sizes                                                  ║
+   ║ 20 MAX-HEIGHT sizes                                                 ║
+   ║ 20 MAX-WIDTH sizes                                                  ║
+   ║ 20 GAP sizes                                                        ║
+   ║ 20 PADDING sizes                                                    ║
+   ║ 20 BORDER-RADIUS sizes                                              ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+
+/* ======================================================================
+   HEIGHT — analytics-h-1 ... analytics-h-20
+   ====================================================================== */
+
+.analytics-h-1 {
+    height: 50px !important;
+}
+
+.analytics-h-2 {
+    height: 75px !important;
+}
+
+.analytics-h-3 {
+    height: 100px !important;
+}
+
+.analytics-h-4 {
+    height: 125px !important;
+}
+
+.analytics-h-5 {
+    height: 150px !important;
+}
+
+.analytics-h-6 {
+    height: 175px !important;
+}
+
+.analytics-h-7 {
+    height: 200px !important;
+}
+
+.analytics-h-8 {
+    height: 225px !important;
+}
+
+.analytics-h-9 {
+    height: 250px !important;
+}
+
+.analytics-h-10 {
+    height: 275px !important;
+}
+
+.analytics-h-11 {
+    height: 300px !important;
+}
+
+.analytics-h-12 {
+    height: 325px !important;
+}
+
+.analytics-h-13 {
+    height: 350px !important;
+}
+
+.analytics-h-14 {
+    height: 375px !important;
+}
+
+.analytics-h-15 {
+    height: 400px !important;
+}
+
+.analytics-h-16 {
+    height: 450px !important;
+}
+
+.analytics-h-17 {
+    height: 500px !important;
+}
+
+.analytics-h-18 {
+    height: 550px !important;
+}
+
+.analytics-h-19 {
+    height: 600px !important;
+}
+
+.analytics-h-20 {
+    height: 700px !important;
+}
+
+
+/* ======================================================================
+   WIDTH — analytics-w-1 ... analytics-w-20
+   ====================================================================== */
+
+.analytics-w-1 {
+    width: 5% !important;
+}
+
+.analytics-w-2 {
+    width: 10% !important;
+}
+
+.analytics-w-3 {
+    width: 15% !important;
+}
+
+.analytics-w-4 {
+    width: 20% !important;
+}
+
+.analytics-w-5 {
+    width: 25% !important;
+}
+
+.analytics-w-6 {
+    width: 30% !important;
+}
+
+.analytics-w-7 {
+    width: 35% !important;
+}
+
+.analytics-w-8 {
+    width: 40% !important;
+}
+
+.analytics-w-9 {
+    width: 45% !important;
+}
+
+.analytics-w-10 {
+    width: 50% !important;
+}
+
+.analytics-w-11 {
+    width: 55% !important;
+}
+
+.analytics-w-12 {
+    width: 60% !important;
+}
+
+.analytics-w-13 {
+    width: 65% !important;
+}
+
+.analytics-w-14 {
+    width: 70% !important;
+}
+
+.analytics-w-15 {
+    width: 75% !important;
+}
+
+.analytics-w-16 {
+    width: 80% !important;
+}
+
+.analytics-w-17 {
+    width: 85% !important;
+}
+
+.analytics-w-18 {
+    width: 90% !important;
+}
+
+.analytics-w-19 {
+    width: 95% !important;
+}
+
+.analytics-w-20 {
+    width: 100% !important;
+}
+
+
+/* ======================================================================
+   MIN HEIGHT — analytics-min-h-1 ... analytics-min-h-20
+   ====================================================================== */
+
+.analytics-min-h-1 {
+    min-height: 50px !important;
+}
+
+.analytics-min-h-2 {
+    min-height: 75px !important;
+}
+
+.analytics-min-h-3 {
+    min-height: 100px !important;
+}
+
+.analytics-min-h-4 {
+    min-height: 125px !important;
+}
+
+.analytics-min-h-5 {
+    min-height: 150px !important;
+}
+
+.analytics-min-h-6 {
+    min-height: 175px !important;
+}
+
+.analytics-min-h-7 {
+    min-height: 200px !important;
+}
+
+.analytics-min-h-8 {
+    min-height: 225px !important;
+}
+
+.analytics-min-h-9 {
+    min-height: 250px !important;
+}
+
+.analytics-min-h-10 {
+    min-height: 275px !important;
+}
+
+.analytics-min-h-11 {
+    min-height: 300px !important;
+}
+
+.analytics-min-h-12 {
+    min-height: 325px !important;
+}
+
+.analytics-min-h-13 {
+    min-height: 350px !important;
+}
+
+.analytics-min-h-14 {
+    min-height: 375px !important;
+}
+
+.analytics-min-h-15 {
+    min-height: 400px !important;
+}
+
+.analytics-min-h-16 {
+    min-height: 450px !important;
+}
+
+.analytics-min-h-17 {
+    min-height: 500px !important;
+}
+
+.analytics-min-h-18 {
+    min-height: 550px !important;
+}
+
+.analytics-min-h-19 {
+    min-height: 600px !important;
+}
+
+.analytics-min-h-20 {
+    min-height: 700px !important;
+}
+
+
+/* ======================================================================
+   MIN WIDTH — analytics-min-w-1 ... analytics-min-w-20
+   ====================================================================== */
+
+.analytics-min-w-1 {
+    min-width: 50px !important;
+}
+
+.analytics-min-w-2 {
+    min-width: 75px !important;
+}
+
+.analytics-min-w-3 {
+    min-width: 100px !important;
+}
+
+.analytics-min-w-4 {
+    min-width: 125px !important;
+}
+
+.analytics-min-w-5 {
+    min-width: 150px !important;
+}
+
+.analytics-min-w-6 {
+    min-width: 175px !important;
+}
+
+.analytics-min-w-7 {
+    min-width: 200px !important;
+}
+
+.analytics-min-w-8 {
+    min-width: 225px !important;
+}
+
+.analytics-min-w-9 {
+    min-width: 250px !important;
+}
+
+.analytics-min-w-10 {
+    min-width: 275px !important;
+}
+
+.analytics-min-w-11 {
+    min-width: 300px !important;
+}
+
+.analytics-min-w-12 {
+    min-width: 350px !important;
+}
+
+.analytics-min-w-13 {
+    min-width: 400px !important;
+}
+
+.analytics-min-w-14 {
+    min-width: 450px !important;
+}
+
+.analytics-min-w-15 {
+    min-width: 500px !important;
+}
+
+.analytics-min-w-16 {
+    min-width: 600px !important;
+}
+
+.analytics-min-w-17 {
+    min-width: 700px !important;
+}
+
+.analytics-min-w-18 {
+    min-width: 800px !important;
+}
+
+.analytics-min-w-19 {
+    min-width: 900px !important;
+}
+
+.analytics-min-w-20 {
+    min-width: 1000px !important;
+}
+
+
+/* ======================================================================
+   MAX HEIGHT — analytics-max-h-1 ... analytics-max-h-20
+   ====================================================================== */
+
+.analytics-max-h-1 {
+    max-height: 50px !important;
+}
+
+.analytics-max-h-2 {
+    max-height: 75px !important;
+}
+
+.analytics-max-h-3 {
+    max-height: 100px !important;
+}
+
+.analytics-max-h-4 {
+    max-height: 125px !important;
+}
+
+.analytics-max-h-5 {
+    max-height: 150px !important;
+}
+
+.analytics-max-h-6 {
+    max-height: 175px !important;
+}
+
+.analytics-max-h-7 {
+    max-height: 200px !important;
+}
+
+.analytics-max-h-8 {
+    max-height: 225px !important;
+}
+
+.analytics-max-h-9 {
+    max-height: 250px !important;
+}
+
+.analytics-max-h-10 {
+    max-height: 275px !important;
+}
+
+.analytics-max-h-11 {
+    max-height: 300px !important;
+}
+
+.analytics-max-h-12 {
+    max-height: 325px !important;
+}
+
+.analytics-max-h-13 {
+    max-height: 350px !important;
+}
+
+.analytics-max-h-14 {
+    max-height: 375px !important;
+}
+
+.analytics-max-h-15 {
+    max-height: 400px !important;
+}
+
+.analytics-max-h-16 {
+    max-height: 450px !important;
+}
+
+.analytics-max-h-17 {
+    max-height: 500px !important;
+}
+
+.analytics-max-h-18 {
+    max-height: 550px !important;
+}
+
+.analytics-max-h-19 {
+    max-height: 600px !important;
+}
+
+.analytics-max-h-20 {
+    max-height: 700px !important;
+}
+
+
+/* ======================================================================
+   MAX WIDTH — analytics-max-w-1 ... analytics-max-w-20
+   ====================================================================== */
+
+.analytics-max-w-1 {
+    max-width: 100px !important;
+}
+
+.analytics-max-w-2 {
+    max-width: 150px !important;
+}
+
+.analytics-max-w-3 {
+    max-width: 200px !important;
+}
+
+.analytics-max-w-4 {
+    max-width: 250px !important;
+}
+
+.analytics-max-w-5 {
+    max-width: 300px !important;
+}
+
+.analytics-max-w-6 {
+    max-width: 350px !important;
+}
+
+.analytics-max-w-7 {
+    max-width: 400px !important;
+}
+
+.analytics-max-w-8 {
+    max-width: 450px !important;
+}
+
+.analytics-max-w-9 {
+    max-width: 500px !important;
+}
+
+.analytics-max-w-10 {
+    max-width: 550px !important;
+}
+
+.analytics-max-w-11 {
+    max-width: 600px !important;
+}
+
+.analytics-max-w-12 {
+    max-width: 650px !important;
+}
+
+.analytics-max-w-13 {
+    max-width: 700px !important;
+}
+
+.analytics-max-w-14 {
+    max-width: 750px !important;
+}
+
+.analytics-max-w-15 {
+    max-width: 800px !important;
+}
+
+.analytics-max-w-16 {
+    max-width: 900px !important;
+}
+
+.analytics-max-w-17 {
+    max-width: 1000px !important;
+}
+
+.analytics-max-w-18 {
+    max-width: 1100px !important;
+}
+
+.analytics-max-w-19 {
+    max-width: 1200px !important;
+}
+
+.analytics-max-w-20 {
+    max-width: none !important;
+}
+
+
+/* ======================================================================
+   GAP — analytics-gap-1 ... analytics-gap-20
+   ====================================================================== */
+
+.analytics-gap-1 {
+    gap: 2px !important;
+}
+
+.analytics-gap-2 {
+    gap: 4px !important;
+}
+
+.analytics-gap-3 {
+    gap: 6px !important;
+}
+
+.analytics-gap-4 {
+    gap: 8px !important;
+}
+
+.analytics-gap-5 {
+    gap: 10px !important;
+}
+
+.analytics-gap-6 {
+    gap: 12px !important;
+}
+
+.analytics-gap-7 {
+    gap: 14px !important;
+}
+
+.analytics-gap-8 {
+    gap: 16px !important;
+}
+
+.analytics-gap-9 {
+    gap: 18px !important;
+}
+
+.analytics-gap-10 {
+    gap: 20px !important;
+}
+
+.analytics-gap-11 {
+    gap: 22px !important;
+}
+
+.analytics-gap-12 {
+    gap: 24px !important;
+}
+
+.analytics-gap-13 {
+    gap: 26px !important;
+}
+
+.analytics-gap-14 {
+    gap: 28px !important;
+}
+
+.analytics-gap-15 {
+    gap: 30px !important;
+}
+
+.analytics-gap-16 {
+    gap: 32px !important;
+}
+
+.analytics-gap-17 {
+    gap: 36px !important;
+}
+
+.analytics-gap-18 {
+    gap: 40px !important;
+}
+
+.analytics-gap-19 {
+    gap: 48px !important;
+}
+
+.analytics-gap-20 {
+    gap: 60px !important;
+}
+
+
+/* ======================================================================
+   PADDING — analytics-p-1 ... analytics-p-20
+   ====================================================================== */
+
+.analytics-p-1 {
+    padding: 2px !important;
+}
+
+.analytics-p-2 {
+    padding: 4px !important;
+}
+
+.analytics-p-3 {
+    padding: 6px !important;
+}
+
+.analytics-p-4 {
+    padding: 8px !important;
+}
+
+.analytics-p-5 {
+    padding: 10px !important;
+}
+
+.analytics-p-6 {
+    padding: 12px !important;
+}
+
+.analytics-p-7 {
+    padding: 14px !important;
+}
+
+.analytics-p-8 {
+    padding: 16px !important;
+}
+
+.analytics-p-9 {
+    padding: 18px !important;
+}
+
+.analytics-p-10 {
+    padding: 20px !important;
+}
+
+.analytics-p-11 {
+    padding: 22px !important;
+}
+
+.analytics-p-12 {
+    padding: 24px !important;
+}
+
+.analytics-p-13 {
+    padding: 26px !important;
+}
+
+.analytics-p-14 {
+    padding: 28px !important;
+}
+
+.analytics-p-15 {
+    padding: 30px !important;
+}
+
+.analytics-p-16 {
+    padding: 32px !important;
+}
+
+.analytics-p-17 {
+    padding: 36px !important;
+}
+
+.analytics-p-18 {
+    padding: 40px !important;
+}
+
+.analytics-p-19 {
+    padding: 48px !important;
+}
+
+.analytics-p-20 {
+    padding: 60px !important;
+}
+
+
+/* ======================================================================
+   BORDER RADIUS — analytics-radius-1 ... analytics-radius-20
+   ====================================================================== */
+
+.analytics-radius-1 {
+    border-radius: 0 !important;
+}
+
+.analytics-radius-2 {
+    border-radius: 2px !important;
+}
+
+.analytics-radius-3 {
+    border-radius: 4px !important;
+}
+
+.analytics-radius-4 {
+    border-radius: 6px !important;
+}
+
+.analytics-radius-5 {
+    border-radius: 8px !important;
+}
+
+.analytics-radius-6 {
+    border-radius: 10px !important;
+}
+
+.analytics-radius-7 {
+    border-radius: 12px !important;
+}
+
+.analytics-radius-8 {
+    border-radius: 14px !important;
+}
+
+.analytics-radius-9 {
+    border-radius: 16px !important;
+}
+
+.analytics-radius-10 {
+    border-radius: 18px !important;
+}
+
+.analytics-radius-11 {
+    border-radius: 20px !important;
+}
+
+.analytics-radius-12 {
+    border-radius: 22px !important;
+}
+
+.analytics-radius-13 {
+    border-radius: 24px !important;
+}
+
+.analytics-radius-14 {
+    border-radius: 26px !important;
+}
+
+.analytics-radius-15 {
+    border-radius: 28px !important;
+}
+
+.analytics-radius-16 {
+    border-radius: 30px !important;
+}
+
+.analytics-radius-17 {
+    border-radius: 32px !important;
+}
+
+.analytics-radius-18 {
+    border-radius: 36px !important;
+}
+
+.analytics-radius-19 {
+    border-radius: 40px !important;
+}
+
+.analytics-radius-20 {
+    border-radius: 999px !important;
+}
+
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ MAIN SALES ANALYTICS CARD                                          ║
+   ║ New layout: product ranking + product chart + customer chart       ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+#includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) {
+    --dash-bg-start: var(--sa-bg-start);
+    --dash-bg-end: var(--sa-bg-end);
+    --dash-border: var(--sa-border-color);
+    --dash-title: var(--sa-text-color);
+    --dash-value: var(--sa-text-color);
+    --dash-footer: var(--sa-text-muted);
+    --dash-shadow: var(--sa-shadow-color);
+    --dash-shadow-hover: var(--sa-shadow-hover-color);
+
+    grid-column: 1 / -1;
+
+    width: var(--sa-card-width);
+    min-width: var(--sa-card-min-width);
+    min-height: 0;
+    height: 306px;
+    max-height: 306px;
+
+    padding:
+        var(--sa-card-padding-top) var(--sa-card-padding-right) var(--sa-card-padding-bottom) var(--sa-card-padding-left);
+
+    background:
+        linear-gradient(var(--sa-gradient-angle),
+            var(--sa-bg-start),
+            var(--sa-bg-end));
+
+    border:
+        var(--sa-border-width) solid var(--sa-border-color);
+
+    border-radius:
+        var(--sa-card-radius);
+
+    color:
+        var(--sa-text-color);
+
+    text-align:
+        left;
+
+    overflow:
+        var(--sa-card-overflow);
+
+    box-sizing:
+        border-box;
+}
+
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ INTERNAL LAYOUT                                                     ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+#includeDashBoard .sales-analytics {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    min-width: 0;
+
+    gap: 12px;
+
+    height: 100%;
+    min-height: 0;
+
+    box-sizing: border-box;
+}
+
+
+
+
+/* ======================================================================
+   SALES ANALYTICS — FULL PINK AREA OVERRIDE
+   Prevent old size utilities from shrinking the new dashboard.
+   ====================================================================== */
+
+#includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) .sales-analytics {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+}
+
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ ABC CHARTS ROW                                                       ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+#includeDashBoard .sales-analytics__abc-row {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+
+    width: 100%;
+    min-width: 0;
+    height: 182px;
+    min-height: 0;
+
+    box-sizing: border-box;
+}
+
+
+/* ======================================================================
+   CHART PANEL
+   ====================================================================== */
+
+#includeDashBoard .analytics-chart {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+
+    padding:
+        var(--sa-chart-padding);
+
+    background:
+        var(--sa-chart-bg);
+
+    border:
+        var(--sa-border-width) solid var(--sa-chart-border);
+
+    border-radius:
+        var(--sa-chart-radius);
+
+    overflow: hidden;
+
+    box-sizing: border-box;
+}
+
+
+/* ======================================================================
+   ABC PANELS
+   ====================================================================== */
+
+#includeDashBoard .analytics-chart--abc,
+#includeDashBoard .analytics-chart[data-analytics-panel="abc-products"],
+#includeDashBoard .analytics-chart[data-analytics-panel="abc-customers"] {
+    height: 182px;
+    min-height: 0;
+    max-height: 182px;
+}
+
+
+/* ======================================================================
+   CHART HEADER
+   ====================================================================== */
+
+#includeDashBoard .analytics-chart__header {
+    flex: 0 0 auto;
+
+    margin-bottom:
+        var(--sa-chart-header-margin-bottom);
+
+    padding-bottom: 10px;
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.10);
+}
+
+
+/* ======================================================================
+   CHART TITLE
+   ====================================================================== */
+
+#includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) .analytics-chart h3 {
+    margin: 0;
+
+    color:
+        var(--sa-chart-title-color);
+
+    font-size:
+        var(--sa-chart-title-font-size);
+
+    font-weight:
+        var(--sa-chart-title-font-weight);
+
+    letter-spacing:
+        var(--sa-chart-title-letter-spacing);
+
+    text-align:
+        var(--sa-chart-title-align);
+
+    text-transform:
+        var(--sa-chart-title-transform);
+}
+
+
+/* ======================================================================
+   CHART BODY
+   ====================================================================== */
+
+#includeDashBoard .analytics-chart__body {
+    position: relative;
+
+    flex: 1 1 auto;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+
+    overflow: hidden;
+}
+
+
+/* ======================================================================
+   CHART CANVAS
+   ====================================================================== */
+
+#includeDashBoard .analytics-chart__body canvas {
+    display: block;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    max-width: 100%;
+    max-height: 100%;
+}
+
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ KPI ROW                                                              ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+#includeDashBoard .sales-analytics__kpi-row {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 14px;
+
+    width: 100%;
+    height: 76px;
+    min-height: 0;
+    min-width: 0;
+
+    box-sizing: border-box;
+}
+
+
+/* ======================================================================
+   KPI CARD
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics__kpi-row .analytics-kpi {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 100% !important;
+    min-width: 0;
+    min-height: 92px;
+
+    padding:
+        var(--sa-kpi-padding-y) var(--sa-kpi-padding-x);
+
+    background:
+        var(--sa-kpi-bg);
+
+    border:
+        var(--sa-border-width) solid var(--sa-kpi-border);
+
+    border-radius:
+        var(--sa-kpi-radius);
+
+    text-align: center;
+
+    box-sizing: border-box;
+}
+
+
+/* ======================================================================
+   KPI LABEL
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics__kpi-row .analytics-kpi__label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color:
+        var(--sa-kpi-label-color);
+
+    font-size:
+        var(--sa-kpi-label-font-size);
+
+    font-weight:
+        var(--sa-kpi-label-font-weight);
+
+    line-height: 1.25;
+
+    letter-spacing:
+        var(--sa-kpi-label-letter-spacing);
+
+    text-transform:
+        var(--sa-kpi-label-transform);
+
+    text-align: center;
+}
+
+
+/* ======================================================================
+   KPI VALUE
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics__kpi-row .analytics-kpi__value {
+    display: block;
+
+    width: 100%;
+    max-width: 100%;
+
+    margin: 0;
+
+    color:
+        var(--sa-kpi-value-color);
+
+    font-size:
+        var(--sa-kpi-value-font-size);
+
+    font-weight:
+        var(--sa-kpi-value-font-weight);
+
+    line-height:
+        var(--sa-kpi-value-line-height);
+
+    text-align: center;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ LOADING                                                             ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+#includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]).is-loading {
+    opacity:
+        var(--sa-loading-opacity);
+
+    pointer-events:
+        none;
+}
+
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ FREE LAYOUT                                                         ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+#includeDashBoard[data-layout-mode="free"] .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]),
+
+#includeDashBoard[data-free="1"] .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    height: 306px !important;
+    max-height: 306px !important;
+    min-height: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* ======================================================================
+   DRAGGING
+   ====================================================================== */
+
+#includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]).is-dragging {
+    transform:
+        scale(var(--sa-drag-scale));
+
+    opacity:
+        var(--sa-drag-opacity);
+}
+
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ RESPONSIVE — <= 1200px                                             ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+@media (max-width: 1200px) {
+
+    #includeDashBoard .sales-analytics__kpi-row {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    #includeDashBoard[data-layout-mode="free"] .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]),
+
+    #includeDashBoard[data-free="1"] .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) {
+        min-width:
+            var(--sa-medium-free-min-width);
+    }
+}
+
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ RESPONSIVE — <= 900px                                              ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+@media (max-width: 900px) {
+
+    #includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) {
+        height: auto;
+        max-height: none;
+        min-height: 0;
+    }
+
+
+    #includeDashBoard .sales-analytics__abc-row {
+        grid-template-columns: 1fr;
+    }
+
+
+    #includeDashBoard .analytics-chart--abc,
+    #includeDashBoard .analytics-chart[data-analytics-panel="abc-products"],
+    #includeDashBoard .analytics-chart[data-analytics-panel="abc-customers"] {
+        height: 380px;
+        min-height: 380px;
+    }
+
+
+    #includeDashBoard[data-layout-mode="free"] .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]),
+
+    #includeDashBoard[data-free="1"] .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) {
+        width:
+            var(--sa-tablet-free-width);
+
+        min-width: 0;
+    }
+}
+
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ RESPONSIVE — <= 600px                                              ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+@media (max-width: 600px) {
+
+    #includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) {
+        padding:
+            var(--sa-mobile-card-padding);
+    }
+
+
+    #includeDashBoard .sales-analytics {
+        gap: 12px;
+    }
+
+
+    #includeDashBoard .sales-analytics__abc-row {
+        gap: 12px;
+    }
+
+
+    #includeDashBoard .sales-analytics__kpi-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+
+    #includeDashBoard .analytics-chart--abc,
+    #includeDashBoard .analytics-chart[data-analytics-panel="abc-products"],
+    #includeDashBoard .analytics-chart[data-analytics-panel="abc-customers"] {
+        height:
+            var(--sa-mobile-chart-min-height);
+
+        min-height:
+            var(--sa-mobile-chart-min-height);
+    }
+
+
+    #includeDashBoard .sales-analytics__kpi-row .analytics-kpi {
+        min-height: 82px;
+    }
+}
+
+
+/* ======================================================================
+   FINAL DESKTOP SIZE LOCK — MATCH AVAILABLE HOME AREA
+   ====================================================================== */
+
+@media (min-width: 901px) {
+
+    #includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]),
+    #includeDashBoard[data-layout-mode="free"] .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]),
+    #includeDashBoard[data-free="1"] .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) {
+        grid-column: 1 / -1 !important;
+        width: 100% !important;
+        max-width: none !important;
+        min-width: 0 !important;
+        height: 306px !important;
+        max-height: 306px !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    #includeDashBoard .sales-analytics__abc-row {
+        height: 182px !important;
+        min-height: 0 !important;
+    }
+
+    #includeDashBoard .analytics-chart--abc,
+    #includeDashBoard .analytics-chart[data-analytics-panel="abc-products"],
+    #includeDashBoard .analytics-chart[data-analytics-panel="abc-customers"] {
+        height: 182px !important;
+        min-height: 0 !important;
+        max-height: 182px !important;
+    }
+
+    #includeDashBoard .sales-analytics__kpi-row {
+        height: 76px !important;
+        min-height: 0 !important;
+    }
+}
+
+/* ======================================================================
+   COMPACT DESKTOP OVERRIDE — SALES ANALYTICS
+   Keeps the complete analytics block inside a compact home area.
+   ====================================================================== */
+@media (min-width: 901px) {
+
+    /* Let the analytics row use the entire available HOME width. */
+    #includeDashBoard .dash-grid {
+        max-width: none !important;
+    }
+
+    #includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]),
+    #includeDashBoard[data-layout-mode="free"] .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]),
+    #includeDashBoard[data-free="1"] .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) {
+        grid-column: 1 / -1 !important;
+        width: 100% !important;
+        max-width: none !important;
+        min-width: 0 !important;
+
+        height: 400px !important;
+        min-height: 400px !important;
+        max-height: 400px !important;
+
+        padding: 12px !important;
+        margin: 0 !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+
+    #includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) .sales-analytics {
+        display: grid !important;
+        grid-template-rows: 300px 64px !important;
+        gap: 10px !important;
+
+        width: 100% !important;
+        height: 100% !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+        max-height: 100% !important;
+    }
+
+    #includeDashBoard .sales-analytics__abc-row {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 10px !important;
+
+        width: 100% !important;
+        height: 150px !important;
+        min-height: 150px !important;
+        max-height: 150px !important;
+        overflow: hidden !important;
+    }
+
+    #includeDashBoard .analytics-chart--abc,
+    #includeDashBoard .analytics-chart[data-analytics-panel="abc-products"],
+    #includeDashBoard .analytics-chart[data-analytics-panel="abc-customers"] {
+        width: 100% !important;
+        height: 150px !important;
+        min-height: 150px !important;
+        max-height: 150px !important;
+        padding: 10px !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+
+    #includeDashBoard .analytics-chart__header {
+        margin-bottom: 5px !important;
+        padding-bottom: 5px !important;
+    }
+
+    #includeDashBoard .analytics-chart__body {
+        min-height: 0 !important;
+        height: auto !important;
+        overflow: hidden !important;
+    }
+
+    #includeDashBoard .sales-analytics__kpi-row {
+        display: grid !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        gap: 10px !important;
+
+        width: 100% !important;
+        height: 64px !important;
+        min-height: 64px !important;
+        max-height: 64px !important;
+        overflow: hidden !important;
+    }
+
+    #includeDashBoard .sales-analytics__kpi-row .analytics-kpi {
+        width: 100% !important;
+        height: 64px !important;
+        min-height: 64px !important;
+        max-height: 64px !important;
+        padding: 6px 10px !important;
+        box-sizing: border-box !important;
+    }
+
+    #includeDashBoard .sales-analytics__kpi-row .analytics-kpi__label {
+        margin-bottom: 3px !important;
+        font-size: 0.62rem !important;
+        line-height: 1.05 !important;
+    }
+
+    #includeDashBoard .sales-analytics__kpi-row .analytics-kpi__value {
+        font-size: 1.15rem !important;
+        line-height: 1 !important;
+    }
+}
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ SALES ANALYTICS — CONSART TECH THEME                               ║
+   ║ Visual override only — keeps current compact dimensions            ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+
+/* ======================================================================
+   CONSART TECH VARIABLES
+   ====================================================================== */
+
+:root {
+
+    --consart-tech-bg-1: #101827;
+    --consart-tech-bg-2: #172235;
+    --consart-tech-bg-3: #1d2a3d;
+
+    --consart-tech-blue: #0057b8;
+    --consart-tech-blue-light: #2684ff;
+    --consart-tech-cyan: #39d9ff;
+
+    --consart-tech-text: #f4f8ff;
+    --consart-tech-muted: #9aabc2;
+
+    --consart-tech-line:
+        rgba(91, 160, 255, 0.22);
+
+    --consart-tech-line-strong:
+        rgba(57, 217, 255, 0.40);
+
+    --consart-tech-panel:
+        rgba(20, 31, 49, 0.80);
+
+    --consart-tech-panel-hover:
+        rgba(26, 42, 66, 0.92);
+
+    --consart-tech-shadow:
+        rgba(0, 35, 82, 0.42);
+
+    --consart-tech-glow:
+        rgba(38, 132, 255, 0.22);
+}
+
+
+/* ======================================================================
+   MAIN SALES ANALYTICS
+   ====================================================================== */
+
+#includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) {
+
+    position: relative;
+
+    background:
+        radial-gradient(circle at 15% 0%,
+            rgba(0, 87, 184, 0.20),
+            transparent 32%),
+        radial-gradient(circle at 90% 100%,
+            rgba(57, 217, 255, 0.08),
+            transparent 30%),
+        linear-gradient(145deg,
+            var(--consart-tech-bg-1),
+            var(--consart-tech-bg-2)) !important;
+
+    border:
+        1px solid rgba(66, 132, 219, 0.32) !important;
+
+    border-radius:
+        14px !important;
+
+    box-shadow:
+        0 14px 35px var(--consart-tech-shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+
+    overflow:
+        hidden !important;
+}
+
+
+/* ======================================================================
+   TOP CONSART LIGHT LINE
+   ====================================================================== */
+
+#includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"])::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 20px;
+    right: 20px;
+
+    height: 2px;
+
+    background:
+        linear-gradient(90deg,
+            transparent,
+            var(--consart-tech-blue),
+            var(--consart-tech-cyan),
+            var(--consart-tech-blue),
+            transparent);
+
+    opacity: 0.85;
+
+    box-shadow:
+        0 0 14px rgba(57, 217, 255, 0.30);
+
+    pointer-events: none;
+}
+
+
+/* ======================================================================
+   SUBTLE GRID BACKGROUND
+   ====================================================================== */
+
+#includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"])::after {
+
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: 0.18;
+
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px,
+            transparent 1px),
+        linear-gradient(90deg,
+            rgba(255, 255, 255, 0.025) 1px,
+            transparent 1px);
+
+    background-size:
+        28px 28px;
+}
+
+
+/* ======================================================================
+   INTERNAL CONTENT ABOVE BACKGROUND EFFECTS
+   ====================================================================== */
+
+#includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) .sales-analytics {
+
+    position: relative;
+
+    z-index: 2;
+}
+
+
+/* ======================================================================
+   ABC PANELS
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics__abc-row .analytics-chart {
+
+    position: relative;
+
+    background:
+        linear-gradient(145deg,
+            rgba(28, 42, 62, 0.90),
+            rgba(20, 31, 49, 0.88)) !important;
+
+    border:
+        1px solid var(--consart-tech-line) !important;
+
+    border-radius:
+        10px !important;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.035),
+        0 7px 18px rgba(0, 0, 0, 0.15);
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+#includeDashBoard .sales-analytics__abc-row .analytics-chart:hover {
+
+    background:
+        var(--consart-tech-panel-hover) !important;
+
+    border-color:
+        var(--consart-tech-line-strong) !important;
+
+    box-shadow:
+        0 0 0 1px rgba(38, 132, 255, 0.08),
+        0 10px 26px rgba(0, 36, 82, 0.25),
+        0 0 18px rgba(0, 87, 184, 0.08);
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* ======================================================================
+   ABC PANEL ACCENT
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics__abc-row .analytics-chart::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 11px;
+    left: 12px;
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background:
+        var(--consart-tech-cyan);
+
+    box-shadow:
+        0 0 8px var(--consart-tech-cyan);
+}
+
+
+/* ======================================================================
+   CHART HEADER
+   ====================================================================== */
+
+#includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) .analytics-chart__header {
+
+    position: relative;
+
+    border-bottom:
+        1px solid rgba(102, 160, 231, 0.13) !important;
+}
+
+
+/* ======================================================================
+   CHART TITLES
+   ====================================================================== */
+
+#includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) .analytics-chart h3 {
+
+    color:
+        var(--consart-tech-text) !important;
+
+    font-size:
+        0.72rem !important;
+
+    font-weight:
+        700 !important;
+
+    letter-spacing:
+        0.065em !important;
+
+    text-shadow:
+        0 0 12px rgba(38, 132, 255, 0.12);
+}
+
+
+/* ======================================================================
+   KPI ROW
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics__kpi-row {
+
+    position: relative;
+}
+
+
+/* ======================================================================
+   KPI CARD
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics__kpi-row .analytics-kpi {
+
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(145deg,
+            rgba(30, 45, 66, 0.94),
+            rgba(20, 31, 49, 0.94)) !important;
+
+    border:
+        1px solid rgba(69, 136, 222, 0.22) !important;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.035),
+        0 5px 14px rgba(0, 0, 0, 0.14);
+
+    transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+
+#includeDashBoard .sales-analytics__kpi-row .analytics-kpi:hover {
+
+    transform:
+        translateY(-2px);
+
+    border-color:
+        rgba(57, 217, 255, 0.40) !important;
+
+    box-shadow:
+        0 8px 20px rgba(0, 24, 58, 0.24),
+        0 0 16px rgba(38, 132, 255, 0.08);
+}
+
+
+/* ======================================================================
+   KPI BLUE ACCENT
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics__kpi-row .analytics-kpi::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 2px;
+
+    background:
+        linear-gradient(90deg,
+            var(--consart-tech-blue),
+            var(--consart-tech-cyan),
+            transparent 85%);
+
+    opacity:
+        0.75;
+}
+
+
+/* ======================================================================
+   KPI LABEL
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics__kpi-row .analytics-kpi__label {
+
+    color:
+        var(--consart-tech-muted) !important;
+
+    font-size:
+        0.60rem !important;
+
+    font-weight:
+        700 !important;
+
+    letter-spacing:
+        0.045em !important;
+}
+
+
+/* ======================================================================
+   KPI VALUE
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics__kpi-row .analytics-kpi__value {
+
+    color:
+        var(--consart-tech-text) !important;
+
+    font-size:
+        1.05rem !important;
+
+    font-weight:
+        800 !important;
+
+    letter-spacing:
+        0.015em;
+
+    text-shadow:
+        0 0 14px rgba(38, 132, 255, 0.14);
+}
+
+
+/* ======================================================================
+   DIFFERENT ACCENT FOR EACH KPI
+   ====================================================================== */
+
+#includeDashBoard .analytics-kpi--revenue .analytics-kpi__value {
+
+    color:
+        #ffffff !important;
+}
+
+
+#includeDashBoard .analytics-kpi--items .analytics-kpi__value {
+
+    color:
+        #ddecff !important;
+}
+
+
+#includeDashBoard .analytics-kpi--invoices .analytics-kpi__value {
+
+    color:
+        #bfe8ff !important;
+}
+
+
+#includeDashBoard .analytics-kpi--ticket .analytics-kpi__value {
+
+    color:
+        #ffffff !important;
+}
+
+
+/* ======================================================================
+   REVENUE KPI — STRONGER CONSART ACCENT
+   ====================================================================== */
+
+#includeDashBoard .analytics-kpi--revenue {
+
+    background:
+        linear-gradient(145deg,
+            rgba(0, 87, 184, 0.23),
+            rgba(20, 31, 49, 0.96)) !important;
+}
+
+
+/* ======================================================================
+   TICKET KPI — CYAN DETAIL
+   ====================================================================== */
+
+#includeDashBoard .analytics-kpi--ticket::before {
+
+    background:
+        linear-gradient(90deg,
+            var(--consart-tech-cyan),
+            var(--consart-tech-blue),
+            transparent) !important;
+}
+
+
+/* ======================================================================
+   EMPTY CHART AREA — SUBTLE TECH EFFECT
+   ====================================================================== */
+
+#includeDashBoard .analytics-chart__body {
+
+    background:
+        radial-gradient(circle at center,
+            rgba(38, 132, 255, 0.025),
+            transparent 65%);
+}
+
+
+/* ======================================================================
+   LOADING
+   ====================================================================== */
+
+#includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]).is-loading {
+
+    filter:
+        saturate(0.75);
+
+    opacity:
+        0.70;
+}
+
+
+/* ======================================================================
+   RESPONSIVE
+   ====================================================================== */
+
+@media (max-width: 900px) {
+
+    #includeDashBoard .sales-analytics__abc-row {
+
+        gap:
+            8px !important;
+    }
+
+
+    #includeDashBoard .sales-analytics__kpi-row {
+
+        gap:
+            8px !important;
+    }
+}
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ SALES ANALYTICS — CONSART INTEGRATED THEME                         ║
+   ║ Matches the visual composition of the HOME dashboards              ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+
+/* ======================================================================
+   MAIN CARD
+   ====================================================================== */
+
+#includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) {
+
+    position: relative;
+
+    background:
+        linear-gradient(145deg,
+            #f7fbff 0%,
+            #ffffff 58%,
+            #f3f8ff 100%) !important;
+
+    border:
+        1px solid #cfe0f5 !important;
+
+    border-radius:
+        16px !important;
+
+    box-shadow:
+        0 8px 28px rgba(31, 73, 125, 0.10) !important;
+
+    color:
+        #24364d !important;
+
+    overflow:
+        hidden !important;
+}
+
+
+/* ======================================================================
+   REMOVE DARK / NEON BACKGROUND
+   ====================================================================== */
+
+#includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"])::after {
+
+    display:
+        none !important;
+}
+
+
+/* ======================================================================
+   CONSART TOP ACCENT
+   ====================================================================== */
+
+#includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"])::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    top:
+        0;
+
+    left:
+        24px;
+
+    right:
+        24px;
+
+    height:
+        3px;
+
+    border-radius:
+        0 0 5px 5px;
+
+    background:
+        linear-gradient(90deg,
+            transparent 0%,
+            #0057b8 18%,
+            #2684ff 50%,
+            #39bfe8 82%,
+            transparent 100%);
+
+    opacity:
+        0.85;
+
+    box-shadow:
+        none;
+
+    pointer-events:
+        none;
+}
+
+
+/* ======================================================================
+   INTERNAL CONTAINER
+   ====================================================================== */
+
+#includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) .sales-analytics {
+
+    position:
+        relative;
+
+    z-index:
+        1;
+
+    background:
+        transparent !important;
+}
+
+
+/* ======================================================================
+   ABC PANELS
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics__abc-row .analytics-chart {
+
+    background:
+        linear-gradient(145deg,
+            rgba(245, 249, 255, 0.96),
+            rgba(255, 255, 255, 0.98)) !important;
+
+    border:
+        1px solid #d7e4f4 !important;
+
+    border-radius:
+        13px !important;
+
+    box-shadow:
+        0 4px 14px rgba(37, 76, 124, 0.06) !important;
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        border-color 0.18s ease !important;
+}
+
+
+#includeDashBoard .sales-analytics__abc-row .analytics-chart:hover {
+
+    transform:
+        translateY(-2px);
+
+    border-color:
+        #b9d6f5 !important;
+
+    box-shadow:
+        0 8px 20px rgba(37, 76, 124, 0.11) !important;
+
+    background:
+        #ffffff !important;
+}
+
+
+/* ======================================================================
+   REMOVE NEON DOT
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics__abc-row .analytics-chart::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    top:
+        14px;
+
+    left:
+        14px;
+
+    width:
+        6px;
+
+    height:
+        6px;
+
+    border-radius:
+        50%;
+
+    background:
+        #2684ff;
+
+    box-shadow:
+        none;
+}
+
+
+/* ======================================================================
+   CHART HEADER
+   ====================================================================== */
+
+#includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) .analytics-chart__header {
+
+    border-bottom:
+        1px solid #e5edf7 !important;
+
+    padding-bottom:
+        9px;
+}
+
+
+/* ======================================================================
+   CHART TITLE
+   ====================================================================== */
+
+#includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) .analytics-chart h3 {
+
+    color:
+        #1f4d83 !important;
+
+    font-size:
+        0.74rem !important;
+
+    font-weight:
+        700 !important;
+
+    letter-spacing:
+        0.045em !important;
+
+    text-shadow:
+        none !important;
+}
+
+
+/* ======================================================================
+   CHART BODY
+   ====================================================================== */
+
+#includeDashBoard .analytics-chart__body {
+
+    background:
+        linear-gradient(180deg,
+            rgba(242, 247, 253, 0.45),
+            transparent) !important;
+
+    border-radius:
+        8px;
+}
+
+
+/* ======================================================================
+   KPI CARDS
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics__kpi-row .analytics-kpi {
+
+    position:
+        relative;
+
+    overflow:
+        hidden;
+
+    background:
+        #ffffff !important;
+
+    border:
+        1px solid #d9e5f3 !important;
+
+    border-radius:
+        12px !important;
+
+    box-shadow:
+        0 4px 12px rgba(37, 76, 124, 0.06) !important;
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        border-color 0.18s ease !important;
+}
+
+
+#includeDashBoard .sales-analytics__kpi-row .analytics-kpi:hover {
+
+    transform:
+        translateY(-2px);
+
+    border-color:
+        #bad4f0 !important;
+
+    box-shadow:
+        0 7px 17px rgba(37, 76, 124, 0.11) !important;
+}
+
+
+/* ======================================================================
+   KPI TOP ACCENT
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics__kpi-row .analytics-kpi::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    top:
+        0;
+
+    left:
+        0;
+
+    right:
+        0;
+
+    height:
+        3px;
+
+    opacity:
+        1;
+
+    background:
+        #2684ff;
+}
+
+
+/* ======================================================================
+   KPI INDIVIDUAL COLORS
+   ====================================================================== */
+
+#includeDashBoard .analytics-kpi--revenue::before {
+
+    background:
+        #19966a !important;
+}
+
+
+#includeDashBoard .analytics-kpi--items::before {
+
+    background:
+        #2684ff !important;
+}
+
+
+#includeDashBoard .analytics-kpi--invoices::before {
+
+    background:
+        #e39a36 !important;
+}
+
+
+#includeDashBoard .analytics-kpi--ticket::before {
+
+    background:
+        #0057b8 !important;
+}
+
+
+/* ======================================================================
+   KPI LABEL
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics__kpi-row .analytics-kpi__label {
+
+    color:
+        #77879c !important;
+
+    font-size:
+        0.61rem !important;
+
+    font-weight:
+        700 !important;
+
+    letter-spacing:
+        0.035em !important;
+}
+
+
+/* ======================================================================
+   KPI VALUE
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics__kpi-row .analytics-kpi__value {
+
+    color:
+        #24364d !important;
+
+    font-size:
+        1.08rem !important;
+
+    font-weight:
+        800 !important;
+
+    text-shadow:
+        none !important;
+}
+
+
+/* ======================================================================
+   KPI VALUE COLORS
+   ====================================================================== */
+
+#includeDashBoard .analytics-kpi--revenue .analytics-kpi__value {
+
+    color:
+        #227556 !important;
+}
+
+
+#includeDashBoard .analytics-kpi--items .analytics-kpi__value {
+
+    color:
+        #3157bd !important;
+}
+
+
+#includeDashBoard .analytics-kpi--invoices .analytics-kpi__value {
+
+    color:
+        #a54b18 !important;
+}
+
+
+#includeDashBoard .analytics-kpi--ticket .analytics-kpi__value {
+
+    color:
+        #1d4f91 !important;
+}
+
+
+/* ======================================================================
+   REVENUE CARD
+   ====================================================================== */
+
+#includeDashBoard .analytics-kpi--revenue {
+
+    background:
+        linear-gradient(145deg,
+            #f0fcf7,
+            #ffffff) !important;
+
+    border-color:
+        #c9eddd !important;
+}
+
+
+/* ======================================================================
+   ITEMS CARD
+   ====================================================================== */
+
+#includeDashBoard .analytics-kpi--items {
+
+    background:
+        linear-gradient(145deg,
+            #f2f7ff,
+            #ffffff) !important;
+
+    border-color:
+        #d4e3fb !important;
+}
+
+
+/* ======================================================================
+   INVOICES CARD
+   ====================================================================== */
+
+#includeDashBoard .analytics-kpi--invoices {
+
+    background:
+        linear-gradient(145deg,
+            #fff8ee,
+            #ffffff) !important;
+
+    border-color:
+        #f3dfbd !important;
+}
+
+
+/* ======================================================================
+   TICKET CARD
+   ====================================================================== */
+
+#includeDashBoard .analytics-kpi--ticket {
+
+    background:
+        linear-gradient(145deg,
+            #f2f7ff,
+            #ffffff) !important;
+
+    border-color:
+        #d2e2f6 !important;
+}
+
+
+/* ======================================================================
+   LOADING
+   ====================================================================== */
+
+#includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]).is-loading {
+
+    opacity:
+        0.66;
+
+    filter:
+        none;
+}
+
+/* Sales Analytics — ABC fallback renderer */
+#includeDashBoard .analytics-abc-fallback {
+    display: grid;
+    gap: 5px;
+    width: 100%;
+    height: 100%;
+    padding: 4px 2px;
+    overflow: auto;
+    box-sizing: border-box;
+}
+
+#includeDashBoard .analytics-abc-fallback__row {
+    display: grid;
+    gap: 2px;
+}
+
+#includeDashBoard .analytics-abc-fallback__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-width: 0;
+}
+
+#includeDashBoard .analytics-abc-fallback__name {
+    overflow: hidden;
+    color: #52657e;
+    font-size: 8px;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#includeDashBoard .analytics-abc-fallback__class {
+    flex: 0 0 auto;
+    min-width: 15px;
+    padding: 1px 4px;
+    border-radius: 999px;
+    font-size: 7px;
+    font-weight: 800;
+    text-align: center;
+}
+
+#includeDashBoard .analytics-abc-fallback__class--a {
+    background: rgba(37, 99, 235, .12);
+    color: #2563eb;
+}
+
+#includeDashBoard .analytics-abc-fallback__class--b {
+    background: rgba(14, 165, 233, .12);
+    color: #0284c7;
+}
+
+#includeDashBoard .analytics-abc-fallback__class--c {
+    background: rgba(148, 163, 184, .18);
+    color: #64748b;
+}
+
+#includeDashBoard .analytics-abc-fallback__track {
+    position: relative;
+    width: 100%;
+    height: 4px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #edf2f8;
+}
+
+#includeDashBoard .analytics-abc-fallback__bar {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+}
+
+#includeDashBoard .analytics-abc-fallback__bar--a {
+    background: #2563eb;
+}
+
+#includeDashBoard .analytics-abc-fallback__bar--b {
+    background: #0ea5e9;
+}
+
+#includeDashBoard .analytics-abc-fallback__bar--c {
+    background: #94a3b8;
+}
+
+
+
+#includeDashBoard .analytics-abc-fallback__empty {
+    display: grid;
+    place-items: center;
+    min-height: 90px;
+    color: #94a3b8;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+
+/* ======================================================================
+   FINAL — 3 ABC PANELS (PRODUCT RANKING + PRODUCT CHART + CUSTOMER)
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics__abc-row {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+
+#includeDashBoard .analytics-chart[data-analytics-panel="abc-products-ranking"] {
+    height: 182px !important;
+    min-height: 0 !important;
+    max-height: 182px !important;
+}
+
+#includeDashBoard .analytics-chart[data-analytics-panel="abc-customers-chart"] {
+    height: 182px !important;
+    min-height: 0 !important;
+    max-height: 182px !important;
+}
+
+#includeDashBoard .analytics-abc-ranking {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    height: 100%;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #bfdbfe transparent;
+}
+
+#includeDashBoard .analytics-abc-ranking__row {
+    flex: 0 0 auto;
+    min-width: 0;
+}
+
+#includeDashBoard .analytics-abc-ranking__head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto 18px;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 3px;
+}
+
+#includeDashBoard .analytics-abc-ranking__name {
+    overflow: hidden;
+    color: #334155;
+    font-size: 8px;
+    font-weight: 650;
+    line-height: 1.15;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#includeDashBoard .analytics-abc-ranking__value {
+    color: #64748b;
+    font-size: 7px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+#includeDashBoard .analytics-abc-ranking__class {
+    display: grid;
+    place-items: center;
+    width: 17px;
+    height: 13px;
+    border-radius: 999px;
+    font-size: 7px;
+    font-weight: 900;
+}
+
+#includeDashBoard .analytics-abc-ranking__class--a {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+#includeDashBoard .analytics-abc-ranking__class--b {
+    background: #cffafe;
+    color: #0e7490;
+}
+
+#includeDashBoard .analytics-abc-ranking__class--c {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+#includeDashBoard .analytics-abc-ranking__track {
+    width: 100%;
+    height: 3px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #edf2f7;
+}
+
+#includeDashBoard .analytics-abc-ranking__bar {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+}
+
+#includeDashBoard .analytics-abc-ranking__bar--a {
+    background: #2563eb;
+}
+
+#includeDashBoard .analytics-abc-ranking__bar--b {
+    background: #0ea5e9;
+}
+
+#includeDashBoard .analytics-abc-ranking__bar--c {
+    background: #94a3b8;
+}
+
+#includeDashBoard .analytics-abc-ranking__empty {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+@media (max-width: 900px) {
+    #includeDashBoard .sales-analytics__abc-row {
+        grid-template-columns: 1fr !important;
+    }
+
+    #includeDashBoard .analytics-chart[data-analytics-panel="abc-products-ranking"] {
+        height: 260px !important;
+        min-height: 260px !important;
+        max-height: 260px !important;
+    }
+
+    #includeDashBoard .analytics-chart[data-analytics-panel="abc-customers-chart"] {
+        height: 260px !important;
+        min-height: 260px !important;
+        max-height: 260px !important;
+    }
+}
+
+
+/* ======================================================================
+   PRODUCT ABC — EXPLODED PIE
+   ====================================================================== */
+
+#includeDashBoard .analytics-product-pie-host {
+    display: grid;
+    place-items: center;
+}
+
+#includeDashBoard .analytics-product-pie {
+    display: grid;
+    grid-template-columns: minmax(108px, 148px) minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+}
+
+#includeDashBoard .analytics-product-pie svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-height: 138px;
+    overflow: visible;
+}
+
+#includeDashBoard .analytics-product-pie__slice {
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: filter .18s ease, opacity .18s ease;
+}
+
+#includeDashBoard .analytics-product-pie__slice:hover {
+    filter: brightness(1.06) drop-shadow(0 3px 4px rgba(15, 23, 42, .18));
+}
+
+#includeDashBoard .analytics-product-pie__slice text {
+    fill: #ffffff;
+    font-size: 10px;
+    font-weight: 850;
+    pointer-events: none;
+}
+
+#includeDashBoard .analytics-product-pie__legend {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#includeDashBoard .analytics-product-pie__legend li {
+    display: grid;
+    grid-template-columns: 8px minmax(0, 1fr);
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+}
+
+#includeDashBoard .analytics-product-pie__legend li>span {
+    width: 8px;
+    height: 8px;
+    border-radius: 3px;
+    background: var(--pie-color);
+}
+
+#includeDashBoard .analytics-product-pie__legend strong {
+    overflow: hidden;
+    color: #64748b;
+    font-size: 7px;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#includeDashBoard .analytics-product-pie__empty {
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+@media (max-width: 1100px) {
+    #includeDashBoard .analytics-product-pie {
+        grid-template-columns: 1fr;
+    }
+
+    #includeDashBoard .analytics-product-pie__legend {
+        display: none;
+    }
+}
+
+
+/* ======================================================================
+   FINAL LAYOUT — 4 PANELS WITH TRIPLE HEIGHT + KPI ROW AT BOTTOM
+   ====================================================================== */
+
+:root {
+    --abc-four-panels-height: 546px;
+    --abc-kpi-row-height: 76px;
+    --abc-layout-gap: 12px;
+    --abc-dashboard-total-height: 670px;
+}
+
+@media (min-width: 901px) {
+    #includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) .sales-analytics {
+        display: grid !important;
+        grid-template-rows: var(--abc-four-panels-height) var(--abc-kpi-row-height) !important;
+        gap: var(--abc-layout-gap) !important;
+        height: 100% !important;
+        min-height: 0 !important;
+    }
+
+    #includeDashBoard .sales-analytics__abc-row {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        align-items: stretch !important;
+        height: var(--abc-four-panels-height) !important;
+        min-height: var(--abc-four-panels-height) !important;
+        max-height: var(--abc-four-panels-height) !important;
+    }
+
+    #includeDashBoard .sales-analytics__abc-row>.analytics-chart {
+        height: var(--abc-four-panels-height) !important;
+        min-height: var(--abc-four-panels-height) !important;
+        max-height: var(--abc-four-panels-height) !important;
+    }
+
+    #includeDashBoard .sales-analytics__kpi-row {
+        position: static !important;
+        grid-row: 2 !important;
+        align-self: end !important;
+        width: 100% !important;
+        height: var(--abc-kpi-row-height) !important;
+        min-height: var(--abc-kpi-row-height) !important;
+        margin: 0 !important;
+        transform: none !important;
+    }
+
+    #includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]),
+    #includeDashBoard[data-layout-mode="free"] .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]),
+    #includeDashBoard[data-free="1"] .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) {
+        height: var(--abc-dashboard-total-height) !important;
+        min-height: var(--abc-dashboard-total-height) !important;
+        max-height: var(--abc-dashboard-total-height) !important;
+        overflow: hidden !important;
+    }
+}
+
+@media (max-width: 900px) {
+    #includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) .sales-analytics {
+        display: flex !important;
+        height: auto !important;
+    }
+
+    #includeDashBoard .sales-analytics__abc-row {
+        grid-template-columns: 1fr !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+    }
+
+    #includeDashBoard .sales-analytics__abc-row>.analytics-chart {
+        height: 260px !important;
+        min-height: 260px !important;
+        max-height: 260px !important;
+    }
+
+    #includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) {
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
+}
+
+/* ======================================================================
+   ABC — TEXT AND GRAPHIC SIZE CONTROLS
+   ====================================================================== */
+
+:root {
+    /* Product and customer ranking */
+    --abc-ranking-name-size: 11px;
+    --abc-ranking-value-size: 9px;
+    --abc-ranking-class-size: 9px;
+    --abc-ranking-row-gap: 10px;
+    --abc-ranking-bar-height: 5px;
+
+    /* Pie charts */
+    --abc-pie-size: 300px;
+    --abc-pie-percentage-size: 13px;
+    --abc-pie-legend-size: 10px;
+    --abc-pie-legend-color-size: 11px;
+}
+
+
+/* ======================================================================
+   PRODUCT AND CUSTOMER TEXT
+   ====================================================================== */
+
+#includeDashBoard .analytics-abc-ranking {
+    gap: var(--abc-ranking-row-gap) !important;
+}
+
+
+#includeDashBoard .analytics-abc-ranking__name {
+    font-size: var(--abc-ranking-name-size) !important;
+    line-height: 1.25 !important;
+}
+
+
+#includeDashBoard .analytics-abc-ranking__value {
+    font-size: var(--abc-ranking-value-size) !important;
+    line-height: 1.25 !important;
+}
+
+
+#includeDashBoard .analytics-abc-ranking__class {
+    width: 22px !important;
+    height: 18px !important;
+
+    font-size: var(--abc-ranking-class-size) !important;
+}
+
+
+/* Increase horizontal bars */
+#includeDashBoard .analytics-abc-ranking__track {
+    height: var(--abc-ranking-bar-height) !important;
+}
+
+
+/* Give each line more space */
+#includeDashBoard .analytics-abc-ranking__head {
+    grid-template-columns:
+        minmax(0, 1fr) auto 24px !important;
+
+    gap: 8px !important;
+
+    margin-bottom: 5px !important;
+}
+
+
+/* ======================================================================
+   PRODUCT AND CUSTOMER PIE CHARTS
+   ====================================================================== */
+
+#includeDashBoard .analytics-product-pie {
+    grid-template-columns:
+        minmax(0, var(--abc-pie-size)) minmax(100px, 1fr) !important;
+
+    justify-content: center !important;
+    align-items: center !important;
+
+    gap: 18px !important;
+}
+
+
+/* Increase the graphic itself */
+#includeDashBoard .analytics-product-pie svg {
+    width: var(--abc-pie-size) !important;
+    height: var(--abc-pie-size) !important;
+
+    max-width: 100% !important;
+    max-height: none !important;
+
+    justify-self: center !important;
+}
+
+
+/* Percentage inside slices */
+#includeDashBoard .analytics-product-pie__slice text {
+    font-size: var(--abc-pie-percentage-size) !important;
+}
+
+
+/* Graphic legend */
+#includeDashBoard .analytics-product-pie__legend {
+    gap: 10px !important;
+}
+
+
+#includeDashBoard .analytics-product-pie__legend strong {
+    font-size: var(--abc-pie-legend-size) !important;
+    line-height: 1.25 !important;
+}
+
+
+/* Colored squares in the legend */
+#includeDashBoard .analytics-product-pie__legend li>span {
+    width: var(--abc-pie-legend-color-size) !important;
+    height: var(--abc-pie-legend-color-size) !important;
+}
+
+
+/* Legend structure */
+#includeDashBoard .analytics-product-pie__legend li {
+    grid-template-columns:
+        var(--abc-pie-legend-color-size) minmax(0, 1fr) !important;
+
+    gap: 8px !important;
+}
+
+/* ======================================================================
+   FINAL SIZE — FOLLOW BLACK RECTANGLE REFERENCE
+   ====================================================================== */
+
+:root {
+    /* Upper four squares */
+    --abc-four-panels-height: 360px;
+
+    /* Bottom KPI squares */
+    --abc-kpi-row-height: 76px;
+
+    /* Space between upper squares and KPIs */
+    --abc-layout-gap: 12px;
+
+    /* 360 + 76 + gap + internal card padding */
+    --abc-dashboard-total-height: 484px;
+
+    /* Pie chart size */
+    --abc-pie-size: 260px;
+}
+
+@media (min-width: 901px) {
+
+    /* Complete internal structure */
+    #includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) .sales-analytics {
+        grid-template-rows:
+            var(--abc-four-panels-height) var(--abc-kpi-row-height) !important;
+    }
+
+
+    /* Container of the four squares */
+    #includeDashBoard .sales-analytics__abc-row {
+        height: var(--abc-four-panels-height) !important;
+        min-height: var(--abc-four-panels-height) !important;
+        max-height: var(--abc-four-panels-height) !important;
+    }
+
+
+    /* All four upper squares */
+    #includeDashBoard .sales-analytics__abc-row>.analytics-chart {
+        height: var(--abc-four-panels-height) !important;
+        min-height: var(--abc-four-panels-height) !important;
+        max-height: var(--abc-four-panels-height) !important;
+    }
+
+
+    /* Main analytics dashboard */
+    #includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]),
+    #includeDashBoard[data-layout-mode="free"] .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]),
+    #includeDashBoard[data-free="1"] .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) {
+        height: var(--abc-dashboard-total-height) !important;
+        min-height: var(--abc-dashboard-total-height) !important;
+        max-height: var(--abc-dashboard-total-height) !important;
+    }
+
+
+    /* Center both pie charts */
+    #includeDashBoard .analytics-product-pie {
+        height: 100% !important;
+        align-items: center !important;
+    }
+
+
+    #includeDashBoard .analytics-product-pie svg {
+        width: var(--abc-pie-size) !important;
+        height: var(--abc-pie-size) !important;
+        max-height: var(--abc-pie-size) !important;
+    }
+}
+
+/* ======================================================================
+   FINAL PIE LABEL LAYOUT — SINGLE AUTHORITATIVE BLOCK
+   Compatible with the 520 × 260 SVG generated by salesAnalytics.js.
+   ====================================================================== */
+
+#includeDashBoard .analytics-product-pie {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    place-items: center !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+#includeDashBoard .analytics-product-pie svg {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    max-width: 680px !important;
+    max-height: 100% !important;
+    overflow: visible !important;
+}
+
+#includeDashBoard .analytics-product-pie__leader polyline {
+    fill: none;
+    stroke: #334155;
+    stroke-width: 1.25;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+#includeDashBoard .analytics-product-pie__leader text {
+    fill: #334155;
+    font-size: 9px;
+    font-weight: 750;
+    pointer-events: none;
+}
+
+#includeDashBoard .analytics-product-pie__legend {
+    display: none !important;
+}
+
+
+/* ======================================================================
+   FINAL GRAPH PRESENTATION
+   ====================================================================== */
+
+#includeDashBoard .analytics-product-pie__leader {
+    display: none !important;
+}
+
+#includeDashBoard .analytics-product-pie__slice>text {
+    fill: #ffffff !important;
+    font-size: 24px !important;
+    font-weight: 900 !important;
+    paint-order: stroke;
+    stroke: rgba(0, 0, 0, 0.14);
+    stroke-width: 1px;
+}
+
+#includeDashBoard .analytics-product-pie__slice path {
+    filter: drop-shadow(0 4px 7px rgba(30, 64, 175, 0.12));
+    transition: filter 0.2s ease;
+}
+
+#includeDashBoard .analytics-product-pie__slice:hover path {
+    filter: brightness(1.08) drop-shadow(0 7px 12px rgba(30, 64, 175, 0.20));
+}
+
+
+/* ======================================================================
+   ANALYTICS PERIOD FILTER
+   ====================================================================== */
+
+#includeDashBoard .sales-analytics__period {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    border: 1px solid #dbeafe;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.92);
+}
+
+#includeDashBoard .sales-analytics__custom-dates {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+#includeDashBoard .sales-analytics__custom-dates[hidden] {
+    display: none !important;
+}
+
+#includeDashBoard .sales-analytics__period-field {
+    display: grid;
+    gap: 4px;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 750;
+}
+
+#includeDashBoard .sales-analytics__period-field select,
+#includeDashBoard .sales-analytics__period-field input {
+    min-width: 155px;
+    height: 34px;
+    padding: 0 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #0f2748;
+    font: inherit;
+    outline: none;
+}
+
+#includeDashBoard .sales-analytics__period-field select:focus,
+#includeDashBoard .sales-analytics__period-field input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+#includeDashBoard .sales-analytics__period-apply {
+    height: 34px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 9px;
+    background: linear-gradient(135deg, #2563eb, #38bdf8);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+#includeDashBoard .sales-analytics__period-apply:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+#includeDashBoard .sales-analytics__period-caption {
+    margin-left: auto;
+    align-self: center;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 750;
+}
+
+@media (max-width: 820px) {
+
+    #includeDashBoard .sales-analytics__period,
+    #includeDashBoard .sales-analytics__custom-dates {
+        align-items: stretch;
+        flex-wrap: wrap;
+    }
+
+    #includeDashBoard .sales-analytics__period-caption {
+        width: 100%;
+        margin-left: 0;
+    }
+}
+
+
+/* ======================================================================
+   FINAL DATE FILTER LAYOUT FIX
+   Three explicit rows: period + ABC panels + KPI cards.
+   ====================================================================== */
+
+@media (min-width: 901px) {
+    #includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) {
+        height: 552px !important;
+        min-height: 552px !important;
+        max-height: 552px !important;
+    }
+
+    #includeDashBoard .dash-card:is([data-dashboard-key="sales-analytics"], [data-dashboard-key="sales-taxes"], [data-dashboard-key="tax-assessment"]) .sales-analytics {
+        display: grid !important;
+        grid-template-rows: 56px var(--abc-four-panels-height) var(--abc-kpi-row-height) !important;
+        gap: var(--abc-layout-gap) !important;
+        height: 100% !important;
+        min-height: 0 !important;
+    }
+
+    #includeDashBoard .sales-analytics__period {
+        grid-row: 1 !important;
+        align-self: stretch !important;
+        min-height: 0 !important;
+        height: 56px !important;
+        margin: 0 !important;
+        padding: 6px 10px !important;
+        box-sizing: border-box !important;
+    }
+
+    #includeDashBoard .sales-analytics__abc-row {
+        grid-row: 2 !important;
+        align-self: stretch !important;
+    }
+
+    #includeDashBoard .sales-analytics__kpi-row {
+        grid-row: 3 !important;
+        align-self: stretch !important;
+    }
+}
+
+/* ======================================================================
+   SALES TAXES (IMPOSTOS) SLIDE
+   Reuses the Vendas card layout above; only tax-specific details here.
+   ====================================================================== */
+
+#includeDashBoard .sales-taxes__coverage {
+    align-self: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #ecfdf5;
+    color: #047857;
+    font-size: 11px;
+    font-weight: 750;
+    white-space: nowrap;
+}
+
+#includeDashBoard .sales-taxes__coverage:empty {
+    display: none;
+}
+
+#includeDashBoard .sales-taxes__coverage--warning {
+    background: #fff7ed;
+    color: #b45309;
+    cursor: help;
+}
+
+/* Rate badge holds a percentage instead of the single ABC letter. */
+#includeDashBoard .sales-taxes .analytics-abc-ranking__head {
+    grid-template-columns: minmax(0, 1fr) auto 52px !important;
+}
+
+#includeDashBoard .sales-taxes .analytics-abc-ranking__class.sales-taxes__rate {
+    width: 52px !important;
+    white-space: nowrap;
+}
+
+#includeDashBoard .sales-taxes__row--informative .analytics-abc-ranking__name,
+#includeDashBoard .sales-taxes__row--informative .analytics-abc-ranking__value {
+    color: #94a3b8 !important;
+    font-style: italic;
+}
+
+#includeDashBoard .analytics-kpi--taxes {
+    background: linear-gradient(145deg, #fff1f2, #ffffff) !important;
+    border-color: #fecdd3 !important;
+}
+
+#includeDashBoard .analytics-kpi--taxes::before {
+    background: #e11d48 !important;
+}
+
+#includeDashBoard .analytics-kpi--taxes .analytics-kpi__value {
+    color: #be123c !important;
+}
+
+/* Regime chip: which Regime Tributário drives the estimated taxes. */
+#includeDashBoard .sales-taxes__regime {
+    align-self: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #eef2ff;
+    color: #4338ca;
+    font-size: 11px;
+    font-weight: 750;
+    white-space: nowrap;
+    cursor: help;
+}
+
+#includeDashBoard .sales-taxes__regime:empty {
+    display: none;
+}
+
+#includeDashBoard .sales-taxes__regime--missing {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+/* ====================================================================
+   TAX ASSESSMENT (APURAÇÃO) SLIDE
+   ==================================================================== */
+
+#includeDashBoard .tax-assessment .analytics-abc-ranking__class.sales-taxes__rate {
+    font-size: 9px !important;
+    letter-spacing: 0.02em;
+}
+
+#includeDashBoard .tax-assessment__dc {
+    display: flex;
+    gap: 12px;
+    font-size: 10px;
+    color: #64748b;
+    margin: -2px 0 2px;
+}
+
+#includeDashBoard .tax-assessment__dc span:first-child {
+    color: #be123c;
+}
+
+#includeDashBoard .tax-assessment__dc span:last-child {
+    color: #047857;
+}
+
+#includeDashBoard .tax-assessment__track {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    height: auto !important;
+    background: transparent !important;
+    overflow: visible;
+}
+
+#includeDashBoard .tax-assessment__bar {
+    display: block;
+    height: 3px;
+    border-radius: 999px;
+}
+
+#includeDashBoard .tax-assessment__bar--debit {
+    background: linear-gradient(90deg, #be123c, #fb7185);
+}
+
+#includeDashBoard .tax-assessment__bar--credit {
+    background: linear-gradient(90deg, #047857, #34d399);
+}
+
+#includeDashBoard .tax-assessment__row--estimated .analytics-abc-ranking__name {
+    font-style: italic;
+}
+
+#includeDashBoard .tax-assessment__svg-label {
+    font-size: 12px;
+    fill: #475569;
+    font-weight: 600;
+}
+
+#includeDashBoard .tax-assessment__result {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 4px 2px;
+    font-size: 12px;
+}
+
+#includeDashBoard .tax-assessment__result-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 4px 0;
+    border-bottom: 1px dashed #e2e8f0;
+    color: #334155;
+}
+
+#includeDashBoard .tax-assessment__result-line.is-strong {
+    font-weight: 800;
+    border-bottom: 1px solid #cbd5e1;
+}
+
+#includeDashBoard .tax-assessment__result-line.is-tax strong {
+    color: #be123c;
+}
+
+#includeDashBoard .tax-assessment__result-note {
+    margin: 4px 0 0;
+    font-size: 11px;
+    color: #64748b;
+}
+
+#includeDashBoard .analytics-kpi--credits {
+    background: linear-gradient(145deg, #ecfdf5, #ffffff) !important;
+    border-color: #a7f3d0 !important;
+}
+
+#includeDashBoard .analytics-kpi--credits::before {
+    background: #059669 !important;
+}
+
+#includeDashBoard .analytics-kpi--credits .analytics-kpi__value {
+    color: #047857 !important;
+}
+
+#includeDashBoard .tax-assessment__result-line.is-sub {
+    padding: 1px 0 1px 14px;
+    border-bottom: 0;
+    font-size: 11px;
+    color: #64748b;
+}
+
+
+/* ======================================================================
+   APURAÇÃO — EXPORTAR MEMÓRIA DE CÁLCULO (EXCEL / PDF)
+   ====================================================================== */
+
+#includeDashBoard .tax-assessment__export {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+    align-self: center;
+}
+
+#includeDashBoard .tax-assessment__export + .sales-analytics__period-caption {
+    margin-left: 8px;
+}
+
+#includeDashBoard .tax-assessment__export-btn {
+    padding: 5px 12px;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    background: #ffffff;
+    font-size: 11px;
+    font-weight: 750;
+    line-height: 1.2;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+#includeDashBoard .tax-assessment__export-btn.is-xlsx {
+    color: #047857;
+}
+
+#includeDashBoard .tax-assessment__export-btn.is-pdf {
+    color: #be123c;
+}
+
+#includeDashBoard .tax-assessment__export-btn.is-xlsx:hover:not(:disabled) {
+    background: #047857;
+    color: #ffffff;
+}
+
+#includeDashBoard .tax-assessment__export-btn.is-pdf:hover:not(:disabled) {
+    background: #be123c;
+    color: #ffffff;
+}
+
+#includeDashBoard .tax-assessment__export-btn:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+@media (max-width: 820px) {
+    #includeDashBoard .tax-assessment__export {
+        margin-left: 0;
+    }
+
+    #includeDashBoard .tax-assessment__export + .sales-analytics__period-caption {
+        margin-left: 0;
+    }
+}

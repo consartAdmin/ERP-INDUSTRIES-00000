@@ -1,0 +1,188 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ FILE: manufacturesOrders.html                                      ║
+     ║ MODULE: Manufactures Orders                                        ║
+     ║ DESCRIPTION: Pedidos para Fabricantes                              ║
+     ║ PRODNEX ERP | FRONTEND                                             ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title> ORDEM DE COMPRA | PRODNEX ERP</title>
+
+    <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+    <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+    <link rel="stylesheet" href="/public/includes/css/style.css" />
+    <link rel="stylesheet" href="manufacturesOrders.css" />
+    <link rel="stylesheet" href="manufacturesOrderModal.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+
+<body>
+
+    <script type="module" src="/public/includes/js/core.js"></script>
+
+    <div class="page-container">
+
+        <div class="top-header">
+            <div class="title-area">
+                <h1>
+                    <i class="fa-solid fa-industry"></i>
+                </h1>
+
+                <p>
+                    Gere pedidos de produção/compras para fabricantes utilizando custo x quantidade.
+                </p>
+            </div>
+
+            <div class="header-actions">
+                <button id="btnNovoPedido" class="btn btn-toolbar btn-sm" type="button">
+                    <i class="fa-solid fa-plus"></i>
+                    Novo Pedido
+                </button>
+
+                <button id="btnAtualizar" class="btn btn-toolbar btn-sm" type="button">
+                    <i class="fa-solid fa-rotate"></i>
+                    Atualizar
+                </button>
+            </div>
+        </div>
+
+        <div class="kpis-grid">
+            <div class="kpi-card">
+                <div class="kpi-icon blue">
+                    <i class="fa-solid fa-file-invoice"></i>
+                </div>
+                <div class="kpi-content">
+                    <span>Total Pedidos</span>
+                    <strong id="kpiTotalPedidos">0</strong>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-icon green">
+                    <i class="fa-solid fa-dollar-sign"></i>
+                </div>
+                <div class="kpi-content">
+                    <span>Total Custos</span>
+                    <strong id="kpiTotalCustos">R$ 0,00</strong>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-icon orange">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                </div>
+                <div class="kpi-content">
+                    <span>Total Itens</span>
+                    <strong id="kpiTotalItens">0</strong>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-icon red">
+                    <i class="fa-solid fa-clock"></i>
+                </div>
+                <div class="kpi-content">
+                    <span>Pedidos Abertos</span>
+                    <strong id="kpiPedidosAbertos">0</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="filters-card">
+            <div class="filters-grid">
+
+                <div class="field">
+                    <label for="searchInput">Pesquisar</label>
+                    <div class="search-input">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="searchInput" placeholder="Número, fabricante ou observações..." />
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="statusFilter">Status</label>
+                    <select id="statusFilter">
+                        <option value="">Todos</option>
+                        <option value="OPEN">ABERTO</option>
+                        <option value="IN_PROGRESS">EM PRODUÇÃO</option>
+                        <option value="FINISHED">FINALIZADO</option>
+                        <option value="CANCELLED">CANCELADO</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="manufacturerFilter">Fabricante</label>
+                    <input type="text" id="manufacturerFilter" placeholder="Filtrar fabricante..." />
+                </div>
+
+            </div>
+        </div>
+
+        <div class="table-card">
+            <div class="table-header">
+                <div>
+                    <h2>
+                        <i class="fa-solid fa-list"></i>
+                        Pedidos Gerados
+                    </h2>
+                </div>
+
+                <div class="table-actions">
+                    <button id="btnExportarExcel" class="btn btn-toolbar btn-sm" type="button">
+                        <i class="fa-solid fa-file-excel"></i>
+                        Excel
+                    </button>
+
+                    <button id="btnExportarPdf" class="btn btn-toolbar btn-sm" type="button">
+                        <i class="fa-solid fa-file-pdf"></i>
+                        PDF
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="erp-table">
+                    <thead>
+                        <tr>
+                            <th>Número</th>
+                            <th>Fabricante</th>
+                            <th>Status</th>
+                            <th>Itens</th>
+                            <th>Total</th>
+                            <th>Criação</th>
+                            <th width="240">Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="ordersTableBody">
+                        <!-- JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="manufacturesOrderModalMount"></div>
+
+    <div class="loading-overlay hidden" id="loadingOverlay">
+        <div class="loading-box">
+            <div class="spinner"></div>
+            <span>Processando...</span>
+        </div>
+    </div>
+
+    <script type="module" src="manufacturesOrders.js"></script>
+
+</body>
+
+</html>

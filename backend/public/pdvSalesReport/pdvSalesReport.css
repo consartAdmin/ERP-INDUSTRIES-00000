@@ -1,0 +1,58 @@
+/* Exibe somente a tabela da aba ativa */
+.sr-tab-panel {
+  display: none;
+  width: 100%;
+}
+
+.sr-tab-panel.is-active {
+  display: block;
+}
+
+/* Estado visual dos botões */
+[role="tab"] {
+  cursor: pointer;
+}
+
+[role="tab"][aria-selected="true"],
+[role="tab"].is-active {
+  background-color: var(--color-primary, #2563eb);
+  border-color: var(--color-primary, #2563eb);
+  color: #fff;
+}
+
+/* Evita que as tabelas ultrapassem o espaço disponível */
+.sr-tab-panel .table-scroll {
+  width: 100%;
+  overflow: auto;
+}
+
+.sr-tab-panel table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Espaço entre os filtros e os botões de exportação */
+.header .pdv-report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fields-gap-3);
+  margin-top: var(--fields-gap-4);
+}
+
+/* Espaço entre os filtros da primeira linha */
+.header>.fields-inline {
+  column-gap: var(--fields-gap-3);
+  row-gap: var(--fields-gap-3);
+}
+
+/* Responsividade */
+@media (max-width: 900px) {
+  .header>.fields-inline {
+    flex-wrap: wrap;
+  }
+
+  .header .pdv-report-actions {
+    width: 100%;
+  }
+}

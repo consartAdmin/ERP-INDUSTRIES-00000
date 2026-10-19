@@ -1,0 +1,74 @@
+/* ╔══════════════════════════════════════════════════════════════════╗
+   ║ 📦 containerPadrao.css — Padrão Universal de Containers CONSART  ║
+   ╚══════════════════════════════════════════════════════════════════╝ */
+
+.container-consart {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  padding: var(--gap-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-lg);
+  box-shadow: var(--shadow);
+}
+
+/* HEADER */
+.container-consart .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--gap-sm);
+  border-bottom: 1px solid var(--line);
+}
+
+.container-consart .header h2 {
+  margin: 0;
+  font-size: var(--fs-24);
+  font-weight: 600;
+}
+
+/* Botões do header */
+.container-consart .header .actions {
+  display: flex;
+  gap: var(--gap-sm);
+}
+
+/* FILTROS */
+.container-consart .filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-md);
+  padding: var(--gap-sm) 0 var(--gap-md);
+  border-bottom: 1px solid var(--line);
+}
+
+/* CONTEÚDO */
+.container-consart .content {
+  width: 100%;
+}
+
+/* Tabela */
+.container-consart .table-wrapper {
+  overflow-x: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+}
+
+/* RODAPÉ */
+.container-consart .footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--fs-14);
+  padding-top: var(--gap-sm);
+  border-top: 1px solid var(--line);
+}
+
+/* Paginação */
+.container-consart .pagination {
+  display: flex;
+  justify-content: center;
+  gap: var(--gap-sm);
+  margin-top: var(--gap-sm);
+}

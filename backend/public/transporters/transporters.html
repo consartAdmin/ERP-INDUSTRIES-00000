@@ -1,0 +1,186 @@
+<!-- ╔════════════════════════════════════════════════════════════════════╗
+     ║ FILE: transporters.html                                          ║
+     ║ MODULE: Transporters                                             ║
+     ║ DESCRIPTION: Página principal do módulo de transportadoras       ║
+     ║ PRODNEX ERP                                                      ║
+     ╚════════════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- 🟦 Favicons CONSART -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+  <title>TRANSPORTADORAS | PRODNEX ERP</title>
+
+  <!-- 🎨 Design System CONSART -->
+  <link rel="stylesheet" href="/public/includes/css/style.css">
+
+  <!-- CSS específico do módulo -->
+  <link rel="stylesheet" href="./transporters.css">
+  <link rel="stylesheet" href="./transportersModal.css?v=3">
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <!-- =========================================================
+         HEADER
+    ========================================================== -->
+    <header class="header">
+      <div class="fields-inline">
+
+        <div class="fields-inline fields-h-6 fields-w-full fields-font-3">
+          <h2>Transportadoras</h2>
+        </div>
+      </div>
+
+      <div class="fields-inline fields-h-6 fields-w-full fields-font-3">
+        <p>
+          Gerencie transportadoras utilizadas na logística,
+          documentos fiscais e geração do SPED.
+        </p>
+
+        <div class="btn-inline btn-position-right">
+          <button id="btnNew" class="btn btn-tolbar btn-sm" type="button">
+            Nova Transportadora
+          </button>
+
+          <button id="btnRefresh" class="btn btn-tolbar btn-sm" type="button">
+            Atualizar
+          </button>
+        </div>
+    </header>
+
+    <!-- =========================================================
+         TABLE LAYOUT
+    ========================================================== -->
+    <section class="table-layout-integrated">
+
+      <!-- FILTER -->
+      <div class="table-layout-integrated__filter table-max-height-500">
+        <div>
+          <h2 class="tp-section-title">Filtros de pesquisa</h2>
+        </div>
+
+        <div class="fields-inline fields-gap-3">
+
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <label for="searchInput">Pesquisar</label>
+
+            <input id="searchInput" type="search"
+              placeholder="Razão social, nome fantasia, CNPJ, CPF, cidade, telefone, e-mail ou observação...">
+          </div>
+
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <label for="searchCity">Cidade</label>
+
+            <input id="searchCity" type="search" placeholder="Cidade">
+          </div>
+
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <label for="searchState">UF</label>
+
+            <input id="searchState" type="text" maxlength="2" placeholder="UF" autocomplete="off">
+          </div>
+
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <label for="searchStatus">Status</label>
+
+            <select id="searchStatus">
+              <option value="">Todos</option>
+              <option value="true">Ativo</option>
+              <option value="false">Inativo</option>
+            </select>
+          </div>
+
+          <div class="fields fields-h-6 fields-w-20 fields-font-3">
+            <label aria-hidden="true">&nbsp;</label>
+
+            <button id="btnSearch" class="btn btn-toolbar btn-sm" type="button">
+              Buscar
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- TABLE SCROLL -->
+      <div class="table-scroll table-height-fkex table-row-h-28" data-table-settings="transporters.bodytable">
+        <table class="table table-zebra table-zebra-hover table-sticky-head">
+          <thead>
+            <tr>
+              <th style="width: 80px;">ID</th>
+              <th style="min-width: 260px;">Razão Social</th>
+              <th style="min-width: 220px;">Nome Fantasia</th>
+              <th style="width: 180px;">CNPJ</th>
+              <th style="width: 160px;">CPF</th>
+              <th style="width: 180px;">Inscrição Estadual</th>
+              <th style="min-width: 150px;">Cidade</th>
+              <th style="width: 90px;">UF</th>
+              <th style="min-width: 180px;">Contato</th>
+              <th style="width: 160px;">Telefone</th>
+              <th style="width: 160px;">Celular</th>
+              <th style="width: 110px;">Status</th>
+              <th style="width: 180px;">Ações</th>
+            </tr>
+          </thead>
+
+          <tbody id="bodyTable"></tbody>
+        </table>
+      </div>
+
+      <!-- TABLE FOOTER -->
+      <footer class="table-footer">
+
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-5 summary-left-space-3">
+            <span id="apTableInfo">0 registros</span>
+          </div>
+        </div>
+
+        <div class="table-footer__pagination">
+          <button id="btnPrevious" class="btn btn-toolbar btn-sm" type="button">
+            Anterior
+          </button>
+
+          <span id="pageInfo">
+            Página 1 de 1
+          </span>
+
+          <button id="btnNext" class="btn btn-toolbar btn-sm" type="button">
+            Próxima
+          </button>
+        </div>
+
+        <div class="table-footer__page-size">
+          <label for="pageSize">Mostrar</label>
+
+          <div class="fields fields-h-6 fields-w-3 fields-font-3">
+            <select id="pageSize" class="table-footer__page-size-select">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50" selected>50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
+
+      </footer>
+    </section>
+  </main>
+
+  <!-- ⚙️ Scripts globais -->
+  <script type="module" src="/public/includes/js/core.js"></script>
+
+  <!-- JS do módulo: entry point único -->
+  <script type="module" src="./js/transporters.init.js"></script>
+</body>
+
+</html>

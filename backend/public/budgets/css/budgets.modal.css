@@ -1,0 +1,202 @@
+/* budgets.modal.css */
+.c-modal-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(15,23,42,.45);
+  z-index:9998;
+}
+.c-modal{
+  position:fixed;
+  inset:0;
+  display:grid;
+  place-items:center;
+  z-index:9999;
+  padding:16px;
+}
+.c-modal__card{
+  width:min(720px,96vw);
+  background:#fff;
+  border-radius:12px;
+  box-shadow:0 18px 60px rgba(0,0,0,.18);
+  overflow:hidden;
+}
+.c-modal__header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:12px 14px;
+  border-bottom:1px solid #e5e7eb;
+}
+.c-modal__title{
+  margin:0;
+  font-size:1rem;
+  font-weight:700;
+  color:#0f172a;
+}
+.c-modal__body{ padding:14px; }
+.c-modal__footer{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  padding:12px 14px;
+  border-top:1px solid #e5e7eb;
+}
+
+/*------------------------------
+/* Modal Observação grande */
+/*-----------------------------*/
+#obsModal .c-modal__card{
+  width: min(1100px, 96vw) !important;
+  height: 85vh !important;
+  display:flex;
+flex-direction:column;
+}
+
+/* Body vira flex e cresce */
+#obsModal .c-modal__body{
+  flex:1;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+}
+
+/* Label cresce */
+#obsModal .c-modal__body .field-group{
+  flex:1;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+}
+
+/* Textarea ocupa tudo */
+#obsModalText{
+  flex:1 !important;
+  height:auto !important;
+  min-height:0 !important;
+  resize:none;
+}
+
+/* =========================================================
+   NF-e draft preview
+========================================================= */
+#invoicePreviewModal { padding: 20px; }
+#invoicePreviewModal .invoice-preview-modal__card {
+  display: flex;
+  flex-direction: column;
+  width: min(1600px, 94vw);
+  height: min(920px, 88vh);
+  border-radius: 16px;
+}
+#invoicePreviewModal .c-modal__header {
+  flex: 0 0 auto;
+  min-height: 62px;
+  padding: 14px 24px;
+  background: #f4f8ff;
+  border-bottom-color: #93c5fd;
+}
+#invoicePreviewModal .c-modal__title { font-size: 20px; }
+.invoice-preview-modal__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 22px 26px;
+  overflow: auto;
+}
+.invoice-preview-draft-warning {
+  margin-bottom: 20px;
+  padding: 9px 12px;
+  background: #fef2f2;
+  border: 1px solid #dc2626;
+  border-radius: 8px;
+  color: #b91c1c;
+  font-size: 13px;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: .04em;
+}
+.invoice-preview-section { margin-bottom: 22px; }
+.invoice-preview-section h4 {
+  margin: 0 0 8px;
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 800;
+}
+.invoice-preview-box {
+  padding: 14px;
+  background: #f8fafc;
+  border: 1px solid #6090ff;
+  border-radius: 12px;
+  color: #1e293b;
+  font-size: 14px;
+}
+.invoice-customer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  gap: 20px 28px;
+}
+.invoice-preview-full-row { grid-column: 1 / -1; }
+.invoice-items-scroll { width: 100%; max-height: 320px; overflow: auto; }
+.invoice-preview-totals {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+.invoice-preview-totals > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px 12px;
+  background: #f8fafc;
+  border: 1px solid #94a3b8;
+  border-radius: 8px;
+}
+.invoice-preview-totals span { color: #475569; font-size: 12px; font-weight: 600; }
+.invoice-preview-totals strong { color: #0f172a; font-size: 15px; }
+.invoice-preview-total-final { border-color: #2563eb !important; }
+.invoice-preview-total-final strong { color: #0369a1; }
+#invoiceItemsPreviewBody .invoice-field-missing { color: #b91c1c; font-weight: 700; }
+#invoicePreviewModal .c-modal__footer { flex: 0 0 auto; padding: 14px 24px; }
+@media (max-width: 1000px) {
+  .invoice-customer-grid { grid-template-columns: repeat(2, minmax(180px, 1fr)); }
+}
+@media (max-width: 800px) {
+  .invoice-preview-totals { grid-template-columns: repeat(2, minmax(130px, 1fr)); }
+}
+@media (max-width: 600px) {
+  #invoicePreviewModal { padding: 8px; }
+  #invoicePreviewModal .invoice-preview-modal__card { width: 100%; height: 94vh; }
+  .invoice-customer-grid { grid-template-columns: 1fr; }
+}
+
+/* Copiar orçamento: seleção de produtos */
+.copy-budget-table-wrap{
+  max-height:min(55vh,460px);
+  overflow:auto;
+}
+.copy-budget-modal .copy-budget-col-check{
+  width:36px;
+  text-align:center;
+}
+.copy-budget-modal td.copy-budget-col-check input,
+.copy-budget-modal th.copy-budget-col-check input{
+  cursor:pointer;
+  width:16px;
+  height:16px;
+}
+.copy-budget-modal tbody tr{
+  cursor:pointer;
+}
+.copy-budget-modal tbody tr.is-unchecked td{
+  color:#94a3b8;
+}
+.copy-budget-modal .num{
+  text-align:right;
+  white-space:nowrap;
+}
+.copy-budget-summary{
+  margin:6px 0 0;
+  font-size:12px;
+  font-weight:600;
+  color:#1e293b;
+}

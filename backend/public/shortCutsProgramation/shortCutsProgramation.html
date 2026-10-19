@@ -1,0 +1,152 @@
+<!-- ╔══════════════════════════════════════════════════════════════════════╗
+     ║ FILE: shortCutsProgramation.html                                    ║
+     ║ MODULE: Programming Shortcuts                                       ║
+     ║ PRODNEX ERP                                                         ║
+     ║ ✅ Category/Subcategory selects                                      ║
+     ╚══════════════════════════════════════════════════════════════════════╝ -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 🟦 Favicons CONSART -->
+    <link rel="icon" href="/public/imagens/brasaoConsartInfinity.png">
+
+    <title>SHORTCUTS PROGRAMATION | PRODNEX ERP</title>
+
+    <link rel="stylesheet" href="/public/includes/css/style.css">
+
+    <!--    <link rel="stylesheet" href="./shortCutsProgramation.css" />   -->
+    <link rel="stylesheet" href="./shortCutsProgramationCategoriesModal.css" />
+
+</head>
+
+<body class="consart-theme p-page pw-page--full ph-page--xr">
+    <main class="consart-container consart-container--full consart-container--ultraslim">
+
+        <div class="header header-h-5">
+            <div class="fields-inline fields-gap-3">
+                <div class="fields fields-h-6 fields-w-full fields-font-3">
+                    <h1 class="font-bold">Shortcuts Programation</h1>
+                    <p class="font-normal">
+                        Biblioteca de códigos, atalhos, snippets e lógicas reutilizáveis.
+                    </p>
+                </div>
+            </div>
+
+            <div class="btn-inline btn-position-right">
+                <button id="btnNew" class="btn btn-new btn-sm" type="button">+ Novo</button>
+                <button id="btnReload" class="btn btn-new btn-sm" type="button">Recarregar</button>
+                <button id="btnOpenCategoriesModal" class="btn btn-new btn-sm" type="button">Categorias</button>
+            </div>
+        </div>
+
+        <section class="table-layout-integrated">
+            <div class="table-layout-integrated__filter">
+
+                <div class="fields-inline">
+                    <div class="fields fields-h-5 fields-w-full fields-font-3">
+                        <strong>Lista de Shortcuts</strong>
+                    </div>
+                </div>
+
+                <div class="fields-inline fields-gap-3">
+                    <div class="fields fields-h-6 fields-w-20 fields-font-3">
+                        <input id="filterQ" type="search" placeholder="Buscar por título, chave, tags ou código..." />
+                    </div>
+
+                    <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                        <select id="filterCategoryId">
+                            <option value="">Todas categorias</option>
+                        </select>
+                    </div>
+
+                    <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                        <select id="filterLanguage">
+                            <option value="">Todas linguagens</option>
+                            <option value="SQL">SQL</option>
+                            <option value="JavaScript">JavaScript</option>
+                            <option value="HTML">HTML</option>
+                            <option value="CSS">CSS</option>
+                            <option value="JSON">JSON</option>
+                            <option value="Text">Text</option>
+                        </select>
+                    </div>
+
+                    <div class="fields fields-h-6 fields-w-12 fields-font-3">
+                        <select id="filterActive">
+                            <option value="true">Ativos</option>
+                            <option value="">Todos</option>
+                            <option value="false">Inativos</option>
+                        </select>
+                    </div>
+
+                    <div class="btn-inline">
+                        <button id="btnSearch" class="btn btn-new btn-sm" type="button">Buscar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-scroll table-height-500 table-row-h-20" data-table-settings="shortcutsprogramation.tablebody">
+                <table class="table table-zebra table-zebra-hover table-sticky-head">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Título</th>
+                            <th>Chave</th>
+                            <th>Categoria</th>
+                            <th>Subcategoria</th>
+                            <th>Linguagem</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+
+            <footer class="table-footer">
+
+                <div class="table-footer__info">
+                    <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+                        <span id="apTableInfo">0 Registros </span>
+                    </div>
+                </div>
+
+                <div class="table-footer__pagination">
+                    <button type="button" id="btnPreviousPage" class="btn btn-clean btn-sm">
+                        Anterior
+                    </button>
+
+                    <span id="apPageInfo">Página 1 de 1</span>
+
+                    <button type="button" id="btnNextPage" class="btn btn-new btn-sm">
+                        Próxima
+                    </button>
+                </div>
+
+                <div class="table-footer__page-size">
+                    <label for="apRowsPerPage">Mostrar</label>
+
+                    <select id="apRowsPerPage" class="table-footer__page-size-select" name="rowsPerPage">
+                        <option value="10">10 linhas</option>
+                        <option value="20">20 linhas</option>
+                        <option value="30">30 linhas</option>
+                        <option value="50" selected>50 linhas</option>
+                        <option value="100">100 linhas</option>
+                    </select>
+                </div>
+
+            </footer>
+        </section>
+    </main>
+
+    <!-- Script da página -->
+    <script type="module" src="/public/includes/js/core.js"></script>
+
+    <script type="module" src="./js/shortCutsProgramation.init.js"></script>
+
+</body>
+
+</html>

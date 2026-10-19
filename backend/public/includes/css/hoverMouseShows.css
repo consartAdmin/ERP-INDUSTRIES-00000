@@ -1,0 +1,224 @@
+/* ╔════════════════════════════════════════════════════════════════════╗
+   ║ hoverMouseShows.css — Reusable hover/focus tooltip | PRODNEX ERP  ║
+   ╚════════════════════════════════════════════════════════════════════╝ */
+
+:root {
+    /* Tooltip appearance */
+    --hover-shows-bg: #ffffff;
+    --hover-shows-color: #0f172a;
+    --hover-shows-border: #334155;
+    --hover-shows-radius: 7px;
+    --hover-shows-shadow: 0 8px 20px rgba(15, 23, 42, 0.20);
+
+    /* Tooltip typography */
+    --hover-shows-font-size: 12px;
+    --hover-shows-font-weight: 400;
+    --hover-shows-line-height: 1.4;
+
+    /* Tooltip dimensions */
+    --hover-shows-min-width: 180px;
+    --hover-shows-max-width: 320px;
+    --hover-shows-padding-y: 10px;
+    --hover-shows-padding-x: 12px;
+
+    /* Position and animation */
+    --hover-shows-distance: 8px;
+    --hover-shows-z-index: 1000;
+    --hover-shows-transition: 0.15s ease;
+
+    /* Trigger appearance */
+    --hover-shows-trigger-size: 28px;
+    --hover-shows-trigger-bg: #f5fffa;
+    --hover-shows-trigger-border: #9ca3af;
+    --hover-shows-trigger-radius: 6px;
+}
+
+/* ====================================================================
+   BASE TRIGGER
+==================================================================== */
+
+.hover-mouse-shows {
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: help;
+    user-select: none;
+}
+
+/* Optional standardized icon/button appearance */
+.hover-mouse-shows-trigger {
+    width: var(--hover-shows-trigger-size);
+    min-width: var(--hover-shows-trigger-size);
+    height: var(--hover-shows-trigger-size);
+
+    border: 1px solid var(--hover-shows-trigger-border);
+    border-radius: var(--hover-shows-trigger-radius);
+
+    background: var(--hover-shows-trigger-bg);
+    color: #111827;
+
+    font-size: 15px;
+    line-height: 1;
+}
+
+/* ====================================================================
+   TOOLTIP BOX
+==================================================================== */
+
+.hover-mouse-shows::after {
+    content: attr(data-hover-text);
+
+    position: absolute;
+    z-index: var(--hover-shows-z-index);
+
+    width: max-content;
+    min-width: var(--hover-shows-min-width);
+    max-width: var(--hover-shows-max-width);
+
+    padding:
+        var(--hover-shows-padding-y) var(--hover-shows-padding-x);
+
+    border: 1px solid var(--hover-shows-border);
+    border-radius: var(--hover-shows-radius);
+
+    background: var(--hover-shows-bg);
+    color: var(--hover-shows-color);
+
+    font-family: inherit;
+    font-size: var(--hover-shows-font-size);
+    font-weight: var(--hover-shows-font-weight);
+    line-height: var(--hover-shows-line-height);
+
+    text-align: left;
+    white-space: normal;
+    overflow-wrap: anywhere;
+
+    box-shadow: var(--hover-shows-shadow);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+        opacity var(--hover-shows-transition),
+        visibility var(--hover-shows-transition),
+        transform var(--hover-shows-transition);
+}
+
+/* Do not create an empty box */
+.hover-mouse-shows:not([data-hover-text])::after,
+.hover-mouse-shows[data-hover-text=""]::after {
+    display: none;
+}
+
+/* ====================================================================
+   SHOW TOOLTIP — MOUSE AND KEYBOARD
+==================================================================== */
+
+.hover-mouse-shows:hover::after,
+.hover-mouse-shows:focus::after,
+.hover-mouse-shows:focus-visible::after,
+.hover-mouse-shows:focus-within::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ====================================================================
+   POSITIONS
+==================================================================== */
+
+/* Below — default */
+.hover-mouse-shows::after,
+.hover-shows-bottom::after {
+    top: calc(100% + var(--hover-shows-distance));
+    left: 50%;
+
+    transform: translateX(-50%) translateY(-4px);
+}
+
+.hover-mouse-shows:hover::after,
+.hover-mouse-shows:focus::after,
+.hover-mouse-shows:focus-visible::after,
+.hover-mouse-shows:focus-within::after {
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Above */
+.hover-shows-top::after {
+    top: auto;
+    bottom: calc(100% + var(--hover-shows-distance));
+    left: 50%;
+
+    transform: translateX(-50%) translateY(4px);
+}
+
+.hover-shows-top:hover::after,
+.hover-shows-top:focus::after,
+.hover-shows-top:focus-visible::after,
+.hover-shows-top:focus-within::after {
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Right */
+.hover-shows-right::after {
+    top: 50%;
+    bottom: auto;
+    left: calc(100% + var(--hover-shows-distance));
+
+    transform: translateY(-50%) translateX(-4px);
+}
+
+.hover-shows-right:hover::after,
+.hover-shows-right:focus::after,
+.hover-shows-right:focus-visible::after,
+.hover-shows-right:focus-within::after {
+    transform: translateY(-50%) translateX(0);
+}
+
+/* Left */
+.hover-shows-left::after {
+    top: 50%;
+    right: calc(100% + var(--hover-shows-distance));
+    bottom: auto;
+    left: auto;
+
+    transform: translateY(-50%) translateX(4px);
+}
+
+.hover-shows-left:hover::after,
+.hover-shows-left:focus::after,
+.hover-shows-left:focus-visible::after,
+.hover-shows-left:focus-within::after {
+    transform: translateY(-50%) translateX(0);
+}
+
+/* ====================================================================
+   WIDTH UTILITIES
+==================================================================== */
+
+.hover-shows-width-sm {
+    --hover-shows-min-width: 120px;
+    --hover-shows-max-width: 220px;
+}
+
+.hover-shows-width-md {
+    --hover-shows-min-width: 180px;
+    --hover-shows-max-width: 320px;
+}
+
+.hover-shows-width-lg {
+    --hover-shows-min-width: 240px;
+    --hover-shows-max-width: 480px;
+}
+
+/* ====================================================================
+   ACCESSIBILITY
+==================================================================== */
+
+.hover-mouse-shows:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+}

@@ -1,0 +1,1525 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ FILE: backend/public/includes/css/modals.css                         ║
+   ║ MODULE: Global Modals                                                ║
+   ║ DESCRIPTION: Global standard styles for all PRODNEX ERP modals       ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ MODALS.CSS — GUIA RÁPIDO DE REFERÊNCIA                             ║
+   ║ PRODNEX ERP                                                         ║
+   ╠══════════════════════════════════════════════════════════════════════╣
+   ║                                                                      ║
+   ║ ESTRUTURA PADRÃO                                                     ║
+   ║                                                                      ║
+   ║ .modal                                                               ║
+   ║ ├── .modal__backdrop                                                 ║
+   ║ └── .modal__dialog                                                   ║
+   ║     └── .modal__panel                                                ║
+   ║         ├── .modal__header                                           ║
+   ║         │   ├── .modal__title                                        ║
+   ║         │   └── .modal__close                                        ║
+   ║         ├── .modal__body                                             ║
+   ║         └── .modal__footer                                           ║
+   ║                                                                      ║
+   ╠══════════════════════════════════════════════════════════════════════╣
+   ║ TAMANHOS                                                             ║
+   ║                                                                      ║
+   ║ .modal__panel            → tamanho padrão                            ║
+   ║ .modal__panel--lg        → modal grande                              ║
+   ║                                                                      ║
+   ║ Também podem ser usadas classes globais, quando disponíveis:         ║
+   ║ .modal-width-*          → largura                                    ║
+   ║ .modal-height-*         → altura                                     ║
+   ║                                                                      ║
+   ╠══════════════════════════════════════════════════════════════════════╣
+   ║ HEADER                                                               ║
+   ║                                                                      ║
+   ║ .modal__header          → cabeçalho do modal                         ║
+   ║ .modal__title           → título                                     ║
+   ║ .modal__close           → botão X                                    ║
+   ║ .modal-header-color-*   → variação de cor do cabeçalho               ║
+   ║                                                                      ║
+   ╠══════════════════════════════════════════════════════════════════════╣
+   ║ BODY / CONTEÚDO                                                      ║
+   ║                                                                      ║
+   ║ .modal__body            → área principal com scroll quando necessário║
+   ║ .modal-section          → seção interna do modal                     ║
+   ║ .modal-divider          → linha divisória entre blocos               ║
+   ║                                                                      ║
+   ╠══════════════════════════════════════════════════════════════════════╣
+   ║ GRID DE CAMPOS                                                       ║
+   ║                                                                      ║
+   ║ .modal-form-grid              → grid base                            ║
+   ║ .modal-form-grid--2           → 2 colunas                            ║
+   ║ .modal-form-grid--3           → 3 colunas                            ║
+   ║ .modal-form-grid--4           → 4 colunas                            ║
+   ║ .modal-form-grid--5           → 5 colunas                            ║
+   ║ .modal-form-grid--6           → 6 colunas                            ║
+   ║                                                                      ║
+   ║ Exemplo:                                                             ║
+   ║                                                                      ║
+   ║ <div class="modal-form-grid modal-form-grid--6">                     ║
+   ║   <div class="fields ...">...</div>                                  ║
+   ║   <div class="fields ...">...</div>                                  ║
+   ║ </div>                                                               ║
+   ║                                                                      ║
+   ╠══════════════════════════════════════════════════════════════════════╣
+   ║ CAMPOS                                                               ║
+   ║                                                                      ║
+   ║ Os campos normalmente usam as classes globais de fields.css:         ║
+   ║                                                                      ║
+   ║ .fields                  → container do campo                        ║
+   ║ .fields-h-*              → altura                                    ║
+   ║ .fields-w-*              → largura                                   ║
+   ║ .fields-font-*           → tamanho da fonte                          ║
+   ║ .fields-p-left-*         → padding esquerdo                          ║
+   ║                                                                      ║
+   ║ Exemplo:                                                             ║
+   ║                                                                      ║
+   ║ <div class="fields fields-h-5 fields-w-12 fields-font-3">            ║
+   ║   <label>Fornecedor</label>                                          ║
+   ║   <input type="text">                                                ║
+   ║ </div>                                                               ║
+   ║                                                                      ║
+   ╠══════════════════════════════════════════════════════════════════════╣
+   ║ ÁREA DE PAGAMENTO / ARQUIVOS                                         ║
+   ║                                                                      ║
+   ║ .modal-payment-files-layout  → divide upload e informações laterais  ║
+   ║ .modal-box-column            → coluna/bloco interno                  ║
+   ║ .modal-box-title             → título do box                         ║
+   ║ .modal-box-titles-grid       → títulos lado a lado                   ║
+   ║                                                                      ║
+   ║ Layout típico:                                                       ║
+   ║                                                                      ║
+   ║ ┌────────────────────────┬────────────────────────────────────┐       ║
+   ║ │ Upload / Dropzone      │ Anexos Nota | Observação          │       ║
+   ║ └────────────────────────┴────────────────────────────────────┘       ║
+   ║                                                                      ║
+   ╠══════════════════════════════════════════════════════════════════════╣
+   ║ DROPZONE / UPLOAD                                                    ║
+   ║                                                                      ║
+   ║ .modal-dropzone              → área para selecionar arquivo          ║
+   ║ .ap-dropzone                 → variação usada em contas a pagar      ║
+   ║ .ap-dropzone-content         → conteúdo interno                      ║
+   ║ .modal-dropzone-font-*       → tamanho da fonte                      ║
+   ║ .help-text                   → texto auxiliar                        ║
+   ║                                                                      ║
+   ║ Normalmente contém:                                                  ║
+   ║                                                                      ║
+   ║ input[type="file"]                                                   ║
+   ║ texto "arraste o arquivo"                                            ║
+   ║ texto auxiliar                                                       ║
+   ║ progress                                                             ║
+   ║                                                                      ║
+   ╠══════════════════════════════════════════════════════════════════════╣
+   ║ ANEXOS + OBSERVAÇÃO                                                  ║
+   ║                                                                      ║
+   ║ .pay-attachments-observation-grid                                   ║
+   ║     → grid com anexos existentes + observação                        ║
+   ║                                                                      ║
+   ║ .pay-attachments-inline                                             ║
+   ║     → container dos arquivos já vinculados                           ║
+   ║                                                                      ║
+   ║ .pay-observation-card                                               ║
+   ║     → box da observação                                              ║
+   ║                                                                      ║
+   ║ .pay-observation-card--clean                                        ║
+   ║     → versão visual simplificada                                     ║
+   ║                                                                      ║
+   ╠══════════════════════════════════════════════════════════════════════╣
+   ║ FOOTER                                                               ║
+   ║                                                                      ║
+   ║ .modal__footer          → área dos botões                            ║
+   ║                                                                      ║
+   ║ Botões recomendados:                                                 ║
+   ║                                                                      ║
+   ║ .btn .btn-cancel .btn-sm   → Cancelar                               ║
+   ║ .btn .btn-save   .btn-sm   → Salvar / Confirmar                     ║
+   ║ .btn .btn-new    .btn-sm   → Novo / adicionar                       ║
+   ║ .btn .btn-icon             → botão apenas com ícone                  ║
+   ║                                                                      ║
+   ╠══════════════════════════════════════════════════════════════════════╣
+   ║ EXEMPLO DE MODAL COMPLETO                                            ║
+   ║                                                                      ║
+   ║ ┌─────────────────────────────────────────────────────────────┐      ║
+   ║ │ HEADER                                                [ X ] │      ║
+   ║ ├─────────────────────────────────────────────────────────────┤      ║
+   ║ │                                                             │      ║
+   ║ │ GRID 1 — Dados principais                                   │      ║
+   ║ │ [Campo][Campo][Campo][Campo][Campo][Campo]                  │      ║
+   ║ │                                                             │      ║
+   ║ │ GRID 2 — Valores / classificação                            │      ║
+   ║ │ [Campo][Campo][Campo][Campo][Campo][Campo]                  │      ║
+   ║ │                                                             │      ║
+   ║ ├─────────────────────────────────────────────────────────────┤      ║
+   ║ │ Upload               │ Anexos            │ Observação       │      ║
+   ║ │                      │                   │                  │      ║
+   ║ ├─────────────────────────────────────────────────────────────┤      ║
+   ║ │                              [Cancelar] [Salvar/Confirmar]   │      ║
+   ║ └─────────────────────────────────────────────────────────────┘      ║
+   ║                                                                      ║
+   ╠══════════════════════════════════════════════════════════════════════╣
+   ║ BOAS PRÁTICAS                                                       ║
+   ║                                                                      ║
+   ║ 1. Evitar style="" inline sempre que existir classe reutilizável.   ║
+   ║                                                                      ║
+   ║ 2. Usar .modal-form-grid para alinhamento dos campos.                ║
+   ║                                                                      ║
+   ║ 3. Usar .fields-* para largura, altura e fonte dos campos.           ║
+   ║                                                                      ║
+   ║ 4. Manter header, body e footer separados.                           ║
+   ║                                                                      ║
+   ║ 5. Deixar scroll preferencialmente dentro de .modal__body.           ║
+   ║                                                                      ║
+   ║ 6. Para modais maiores utilizar .modal__panel--lg ou classes         ║
+   ║    .modal-width-* / .modal-height-*.                                 ║
+   ║                                                                      ║
+   ║ 7. Para blocos complexos criar classes semânticas específicas,       ║
+   ║    mantendo .modal-* como estrutura base reutilizável.               ║
+   ║                                                                      ║
+   ║ 8. IDs devem identificar comportamento JS; classes devem controlar   ║
+   ║    principalmente layout e aparência.                                ║
+   ║                                                                      ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+:root {
+    --modal-z-index: 950;
+    --modal-space: 16px;
+    --modal-radius: 16px;
+    --modal-header-footer-pad-y: 16px;
+    --modal-header-footer-pad-x: 20px;
+    --modal-body-padding: 20px;
+    --modal-grid-gap: 12px;
+    --modal-border-color: #01050e;
+    --modal-surface: #ffffff;
+    --modal-soft-surface: #f8fafc;
+    --modal-text: #0f172a;
+    --modal-muted: #64748b;
+    --modal-primary: #2563eb;
+
+    /* Modal header color palette */
+    --modal-header-color-1: #ffffff;
+    /* Branco */
+    --modal-header-color-2: #f8fafc;
+    /* Cinza */
+    --modal-header-color-3: #eff6ff;
+    /* Azul */
+    --modal-header-color-4: #ecfeff;
+    /* Ciano */
+    --modal-header-color-5: #f0fdfa;
+    /* Verde-petróleo */
+    --modal-header-color-6: #f0fdf4;
+    /* Verde */
+    --modal-header-color-7: #fefce8;
+    /* Amarelo */
+    --modal-header-color-8: #fff7ed;
+    /* Laranja */
+    --modal-header-color-9: #fef2f2;
+    /* Vermelho */
+    --modal-header-color-10: #faf5ff;
+    /* Roxo */
+
+    /* Modal header text color palette */
+    --modal-header-text-color-1: #0f172a;
+    --modal-header-text-color-2: #334155;
+    --modal-header-text-color-3: #1d4ed8;
+    --modal-header-text-color-4: #0e7490;
+    --modal-header-text-color-5: #0f766e;
+    --modal-header-text-color-6: #15803d;
+    --modal-header-text-color-7: #a16207;
+    --modal-header-text-color-8: #c2410c;
+    --modal-header-text-color-9: #b91c1c;
+    --modal-header-text-color-10: #7e22ce;
+
+    /* Default modal header */
+    --modal-header-background: var(--modal-header-color-1);
+    --modal-header-text: var(--modal-header-text-color-1);
+    --modal-header-border: var(--modal-border-color);
+
+    /* Default modal footer */
+    --modal-footer-background: var(--modal-header-color-1);
+    --modal-footer-text: var(--modal-header-text-color-1);
+    --modal-footer-border: var(--modal-border-color);
+
+    /* Modal attachment boxes */
+    --modal-box-width: 210px;
+    --modal-box-height: 100px;
+    --modal-box-gap: 12px;
+    --modal-box-padding: 12px;
+    --modal-box-radius: 8px;
+
+    /* Upload uses the same width as the other boxes */
+    --modal-upload-width: var(--modal-box-width);
+
+    /* Dropzone font-size options */
+    --modal-dropzone-font-size-3: 3px;
+    --modal-dropzone-font-size-4: 4px;
+    --modal-dropzone-font-size-5: 5px;
+    --modal-dropzone-font-size-6: 6px;
+    --modal-dropzone-font-size-7: 7px;
+    --modal-dropzone-font-size-8: 8px;
+    --modal-dropzone-font-size-9: 9px;
+    --modal-dropzone-font-size-10: 10px;
+    --modal-dropzone-font-size-11: 11px;
+    --modal-dropzone-font-size-12: 12px;
+    --modal-dropzone-font-size-13: 13px;
+    --modal-dropzone-font-size-14: 14px;
+    --modal-dropzone-font-size-15: 15px;
+    --modal-dropzone-font-size-16: 16px;
+    --modal-dropzone-font-size-17: 17px;
+    --modal-dropzone-font-size-18: 18px;
+    --modal-dropzone-font-size-19: 19px;
+    --modal-dropzone-font-size-20: 20px;
+
+    /* Default size */
+    --modal-dropzone-font-size: 12px;
+
+    /* Modal width options */
+    --modal-width-1: 300px;
+    --modal-width-2: 400px;
+    --modal-width-3: 500px;
+    --modal-width-4: 600px;
+    --modal-width-5: 700px;
+    --modal-width-6: 800px;
+    --modal-width-7: 900px;
+    --modal-width-8: 1000px;
+    --modal-width-9: 1100px;
+    --modal-width-10: 1200px;
+    --modal-width-11: 1400px;
+    --modal-width-12: 1500px;
+    --modal-width-13: 1600px;
+    --modal-width-14: 1800px;
+    --modal-width-15: 2000px;
+
+    /* Modal height options */
+    --modal-height-1: 300px;
+    --modal-height-2: 350px;
+    --modal-height-3: 400px;
+    --modal-height-4: 450px;
+    --modal-height-5: 500px;
+    --modal-height-6: 550px;
+    --modal-height-7: 600px;
+    --modal-height-8: 650px;
+    --modal-height-9: 700px;
+    --modal-height-10: 750px;
+    --modal-height-11: 800px;
+    --modal-height-12: 850px;
+
+    --modal-min-height: 0px;
+    --modal-max-height: calc(100vh - 32px);
+
+    /* Modal position */
+    --modal-position-x: center;
+    --modal-position-y: center;
+
+    /* Fine position adjustment */
+    --modal-offset-x: 0px;
+    --modal-offset-y: 0px;
+
+    /* Debt payment modal spacing */
+    --payment-modal-form-padding-bottom: 6px;
+    --payment-modal-content-padding-top: 6px;
+    --payment-modal-summary-table-gap: 10px;
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: var(--modal-z-index);
+    display: none;
+}
+
+.modal:not(.is-open) {
+    display: none !important;
+}
+
+.modal.is-open {
+    display: block !important;
+}
+
+.modal__backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: rgba(15, 23, 42, 0.45);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+
+.modal__dialog {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+
+    display: flex;
+
+    /* Vertical position */
+    align-items: var(--modal-position-y);
+
+    /* Horizontal position */
+    justify-content: var(--modal-position-x);
+
+    padding: var(--modal-space);
+    pointer-events: none;
+}
+
+.modal__panel {
+    position: relative;
+    z-index: 3;
+
+    display: flex;
+    flex-direction: column;
+
+    width: min(var(--modal-selected-width, 900px),
+            calc(100vw - (var(--modal-space) * 2)));
+
+    height: min(var(--modal-selected-height, auto),
+            calc(100vh - (var(--modal-space) * 2)));
+
+    min-height: 0;
+    overflow: hidden;
+
+    color: var(--modal-text);
+    background: var(--modal-surface);
+    border-radius: var(--modal-radius);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.18);
+    pointer-events: auto;
+}
+
+.modal__panel--sm {
+    width: min(480px, calc(100vw - 32px));
+}
+
+.modal__panel--md {
+    width: min(720px, calc(100vw - 32px));
+}
+
+.modal__panel--lg {
+    width: min(960px, calc(100vw - 32px));
+}
+
+.modal__panel--xl {
+    width: min(1180px, calc(100vw - 32px));
+}
+
+.modal__panel--full {
+    width: calc(100vw - 32px);
+    height: calc(100vh - 32px);
+}
+
+.modal__header,
+.modal__footer {
+    flex: 0 0 auto;
+    padding: var(--modal-header-footer-pad-y) var(--modal-header-footer-pad-x);
+    background: var(--modal-surface);
+}
+
+.modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    color: var(--modal-header-text);
+    background: var(--modal-header-background);
+    border-bottom: 1px solid var(--modal-header-border);
+}
+
+.modal__title {
+    margin: 0;
+    overflow: hidden;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.modal__body {
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: var(--modal-body-padding);
+    overflow: auto;
+    overscroll-behavior: contain;
+}
+
+.modal__footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+
+    color: var(--modal-footer-text);
+    background: var(--modal-footer-background);
+    border-top: 1px solid var(--modal-footer-border);
+}
+
+.modal__close {
+    display: inline-flex;
+    flex: 0 0 32px;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    color: #334155;
+    font-size: 22px;
+    line-height: 1;
+    background: transparent;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.modal__close:hover {
+    color: var(--modal-text);
+    background: #f1f5f9;
+}
+
+.modal__close:focus-visible {
+    outline: 2px solid var(--modal-primary);
+    outline-offset: 2px;
+}
+
+/* Date range field modal
+ * Used by: <dialog class="date-range-field-panel">
+ * The component JavaScript opens it with showModal().
+ */
+
+.date-range-field-panel {
+    box-sizing: border-box;
+    width: min(var(--modal-width-2), calc(100vw - (var(--modal-space) * 2)));
+    max-width: none;
+    max-height: var(--modal-max-height);
+    padding: var(--modal-body-padding);
+    margin: auto;
+    overflow: auto;
+    color: var(--modal-text);
+    background: var(--modal-surface);
+    border: 1px solid var(--modal-border-color);
+    border-radius: var(--modal-radius);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.18);
+    overscroll-behavior: contain;
+}
+
+.date-range-field-panel:not([open]) {
+    display: none;
+}
+
+.date-range-field-panel::backdrop {
+    background: rgba(15, 23, 42, 0.45);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+
+.date-range-field-dates {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--modal-grid-gap);
+    align-items: end;
+    min-width: 0;
+}
+
+.date-range-field-date {
+    display: grid;
+    gap: 6px;
+    min-width: 0;
+    color: var(--modal-text);
+}
+
+.date-range-field-start,
+.date-range-field-end {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+}
+
+.date-range-field-error {
+    min-height: 18px;
+    margin: 8px 0 0;
+    color: #b91c1c;
+    font-size: 12px;
+}
+
+.date-range-field-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.date-range-field-panel:focus-visible {
+    outline: none;
+}
+
+@media (max-width: 480px) {
+    .date-range-field-panel {
+        width: calc(100vw - 20px);
+        max-height: calc(100vh - 20px);
+        padding: 14px;
+    }
+
+    .date-range-field-dates {
+        grid-template-columns: 1fr;
+    }
+
+    .date-range-field-actions {
+        flex-wrap: wrap;
+    }
+
+    .date-range-field-actions>button {
+        flex: 1 1 auto;
+    }
+}
+
+/* Forms inside modals */
+
+.modal-form-grid {
+    display: grid;
+    gap: var(--modal-grid-gap);
+    align-items: end;
+    min-width: 0;
+}
+
+.modal-form-grid>* {
+    min-width: 0;
+}
+
+.modal-form-grid--2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.modal-form-grid--3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.modal-form-grid--4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.modal-form-grid--5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.modal-form-grid--6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.modal-form-grid--7 {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.modal-field--span-2 {
+    grid-column: span 2;
+}
+
+.modal-field--span-3 {
+    grid-column: span 3;
+}
+
+.modal-field--span-4 {
+    grid-column: span 4;
+}
+
+.modal-field--span-5 {
+    grid-column: span 5;
+}
+
+.modal-field--span-6 {
+    grid-column: span 6;
+}
+
+.modal-field--span-full {
+    grid-column: 1 / -1;
+}
+
+/* Sections */
+
+.modal-section {
+    display: grid;
+    gap: var(--modal-grid-gap);
+    min-width: 0;
+}
+
+.modal-divider {
+    height: 1px;
+    margin: 4px 0;
+    background: var(--modal-border-color);
+}
+
+/* Upload and existing attachments */
+
+.modal-upload-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--modal-grid-gap);
+    align-items: start;
+}
+
+.modal-upload-grid>* {
+    min-width: 0;
+}
+
+.modal-dropzone,
+.modal .ap-dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 92px;
+    padding: 12px;
+    color: #334155;
+    text-align: center;
+    background: var(--modal-soft-surface);
+    border: 1px dashed #94a3b8;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.modal-dropzone:hover,
+.modal-dropzone.is-dragover,
+.modal .ap-dropzone:hover,
+.modal .ap-dropzone.is-dragover {
+    background: #eff6ff;
+    border-color: var(--modal-primary);
+}
+
+.modal-dropzone:focus-visible,
+.modal .ap-dropzone:focus-visible {
+    outline: 2px solid var(--modal-primary);
+    outline-offset: 2px;
+}
+
+.modal-attachments,
+.modal .pay-attachments-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    min-height: 190px;
+    max-height: 260px;
+    padding: 10px;
+    overflow: auto;
+    background: var(--modal-soft-surface);
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    overscroll-behavior: contain;
+}
+
+.modal-attachments:empty::before,
+.modal .pay-attachments-box:empty::before {
+    content: "Nenhum anexo disponível.";
+    color: var(--modal-muted);
+    font-size: 13px;
+}
+
+.modal-attachments a,
+.modal .pay-attachments-box a {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+/* Responsive: large grids */
+
+@media (max-width: 1180px) {
+    .modal-form-grid--7 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .modal-form-grid--6,
+    .modal-form-grid--5 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+
+    .modal-form-grid--7,
+    .modal-form-grid--6,
+    .modal-form-grid--5,
+    .modal-form-grid--4,
+    .modal-form-grid--3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .modal__dialog {
+        padding: 10px;
+    }
+
+    .modal__panel,
+    .modal__panel--sm,
+    .modal__panel--md,
+    .modal__panel--lg,
+    .modal__panel--xl,
+    .modal__panel--full {
+        width: calc(100vw - 20px);
+        max-height: calc(100vh - 20px);
+    }
+
+    .modal__header,
+    .modal__footer {
+        padding: 12px 14px;
+    }
+
+    .modal__body {
+        padding: 14px;
+    }
+
+    .modal-form-grid--2,
+    .modal-form-grid--3,
+    .modal-form-grid--4,
+    .modal-form-grid--5,
+    .modal-form-grid--6,
+    .modal-form-grid--7,
+    .modal-upload-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-field--span-2,
+    .modal-field--span-3,
+    .modal-field--span-4,
+    .modal-field--span-5,
+    .modal-field--span-6,
+    .modal-field--span-full {
+        grid-column: auto;
+    }
+
+    .modal-attachments,
+    .modal .pay-attachments-box {
+        min-height: 120px;
+        max-height: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal__footer {
+        flex-wrap: wrap;
+    }
+
+    .modal__footer>.btn,
+    .modal__footer>button {
+        flex: 1 1 auto;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .modal-dropzone,
+    .modal .ap-dropzone {
+        transition: none;
+    }
+}
+
+/* Payment upload + attachments layout
+ * Controls:
+ * --modal-upload-width: upload column width
+ * --modal-box-width: attachment/observation minimum width
+ * --modal-box-height: equal height for all four boxes
+ */
+
+#payModal .modal-payment-files-layout {
+    display: grid;
+    grid-template-columns: var(--modal-upload-width) max-content;
+    gap: var(--modal-box-gap);
+    align-items: start;
+    min-width: 0;
+}
+
+#payModal .modal-payment-files-layout>* {
+    min-width: 0;
+}
+
+/* DANFE + XML + observation */
+
+#payModal .pay-attachments-observation-grid {
+    display: grid;
+    grid-template-columns: repeat(3, var(--modal-box-width));
+    gap: var(--modal-box-gap);
+    align-items: stretch;
+    min-width: 0;
+}
+
+/* Children become direct items of the parent grid. */
+
+#payModal .pay-attachments-inline {
+    display: contents;
+}
+
+/* Prevent global input rules from showing the native hidden input. */
+
+#payModal .modal-dropzone input[hidden],
+#payModal .ap-dropzone input[hidden] {
+    display: none !important;
+}
+
+/* Upload box */
+
+#payModal .modal-dropzone,
+#payModal .ap-dropzone {
+    box-sizing: border-box;
+    width: var(--modal-box-width);
+    height: var(--modal-box-height);
+    min-height: var(--modal-box-height);
+    max-height: var(--modal-box-height);
+    padding: var(--modal-box-padding);
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--modal-box-radius);
+}
+
+#payModal .ap-dropzone-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 100%;
+    min-width: 0;
+    text-align: center;
+}
+
+#payModal #pay_anexoHelp {
+    display: block;
+    margin-top: 6px;
+}
+
+/* Each attachment is an independent box. */
+
+#payModal .pay-attachments-observation-grid .modal-attachment-card {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: var(--modal-box-width);
+    height: var(--modal-box-height);
+    min-width: 0;
+    min-height: var(--modal-box-height);
+    max-height: var(--modal-box-height);
+    padding: var(--modal-box-padding);
+    margin: 0;
+    overflow: hidden;
+    background: var(--modal-surface);
+    border: 1px solid #d1d5db;
+    border-radius: var(--modal-box-radius);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+}
+
+#payModal .modal-attachment-card:hover {
+    background: var(--modal-soft-surface);
+    border-color: #94a3b8;
+}
+
+#payModal .modal-attachment-card__icon {
+    display: inline-flex;
+    flex: 0 0 36px;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    margin-bottom: 8px;
+    font-size: 20px;
+    background: #f1f5f9;
+    border-radius: 8px;
+}
+
+#payModal .modal-attachment-card__content {
+    flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    margin-bottom: 8px;
+    overflow: hidden;
+}
+
+#payModal .modal-attachment-card__type {
+    display: block;
+    margin-bottom: 4px;
+    color: #334155;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+#payModal .modal-attachment-card__name {
+    display: -webkit-box;
+    width: 100%;
+    overflow: hidden;
+    color: var(--modal-muted);
+    font-size: 12px;
+    line-height: 1.35;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    -webkit-box-orient: vertical;
+}
+
+#payModal .modal-attachment-card__open {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 30px;
+    padding: 5px 10px;
+    margin-top: auto;
+    color: #1d4ed8;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+}
+
+#payModal .modal-attachment-card__open:hover {
+    color: #ffffff;
+    background: var(--modal-primary);
+    border-color: var(--modal-primary);
+}
+
+/* Observation always occupies the third box. */
+
+#payModal .pay-observation-card {
+    box-sizing: border-box;
+    grid-column: 3;
+    display: flex;
+    flex-direction: column;
+    width: var(--modal-box-width);
+    height: var(--modal-box-height);
+    min-width: 0;
+    min-height: var(--modal-box-height);
+    max-height: var(--modal-box-height);
+    padding: var(--modal-box-padding);
+    margin: 0;
+    overflow: hidden;
+    background: var(--modal-surface);
+    border: 1px solid #d1d5db;
+    border-radius: var(--modal-box-radius);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+}
+
+#payModal .pay-observation-card label {
+    flex: 0 0 auto;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+#payModal .pay-observation-card textarea {
+    box-sizing: border-box;
+    flex: 1 1 auto;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    max-height: none;
+    padding: 8px;
+    margin: 0;
+    resize: none;
+    background: var(--modal-surface);
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+}
+
+/* Empty state uses the attachment area without changing box height. */
+
+#payModal .pay-attachments-inline:empty::before {
+    content: "Nenhum anexo disponível.";
+    box-sizing: border-box;
+    grid-column: 1 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: var(--modal-box-height);
+    min-height: var(--modal-box-height);
+    max-height: var(--modal-box-height);
+    padding: var(--modal-box-padding);
+    color: var(--modal-muted);
+    font-size: 13px;
+    text-align: center;
+    background: var(--modal-soft-surface);
+    border: 1px dashed #cbd5e1;
+    border-radius: var(--modal-box-radius);
+}
+
+.modal-dropzone-font-3 {
+    --modal-dropzone-font-size: var(--modal-dropzone-font-size-3);
+}
+
+.modal-dropzone-font-4 {
+    --modal-dropzone-font-size: var(--modal-dropzone-font-size-4);
+}
+
+.modal-dropzone-font-5 {
+    --modal-dropzone-font-size: var(--modal-dropzone-font-size-5);
+}
+
+.modal-dropzone-font-6 {
+    --modal-dropzone-font-size: var(--modal-dropzone-font-size-6);
+}
+
+.modal-dropzone-font-7 {
+    --modal-dropzone-font-size: var(--modal-dropzone-font-size-7);
+}
+
+.modal-dropzone-font-8 {
+    --modal-dropzone-font-size: var(--modal-dropzone-font-size-8);
+}
+
+.modal-dropzone-font-9 {
+    --modal-dropzone-font-size: var(--modal-dropzone-font-size-9);
+}
+
+.modal-dropzone-font-10 {
+    --modal-dropzone-font-size: var(--modal-dropzone-font-size-10);
+}
+
+.modal-dropzone-font-11 {
+    --modal-dropzone-font-size: var(--modal-dropzone-font-size-11);
+}
+
+.modal-dropzone-font-12 {
+    --modal-dropzone-font-size: var(--modal-dropzone-font-size-12);
+}
+
+.modal-dropzone-font-13 {
+    --modal-dropzone-font-size: var(--modal-dropzone-font-size-13);
+}
+
+.modal-dropzone-font-14 {
+    --modal-dropzone-font-size: var(--modal-dropzone-font-size-14);
+}
+
+.modal-dropzone-font-15 {
+    --modal-dropzone-font-size: var(--modal-dropzone-font-size-15);
+}
+
+.modal-dropzone-font-16 {
+    --modal-dropzone-font-size: var(--modal-dropzone-font-size-16);
+}
+
+.modal-dropzone-font-17 {
+    --modal-dropzone-font-size: var(--modal-dropzone-font-size-17);
+}
+
+.modal-dropzone-font-18 {
+    --modal-dropzone-font-size: var(--modal-dropzone-font-size-18);
+}
+
+.modal-dropzone-font-19 {
+    --modal-dropzone-font-size: var(--modal-dropzone-font-size-19);
+}
+
+.modal-dropzone-font-20 {
+    --modal-dropzone-font-size: var(--modal-dropzone-font-size-20);
+}
+
+.modal-dropzone .ap-dropzone-content,
+.ap-dropzone .ap-dropzone-content {
+    font-size: var(--modal-dropzone-font-size);
+}
+
+.modal-dropzone .ap-dropzone-content strong,
+.modal-dropzone .ap-dropzone-content span,
+.modal-dropzone .ap-dropzone-content small,
+.ap-dropzone .ap-dropzone-content strong,
+.ap-dropzone .ap-dropzone-content span,
+.ap-dropzone .ap-dropzone-content small {
+    font-size: inherit;
+}
+
+/* Equal alignment for upload, attachments and observation */
+
+.modal-box-column {
+    display: grid;
+    grid-template-rows:
+        var(--modal-box-title-height, 15px) var(--modal-box-height);
+    gap: var(--modal-grid-gap);
+    align-content: start;
+    min-width: 0;
+}
+
+.modal-box-title {
+    display: block;
+    height: var(--modal-box-title-height, 15px);
+    margin: 0;
+    overflow: hidden;
+    font-size: var(--modal-dropzone-font-size-12);
+    font-weight: 400;
+    line-height: var(--modal-box-title-height, 15px);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.modal-box-titles-grid {
+    display: grid;
+    grid-template-columns: repeat(3,
+            var(--modal-box-width));
+    gap: var(--modal-box-gap);
+    align-items: end;
+    height: var(--modal-box-title-height, 15px);
+    min-width: 0;
+}
+
+.modal-box-title--attachments {
+    grid-column: 1 / 3;
+}
+
+.modal-box-title--observation {
+    grid-column: 3;
+}
+
+/* Removes the external observation card appearance */
+
+.pay-observation-card--clean {
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.pay-observation-card--clean textarea {
+    box-sizing: border-box;
+    width: 100%;
+    height: var(--modal-box-height);
+    min-height: var(--modal-box-height);
+    max-height: var(--modal-box-height);
+    margin: 0;
+    padding: 10px;
+    resize: none;
+}
+
+/* Width classes */
+.modal-width-1 {
+    --modal-selected-width: var(--modal-width-1);
+}
+
+.modal-width-2 {
+    --modal-selected-width: var(--modal-width-2);
+}
+
+.modal-width-3 {
+    --modal-selected-width: var(--modal-width-3);
+}
+
+.modal-width-4 {
+    --modal-selected-width: var(--modal-width-4);
+}
+
+.modal-width-5 {
+    --modal-selected-width: var(--modal-width-5);
+}
+
+.modal-width-6 {
+    --modal-selected-width: var(--modal-width-6);
+}
+
+.modal-width-7 {
+    --modal-selected-width: var(--modal-width-7);
+}
+
+.modal-width-8 {
+    --modal-selected-width: var(--modal-width-8);
+}
+
+.modal-width-9 {
+    --modal-selected-width: var(--modal-width-9);
+}
+
+.modal-width-10 {
+    --modal-selected-width: var(--modal-width-10);
+}
+
+.modal-width-11 {
+    --modal-selected-width: var(--modal-width-11);
+}
+
+.modal-width-12 {
+    --modal-selected-width: var(--modal-width-12);
+}
+
+.modal-width-13 {
+    --modal-selected-width: var(--modal-width-13);
+}
+
+.modal-width-14 {
+    --modal-selected-width: var(--modal-width-14);
+}
+
+.modal-width-15 {
+    --modal-selected-width: var(--modal-width-15);
+}
+
+/* Height classes */
+.modal-height-1 {
+    --modal-selected-height: var(--modal-height-1);
+}
+
+.modal-height-2 {
+    --modal-selected-height: var(--modal-height-2);
+}
+
+.modal-height-3 {
+    --modal-selected-height: var(--modal-height-3);
+}
+
+.modal-height-4 {
+    --modal-selected-height: var(--modal-height-4);
+}
+
+.modal-height-5 {
+    --modal-selected-height: var(--modal-height-5);
+}
+
+.modal-height-6 {
+    --modal-selected-height: var(--modal-height-6);
+}
+
+.modal-height-7 {
+    --modal-selected-height: var(--modal-height-7);
+}
+
+.modal-height-8 {
+    --modal-selected-height: var(--modal-height-8);
+}
+
+.modal-height-9 {
+    --modal-selected-height: var(--modal-height-9);
+}
+
+.modal-height-10 {
+    --modal-selected-height: var(--modal-height-10);
+}
+
+.modal-height-11 {
+    --modal-selected-height: var(--modal-height-10);
+}
+
+.modal-height-12 {
+    --modal-selected-height: var(--modal-height-10);
+}
+
+/* ====================================================================
+   MODAL HEADER COLOR UTILITIES
+==================================================================== */
+
+.modal-header-color-1 {
+    --modal-header-background: var(--modal-header-color-1);
+    --modal-header-text: var(--modal-header-text-color-1);
+    --modal-header-border: #cbd5e1;
+}
+
+.modal-header-color-2 {
+    --modal-header-background: var(--modal-header-color-2);
+    --modal-header-text: var(--modal-header-text-color-2);
+    --modal-header-border: #cbd5e1;
+}
+
+.modal-header-color-3 {
+    --modal-header-background: var(--modal-header-color-3);
+    --modal-header-text: var(--modal-header-text-color-3);
+    --modal-header-border: #93c5fd;
+}
+
+.modal-header-color-4 {
+    --modal-header-background: var(--modal-header-color-4);
+    --modal-header-text: var(--modal-header-text-color-4);
+    --modal-header-border: #67e8f9;
+}
+
+.modal-header-color-5 {
+    --modal-header-background: var(--modal-header-color-5);
+    --modal-header-text: var(--modal-header-text-color-5);
+    --modal-header-border: #5eead4;
+}
+
+.modal-header-color-6 {
+    --modal-header-background: var(--modal-header-color-6);
+    --modal-header-text: var(--modal-header-text-color-6);
+    --modal-header-border: #86efac;
+}
+
+.modal-header-color-7 {
+    --modal-header-background: var(--modal-header-color-7);
+    --modal-header-text: var(--modal-header-text-color-7);
+    --modal-header-border: #fde047;
+}
+
+.modal-header-color-8 {
+    --modal-header-background: var(--modal-header-color-8);
+    --modal-header-text: var(--modal-header-text-color-8);
+    --modal-header-border: #fdba74;
+}
+
+.modal-header-color-9 {
+    --modal-header-background: var(--modal-header-color-9);
+    --modal-header-text: var(--modal-header-text-color-9);
+    --modal-header-border: #fca5a5;
+}
+
+.modal-header-color-10 {
+    --modal-header-background: var(--modal-header-color-10);
+    --modal-header-text: var(--modal-header-text-color-10);
+    --modal-header-border: #d8b4fe;
+}
+
+/* ====================================================================
+   MODAL FOOTER COLOR UTILITIES
+==================================================================== */
+
+.modal-footer-color-1 {
+    --modal-footer-background: var(--modal-header-color-1);
+    --modal-footer-text: var(--modal-header-text-color-1);
+    --modal-footer-border: #cbd5e1;
+}
+
+.modal-footer-color-2 {
+    --modal-footer-background: var(--modal-header-color-2);
+    --modal-footer-text: var(--modal-header-text-color-2);
+    --modal-footer-border: #cbd5e1;
+}
+
+.modal-footer-color-3 {
+    --modal-footer-background: var(--modal-header-color-3);
+    --modal-footer-text: var(--modal-header-text-color-3);
+    --modal-footer-border: #93c5fd;
+}
+
+.modal-footer-color-4 {
+    --modal-footer-background: var(--modal-header-color-4);
+    --modal-footer-text: var(--modal-header-text-color-4);
+    --modal-footer-border: #67e8f9;
+}
+
+.modal-footer-color-5 {
+    --modal-footer-background: var(--modal-header-color-5);
+    --modal-footer-text: var(--modal-header-text-color-5);
+    --modal-footer-border: #5eead4;
+}
+
+.modal-footer-color-6 {
+    --modal-footer-background: var(--modal-header-color-6);
+    --modal-footer-text: var(--modal-header-text-color-6);
+    --modal-footer-border: #86efac;
+}
+
+.modal-footer-color-7 {
+    --modal-footer-background: var(--modal-header-color-7);
+    --modal-footer-text: var(--modal-header-text-color-7);
+    --modal-footer-border: #fde047;
+}
+
+.modal-footer-color-8 {
+    --modal-footer-background: var(--modal-header-color-8);
+    --modal-footer-text: var(--modal-header-text-color-8);
+    --modal-footer-border: #fdba74;
+}
+
+.modal-footer-color-9 {
+    --modal-footer-background: var(--modal-header-color-9);
+    --modal-footer-text: var(--modal-header-text-color-9);
+    --modal-footer-border: #fca5a5;
+}
+
+.modal-footer-color-10 {
+    --modal-footer-background: var(--modal-header-color-10);
+    --modal-footer-text: var(--modal-header-text-color-10);
+    --modal-footer-border: #d8b4fe;
+}
+
+/* Payment attachments responsive */
+
+@media (max-width: 1000px) {
+    #payModal .modal-payment-files-layout {
+        grid-template-columns: 1fr;
+    }
+
+    #payModal .pay-attachments-observation-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --modal-box-height: 170px;
+    }
+
+    #payModal .pay-attachments-observation-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #payModal .pay-observation-card,
+    #payModal .pay-attachments-inline:empty::before {
+        grid-column: auto;
+    }
+}
+
+.modal-dropzone.has-file,
+.modal .ap-dropzone.has-file {
+    color: #166534;
+    background: #f0fdf4;
+    border-color: #22c55e;
+}
+
+.modal-dropzone.is-invalid,
+.modal .ap-dropzone.is-invalid {
+    color: #991b1b;
+    background: #fef2f2;
+    border-color: #ef4444;
+}
+
+#edit_dropzone.has-file::after {
+    content: "Arquivo: " attr(data-file-name);
+    display: block;
+    width: 100%;
+    margin-top: 6px;
+    overflow: hidden;
+    color: #166534;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#edit_btnUploadAnexo:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+/* ====================================================================
+   DEBT PAYMENT MODAL SPACING
+   Scoped to #paymentModal so other modals are not affected.
+==================================================================== */
+
+/*
+ * The payment form is the first .modal__body. The global .modal__body
+ * uses flex: 1, which makes the form grow and creates an empty area.
+ */
+#paymentModal #paymentForm.modal__body {
+    flex: 0 0 auto;
+    padding-bottom: var(--payment-modal-form-padding-bottom);
+    overflow: visible;
+}
+
+/* Content body immediately after the form: summary + table. */
+#paymentModal #paymentForm+.modal__body {
+    flex: 1 1 auto;
+    padding-top: var(--payment-modal-content-padding-top);
+}
+
+/* Controlled space between the read-only summary and the table. */
+#paymentModal #paymentSummaryBox {
+    margin-top: 0;
+    margin-bottom: var(--payment-modal-summary-table-gap);
+}
+
+#paymentModal #paymentSummaryBox+.table-layout {
+    margin-top: 0;
+}

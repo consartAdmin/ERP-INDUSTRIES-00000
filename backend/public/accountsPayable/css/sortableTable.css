@@ -1,0 +1,72 @@
+:root {
+  --sortable-color: inherit;
+  --sortable-active-color: #1d4ed8;
+  --sortable-icon-color: #2563eb;
+  --sortable-hover-bg: rgba(37, 99, 235, 0.08);
+  --sortable-focus-color: #2563eb;
+  --sortable-min-height: 40px;
+  --sortable-gap: 5px;
+}
+
+th.table-sortable { padding: 0; user-select: none; }
+
+th.table-sortable .table-sort-button {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  min-height: var(--sortable-min-height);
+  margin: 0;
+  padding: 8px 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sortable-gap);
+  border: 0;
+  border-radius: 0;
+  outline: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--sortable-color);
+  font: inherit;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 150ms ease, background-color 150ms ease;
+}
+
+th.table-sortable .table-sort-button:hover {
+  background-color: var(--sortable-hover-bg);
+  color: var(--sortable-active-color);
+}
+
+th.table-sortable .table-sort-button:focus-visible {
+  outline: 2px solid var(--sortable-focus-color);
+  outline-offset: -3px;
+}
+
+th.table-sortable.is-sorted .table-sort-button,
+th.table-sortable .table-sort-button.is-sorted { color: var(--sortable-active-color); }
+
+th.table-sortable [data-sort-icon] {
+  min-width: 10px;
+  margin-top: 1px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--sortable-icon-color);
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+  transition: color 150ms ease, transform 150ms ease;
+}
+
+th.table-sortable.is-sorted [data-sort-icon],
+th.table-sortable .table-sort-button:hover [data-sort-icon] { color: var(--sortable-active-color); }
+
+th.table-sortable .table-sort-button:disabled { cursor: wait; opacity: 0.65; }
+
+@media (prefers-reduced-motion: reduce) {
+  th.table-sortable .table-sort-button,
+  th.table-sortable [data-sort-icon] { transition: none; }
+}

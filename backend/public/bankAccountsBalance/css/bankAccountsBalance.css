@@ -1,0 +1,155 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║ bankAccountsBalance.css — Saldos Bancários                           ║
+   ║ PRODNEX ERP — apenas regras específicas (base: style.css)            ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+:root {
+  --bab-surface: #ffffff;
+  --bab-border: #e2e8f0;
+  --bab-text: #0f172a;
+  --bab-muted: #64748b;
+  --bab-positive: #047857;
+  --bab-negative: #b91c1c;
+  --bab-warning: #b45309;
+  --bab-primary: #2563eb;
+}
+
+/* ───────────────────────── Cards de saldo ───────────────────────── */
+.bab-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+  margin: 0 0 12px;
+}
+
+.bab-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  padding: 14px 16px;
+  color: var(--bab-text);
+  background: var(--bab-surface);
+  border: 1px solid var(--bab-border);
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+}
+
+.bab-card--total {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.bab-card--loading {
+  color: var(--bab-muted);
+  font-size: 13px;
+}
+
+.bab-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+
+.bab-card__name {
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bab-card__badge {
+  flex: 0 0 auto;
+  padding: 2px 8px;
+  color: #334155;
+  font-size: 11px;
+  font-weight: 600;
+  background: #f1f5f9;
+  border-radius: 999px;
+}
+
+.bab-card__label {
+  color: var(--bab-muted);
+  font-size: 12px;
+}
+
+.bab-card__value {
+  font-size: 22px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+
+.bab-card__value--negative { color: var(--bab-negative); }
+.bab-card__value--empty {
+  color: var(--bab-warning);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.bab-card__meta {
+  color: var(--bab-muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.bab-card__actions {
+  margin-top: 4px;
+}
+
+/* ───────────────────────── Diferença ───────────────────────── */
+.bab-diff {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.bab-diff--ok { color: var(--bab-positive); }
+.bab-diff--bad { color: var(--bab-negative); }
+.bab-diff--none { color: var(--bab-muted); font-weight: 400; }
+
+.bab-money {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ───────────────────────── Modal ───────────────────────── */
+/* Campos ocupam a coluna do grid (sem largura fixa → sem rolagem lateral) */
+#babForm .fields {
+  width: 100%;
+  min-width: 0;
+}
+
+#babForm .fields input,
+#babForm .fields select,
+#babForm .fields textarea {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* ───────────────────────── Prévia no modal ───────────────────────── */
+.bab-preview {
+  padding: 12px 14px;
+  color: #334155;
+  font-size: 13px;
+  line-height: 1.5;
+  background: #f8fafc;
+  border: 1px solid var(--bab-border);
+  border-radius: 8px;
+}
+
+.bab-preview:empty { display: none; }
+
+.bab-preview strong { color: var(--bab-text); }
+
+.bab-preview__diff {
+  margin-top: 6px;
+  font-size: 14px;
+}
+
+@media (max-width: 720px) {
+  .bab-cards { grid-template-columns: 1fr; }
+}

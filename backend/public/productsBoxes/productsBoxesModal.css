@@ -1,0 +1,137 @@
+    /* ╔══════════════════════════════════════════════════════════════════════╗
+    ║ productsBoxesModal.css — Modal Item (SKU) | PRODNEX ERP              ║
+    ║ Path: backend/public/productsBoxes/productsBoxesModal.css            ║
+    ╚══════════════════════════════════════════════════════════════════════╝ */
+
+    .pbxm-backdrop{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.35);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index: 99998;
+    padding: 16px;
+    }
+
+    .pbxm-dialog{
+    width: min(720px, calc(100vw - 26px));
+    background: #fff;
+    border-radius: 18px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 18px 60px rgba(0,0,0,.22);
+    overflow:hidden;
+    }
+
+    .pbxm-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding: 12px 14px;
+    background: #f8fafc;
+    border-bottom: 1px solid #e5e7eb;
+    }
+
+    .pbxm-header h3{
+    margin:0;
+    font-size: 15px;
+    color: #111;
+    }
+
+    .pbxm-close{
+    border: 1px solid #d1d5db;
+    background: #fff;
+    color: #111;
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    cursor:pointer;
+    }
+    .pbxm-close:hover{ background:#f3f4f6; }
+
+    .pbxm-body{ padding: 14px; }
+
+    .pbxm-grid{
+    display:grid;
+    grid-template-columns: 1.2fr 0.8fr 0.6fr;
+    gap: 12px;
+    }
+
+    .pbxm-field label{
+    display:block;
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 6px;
+    }
+
+    .pbxm-field input,
+    .pbxm-field textarea{
+    width:100%;
+    border: 1px solid #d1d5db;
+    background: #fff;
+    color: #111;
+    padding: 10px 10px;
+    border-radius: 12px;
+    outline:none;
+    font-size: 13px;
+    }
+
+    .pbxm-field textarea{ resize: vertical; min-height: 56px; }
+
+    .pbxm-span3{ grid-column: span 3; }
+    .pbxm-skuWrap{ position: relative; }
+
+    .pbxm-footer{
+    padding: 12px 14px;
+    border-top: 1px solid #e5e7eb;
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    background: #f8fafc;
+    }
+
+    /* sugestões SKU (usa classes do seu CSS atual) */
+    .pbxm-suggest{
+    position:absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    z-index: 99999;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 14px 30px rgba(0,0,0,0.12);
+    overflow: hidden;
+    max-height: 260px;
+    }
+
+    .pbxm-suggest[hidden]{ display:none !important; }
+
+    .pbxm-suggestItem{
+    padding: 10px 12px;
+    cursor: pointer;
+    display:flex;
+    flex-direction: column;
+    gap: 3px;
+    border-bottom: 1px solid #f1f5f9;
+    }
+    .pbxm-suggestItem:last-child{ border-bottom: none; }
+    .pbxm-suggestItem:hover,
+    .pbxm-suggestItem.is-active{ background: #f9fafb; }
+
+    .pbxm-suggestTop{
+    display:flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+    }
+
+    .pbxm-suggestSku{ font-weight: 800; color:#111; }
+    .pbxm-suggestName{ color:#374151; font-size: 13px; line-height: 1.2; }
+    .pbxm-suggestMeta{ color:#6b7280; font-size: 12px; }
+
+    @media (max-width: 620px){
+    .pbxm-grid{ grid-template-columns: 1fr; }
+    .pbxm-span3{ grid-column: span 1; }
+    }
