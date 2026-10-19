@@ -1,0 +1,181 @@
+<!-- ╔════════════════════════════════════════════════════════════╗
+     ║ pcpBom.html — PCP / Produção — PRODNEX ERP
+     ╚════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>FICHA TÉCNICA | PRODNEX ERP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/pcp/pcp.css" />
+</head>
+
+<body class="page consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <div class="header pcp-page-header">
+      <div>
+        <h2 class="pcp-card-title">Ficha Técnica</h2>
+        <p class="pcp-card-caption">Estrutura do produto (componentes e perdas) e roteiro de operações, com custo estimado por unidade.</p>
+      </div>
+      <div class="pcp-header-actions">
+        <button id="btnNew" type="button" class="btn btn-toolbar btn-sm">+ Nova ficha</button>
+      </div>
+    </div>
+
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter pcp-filter-bar">
+        <div class="fields-inline fields-gap3 pcp-filter-row">
+          <div class="fields fields-inline fields-w-20 fields-h-6 pcp-search-field">
+            <input id="search" type="text" class="pcp-search-input" placeholder="Buscar por código ou descrição do produto..." autocomplete="off" />
+            <span class="pcp-search-icon" aria-hidden="true">🔍</span>
+          </div>
+          <div class="fields fields-inline fields-w-10 fields-h-6">
+            <label class="pcp-checkbox-inline">
+              <input id="includeInactive" type="checkbox" />
+              <span>Incluir inativas</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-scroll table-height-flex table-row-h-20" data-table-settings="pcp.bom">
+        <table class="table table-zebra table-zebra-hover table-sticky-head pcp-table">
+          <thead>
+            <tr>
+              <th style="width:140px">Produto</th>
+              <th>Descrição</th>
+              <th class="center" style="width:80px">Versão</th>
+              <th class="num" style="width:110px">Qtd. base</th>
+              <th class="num" style="width:120px">Componentes</th>
+              <th class="num" style="width:110px">Operações</th>
+              <th class="center" style="width:110px">Status</th>
+              <th class="center" style="width:130px">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+      <footer class="table-footer">
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+            <span id="bomTableInfo">0 registros</span>
+          </div>
+        </div>
+        <div class="table-footer__pagination">
+          <button type="button" id="bomPrevPage" class="btn btn-clean btn-sm">Anterior</button>
+          <span id="bomPageInfo">Página 1 de 1</span>
+          <button type="button" id="bomNextPage" class="btn btn-new btn-sm">Próxima</button>
+        </div>
+        <div class="table-footer__page-size">
+          <label for="bomRowsPerPage">Mostrar</label>
+          <select id="bomRowsPerPage" class="table-footer__page-size-select">
+            <option value="10">10 linhas</option>
+            <option value="20">20 linhas</option>
+            <option value="50" selected>50 linhas</option>
+            <option value="100">100 linhas</option>
+          </select>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <datalist id="productOptions"></datalist>
+
+  <dialog id="modal" class="pcp-modal pcp-modal--wide">
+    <div class="pcp-modal__header">
+      <div>
+        <h3 id="modalTitle">Nova ficha técnica</h3>
+        <p>As quantidades dos componentes e os tempos valem para a quantidade base informada.</p>
+      </div>
+      <button id="btnClose" type="button" class="pcp-modal__close" aria-label="Fechar">×</button>
+    </div>
+
+    <form id="form" class="pcp-modal__body">
+      <input id="bomId" type="hidden" />
+      <div class="pcp-form-grid">
+        <div class="pcp-form-field pcp-span-2">
+          <label for="product" class="pcp-label">Produto acabado *</label>
+          <input id="product" type="text" list="productOptions" class="pcp-input" placeholder="Digite o código ou a descrição" required autocomplete="off" />
+        </div>
+        <div class="pcp-form-field">
+          <label for="version" class="pcp-label">Versão</label>
+          <input id="version" type="text" maxlength="20" value="1" class="pcp-input" />
+        </div>
+        <div class="pcp-form-field">
+          <label for="baseQty" class="pcp-label">Quantidade base *</label>
+          <input id="baseQty" type="number" step="any" min="0" value="1" class="pcp-input" required />
+        </div>
+        <div class="pcp-form-field pcp-span-2">
+          <label for="notes" class="pcp-label">Observações</label>
+          <input id="notes" type="text" class="pcp-input" autocomplete="off" />
+        </div>
+        <div class="pcp-form-field">
+          <span class="pcp-label">Status</span>
+          <label class="pcp-switch">
+            <input id="isActive" type="checkbox" checked />
+            <span class="pcp-switch-slider"></span>
+            <span class="pcp-switch-label">Ativa</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="pcp-section-title">
+        <span>Componentes</span>
+        <button id="btnAddItem" type="button" class="btn btn-clean btn-sm">+ Componente</button>
+      </div>
+      <table class="pcp-grid-table">
+        <thead>
+          <tr>
+            <th style="width:46%">Componente</th>
+            <th class="num" style="width:14%">Quantidade</th>
+            <th class="num" style="width:12%">Perda %</th>
+            <th>Observação</th>
+            <th style="width:40px"></th>
+          </tr>
+        </thead>
+        <tbody id="itemsBody"></tbody>
+      </table>
+
+      <div class="pcp-section-title">
+        <span>Roteiro de operações</span>
+        <button id="btnAddOp" type="button" class="btn btn-clean btn-sm">+ Operação</button>
+      </div>
+      <table class="pcp-grid-table">
+        <thead>
+          <tr>
+            <th style="width:70px">Seq.</th>
+            <th style="width:24%">Centro de trabalho</th>
+            <th>Descrição</th>
+            <th class="num" style="width:12%">Setup (min)</th>
+            <th class="num" style="width:14%">Min. por unidade</th>
+            <th style="width:40px"></th>
+          </tr>
+        </thead>
+        <tbody id="opsBody"></tbody>
+      </table>
+
+      <div id="costBox" class="pcp-cost-box" hidden>
+        <div class="summary-pill"><span>Material / un.: <strong id="costMaterial">—</strong></span></div>
+        <div class="summary-pill"><span>Operação / un.: <strong id="costOperation">—</strong></span></div>
+        <div class="summary-pill summary-pill--success"><span>Custo total / un.: <strong id="costTotal">—</strong></span></div>
+      </div>
+
+      <div id="formMessage" class="pcp-form-message" role="alert" hidden></div>
+
+      <div class="pcp-modal__footer">
+        <button id="btnCancel" type="button" class="btn btn-clean btn-sm">Fechar</button>
+        <button type="submit" class="btn btn-toolbar btn-sm">Salvar ficha</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="/public/pcpBom/js/pcpBom.js"></script>
+</body>
+
+</html>

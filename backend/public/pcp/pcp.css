@@ -1,0 +1,501 @@
+/* ╔════════════════════════════════════════════════════════════╗
+   ║ pcp.css — Estilos compartilhados do PCP — PRODNEX ERP      ║
+   ║ Mesmo padrão visual de units.css (prefixo pcp-)            ║
+   ╚════════════════════════════════════════════════════════════╝ */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.header>div:first-child {
+  min-width: 0;
+}
+
+.pcp-page-header {
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.pcp-page-header .pcp-header-actions {
+  display: inline-flex;
+  gap: 8px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.pcp-card-title {
+  margin: 0;
+}
+
+.pcp-card-caption {
+  margin: 3px 0 0;
+}
+
+.pcp-filter-bar {
+  padding-bottom: 8px;
+}
+
+.pcp-filter-row {
+  align-items: center;
+  width: 100%;
+}
+
+.pcp-search-field {
+  position: relative;
+}
+
+.pcp-search-input {
+  width: 100%;
+  padding-right: 34px;
+}
+
+.pcp-search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  opacity: .7;
+}
+
+.pcp-checkbox-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.pcp-checkbox-inline input {
+  margin: 0;
+}
+
+.pcp-table {
+  width: 100%;
+}
+
+.pcp-table .num,
+.pcp-table td.num {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.pcp-table .center,
+.pcp-table td.center {
+  text-align: center;
+}
+
+.pcp-table tr.is-clickable {
+  cursor: pointer;
+}
+
+.pcp-table-empty,
+.pcp-table-error {
+  text-align: center;
+  padding: 28px 12px !important;
+  opacity: .75;
+}
+
+.pcp-table-error {
+  opacity: 1;
+  color: #b71c1c;
+}
+
+/* ── Badges de status ───────────────────────────────────────── */
+
+.pcp-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 72px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.pcp-badge--active,
+.pcp-badge--CONCLUIDA {
+  background: rgba(46, 125, 50, .12);
+  color: #2e7d32;
+}
+
+.pcp-badge--inactive,
+.pcp-badge--CANCELADA {
+  background: rgba(117, 117, 117, .14);
+  color: #616161;
+}
+
+.pcp-badge--PLANEJADA {
+  background: rgba(15, 94, 115, .12);
+  color: #0F5E73;
+}
+
+.pcp-badge--LIBERADA {
+  background: rgba(242, 183, 5, .18);
+  color: #8a6700;
+}
+
+.pcp-badge--EM_PRODUCAO {
+  background: rgba(21, 101, 192, .12);
+  color: #1565c0;
+}
+
+.pcp-badge--shortage {
+  background: rgba(198, 40, 40, .10);
+  color: #b71c1c;
+}
+
+/* ── Barra de progresso da OP ───────────────────────────────── */
+
+.pcp-progress {
+  position: relative;
+  min-width: 90px;
+  height: 16px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, .07);
+  overflow: hidden;
+}
+
+.pcp-progress__bar {
+  height: 100%;
+  background: rgba(15, 94, 115, .35);
+}
+
+.pcp-progress__label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: #222;
+}
+
+/* ── Ações ──────────────────────────────────────────────────── */
+
+.pcp-action-group {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.pcp-action-button {
+  flex: 0 0 auto;
+  min-width: 34px;
+}
+
+/* ── Modal ──────────────────────────────────────────────────── */
+
+.pcp-modal {
+  width: min(620px, calc(100vw - 32px));
+  max-width: 620px;
+  max-height: calc(100vh - 32px);
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, .28);
+  overflow: hidden;
+}
+
+.pcp-modal[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.pcp-modal--wide {
+  width: min(1100px, calc(100vw - 32px));
+  max-width: 1100px;
+}
+
+.pcp-modal::backdrop {
+  background: rgba(0, 0, 0, .42);
+}
+
+.pcp-modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, .08);
+}
+
+.pcp-modal__header h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.pcp-modal__header p {
+  margin: 4px 0 0;
+  font-size: 12px;
+  opacity: .72;
+}
+
+.pcp-modal__close {
+  border: 0;
+  background: transparent;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  opacity: .65;
+}
+
+.pcp-modal__close:hover {
+  opacity: 1;
+}
+
+.pcp-modal__body {
+  margin: 0;
+  padding: 18px;
+  overflow: auto;
+}
+
+.pcp-modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(0, 0, 0, .08);
+}
+
+.pcp-modal--wide .pcp-modal__footer {
+  position: sticky;
+  bottom: -18px;
+  margin-bottom: -18px;
+  padding-bottom: 14px;
+  background: #fff;
+  z-index: 1;
+}
+
+.pcp-modal__footer .pcp-footer-left {
+  margin-right: auto;
+  display: inline-flex;
+  gap: 8px;
+}
+
+/* ── Formulário ─────────────────────────────────────────────── */
+
+.pcp-form-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.pcp-form-field {
+  min-width: 0;
+}
+
+.pcp-span-2 {
+  grid-column: span 2;
+}
+
+.pcp-span-4 {
+  grid-column: 1 / -1;
+}
+
+.pcp-label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.pcp-input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.pcp-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 0 8px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.pcp-grid-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.pcp-grid-table th {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px;
+  border-bottom: 1px solid rgba(0, 0, 0, .12);
+  white-space: nowrap;
+}
+
+.pcp-grid-table td {
+  padding: 4px 6px;
+  border-bottom: 1px solid rgba(0, 0, 0, .05);
+  vertical-align: middle;
+}
+
+.pcp-grid-table td.num,
+.pcp-grid-table th.num {
+  text-align: right;
+}
+
+.pcp-grid-table input,
+.pcp-grid-table select {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.pcp-grid-empty {
+  text-align: center;
+  opacity: .6;
+  padding: 14px !important;
+}
+
+.pcp-cost-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.pcp-cost-box .summary-pill {
+  min-width: 150px;
+}
+
+.pcp-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.pcp-kpi {
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(15, 94, 115, .06);
+}
+
+.pcp-kpi span {
+  display: block;
+  font-size: 11px;
+  opacity: .7;
+}
+
+.pcp-kpi strong {
+  font-size: 18px;
+}
+
+.pcp-form-message {
+  margin-top: 14px;
+  padding: 9px 11px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.pcp-form-message.is-error {
+  background: rgba(198, 40, 40, .10);
+  color: #b71c1c;
+}
+
+.pcp-form-message.is-success {
+  background: rgba(46, 125, 50, .10);
+  color: #2e7d32;
+}
+
+.pcp-form-message.is-warning {
+  background: rgba(242, 183, 5, .16);
+  color: #6d5200;
+}
+
+.pcp-muted {
+  opacity: .65;
+  font-size: 12px;
+}
+
+.pcp-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 30px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.pcp-switch input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pcp-switch-slider {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  border-radius: 999px;
+  background: #aaa;
+  transition: .15s ease;
+}
+
+.pcp-switch-slider::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  transition: .15s ease;
+}
+
+.pcp-switch input:checked+.pcp-switch-slider {
+  background: #4caf50;
+}
+
+.pcp-switch input:checked+.pcp-switch-slider::after {
+  transform: translateX(16px);
+}
+
+.pcp-switch-label {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+@media (max-width: 800px) {
+
+  .pcp-form-grid,
+  .pcp-kpis {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pcp-span-2 {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 600px) {
+  .pcp-page-header {
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .pcp-filter-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pcp-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
