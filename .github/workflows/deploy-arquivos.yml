@@ -1,0 +1,135 @@
+# Deploy rápido só dos arquivos alterados (roda o backend/deploy-file.ps1).
+# Gera uma imagem nova a partir da imagem atual do serviço, copiando por cima
+# apenas os arquivos informados. Não remove arquivos apagados; para isso, para
+# dependências (package*.json) ou Dockerfile, use o "Deploy Cloud Run".
+# Usa a mesma configuração do deploy-cloud-run.yml (GCP_WIF_PROVIDER e ENV_FILE).
+
+name: Deploy arquivos
+
+on:
+  workflow_dispatch:
+    inputs:
+      arquivos:
+        description: "Arquivos ou pastas dentro de backend, separados por vírgula (ex.: public/accountsReceivable). Vazio = arquivos alterados no último commit do branch"
+        type: string
+        default: ""
+      env_secret:
+        description: "Nome do secret com o .env (para ler DEPLOY_PROJECT e DEPLOY_SERVICE)"
+        type: string
+        default: ENV_FILE
+      service:
+        description: "Serviço Cloud Run (vazio = DEPLOY_SERVICE do .env)"
+        type: string
+        default: ""
+      project:
+        description: "Projeto GCP (vazio = DEPLOY_PROJECT do .env)"
+        type: string
+        default: ""
+      region:
+        description: "Região (vazio = DEPLOY_REGION do .env)"
+        type: string
+        default: ""
+
+concurrency:
+  group: deploy-${{ inputs.service || inputs.env_secret }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write  # login sem chave (Workload Identity)
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Listar arquivos
+        id: arquivos
+        env:
+          ARQUIVOS: ${{ inputs.arquivos }}
+        run: |
+          if [ -n "$ARQUIVOS" ]; then
+            # vírgula ou quebra de linha separam; aceita \ do Windows e prefixo backend/
+            printf '%s' "$ARQUIVOS" | tr ',' '\n' | tr '\\' '/' \
+              | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e 's#^\./##' -e 's#^backend/##' \
+              | grep -v '^$' > "$RUNNER_TEMP/arquivos.txt" || true
+          else
+            # Alterados no último commit, só dentro de backend/ e que ainda existem
+            git diff --name-only --diff-filter=ACMR HEAD~1 HEAD -- . \
+              | sed 's#^backend/##' > "$RUNNER_TEMP/arquivos.txt" || true
+          fi
+          if [ ! -s "$RUNNER_TEMP/arquivos.txt" ]; then
+            echo "::error::Nenhum arquivo para enviar. Informe os arquivos ou faça um commit em backend/."
+            exit 1
+          fi
+          if grep -Eq '(^|/)(package(-lock)?\.json|Dockerfile|\.dockerignore)$' "$RUNNER_TEMP/arquivos.txt"; then
+            echo "::error::Mudança em package*.json ou Dockerfile precisa do deploy completo (workflow Deploy Cloud Run)."
+            exit 1
+          fi
+          echo "Arquivos:"; cat "$RUNNER_TEMP/arquivos.txt"
+
+      - name: Conferir configuração do GitHub
+        env:
+          WIF: ${{ vars.GCP_WIF_PROVIDER }}
+          SA_EMAIL: ${{ vars.GCP_SA_EMAIL }}
+          HAS_KEY: ${{ secrets.GCP_SA_KEY != '' }}
+        run: |
+          if [ -n "$WIF" ] && [ -z "$SA_EMAIL" ]; then
+            echo "::error::Com GCP_WIF_PROVIDER, crie também a variável GCP_SA_EMAIL (service account do deploy)."
+            exit 1
+          fi
+          if [ -z "$WIF" ] && [ "$HAS_KEY" != "true" ]; then
+            echo "::error::Configure o login no Google Cloud: variáveis GCP_WIF_PROVIDER + GCP_SA_EMAIL, ou o secret GCP_SA_KEY."
+            exit 1
+          fi
+
+      - name: Autenticar no Google Cloud (sem chave)
+        if: ${{ vars.GCP_WIF_PROVIDER != '' }}
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_SA_EMAIL }}
+
+      - name: Autenticar no Google Cloud (chave JSON)
+        if: ${{ vars.GCP_WIF_PROVIDER == '' }}
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      - name: Montar .env a partir do secret
+        env:
+          ENV_CONTENT: ${{ secrets[inputs.env_secret] }}
+        run: |
+          if [ -z "$ENV_CONTENT" ]; then
+            echo "Sem .env: usando apenas service/project/region informados."
+            exit 0
+          fi
+          # DEPLOY_ACCOUNT é a conta do PC; aqui quem autentica é a service account
+          printf '%s\n' "$ENV_CONTENT" | tr -d '\r' | grep -v '^[[:space:]]*DEPLOY_ACCOUNT[[:space:]]*=' > .env
+
+      - name: Deploy dos arquivos
+        shell: pwsh
+        env:
+          IN_SERVICE: ${{ inputs.service }}
+          IN_PROJECT: ${{ inputs.project }}
+          IN_REGION: ${{ inputs.region }}
+        run: |
+          $paths = @(Get-Content (Join-Path $env:RUNNER_TEMP "arquivos.txt") | Where-Object { $_ })
+          $params = @{ Path = $paths }
+          if ($env:IN_SERVICE) { $params.Service = $env:IN_SERVICE }
+          if ($env:IN_PROJECT) { $params.Project = $env:IN_PROJECT }
+          if ($env:IN_REGION)  { $params.Region  = $env:IN_REGION }
+          ./deploy-file.ps1 @params
+
+      - name: Apagar .env do runner
+        if: always()
+        run: rm -f .env

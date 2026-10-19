@@ -1,0 +1,124 @@
+# Deploy do backend no Cloud Run pelo GitHub (botão "Run workflow" na aba Actions).
+# Roda o mesmo backend/deploy.ps1 usado no PC, num runner Linux com PowerShell.
+#
+# Configuração única (Settings > Secrets and variables > Actions):
+#   Variable GCP_WIF_PROVIDER  provider do Workload Identity (login sem chave)
+#   Variable GCP_SA_EMAIL      service account do deploy (obrigatória com Workload Identity)
+#   Secret   GCP_SA_KEY        alternativa ao Workload Identity: JSON da chave
+#   Secret   ENV_FILE          conteúdo completo do backend/.env
+# Outro cliente: crie outro secret (ex.: ENV_FILE_00001) e informe o nome ao rodar.
+
+name: Deploy Cloud Run
+
+on:
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: "so-codigo = mantém envs e segredos do serviço (-ImageOnly); completo = aplica o .env do secret"
+        type: choice
+        options:
+          - so-codigo
+          - completo
+        default: so-codigo
+      env_secret:
+        description: "Nome do secret com o .env (modo completo, ou para ler DEPLOY_* no so-codigo)"
+        type: string
+        default: ENV_FILE
+      service:
+        description: "Serviço Cloud Run (vazio = DEPLOY_SERVICE do .env)"
+        type: string
+        default: ""
+      project:
+        description: "Projeto GCP (vazio = DEPLOY_PROJECT do .env)"
+        type: string
+        default: ""
+      region:
+        description: "Região (vazio = DEPLOY_REGION do .env)"
+        type: string
+        default: ""
+
+# Um deploy por vez para o mesmo serviço
+concurrency:
+  group: deploy-${{ inputs.service || inputs.env_secret }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write  # login sem chave (Workload Identity)
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Conferir configuração do GitHub
+        env:
+          WIF: ${{ vars.GCP_WIF_PROVIDER }}
+          SA_EMAIL: ${{ vars.GCP_SA_EMAIL }}
+          HAS_KEY: ${{ secrets.GCP_SA_KEY != '' }}
+        run: |
+          if [ -n "$WIF" ] && [ -z "$SA_EMAIL" ]; then
+            echo "::error::Com GCP_WIF_PROVIDER, crie também a variável GCP_SA_EMAIL (service account do deploy)."
+            exit 1
+          fi
+          if [ -z "$WIF" ] && [ "$HAS_KEY" != "true" ]; then
+            echo "::error::Configure o login no Google Cloud: variáveis GCP_WIF_PROVIDER + GCP_SA_EMAIL, ou o secret GCP_SA_KEY."
+            exit 1
+          fi
+
+      - name: Autenticar no Google Cloud (sem chave)
+        if: ${{ vars.GCP_WIF_PROVIDER != '' }}
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_SA_EMAIL }}
+
+      - name: Autenticar no Google Cloud (chave JSON)
+        if: ${{ vars.GCP_WIF_PROVIDER == '' }}
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      - name: Montar .env a partir do secret
+        env:
+          ENV_CONTENT: ${{ secrets[inputs.env_secret] }}
+          MODO: ${{ inputs.modo }}
+        run: |
+          if [ -z "$ENV_CONTENT" ]; then
+            if [ "$MODO" = "completo" ]; then
+              echo "::error::Secret '${{ inputs.env_secret }}' vazio ou inexistente. O modo completo precisa do .env."
+              exit 1
+            fi
+            echo "Sem .env: usando apenas service/project/region informados."
+            exit 0
+          fi
+          # DEPLOY_ACCOUNT é a conta do PC; aqui a conta é a service account do GCP_SA_KEY
+          printf '%s\n' "$ENV_CONTENT" | tr -d '\r' | grep -v '^[[:space:]]*DEPLOY_ACCOUNT[[:space:]]*=' > .env
+          echo ".env montado ($(grep -c '' .env) linhas)."
+
+      - name: Deploy
+        shell: pwsh
+        env:
+          TEMP: ${{ runner.temp }}
+          MODO: ${{ inputs.modo }}
+          IN_SERVICE: ${{ inputs.service }}
+          IN_PROJECT: ${{ inputs.project }}
+          IN_REGION: ${{ inputs.region }}
+        run: |
+          $params = @{}
+          if ($env:MODO -eq "so-codigo") { $params.ImageOnly = $true }
+          if ($env:IN_SERVICE) { $params.Service = $env:IN_SERVICE }
+          if ($env:IN_PROJECT) { $params.Project = $env:IN_PROJECT }
+          if ($env:IN_REGION)  { $params.Region  = $env:IN_REGION }
+          ./deploy.ps1 @params
+
+      - name: Apagar .env do runner
+        if: always()
+        run: rm -f .env
