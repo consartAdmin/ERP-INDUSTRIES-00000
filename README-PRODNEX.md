@@ -29,6 +29,22 @@ pg_dump -U postgres --schema-only erp-infinity-00000 | psql -U postgres -d prodn
 Depois crie o `.env` em `backend/` (mesmas variáveis do Infinity, com DB_NAME=prodnex e um JWT_SECRET novo)
 e rode `npm install` e `npm run start:local`.
 
-## Próximo: módulo de produção (PCP)
+## Módulo de produção (PCP): pronto, ver seção abaixo
 Ficha técnica (estrutura de produto), roteiros/centros de trabalho, ordens de produção,
 apontamento e MRP — ver `docs/plano-erp-industrial.md`.
+
+## Módulo PCP / Produção (novo no Prodnex)
+
+Telas (o menu "PCP / Produção" é criado sozinho na primeira chamada à API):
+- `/public/pcpWorkCenters/pcpWorkCenters.html` — Centros de trabalho (custo/hora, capacidade)
+- `/public/pcpBom/pcpBom.html` — Ficha técnica: componentes com % de perda, roteiro de operações e custo por unidade
+- `/public/pcpProductionOrders/pcpProductionOrders.html` — Ordens de produção: Planejada → Liberada → Em produção → Concluída (ou Cancelada), apontamentos, materiais
+- `/public/pcpMrp/pcpMrp.html` — Necessidade de materiais das OPs abertas × estoque e estoque mínimo, com exportação CSV
+
+Backend: `routes/pcpRoutes.js` → `controllers/pcpController.js` → `repositories/pcp/*`, montado em `server.js` como `app.use('/api/pcp', requireAuth, pcpRoutes)`.
+As tabelas `pcp*` são criadas automaticamente (CREATE TABLE IF NOT EXISTS).
+
+Regras:
+- Uma ficha ativa por produto. A OP copia os materiais da ficha ativa no momento da criação.
+- Só os apontamentos da última operação do roteiro somam na quantidade produzida; o refugo sempre soma.
+- Ao concluir a OP, no modo de estoque simples: entrada da quantidade produzida e baixa dos componentes por (produzido + refugo). No modo com lote, nada é lançado e a tela avisa.

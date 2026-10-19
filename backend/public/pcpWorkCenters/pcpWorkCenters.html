@@ -1,0 +1,140 @@
+<!-- ╔════════════════════════════════════════════════════════════╗
+     ║ pcpWorkCenters.html — PCP / Produção — PRODNEX ERP
+     ╚════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>CENTROS DE TRABALHO | PRODNEX ERP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/pcp/pcp.css" />
+</head>
+
+<body class="page consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <div class="header pcp-page-header">
+      <div>
+        <h2 class="pcp-card-title">Centros de Trabalho</h2>
+        <p class="pcp-card-caption">Máquinas, células e setores onde as operações de produção acontecem.</p>
+      </div>
+      <div class="pcp-header-actions">
+        <button id="btnNew" type="button" class="btn btn-toolbar btn-sm">+ Novo centro</button>
+      </div>
+    </div>
+
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter pcp-filter-bar">
+        <div class="fields-inline fields-gap3 pcp-filter-row">
+          <div class="fields fields-inline fields-w-20 fields-h-6 pcp-search-field">
+            <input id="search" type="text" class="pcp-search-input" placeholder="Buscar por código ou nome..." autocomplete="off" />
+            <span class="pcp-search-icon" aria-hidden="true">🔍</span>
+          </div>
+          <div class="fields fields-inline fields-w-10 fields-h-6">
+            <label class="pcp-checkbox-inline">
+              <input id="includeInactive" type="checkbox" />
+              <span>Incluir inativos</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-scroll table-height-flex table-row-h-20" data-table-settings="pcp.workcenters">
+        <table class="table table-zebra table-zebra-hover table-sticky-head pcp-table">
+          <thead>
+            <tr>
+              <th style="width:110px">Código</th>
+              <th>Nome</th>
+              <th class="num" style="width:140px">Custo / hora</th>
+              <th class="num" style="width:150px">Capacidade (h/dia)</th>
+              <th class="center" style="width:110px">Status</th>
+              <th class="center" style="width:130px">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+      <footer class="table-footer">
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+            <span id="wcTableInfo">0 registros</span>
+          </div>
+        </div>
+        <div class="table-footer__pagination">
+          <button type="button" id="wcPrevPage" class="btn btn-clean btn-sm">Anterior</button>
+          <span id="wcPageInfo">Página 1 de 1</span>
+          <button type="button" id="wcNextPage" class="btn btn-new btn-sm">Próxima</button>
+        </div>
+        <div class="table-footer__page-size">
+          <label for="wcRowsPerPage">Mostrar</label>
+          <select id="wcRowsPerPage" class="table-footer__page-size-select">
+            <option value="10">10 linhas</option>
+            <option value="20">20 linhas</option>
+            <option value="50" selected>50 linhas</option>
+            <option value="100">100 linhas</option>
+          </select>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <dialog id="modal" class="pcp-modal">
+    <div class="pcp-modal__header">
+      <div>
+        <h3 id="modalTitle">Novo centro de trabalho</h3>
+        <p>O custo por hora é usado no custo das operações da ficha técnica.</p>
+      </div>
+      <button id="btnClose" type="button" class="pcp-modal__close" aria-label="Fechar">×</button>
+    </div>
+
+    <form id="form" class="pcp-modal__body">
+      <input id="workCenterId" type="hidden" />
+      <div class="pcp-form-grid">
+        <div class="pcp-form-field">
+          <label for="code" class="pcp-label">Código *</label>
+          <input id="code" type="text" maxlength="20" class="pcp-input" placeholder="Ex.: INJ01" required autocomplete="off" />
+        </div>
+        <div class="pcp-form-field pcp-span-2">
+          <label for="name" class="pcp-label">Nome *</label>
+          <input id="name" type="text" maxlength="100" class="pcp-input" placeholder="Ex.: Injetora 01" required autocomplete="off" />
+        </div>
+        <div class="pcp-form-field">
+          <span class="pcp-label">Status</span>
+          <label class="pcp-switch">
+            <input id="isActive" type="checkbox" checked />
+            <span class="pcp-switch-slider"></span>
+            <span class="pcp-switch-label">Ativo</span>
+          </label>
+        </div>
+        <div class="pcp-form-field">
+          <label for="hourlyCost" class="pcp-label">Custo por hora (R$)</label>
+          <input id="hourlyCost" type="number" step="0.01" min="0" value="0" class="pcp-input" />
+        </div>
+        <div class="pcp-form-field">
+          <label for="capacity" class="pcp-label">Capacidade (h/dia)</label>
+          <input id="capacity" type="number" step="0.5" min="0" value="8" class="pcp-input" />
+        </div>
+        <div class="pcp-form-field pcp-span-4">
+          <label for="notes" class="pcp-label">Observações</label>
+          <input id="notes" type="text" class="pcp-input" autocomplete="off" />
+        </div>
+      </div>
+
+      <div id="formMessage" class="pcp-form-message" role="alert" hidden></div>
+
+      <div class="pcp-modal__footer">
+        <button id="btnCancel" type="button" class="btn btn-clean btn-sm">Cancelar</button>
+        <button type="submit" class="btn btn-toolbar btn-sm">Salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="/public/pcpWorkCenters/js/pcpWorkCenters.js"></script>
+</body>
+
+</html>

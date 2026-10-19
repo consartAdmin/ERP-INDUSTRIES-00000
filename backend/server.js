@@ -938,6 +938,13 @@ import unitsRoutes from './routes/unitsRoutes.js';
 app.use('/api', unitsRoutes);
 
 /* ╔══════════════════════════════════════════════════════════╗
+   ║                Rotas: "pcpRoutes" (PCP / Produção)        ║
+   ╚══════════════════════════════════════════════════════════╝ */
+import pcpRoutes from './routes/pcpRoutes.js';
+import { requireAuth as requireAuthPcp } from './middleware/authMiddleware.js';
+app.use('/api/pcp', requireAuthPcp, pcpRoutes);
+
+/* ╔══════════════════════════════════════════════════════════╗
    ║               Rotas: "cnpjPublicRoutes"                  ║
    ╚══════════════════════════════════════════════════════════╝ */
 import cnpjPublicRoutes from './routes/cnpjPublicRoutes.js';

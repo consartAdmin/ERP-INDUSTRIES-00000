@@ -1,0 +1,96 @@
+<!-- ╔════════════════════════════════════════════════════════════╗
+     ║ pcpMrp.html — PCP / Produção — PRODNEX ERP
+     ╚════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>NECESSIDADE DE MATERIAIS | PRODNEX ERP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/pcp/pcp.css" />
+</head>
+
+<body class="page consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <div class="header pcp-page-header">
+      <div>
+        <h2 class="pcp-card-title">Necessidade de Materiais (MRP)</h2>
+        <p class="pcp-card-caption">Soma o que as OPs abertas ainda vão consumir e compara com o estoque atual e o estoque mínimo.</p>
+      </div>
+      <div class="pcp-header-actions">
+        <button id="btnExport" type="button" class="btn btn-clean btn-sm">Exportar CSV</button>
+        <button id="btnRefresh" type="button" class="btn btn-toolbar btn-sm">Atualizar</button>
+      </div>
+    </div>
+
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter pcp-filter-bar">
+        <div class="fields-inline fields-gap3 pcp-filter-row">
+          <div class="fields fields-inline fields-w-20 fields-h-6 pcp-search-field">
+            <input id="search" type="text" class="pcp-search-input" placeholder="Buscar componente..." autocomplete="off" />
+            <span class="pcp-search-icon" aria-hidden="true">🔍</span>
+          </div>
+          <div class="fields fields-inline fields-w-10 fields-h-6">
+            <label class="pcp-checkbox-inline">
+              <input id="onlyShortage" type="checkbox" checked />
+              <span>Somente o que falta comprar</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-scroll table-height-flex table-row-h-20" data-table-settings="pcp.mrp">
+        <table class="table table-zebra table-zebra-hover table-sticky-head pcp-table">
+          <thead>
+            <tr>
+              <th style="width:130px">Componente</th>
+              <th>Descrição</th>
+              <th class="num" style="width:120px">Necessário</th>
+              <th class="num" style="width:110px">Estoque</th>
+              <th class="num" style="width:110px">Est. mínimo</th>
+              <th class="num" style="width:120px">Comprar</th>
+              <th class="num" style="width:130px">Valor estimado</th>
+              <th class="num" style="width:70px">OPs</th>
+              <th class="center" style="width:120px">1ª entrega</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+      <footer class="table-footer">
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+            <span id="mrpTableInfo">0 registros</span>
+          </div>
+          <div class="summary-pill summary-left-space-3">
+            <span>Total a comprar: <strong id="mrpTotal">R$ 0,00</strong></span>
+          </div>
+        </div>
+        <div class="table-footer__pagination">
+          <button type="button" id="mrpPrevPage" class="btn btn-clean btn-sm">Anterior</button>
+          <span id="mrpPageInfo">Página 1 de 1</span>
+          <button type="button" id="mrpNextPage" class="btn btn-new btn-sm">Próxima</button>
+        </div>
+        <div class="table-footer__page-size">
+          <label for="mrpRowsPerPage">Mostrar</label>
+          <select id="mrpRowsPerPage" class="table-footer__page-size-select">
+            <option value="10">10 linhas</option>
+            <option value="20">20 linhas</option>
+            <option value="50" selected>50 linhas</option>
+            <option value="100">100 linhas</option>
+          </select>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="/public/pcpMrp/js/pcpMrp.js"></script>
+</body>
+
+</html>
