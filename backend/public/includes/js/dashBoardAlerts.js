@@ -21,9 +21,6 @@ const DASH_ALERTS_API =
 const ORDERS_PENDING_NFE_API =
   '/api/orders/pending-nfe';
 
-const BETTER_DATE_API =
-  '/api/betterDateToBuy/today-alerts';
-
 const STOCK_ALERTS_API =
   '/api/dashboard/stock-alerts';
 
@@ -33,9 +30,6 @@ const STOCK_ALERTS_API =
 // ─────────────────────────────────────────────────────────────
 const ORDERS_PAGE_URL =
   '/public/orders/orders.html';
-
-const BETTER_DATE_PAGE_URL =
-  '/betterDateToBuy/betterDateToBuy.html';
 
 const STOCK_PAGE_URL =
   '/public/productsStock/productsStock.html';
@@ -98,9 +92,6 @@ let alertBudgetsOrdersCard;
 let alertBudgetsOrdersCount;
 let alertBudgetsOrdersStatus;
 
-let alertBetterDateCard;
-let alertBetterDateCount;
-let alertBetterDateStatus;
 
 let alertStockCard;
 let alertStockCount;
@@ -162,23 +153,6 @@ function initElements() {
     );
 
 
-  // BETTER DATE
-  alertBetterDateCard =
-    document.getElementById(
-      'alert-better-date'
-    );
-
-  alertBetterDateCount =
-    document.getElementById(
-      'alert-better-date-count'
-    );
-
-  alertBetterDateStatus =
-    alertBetterDateCard?.querySelector(
-      '.dashboard-alert-status'
-    );
-
-
   // STOCK
   alertStockCard =
     document.getElementById(
@@ -230,16 +204,6 @@ function bindNavigation() {
       () => {
         window.location.href =
           ORDERS_PAGE_URL;
-      }
-    );
-  }
-
-  if (alertBetterDateCard) {
-    alertBetterDateCard.addEventListener(
-      'click',
-      () => {
-        window.location.href =
-          BETTER_DATE_PAGE_URL;
       }
     );
   }
@@ -359,39 +323,6 @@ async function updateOrdersAlert() {
 
 
 // ─────────────────────────────────────────────────────────────
-// UPDATE BETTER DATE ALERT
-// ─────────────────────────────────────────────────────────────
-async function updateBetterDateAlert() {
-  const data =
-    await safeJson(
-      BETTER_DATE_API
-    );
-
-  if (!Array.isArray(data)) return;
-
-  const count =
-    data.length;
-
-  if (alertBetterDateCount) {
-    alertBetterDateCount.textContent =
-      count;
-  }
-
-  if (alertBetterDateStatus) {
-    alertBetterDateStatus.textContent =
-      count > 0
-        ? `${count} cliente(s) precisam contato`
-        : 'Nenhum alerta hoje';
-  }
-
-  alertBetterDateCard?.classList.toggle(
-    'is-active',
-    count > 0
-  );
-}
-
-
-// ─────────────────────────────────────────────────────────────
 // UPDATE STOCK ALERT
 // ─────────────────────────────────────────────────────────────
 async function updateStockAlert() {
@@ -433,7 +364,6 @@ async function atualizarDashBoardAlerts() {
   await Promise.all([
     updateMainAlerts(),
     updateOrdersAlert(),
-    updateBetterDateAlert(),
     updateStockAlert()
   ]);
 }

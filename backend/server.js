@@ -457,20 +457,11 @@ app.get("/api/nfe/stream/:id", (req, res) => {
    ║ Rotas principais (importadas)                            ║
    ╚══════════════════════════════════════════════════════════╝ */
 
-/* ╔══════════════════════════════════════════════════════════╗
-   ║ Aliases Hotfix (ANTES das rotas principais)              ║
-   ╚══════════════════════════════════════════════════════════╝ */
-import aliasesHotfix from "./routes/aliasesHotfix.js";
-app.use("/api", aliasesHotfix);
-
 import homeRoutes from "./routes/homeRoutes.js";
 app.use("/home", homeRoutes);
 
 import gcsImagesRoutes from './routes/gcsImagesRoutes.js';
 app.use('/api/gcs/images', gcsImagesRoutes);
-
-import pdvLoginsRoutes from './routes/pdv_loginsRoutes.js';
-app.use('/api/pdv-logins', pdvLoginsRoutes);
 
 import customerPriceTablesRoutes from './routes/customerPriceTablesRoutes.js';
 
@@ -660,9 +651,6 @@ import { emailInboundsBootstrap } from './services/email/emailInboundsBootstrap.
    ╚══════════════════════════════════════════════════════════╝ */
 import ibgeLocationsRoutes from './routes/ibgeLocationsRoutes.js';
 app.use('/api', ibgeLocationsRoutes);
-
-import roletaRoutes from './routes/roletaRoutes.js';
-app.use('/api/roleta', roletaRoutes);
 
 import meRoutes from './routes/meRoutes.js';
 app.use(meRoutes);
@@ -951,12 +939,6 @@ import cnpjPublicRoutes from './routes/cnpjPublicRoutes.js';
 app.use('/api/public-cnpj', cnpjPublicRoutes);
 
 /* ╔══════════════════════════════════════════════════════════╗
-   ║               Rotas: "nfeXmlAntigasRoutes"               ║
-   ╚══════════════════════════════════════════════════════════╝ */
-import nfeXmlAntigasRoutes from './routes/nfeXmlAntigasRoutes.js';
-app.use('/api/nfe-xml-antigas', nfeXmlAntigasRoutes);
-
-/* ╔══════════════════════════════════════════════════════════╗
    ║               Rotas: "sefazSearchRoutes"                 ║
    ╚══════════════════════════════════════════════════════════╝ */
 import sefazSearchRoutes from './routes/sefazSearchRoutes.js';
@@ -1017,21 +999,6 @@ app.use('/api', customerStatusTypesRoutes);
 import customerStatusRoutes from './routes/customerStatusRoutes.js';
 app.use('/api', customerStatusRoutes);
 
-/* ╔══════════════════════════════════════════════════════════╗
-   ║ ROTA: Ecommerce Orders                                   ║
-   ╚══════════════════════════════════════════════════════════╝ */
-import ecommerceOrdersController from "./controllers/ecommerceOrdersController.js";
-import ecommerceOrdersRoutes from "./routes/ecommerceOrdersRoutes.js";
-
-// Uso das rotas
-app.use("/api/ecommerce-orders", ecommerceOrdersRoutes);
-
-/* ╔══════════════════════════════════════════════════════════╗
-   ║ ROTA: Webhook NFC-e                                      ║
-   ╚══════════════════════════════════════════════════════════╝ */
-import plugnotasNfceWebhookRoutes from './routes/plugnotasNfceWebhookRoutes.js';
-app.use('/api/webhooks/plugnotas', plugnotasNfceWebhookRoutes);
-
 import deliveryRoutesRoutes from './routes/deliveryRoutesRoutes.js';
 app.use('/api/deliveryRoutes', deliveryRoutesRoutes);
 
@@ -1045,12 +1012,6 @@ app.use('/api/product-fiscal-cost-rules', productFiscalCostRulesRoutes);
    ╚══════════════════════════════════════════════════════════╝ */
 import productsFiscalOriginsRoutes from './routes/productsFiscalOriginsRoutes.js';
 app.use('/api/products-fiscal-origins', productsFiscalOriginsRoutes);
-/* ╔══════════════════════════════════════════════════════════╗
-   ║ ROTA: "googleAdsCreateRoutes"                            ║
-   ╚══════════════════════════════════════════════════════════╝ */
-import googleAdsCreateRoutes from './routes/googleAdsCreateRoutes.js';
-app.use('/api', googleAdsCreateRoutes);
-
 /* ╔══════════════════════════════════════════════════════════╗
    ║ ROTA: "productsBatchGroupRoutes"                         ║
    ╚══════════════════════════════════════════════════════════╝ */
@@ -1068,12 +1029,6 @@ app.use('/api/products-batch-manufacturer', productsBatchManufacturerRoutes);
    ╚═══════════════════════════════════════════════════════════╝ */
 import paymentFormsRoutes from './routes/paymentFormsRoutes.js';
 app.use('/api/paymentForms', paymentFormsRoutes);
-
-/* ╔═══════════════════════════════════════════════════════════╗
-   ║ ROTA:  pdvSalesReportRoutes                               ║
-   ╚═══════════════════════════════════════════════════════════╝ */
-import pdvSalesReportRoutes from './routes/pdvSalesReportRoutes.js';
-app.use('/api/reports/pdv-sales', pdvSalesReportRoutes);
 
 /* ╔═══════════════════════════════════════════════════════════╗
    ║ ROTA:  productBarCodeSecondRoutes                         ║
@@ -1121,18 +1076,6 @@ app.use('/api', reportsProductsStockRoutes);
 
 import productsNotesRoutes from './routes/productsNotesRoutes.js';
 app.use('/api/products-notes', productsNotesRoutes);
-
-/* ╔══════════════════════════════════════════════════════════╗
-   ║ ROTA: "reportsProductsStockRoutes"                       ║
-   ╚══════════════════════════════════════════════════════════╝ */
-import promoImagesRoutes from './routes/promoImagesRoutes.js';
-app.use('/api/promo-images', promoImagesRoutes);
-
-/* ╔══════════════════════════════════════════════════════════╗
-   ║ ROTA: "googleAdsRoutes"                                  ║
-   ╚══════════════════════════════════════════════════════════╝ */
-import googleAdsRoutes from './routes/googleAdsRoutes.js';
-app.use('/api/googleads', googleAdsRoutes);
 
 /* ╔══════════════════════════════════════════════════════════╗
    ║ ROTA: "locationsBarCodeRoutes                            
@@ -1312,12 +1255,6 @@ import customerTrainingsRoutes from './routes/customerTrainingsRoutes.js';
 app.use('/api/customer-trainings', customerTrainingsRoutes);
 
 // ╔═══════════════════════════════════════════════════════════════════════════╗
-// ║                        API — "crmConsartReativacao"                       ║
-// ╚═══════════════════════════════════════════════════════════════════════════╝
-import crmConsartReativacaoRoutes from "./routes/crmConsartRoutes.js";
-app.use('/api', crmConsartReativacaoRoutes);
-
-// ╔═══════════════════════════════════════════════════════════════════════════╗
 // ║                        API — "salesReportRoutes"                          ║
 // ╚═══════════════════════════════════════════════════════════════════════════╝
 import salesReportRoutes from './routes/salesReportRoutes.js';
@@ -1360,9 +1297,6 @@ app.use('/api/access-profiles', accessProfilesRoutes);
 import usersRoutes from './routes/usersRoutes.js';
 app.use('/api/users', usersRoutes);
 
-import painelNotasFiscaisRoutes from "./routes/painelNotasFiscaisRoutes.js";
-app.use("/api", painelNotasFiscaisRoutes);
-
 // ╔═══════════════════════════════════════════════════════════════════════════╗
 // ║ API — "paymentMethodsRoutes"                                              ║
 // ╚═══════════════════════════════════════════════════════════════════════════╝
@@ -1370,9 +1304,6 @@ import paymentMethodsRoutes from './routes/paymentMethodsRoutes.js';
 
 app.use('/api/payment-methods', paymentMethodsRoutes);
 app.use('/api/paymentMethods', paymentMethodsRoutes); // opcional compatibilidade
-
-import contabilizadorConsartCrmRoutes from "./routes/contabilizadorConsartCrmRoutes.js";
-app.use("/api/contabilizador-crm", contabilizadorConsartCrmRoutes);
 
 import gestaoVendasRoutes from "./routes/gestaoVendasRoutes.js";
 app.use("/api/gestao-vendas", gestaoVendasRoutes);
@@ -1439,14 +1370,6 @@ app.use('/api/sales-commissions-from-invoices', salesCommissionsFromInvoicesRout
 
 import ordersPaymentsRoutes from './routes/ordersPaymentsRoutes.js';
 app.use('/api/orders-payments', ordersPaymentsRoutes);
-
-import betterDateToBuyRoutes
-   from './routes/betterDateToBuyRoutes.js';
-
-app.use(
-   '/api/betterDateToBuy',
-   betterDateToBuyRoutes
-);
 
 // ╔═══════════════════════════════════════════════════════════════════════════╗
 // ║ API — "usoConsumoRoutes"                                                  ║
@@ -1634,7 +1557,6 @@ async function runStartupJobs() {
 
    const jobs = [
       { name: "initNfeInboxController", fn: () => initNfeInboxController() },
-      { name: "initEcommerceOrdersController", fn: () => ecommerceOrdersController.initEcommerceOrdersController() },
       { name: "initOrdersBillingController", fn: () => initOrdersBillingController() },
    ];
 
