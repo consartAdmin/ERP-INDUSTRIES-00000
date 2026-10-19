@@ -10,6 +10,13 @@ telas em `backend/public/<modulo>/`), `desktop/` (Electron) e `docs/`.
 - Deploy específico do Infinity (`deploy-lite.ps1`, `svc.yaml`, projeto/conta GCP do Infinity), logs e scripts avulsos
 - Histórico git (o projeto começa sem `.git`)
 
+## Módulos do Infinity removidos (não servem para indústria)
+- E-commerce e marketing: pedidos e-commerce, Google Ads, trackeamento/GA4, site admin, banners de promoção, Roleta Premiada, Better Date To Buy
+- PDV / NFC-e: usuários do PDV, relatório de vendas PDV, painel NFC-e, webhook NFC-e
+- Telas próprias da CONSART (clientes, vendedores, pedidos, CRM reativação, Central Contábil). A lógica BH3 x CONSART em `utils/erpCompanyContext.js` ainda existe.
+- Migração do sistema antigo: notas fiscais do sistema antigo, XMLs antigos, scripts `backFill*` e de migração do menu, `aliasesHotfix`
+- Cobrança extrajudicial e Orçamento Inteligente (já estavam desativados)
+
 ## O que foi trocado para PRODNEX
 - Títulos das telas "CONSART ERP" → "PRODNEX ERP"; tela de login nova com o logo
 - Ícone/brasão e logo (`brasaoConsartInfinity.png`, `consartInfinity.png`) substituídos pelo Prodnex

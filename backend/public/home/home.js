@@ -56,12 +56,6 @@ const STOCK_POSITION_URLS = [
 
 const STOCK_POSITION_PAGE = '/public/reportsProductsStock/reportsProductsStock.html';
 
-const ECOMMERCE_ORDERS_URL = '/api/ecommerce-orders?limit=1&offset=0';
-const ECOMMERCE_ORDERS_PAGE = '/public/ecommerceOrders/ecommerceOrders.html';
-
-let lastEcommerceOrderId =
-  Number(localStorage.getItem('lastEcommerceOrderId') || 0);
-
 ////////////////////////////////////////////////////////////////////////////////
 // ⌨️ Helpers
 ////////////////////////////////////////////////////////////////////////////////
@@ -381,91 +375,6 @@ function configurarCliquePosicaoEstoque() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// 🛒 ALERTA PEDIDOS E-COMMERCE
-////////////////////////////////////////////////////////////////////////////////
-
-async function carregarAlertaPedidosEcommerce({ firstLoad = false } = {}) {
-  const card = document.getElementById('alert-ecommerce-orders');
-  const badge = document.getElementById('alert-ecommerce-orders-count');
-  const status = document.getElementById('alert-ecommerce-orders-status');
-
-  if (!card || !badge || !status) return;
-
-  try {
-    const response = await fetch(ECOMMERCE_ORDERS_URL, {
-      headers: {
-        ...authHeaders(),
-        Accept: 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
-
-    const json = await response.json();
-    const latestOrder = Array.isArray(json?.data) ? json.data[0] : null;
-
-    if (!latestOrder?.id) {
-      badge.textContent = '0';
-      status.textContent = 'Nenhum pedido encontrado';
-      return;
-    }
-
-    const latestId = Number(latestOrder.id);
-
-    if (firstLoad && !lastEcommerceOrderId) {
-      lastEcommerceOrderId = latestId;
-      localStorage.setItem('lastEcommerceOrderId', String(latestId));
-
-      badge.textContent = '0';
-      status.textContent = 'Nenhum pedido novo';
-      return;
-    }
-
-    if (latestId > lastEcommerceOrderId) {
-      badge.textContent = '1';
-      status.textContent = `Novo pedido #${latestId} recebido`;
-
-      card.classList.add('dashboard-alert-warning');
-
-      try {
-        new Audio('/public/sounds/notification.mp3').play().catch(() => { });
-      } catch (_) { }
-    } else {
-      badge.textContent = '0';
-      status.textContent = 'Nenhum pedido novo';
-      card.classList.remove('dashboard-alert-warning');
-    }
-  } catch (err) {
-    console.error('[HOME][ECOMMERCE_ORDERS_ALERT][ERROR]', err);
-
-    badge.textContent = '!';
-    status.textContent = 'Erro ao verificar pedidos';
-    card.classList.add('dashboard-alert-danger');
-  }
-}
-
-function configurarCliquePedidosEcommerce() {
-  const card = document.getElementById('alert-ecommerce-orders');
-
-  if (!card) return;
-
-  card.addEventListener('click', () => {
-    const badge = document.getElementById('alert-ecommerce-orders-count');
-
-    lastEcommerceOrderId =
-      Number(localStorage.getItem('lastEcommerceOrderId') || lastEcommerceOrderId);
-
-    localStorage.setItem('lastEcommerceOrderId', String(lastEcommerceOrderId));
-
-    if (badge) badge.textContent = '0';
-
-    window.location.href = ECOMMERCE_ORDERS_PAGE;
-  });
-}
-
-////////////////////////////////////////////////////////////////////////////////
 // ⌨️ Atalho Global
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -618,13 +527,6 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
   configurarCliquePosicaoEstoque();
   carregarPosicaoEstoqueHome();
-
-  configurarCliquePedidosEcommerce();
-  carregarAlertaPedidosEcommerce({ firstLoad: true });
-
-  setInterval(() => {
-    carregarAlertaPedidosEcommerce();
-  }, 30000);
 });
 
 ////////////////////////////////////////////////////////////////////////////////
