@@ -17,6 +17,7 @@ import { parseStringPromise } from 'xml2js';
 
 import pool from '../config/db.js';
 import inboundInvoicesApi from '../repositories/inboundInvoices/inboundInvoices.index.js';
+import { applyRawMaterialRefs } from '../repositories/pcp/pcpInbound.repository.js';
 import { createFromSource as createAccountsPayableFromSource } from '../repositories/accountsPayable/accountsPayable.index.js';
 
 // ============================================================================
@@ -758,7 +759,10 @@ export async function autoImportFromDfe(req, res) {
 
     try {
       const parsedItems = await parseNfeItemsFromXml(xmlString);
-      const items = await resolveItemsWithLmRef({ issuerTaxId, items: parsedItems });
+      const items = await applyRawMaterialRefs(
+        issuerTaxId,
+        await resolveItemsWithLmRef({ issuerTaxId, items: parsedItems })
+      );
 
       for (const item of items) {
         await inboundInvoicesApi.createItem({

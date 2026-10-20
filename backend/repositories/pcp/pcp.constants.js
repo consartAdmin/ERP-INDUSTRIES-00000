@@ -11,6 +11,8 @@ export const TB_ORDER_MATERIALS = 'public."pcpProductionOrderMaterials"';
 export const TB_REPORTS = 'public."pcpProductionReports"';
 export const TB_RAW_MATERIALS = 'public."pcpRawMaterials"';
 export const TB_RAW_MOVEMENTS = 'public."pcpRawMaterialMovements"';
+export const TB_RAW_SUPPLIER_REFS = 'public."pcpRawMaterialSupplierRefs"';
+export const TB_INBOUND_ITEMS = 'public."inboundInvoiceItems"';
 
 export const TB_PRODUCTS = 'public."products"';
 export const TB_STOCK = 'public."productsStock"';

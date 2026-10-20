@@ -7,7 +7,7 @@ import pool from '../../config/db.js';
 import {
   TB_WORK_CENTERS, TB_BOM, TB_BOM_ITEMS, TB_BOM_OPERATIONS,
   TB_ORDERS, TB_ORDER_MATERIALS, TB_REPORTS, TB_MODULES,
-  TB_RAW_MATERIALS, TB_RAW_MOVEMENTS,
+  TB_RAW_MATERIALS, TB_RAW_MOVEMENTS, TB_RAW_SUPPLIER_REFS, TB_INBOUND_ITEMS,
 } from './pcp.constants.js';
 import { ensureItemTypeColumn } from '../products/productsItemType.js';
 
@@ -85,6 +85,26 @@ export async function ensureTables() {
       );
       CREATE INDEX IF NOT EXISTS "pcpRawMaterialMovements_material_idx"
         ON ${TB_RAW_MOVEMENTS} (raw_material_id, created_at DESC);
+    `);
+
+    // Vínculo código do fornecedor (NF-e) → matéria-prima, por CNPJ do emitente.
+    // conversion_factor = quantas unidades da matéria-prima vêm em 1 unidade da nota.
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS ${TB_RAW_SUPPLIER_REFS} (
+        ref_id            SERIAL PRIMARY KEY,
+        supplier_tax_id   VARCHAR(14)   NOT NULL,
+        nf_product_code   VARCHAR(60)   NOT NULL,
+        raw_material_id   INTEGER       NOT NULL REFERENCES ${TB_RAW_MATERIALS}(raw_material_id) ON DELETE CASCADE,
+        conversion_factor NUMERIC(14,6) NOT NULL DEFAULT 1,
+        created_at        TIMESTAMP     NOT NULL DEFAULT NOW(),
+        updated_at        TIMESTAMP     NOT NULL DEFAULT NOW(),
+        UNIQUE (supplier_tax_id, nf_product_code)
+      );
+    `);
+
+    // Item da nota de entrada pode ser uma matéria-prima em vez de um produto.
+    await client.query(`
+      ALTER TABLE IF EXISTS ${TB_INBOUND_ITEMS} ADD COLUMN IF NOT EXISTS raw_material_id INTEGER;
     `);
 
     // Ficha técnica: uma estrutura ativa por produto (product_code).

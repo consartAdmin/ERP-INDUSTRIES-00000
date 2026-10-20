@@ -482,6 +482,52 @@
   </div>
 
   <!-- ============================================================= -->
+  <!-- MODAL — VINCULAR ITEM A MATÉRIA-PRIMA (Prodnex PCP)            -->
+  <!-- Estrutura padrao de /public/includes/css/modals.css            -->
+  <!-- ============================================================= -->
+  <div id="rawLinkModal" class="modal" aria-hidden="true">
+    <div class="modal__backdrop" data-raw-link-close></div>
+
+    <div class="modal__dialog">
+      <div class="modal__panel modal-width-6" role="dialog" aria-modal="true" aria-labelledby="rawLinkModalTitle">
+
+        <header class="modal__header modal-header-color-3">
+          <div>
+            <h3 id="rawLinkModalTitle" class="modal__title">Vincular matéria-prima</h3>
+            <p id="rawLinkItemInfo" class="modal__subtitle"></p>
+          </div>
+          <button type="button" class="modal__close" aria-label="Fechar" data-raw-link-close>&times;</button>
+        </header>
+
+        <form id="formRawLink" class="modal__body" autocomplete="off">
+          <div class="modal-form-grid modal-form-grid--4">
+            <div class="fields fields-h-6 fields-w-full modal-field--span-3">
+              <label for="rawLinkSearch">Matéria-prima</label>
+              <input id="rawLinkSearch" type="text" list="rawLinkOptions" placeholder="Digite o código ou a descrição" />
+            </div>
+            <div class="fields fields-h-6 fields-w-full">
+              <label for="rawLinkFactor">Fator de conversão</label>
+              <input id="rawLinkFactor" type="number" step="any" min="0" value="1" />
+            </div>
+          </div>
+          <p id="rawLinkHint" class="muted" style="margin:6px 0 0; font-size:.8rem;"></p>
+          <p id="rawLinkMessage" class="muted" style="margin:6px 0 0; font-size:.8rem; color:#c62828;" hidden></p>
+          <datalist id="rawLinkOptions"></datalist>
+        </form>
+
+        <footer class="modal__footer modal-footer-color-3">
+          <button type="button" id="btnRawUnlink" class="btn btn-delete btn-sm">Remover vínculo</button>
+          <button type="button" id="btnRawCreate" class="btn btn-clean btn-sm"
+            title="Cria a matéria-prima com a descrição, unidade, NCM e custo do item da nota">Criar com os dados do item</button>
+          <button type="button" class="btn btn-cancel btn-sm" data-raw-link-close>Cancelar</button>
+          <button type="submit" form="formRawLink" class="btn btn-save btn-sm">Vincular</button>
+        </footer>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================= -->
   <!-- MODAL — IMPORTAR XML DIRETO DO DF-e                            -->
   <!-- Estrutura padrao de /public/includes/css/modals.css            -->
   <!-- ============================================================= -->

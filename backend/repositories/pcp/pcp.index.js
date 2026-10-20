@@ -10,3 +10,4 @@ export * as Orders from './pcpProductionOrders.repository.js';
 export * as Mrp from './pcpMrp.repository.js';
 export * as RawMaterials from './pcpRawMaterials.repository.js';
 export { ORDER_STATUS, ORDER_TRANSITIONS } from './pcp.constants.js';
+export * as Inbound from './pcpInbound.repository.js';

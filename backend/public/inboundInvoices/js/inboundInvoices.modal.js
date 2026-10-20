@@ -113,6 +113,11 @@ export function initLinkProduct({ core, ROUTES, state, refs }) {
           // Preserve XML description, quantities, prices and invoice identifiers.
           item.product_code = code;
           item.product_code_cad = code;
+          // Produto e matéria-prima são exclusivos no item.
+          item.raw_material_id = null;
+          item.raw_material_code = null;
+          item.raw_material_description = null;
+          item.raw_material = null;
           item.product_id = toIntOrNull(resolvedProduct.product_id ?? resolvedProduct.id);
           item.product_stock_id = toIntOrNull(resolvedProduct.product_stock_id);
           item.product_description = String(
