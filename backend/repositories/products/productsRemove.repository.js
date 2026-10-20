@@ -6,6 +6,7 @@ import pool from '../../config/db.js';
 import { PRODUCTS_TABLE, PRODUCTS_SCHEMA } from './products.catalog.js';
 import { ProductsApiError } from './products.utils.js';
 import { requiredProductCode } from './products.sanitizers.js';
+import { ensureItemTypeColumn } from './productsItemType.js';
 
 export async function softDeleteByCode(productCode) {
     return setActiveByCode(productCode, false);
@@ -16,6 +17,7 @@ export async function restoreByCode(productCode) {
 }
 
 async function setActiveByCode(productCode, isActive) {
+    await ensureItemTypeColumn();
     const code = requiredProductCode(productCode);
     const { rows } = await pool.query(
         `

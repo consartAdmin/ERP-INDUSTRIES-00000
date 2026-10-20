@@ -1,13 +1,15 @@
 // ╔══════════════════════════════════════════════════════════════════════╗
 // ║ catalog_schema.products.js — Schema de Produtos — ESM               ║
 // ║ CONSART ERP                                                          ║
-// ║ Alinhado com public.products — 16 colunas                            ║
+// ║ Alinhado com public.products — 17 colunas                            ║
 // ╚══════════════════════════════════════════════════════════════════════╝
 
 // Este catálogo não cria nem altera tabelas.
 // Preços, grades, unidades, dimensões, dados fiscais, imagens adicionais,
 // códigos de barras e logística pertencem às respectivas tabelas filhas.
 // product_code pode ser informado ou gerado por trg_products_autogen_code.
+
+import { normalizeItemType } from './productsItemType.js';
 
 // ----------------------------------------------------------------------
 // Tabela e chave primária
@@ -41,6 +43,8 @@ const columns = [
   { name: 'created_at', type: 'TIMESTAMP', default: 'NOW()' },
   { name: 'updated_at', type: 'TIMESTAMP', default: 'NOW()' },
   { name: 'is_active', type: 'BOOLEAN', default: 'TRUE' },
+  // Tipo do item (SPED 0200). Criada por ensureItemTypeColumn() em productsItemType.js.
+  { name: 'item_type', type: 'VARCHAR(2)' },
 ];
 
 // ----------------------------------------------------------------------
@@ -60,6 +64,7 @@ export const PRODUCTS_INSERT_COLUMNS = Object.freeze([
   'manufacturer_id',
   'product_imagem_id',
   'is_active',
+  'item_type',
 ]);
 
 export const PRODUCTS_UPDATE_COLUMNS = PRODUCTS_INSERT_COLUMNS;
@@ -94,6 +99,7 @@ Object.assign(inputMap, {
   manufacturer_id: ['manufacturer_id', 'fabricante_id'],
   product_imagem_id: ['product_imagem_id', 'product_image_id', 'imagem_id'],
   is_active: ['is_active', 'active', 'ativo'],
+  item_type: ['item_type', 'tipo_item', 'tipoItem'],
 });
 
 // ----------------------------------------------------------------------
@@ -111,6 +117,7 @@ export const PRODUCTS_SCHEMA = {
     { name: 'idx_products_barcode', on: ['barcode'] },
     { name: 'idx_products_description', on: ['description'] },
     { name: 'idx_products_is_active', on: ['is_active'] },
+    { name: 'idx_products_item_type', on: ['item_type'] },
     { name: 'idx_products_manufacturer_id', on: ['manufacturer_id'] },
     { name: 'idx_products_product_group_id', on: ['product_group_id'] },
     { name: 'idx_products_product_imagem_id', on: ['product_imagem_id'] },
@@ -231,6 +238,15 @@ function prepare(payload, insert) {
         field: 'manufacturer_ref',
         message: 'manufacturer_ref deve ter no máximo 100 caracteres',
       });
+    }
+  }
+
+  if (Object.prototype.hasOwnProperty.call(data, 'item_type')) {
+    const itemType = normalizeItemType(data.item_type);
+    if (itemType === undefined) {
+      errors.push({ field: 'item_type', message: `Tipo do item inválido: ${data.item_type}` });
+    } else {
+      data.item_type = itemType;
     }
   }
 

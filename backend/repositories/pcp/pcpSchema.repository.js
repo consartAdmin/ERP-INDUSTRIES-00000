@@ -8,6 +8,7 @@ import {
   TB_WORK_CENTERS, TB_BOM, TB_BOM_ITEMS, TB_BOM_OPERATIONS,
   TB_ORDERS, TB_ORDER_MATERIALS, TB_REPORTS, TB_MODULES,
 } from './pcp.constants.js';
+import { ensureItemTypeColumn } from '../products/productsItemType.js';
 
 const MENU_ITEMS = [
   { name: 'Ordens de Produção', path: '/public/pcpProductionOrders/pcpProductionOrders.html' },
@@ -25,6 +26,9 @@ export function ensureOnce() {
 }
 
 export async function ensureTables() {
+  // products.item_type: a busca de produtos do PCP filtra por tipo do item.
+  await ensureItemTypeColumn();
+
   const client = await pool.connect();
   try {
     await client.query('BEGIN');

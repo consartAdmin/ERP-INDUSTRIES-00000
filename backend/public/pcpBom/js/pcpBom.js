@@ -65,7 +65,7 @@ function itemRow(it = {}) {
     <td><input type="number" step="any" min="0" data-f="loss" value="${escapeHtml(Number(it.loss_percent ?? 0))}" /></td>
     <td><input type="text" data-f="notes" value="${escapeHtml(it.notes || '')}" autocomplete="off" /></td>
     <td><button type="button" class="btn btn-clean btn-sm" data-remove title="Remover">×</button></td>`;
-  attachProductSearch(tr.querySelector('[data-f="component"]'), $('productOptions'));
+  attachProductSearch(tr.querySelector('[data-f="component"]'), $('productOptions'), 'component');
   $('itemsBody').appendChild(tr);
 }
 
@@ -191,7 +191,7 @@ async function remove(id) {
 // ── Eventos ───────────────────────────────────────────────────
 
 Modal.setup();
-attachProductSearch($('product'), $('productOptions'));
+attachProductSearch($('product'), $('productOptions'), 'producible');
 $('btnNew').addEventListener('click', () => openModal());
 $('btnAddItem').addEventListener('click', () => { itemRow(); emptyHint(); });
 $('btnAddOp').addEventListener('click', () => { opRow(); emptyHint(); });

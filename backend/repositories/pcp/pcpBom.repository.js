@@ -8,6 +8,14 @@ import {
   TB_BOM, TB_BOM_ITEMS, TB_BOM_OPERATIONS, TB_WORK_CENTERS, TB_PRODUCTS,
 } from './pcp.constants.js';
 import { notEmpty, toText, toNum, toInt, badRequest, notFound } from './pcp.sanitizers.js';
+import { PRODUCIBLE_ITEM_TYPES, COMPONENT_ITEM_TYPES } from '../products/productsItemType.js';
+
+// kind=producible → o que pode ter ficha técnica / OP; kind=component → o que pode ser componente.
+// Produtos sem tipo do item aparecem sempre, para não esconder cadastros antigos.
+const ITEM_TYPES_BY_KIND = {
+  producible: PRODUCIBLE_ITEM_TYPES,
+  component: COMPONENT_ITEM_TYPES,
+};
 
 export async function list({ q = '', onlyActive = 'false' } = {}) {
   const params = [];
@@ -249,17 +257,19 @@ export async function getActiveByProduct(productCode, client = pool) {
 }
 
 /** Busca rápida de produtos para os campos de seleção do PCP. */
-export async function searchProducts({ q = '', limit = 20 } = {}) {
+export async function searchProducts({ q = '', limit = 20, kind = '' } = {}) {
   const term = String(q || '').trim();
   if (!term) return [];
+  const types = ITEM_TYPES_BY_KIND[kind] || null;
   const { rows } = await pool.query(
-    `SELECT product_code, description, COALESCE(cost_price, 0) AS cost_price
+    `SELECT product_code, description, item_type, COALESCE(cost_price, 0) AS cost_price
        FROM ${TB_PRODUCTS}
       WHERE COALESCE(is_active, TRUE)
         AND (product_code ILIKE $1 OR description ILIKE $1)
+        AND ($4::text[] IS NULL OR item_type IS NULL OR item_type = ANY($4::text[]))
       ORDER BY (product_code ILIKE $2) DESC, description
       LIMIT $3`,
-    [`%${term}%`, `${term}%`, Math.min(Number(limit) || 20, 50)]
+    [`%${term}%`, `${term}%`, Math.min(Number(limit) || 20, 50), types]
   );
   return rows;
 }
