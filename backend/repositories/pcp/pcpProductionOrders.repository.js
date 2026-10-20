@@ -9,7 +9,7 @@ import {
   TB_ORDERS, TB_ORDER_MATERIALS, TB_REPORTS, TB_PRODUCTS, TB_STOCK,
   TB_WORK_CENTERS, TB_BOM_OPERATIONS, ORDER_STATUS, ORDER_TRANSITIONS,
 } from './pcp.constants.js';
-import { getActiveByProduct } from './pcpBom.repository.js';
+import { getActiveByProduct, resolveProductCode } from './pcpBom.repository.js';
 import * as productsStock from '../productsStock/productsStock.manager.js';
 import { notEmpty, toText, toNum, toInt, toDate, badRequest, notFound } from './pcp.sanitizers.js';
 
@@ -82,7 +82,7 @@ export async function getById(orderId) {
 
 /** Cria a OP e copia os materiais da ficha técnica ativa do produto. */
 export async function create(body = {}, user = null) {
-  const product_code = toText(body.product_code);
+  let product_code = toText(body.product_code);
   const quantity = toNum(body.quantity_planned);
   if (!product_code) throw badRequest('Informe o produto a produzir.');
   if (!(quantity > 0)) throw badRequest('A quantidade deve ser maior que zero.');
@@ -91,8 +91,7 @@ export async function create(body = {}, user = null) {
   try {
     await client.query('BEGIN');
 
-    const { rowCount } = await client.query(`SELECT 1 FROM ${TB_PRODUCTS} WHERE product_code = $1`, [product_code]);
-    if (!rowCount) throw badRequest(`Produto ${product_code} não encontrado.`);
+    product_code = await resolveProductCode(client, product_code, 'Produto');
 
     const bom = await getActiveByProduct(product_code, client);
     if (!bom && body.allow_without_bom !== true) {
