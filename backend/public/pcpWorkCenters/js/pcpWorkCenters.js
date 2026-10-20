@@ -6,6 +6,7 @@ import {
   pcpApi, escapeHtml, fmtNum, fmtMoney, activeBadge, showMessage, notify,
   paginate, bindPagination, renderPagination,
 } from '/public/pcp/js/pcp.common.js';
+import { Modal } from '/public/includes/js/modal.js';
 
 const $ = (id) => document.getElementById(id);
 const PAGER = { info: 'wcTableInfo', pageInfo: 'wcPageInfo', prev: 'wcPrevPage', next: 'wcNextPage', size: 'wcRowsPerPage' };
@@ -59,8 +60,7 @@ function openModal(row = null) {
   $('capacity').value = row?.capacity_hours_day ?? 8;
   $('notes').value = row?.notes || '';
   $('isActive').checked = row ? row.is_active : true;
-  $('modal').showModal();
-  $('code').focus();
+  Modal.open('modal', { focusSelector: '#code' });
 }
 
 async function save(e) {
@@ -76,7 +76,7 @@ async function save(e) {
   };
   try {
     await pcpApi(id ? `/work-centers/${id}` : '/work-centers', { method: id ? 'PUT' : 'POST', body });
-    $('modal').close();
+    Modal.close('modal');
     notify('success', 'Centro de trabalho salvo');
     load();
   } catch (err) {
@@ -96,9 +96,8 @@ async function remove(id) {
   }
 }
 
+Modal.setup();
 $('btnNew').addEventListener('click', () => openModal());
-$('btnClose').addEventListener('click', () => $('modal').close());
-$('btnCancel').addEventListener('click', () => $('modal').close());
 $('form').addEventListener('submit', save);
 $('search').addEventListener('input', () => { state.page = 1; render(); });
 $('includeInactive').addEventListener('change', () => { state.page = 1; render(); });

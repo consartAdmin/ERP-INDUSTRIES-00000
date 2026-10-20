@@ -74,6 +74,7 @@ function open(modalOrId, options = {}) {
     previousBodyOverflow: document.body.style.overflow,
   });
 
+  resetPosition(modal);
   modal.classList.add('is-open');
   modal.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
@@ -100,6 +101,7 @@ function close(modalOrId) {
 
   modal.classList.remove('is-open');
   modal.setAttribute('aria-hidden', 'true');
+  resetPosition(modal);
 
   const remainingOpenModals = getOpenModals();
   if (remainingOpenModals.length === 0) {
@@ -184,7 +186,131 @@ function handleKeydown(event) {
 }
 
 // ──────────────────────────────────────────────────────────────────────
-// 8. GLOBAL INITIALIZATION
+// 8. DRAG (move the panel by its header or footer)
+// ──────────────────────────────────────────────────────────────────────
+// Every .modal can be dragged by .modal__header or .modal__footer.
+// Buttons, fields and links inside them keep working normally.
+// Opt out with data-modal-draggable="false" on the .modal element.
+// The position is reset each time the modal opens or closes.
+
+const DRAG_HANDLE = '.modal__header, .modal__footer';
+const DRAG_IGNORE = [
+  'button',
+  'input',
+  'select',
+  'textarea',
+  'a[href]',
+  'label',
+  '[contenteditable="true"]',
+  '[data-modal-no-drag]',
+].join(',');
+
+const dragOffsets = new WeakMap();
+let dragging = null;
+let suppressNextClick = false;
+
+function getOffset(panel) {
+  return dragOffsets.get(panel) ?? { x: 0, y: 0 };
+}
+
+function setOffset(panel, x, y) {
+  dragOffsets.set(panel, { x, y });
+  panel.style.translate = x || y ? `${x}px ${y}px` : '';
+}
+
+function resetPosition(modal) {
+  modal.querySelectorAll('.modal__panel').forEach((panel) => {
+    if (dragOffsets.has(panel)) setOffset(panel, 0, 0);
+  });
+}
+
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), Math.max(min, max));
+}
+
+function handleDragStart(event) {
+  if (event.button !== 0 || !event.isPrimary) return;
+
+  const handle = event.target.closest?.(DRAG_HANDLE);
+  if (!handle || event.target.closest(DRAG_IGNORE)) return;
+
+  const modal = handle.closest('.modal');
+  const panel = handle.closest('.modal__panel');
+  if (!modal || !panel || !modal.classList.contains('is-open')) return;
+  if (modal.dataset.modalDraggable === 'false') return;
+
+  const rect = panel.getBoundingClientRect();
+  const offset = getOffset(panel);
+
+  dragging = {
+    panel,
+    pointerId: event.pointerId,
+    startX: event.clientX,
+    startY: event.clientY,
+    offsetX: offset.x,
+    offsetY: offset.y,
+    // Panel position without the current offset.
+    left: rect.left - offset.x,
+    top: rect.top - offset.y,
+    width: rect.width,
+    height: rect.height,
+    moved: false,
+  };
+
+  event.preventDefault();
+  panel.classList.add('is-dragging');
+}
+
+function handleDragMove(event) {
+  if (!dragging || event.pointerId !== dragging.pointerId) return;
+
+  const dx = event.clientX - dragging.startX;
+  const dy = event.clientY - dragging.startY;
+  if (!dragging.moved && Math.hypot(dx, dy) < 3) return;
+  dragging.moved = true;
+
+  // The whole panel stays inside the window.
+  const { left, top, width, height } = dragging;
+  const x = clamp(dragging.offsetX + dx, -left, window.innerWidth - width - left);
+  const y = clamp(dragging.offsetY + dy, -top, window.innerHeight - height - top);
+
+  setOffset(dragging.panel, x, y);
+}
+
+function handleDragEnd(event) {
+  if (!dragging || event.pointerId !== dragging.pointerId) return;
+
+  dragging.panel.classList.remove('is-dragging');
+  // A drag that ends over the backdrop must not count as a click on it.
+  suppressNextClick = dragging.moved;
+  dragging = null;
+
+  if (suppressNextClick) {
+    setTimeout(() => { suppressNextClick = false; }, 0);
+  }
+}
+
+function handleClickAfterDrag(event) {
+  if (!suppressNextClick) return;
+  suppressNextClick = false;
+  event.stopPropagation();
+  event.preventDefault();
+}
+
+function setupDrag() {
+  document.addEventListener('pointerdown', handleDragStart);
+  document.addEventListener('pointermove', handleDragMove);
+  document.addEventListener('pointerup', handleDragEnd);
+  document.addEventListener('pointercancel', handleDragEnd);
+  document.addEventListener('click', handleClickAfterDrag, true);
+}
+
+// Drag works on every page that loads this file (core.js imports it),
+// including modals that are opened by their own code instead of Modal.open().
+setupDrag();
+
+// ──────────────────────────────────────────────────────────────────────
+// 9. GLOBAL INITIALIZATION
 // ──────────────────────────────────────────────────────────────────────
 
 function setup() {
@@ -206,7 +332,7 @@ function setup() {
 }
 
 // ──────────────────────────────────────────────────────────────────────
-// 9. PUBLIC API
+// 10. PUBLIC API
 // ──────────────────────────────────────────────────────────────────────
 
 export const Modal = {
@@ -215,6 +341,10 @@ export const Modal = {
   close,
   closeTopmost,
   isOpen,
+  resetPosition: (modalOrId) => {
+    const modal = getModal(modalOrId);
+    if (modal) resetPosition(modal);
+  },
 };
 
 // Usage in the main application entry point:

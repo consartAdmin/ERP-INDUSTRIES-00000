@@ -481,6 +481,37 @@
     outline-offset: 2px;
 }
 
+.modal__subtitle {
+    margin: 4px 0 0;
+    font-size: 12px;
+    opacity: .72;
+}
+
+/* Drag: the panel moves when the header or footer is dragged (modal.js).
+ * Opt out with data-modal-draggable="false" on the .modal element.
+ */
+
+.modal:not([data-modal-draggable="false"]) .modal__header,
+.modal:not([data-modal-draggable="false"]) .modal__footer {
+    cursor: move;
+    touch-action: none;
+    user-select: none;
+}
+
+.modal:not([data-modal-draggable="false"]) :is(.modal__header, .modal__footer) :is(input, select, textarea, [contenteditable="true"]) {
+    cursor: auto;
+    user-select: text;
+}
+
+.modal:not([data-modal-draggable="false"]) :is(.modal__header, .modal__footer) :is(button, a[href], label) {
+    cursor: pointer;
+}
+
+.modal__panel.is-dragging {
+    cursor: move;
+    user-select: none;
+}
+
 /* Date range field modal
  * Used by: <dialog class="date-range-field-panel">
  * The component JavaScript opens it with showModal().

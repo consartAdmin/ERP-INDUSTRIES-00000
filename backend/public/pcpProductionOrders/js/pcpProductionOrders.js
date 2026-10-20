@@ -7,6 +7,7 @@ import {
   paginate, bindPagination, renderPagination,
   attachProductSearch, productCodeOf, STATUS_LABEL,
 } from '/public/pcp/js/pcp.common.js';
+import { Modal } from '/public/includes/js/modal.js';
 
 const $ = (id) => document.getElementById(id);
 const PAGER = { info: 'opTableInfo', pageInfo: 'opPageInfo', prev: 'opPrevPage', next: 'opNextPage', size: 'opRowsPerPage' };
@@ -70,8 +71,7 @@ async function load() {
 function openNew() {
   $('newForm').reset();
   showMessage($('newMessage'), '');
-  $('newModal').showModal();
-  $('newProduct').focus();
+  Modal.open('newModal', { focusSelector: '#newProduct' });
 }
 
 async function createOrder(e) {
@@ -87,10 +87,10 @@ async function createOrder(e) {
         notes: $('newNotes').value,
       },
     });
-    $('newModal').close();
+    Modal.close('newModal');
     load();
     showOrder(order);
-    $('orderModal').showModal();
+    Modal.open('orderModal');
   } catch (err) {
     showMessage($('newMessage'), err.message);
   }
@@ -177,7 +177,7 @@ function showOrder(o, message = null, kind = 'success') {
 async function openOrder(id) {
   try {
     showOrder(await pcpApi(`/orders/${id}`));
-    $('orderModal').showModal();
+    Modal.open('orderModal');
   } catch (e) {
     notify('error', 'Erro ao abrir a OP', e.message);
   }
@@ -240,7 +240,7 @@ async function removeOrder() {
   if (!confirm(`Excluir a ${o.order_number}?`)) return;
   try {
     await pcpApi(`/orders/${o.order_id}`, { method: 'DELETE' });
-    $('orderModal').close();
+    Modal.close('orderModal');
     load();
   } catch (err) {
     showMessage($('orderMessage'), err.message);
@@ -249,6 +249,7 @@ async function removeOrder() {
 
 // ── Eventos ───────────────────────────────────────────────────
 
+Modal.setup();
 attachProductSearch($('newProduct'), $('productOptions'));
 $('btnNew').addEventListener('click', openNew);
 $('newForm').addEventListener('submit', createOrder);
@@ -259,8 +260,6 @@ $('statusButtons').addEventListener('click', (e) => {
   const btn = e.target.closest('[data-status]');
   if (btn) changeStatus(btn.dataset.status);
 });
-document.querySelectorAll('[data-close]').forEach((b) =>
-  b.addEventListener('click', () => $(b.dataset.close).close()));
 $('search').addEventListener('input', () => { state.page = 1; render(); });
 $('statusFilter').addEventListener('change', () => { state.page = 1; render(); });
 $('tableBody').addEventListener('click', (e) => {

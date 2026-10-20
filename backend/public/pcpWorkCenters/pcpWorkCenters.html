@@ -11,6 +11,7 @@
 
   <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
   <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/includes/css/modals.css" />
   <link rel="stylesheet" href="/public/pcp/pcp.css" />
 </head>
 
@@ -82,16 +83,20 @@
     </section>
   </main>
 
-  <dialog id="modal" class="pcp-modal">
-    <div class="pcp-modal__header">
+  <div id="modal" class="modal pcp-modal" aria-hidden="true">
+    <div class="modal__backdrop"></div>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal__panel">
+    <header class="modal__header">
       <div>
-        <h3 id="modalTitle">Novo centro de trabalho</h3>
-        <p>O custo por hora é usado no custo das operações da ficha técnica.</p>
+        <h2 id="modalTitle" class="modal__title">Novo centro de trabalho</h2>
+        <p class="modal__subtitle">O custo por hora é usado no custo das operações da ficha técnica.</p>
       </div>
-      <button id="btnClose" type="button" class="pcp-modal__close" aria-label="Fechar">×</button>
-    </div>
+      <button id="btnClose" type="button" class="modal__close" aria-label="Fechar" title="Fechar" data-modal-close>×</button>
+    </header>
 
-    <form id="form" class="pcp-modal__body">
+    <form id="form" class="pcp-modal__form">
+      <div class="modal__body">
       <input id="workCenterId" type="hidden" />
       <div class="pcp-form-grid">
         <div class="pcp-form-field">
@@ -126,12 +131,16 @@
 
       <div id="formMessage" class="pcp-form-message" role="alert" hidden></div>
 
-      <div class="pcp-modal__footer">
-        <button id="btnCancel" type="button" class="btn btn-clean btn-sm">Cancelar</button>
-        <button type="submit" class="btn btn-toolbar btn-sm">Salvar</button>
       </div>
+
+      <footer class="modal__footer">
+        <button id="btnCancel" type="button" class="btn btn-clean btn-sm" data-modal-close>Cancelar</button>
+        <button type="submit" class="btn btn-toolbar btn-sm">Salvar</button>
+      </footer>
     </form>
-  </dialog>
+    </div>
+    </div>
+  </div>
 
   <script type="module" src="/public/includes/js/core.js"></script>
   <script type="module" src="/public/pcpWorkCenters/js/pcpWorkCenters.js"></script>
