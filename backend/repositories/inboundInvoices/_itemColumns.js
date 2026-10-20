@@ -15,6 +15,7 @@ export const ITEM_WRITE_COLUMNS = Object.freeze([
   'product_id',
   'product_grade_id',
   'lot_id',
+  'raw_material_id',
   'barcode',
   'manufacturer_ref',
   'description',

@@ -9,6 +9,7 @@
 'use strict';
 
 import { Router } from 'express';
+import { ensureInboundRawSupport } from '../repositories/pcp/pcpInbound.repository.js';
 import multer from 'multer';
 
 import { queueErrorEmail } from '../errorEmailReporter.js';
@@ -33,6 +34,17 @@ import {
 } from '../controllers/inboundInvoicesController.js';
 
 const router = Router();
+
+// Prodnex PCP: garante (uma vez) a coluna raw_material_id dos itens e as tabelas de
+// matérias-primas antes de qualquer transação das notas de entrada.
+router.use(async (_req, _res, next) => {
+  try {
+    await ensureInboundRawSupport();
+  } catch (err) {
+    console.error('[PCP][INBOUND] ensureInboundRawSupport:', err?.message);
+  }
+  next();
+});
 
 const upload = multer({
   storage: multer.memoryStorage(),

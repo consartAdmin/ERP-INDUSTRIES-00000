@@ -8,6 +8,7 @@
 
 'use strict';
 
+import { rawMaterialLabel } from './inboundInvoices.rawMaterial.js';
 import { getStockMode, isSimpleStockMode, clearItemLotState } from './inboundInvoices.stock.js';
 
 import { buildUnitOptionsHtml } from './inboundInvoices.api.js';
@@ -213,9 +214,10 @@ export function initForm({ core, ROUTES, state, refs, switchTab }) {
         item?.erp_description ??
         ''
       ).trim();
+      const rawLabel = rawMaterialLabel(item);
       const erpProductLabel = erpProductCode
         ? `${erpProductCode}${erpProductDescription ? ` — ${erpProductDescription}` : ''}`
-        : 'Nenhum produto vinculado';
+        : (rawLabel || 'Nenhum produto vinculado');
 
       tr.innerHTML = `
         <td>${idx + 1}</td>
@@ -252,6 +254,28 @@ export function initForm({ core, ROUTES, state, refs, switchTab }) {
             >
               <span style="font-size:8px !important; line-height:1 !important;">🔍</span>
             </button>
+
+            <button
+              type="button"
+              class="btn btn-lookup btn-icon-xs table-cell-inline__action"
+              data-act="link-raw"
+              data-index="${idx}"
+              title="Vincular matéria-prima"
+              aria-label="Vincular matéria-prima"
+              style="
+                width:24px !important;
+                min-width:24px !important;
+                height:20px !important;
+                min-height:20px !important;
+                max-height:20px !important;
+                padding:0 !important;
+                margin:0 0 0 2px !important;
+                font-size:8px !important;
+                line-height:1 !important;
+                flex:0 0 24px !important;
+                box-sizing:border-box !important;
+              "
+            >MP</button>
           </div>
         </td>
 
@@ -267,7 +291,7 @@ export function initForm({ core, ROUTES, state, refs, switchTab }) {
           </select>
 
           <div class="muted" style="font-size:.75rem; margin-top:2px;">
-            ${escapeHtml(item._lotsLoadError || (erpProductCode ? 'Lote obrigat\u00f3rio' : 'Vincule o produto'))}
+            ${escapeHtml(item._lotsLoadError || (erpProductCode ? 'Lote obrigat\u00f3rio' : (rawLabel ? 'Mat\u00e9ria-prima: sem lote' : 'Vincule o produto')))}
           </div>
         </td>
         `}

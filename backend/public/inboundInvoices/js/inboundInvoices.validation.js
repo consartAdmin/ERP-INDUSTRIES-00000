@@ -11,6 +11,7 @@
 
 'use strict';
 
+import { isRawMaterialItem } from './inboundInvoices.rawMaterial.js';
 import { getStockMode as resolveStockMode, isSimpleStockMode as resolveSimpleStockMode } from './inboundInvoices.stock.js';
 
 export function initSave({ core, ROUTES, state, refs, switchTab }) {
@@ -609,7 +610,7 @@ export function initSave({ core, ROUTES, state, refs, switchTab }) {
     }
 
     if (!isSimpleStockMode()) {
-      const missingLot = items.find((it) => !toIntOrNull(it?.lot_id));
+      const missingLot = items.find((it) => !toIntOrNull(it?.lot_id) && !isRawMaterialItem(it));
 
       if (missingLot) {
         console.warn('[VALIDATE][LOT_REQUIRED]', missingLot);
@@ -628,14 +629,14 @@ export function initSave({ core, ROUTES, state, refs, switchTab }) {
 
     const missingProduct = items.find(
       (it) =>
-        !toStrOrNull(it?.product_code)
+        !toStrOrNull(it?.product_code) && !isRawMaterialItem(it)
     );
 
     if (missingProduct) {
       console.warn('[VALIDATE][PRODUCT_REQUIRED]', missingProduct);
       core.toast.warn(
         'Produto inválido',
-        `Há item sem identificação de produto: ${getItemIdentifier(missingProduct)}.`
+        `Vincule um produto ou uma matéria-prima ao item ${getItemIdentifier(missingProduct)}.`
       );
       return false;
     }
@@ -856,7 +857,7 @@ export function initSave({ core, ROUTES, state, refs, switchTab }) {
 
       if (!isSimpleStockMode()) {
         const missingLotAfterBuild = itemsPayload.find(
-          (it) => !toIntOrNull(it?.lot_id)
+          (it) => !toIntOrNull(it?.lot_id) && !isRawMaterialItem(it)
         );
 
         if (missingLotAfterBuild) {

@@ -48,6 +48,11 @@ import {
   MOVEMENT_TYPES,
 } from '../repositories/productMovements/productMovements.index.js';
 import { queueErrorEmail } from '../errorEmailReporter.js';
+import {
+  applyRawMaterialRefs,
+  postRawMaterialItem,
+  reverseRawMaterialItem,
+} from '../repositories/pcp/pcpInbound.repository.js';
 
 function reportInboundError(...args) {
   console.error(...args);
@@ -878,7 +883,14 @@ async function findPrimaryBarcodeUnit({ productId, productCode } = {}) {
 }
 
 
+// Prodnex: item sem produto vinculado pode ser uma matéria-prima já vinculada
+// ao código do fornecedor (pcpRawMaterialSupplierRefs, por CNPJ do emitente).
 async function resolveProductsLmRefForItems({ issuerTaxId, items = [] } = {}) {
+  const resolved = await resolveProductsLmRefForItemsCore({ issuerTaxId, items });
+  return { ...resolved, items: await applyRawMaterialRefs(issuerTaxId, resolved.items) };
+}
+
+async function resolveProductsLmRefForItemsCore({ issuerTaxId, items = [] } = {}) {
   const inputItems = Array.isArray(items) ? items : [];
   const supplierId = await findSupplierIdByTaxId(issuerTaxId);
 
@@ -1168,6 +1180,11 @@ function normalizeInboundItemPayload(raw) {
     product_id: toIntOrNull(raw?.product_id),
     product_grade_id: toIntOrNull(raw?.product_grade_id),
     lot_id: toIntOrNull(raw?.lot_id),
+    // Matéria-prima (Prodnex PCP): só vale quando o item não tem produto.
+    raw_material_id:
+      toStrOrNull(raw?.product_code ?? raw?.product_sku ?? raw?.sku) || toIntOrNull(raw?.product_id)
+        ? null
+        : toIntOrNull(raw?.raw_material_id),
 
     description: toStrOrNull(raw?.description),
     ncm: toStrOrNull(raw?.ncm),
@@ -1530,7 +1547,7 @@ async function postInvoiceInternal(
   });
 
   const invRes = await client.query(
-    `SELECT inbound_id, status, stock_applied, access_key, invoice_number, series
+    `SELECT inbound_id, status, stock_applied, access_key, invoice_number, series, issuer
        FROM public."inboundInvoices"
       WHERE inbound_id = $1
       FOR UPDATE`,
@@ -1551,7 +1568,8 @@ async function postInvoiceInternal(
   }
 
   const itemsRes = await client.query(
-    `SELECT inbound_item_id, product_id, product_code, lot_id, quantity, unit, unit_price
+    `SELECT inbound_item_id, product_id, product_code, lot_id, quantity, unit, unit_price,
+            raw_material_id, conversion_factor, nf_product_code, description
        FROM public."inboundInvoiceItems"
       WHERE inbound_id = $1
       ORDER BY inbound_item_id`,
@@ -1778,6 +1796,22 @@ async function postInvoiceInternal(
       unit: it.unit,
       stockMode,
     });
+
+    // Matéria-prima (PCP): estoque e custo médio ficam no cadastro de matérias-primas.
+    if (it.raw_material_id && !it.product_id && !it.product_code) {
+      const { qty: rawQty } = await postRawMaterialItem(
+        client,
+        it,
+        invoice,
+        req?.user?.name || req?.user?.email || null
+      );
+      itemDbg.ok = true;
+      itemDbg.step = 'raw_material';
+      itemDbg.raw_material_id = it.raw_material_id;
+      itemDbg.qtyBase = rawQty;
+      debug.push(itemDbg);
+      continue;
+    }
 
     if (!isSimpleStock && !it.lot_id) {
       const err = new Error('LOT_REQUIRED');
@@ -2285,7 +2319,7 @@ async function createInvoiceWithChildren({
     if (autoPost) {
       const missingLot = isSimpleStock
         ? null
-        : createdItems.find((x) => !x.lot_id);
+        : createdItems.find((x) => !x.lot_id && !x.raw_material_id);
 
       if (missingLot) {
         logInbound('WARN', '[INBOUND][CREATE_WITH_CHILDREN][AUTO_POST_SKIPPED_MISSING_LOT]', {
@@ -3057,7 +3091,8 @@ export async function deleteInvoiceCtrl(req, res) {
 
     if (invoice.stock_applied) {
       const itemsRes = await client.query(
-        `SELECT inbound_item_id, product_id, product_code, lot_id, quantity, unit
+        `SELECT inbound_item_id, product_id, product_code, lot_id, quantity, unit,
+                raw_material_id, conversion_factor
            FROM public."inboundInvoiceItems"
           WHERE inbound_id = $1
           ORDER BY inbound_item_id`,
@@ -3065,6 +3100,16 @@ export async function deleteInvoiceCtrl(req, res) {
       );
 
       for (const it of itemsRes.rows) {
+        if (it.raw_material_id && !it.product_id && !it.product_code) {
+          try {
+            await reverseRawMaterialItem(client, it, invoice, req?.user?.name || req?.user?.email || null);
+          } catch (err) {
+            await client.query('ROLLBACK');
+            return bad(res, err.message, { invoiceId, ...(err.details || {}) });
+          }
+          continue;
+        }
+
         const prod = await getProductRow(it.product_id, it.product_code);
         if (!prod) {
           await client.query('ROLLBACK');

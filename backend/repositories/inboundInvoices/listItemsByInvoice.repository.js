@@ -23,6 +23,7 @@ export async function listItemsByInvoice(inboundId) {
         product_id,
         product_grade_id,
         lot_id,
+        raw_material_id,
         barcode,
         manufacturer_ref,
         description,
@@ -109,7 +110,12 @@ export async function listItemsByInvoice(inboundId) {
             FROM public.products p
            WHERE p.product_code = iii.product_code
            LIMIT 1
-        ) AS product_stock_id
+        ) AS product_stock_id,
+        (
+          SELECT json_build_object('code', rm.code, 'description', rm.description, 'unit', rm.unit)
+            FROM public."pcpRawMaterials" rm
+           WHERE rm.raw_material_id = iii.raw_material_id
+        ) AS raw_material
       FROM ${TB_III} iii
       WHERE iii.inbound_id = $1
       ORDER BY iii.nfe_item_seq, iii.inbound_item_id
