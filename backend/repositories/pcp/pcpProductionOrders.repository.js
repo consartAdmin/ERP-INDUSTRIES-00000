@@ -7,8 +7,9 @@
 import pool from '../../config/db.js';
 import {
   TB_ORDERS, TB_ORDER_MATERIALS, TB_REPORTS, TB_PRODUCTS, TB_STOCK,
-  TB_WORK_CENTERS, TB_BOM_OPERATIONS, ORDER_STATUS, ORDER_TRANSITIONS,
+  TB_WORK_CENTERS, TB_BOM_OPERATIONS, ORDER_STATUS, ORDER_TRANSITIONS, TB_RAW_MATERIALS,
 } from './pcp.constants.js';
+import { moveStock, MOVEMENT_SOURCE } from './pcpRawMaterials.repository.js';
 import { getActiveByProduct, resolveProductCode } from './pcpBom.repository.js';
 import * as productsStock from '../productsStock/productsStock.manager.js';
 import { notEmpty, toText, toNum, toInt, toDate, badRequest, notFound } from './pcp.sanitizers.js';
@@ -48,10 +49,14 @@ export async function getById(orderId) {
   if (!order) return null;
 
   const { rows: materials } = await pool.query(
-    `SELECT m.*, p.description AS component_description,
-            COALESCE(s.stock_qty, 0) AS stock_qty
+    `SELECT m.*,
+            CASE WHEN m.raw_material_id IS NOT NULL THEN 'raw' ELSE 'product' END AS component_source,
+            COALESCE(rm.code, m.component_code) AS component_code,
+            COALESCE(rm.description, p.description) AS component_description,
+            COALESCE(rm.stock_qty, s.stock_qty, 0) AS stock_qty
        FROM ${TB_ORDER_MATERIALS} m
-       LEFT JOIN ${TB_PRODUCTS} p ON p.product_code = m.component_code
+       LEFT JOIN ${TB_RAW_MATERIALS} rm ON rm.raw_material_id = m.raw_material_id
+       LEFT JOIN ${TB_PRODUCTS} p ON p.product_code = m.component_code AND m.raw_material_id IS NULL
        LEFT JOIN ${TB_STOCK} s ON s.product_stock_id = p.product_stock_id
       WHERE m.order_id = $1
       ORDER BY m.order_material_id`,
@@ -113,9 +118,9 @@ export async function create(body = {}, user = null) {
     for (const it of bom?.items || []) {
       const perUnit = (Number(it.quantity) / Number(bom.base_qty)) * (1 + Number(it.loss_percent) / 100);
       await client.query(
-        `INSERT INTO ${TB_ORDER_MATERIALS} (order_id, component_code, qty_per_unit, qty_required)
-         VALUES ($1, $2, $3, $4)`,
-        [order.order_id, it.component_code, perUnit, perUnit * quantity]
+        `INSERT INTO ${TB_ORDER_MATERIALS} (order_id, component_code, raw_material_id, qty_per_unit, qty_required)
+         VALUES ($1, $2, $3, $4, $5)`,
+        [order.order_id, it.component_code, it.raw_material_id, perUnit, perUnit * quantity]
       );
     }
 
@@ -260,9 +265,26 @@ async function finish(order) {
     const used = produced + Number(order.quantity_scrap);
     for (const m of order.materials) {
       const consumed = Number(m.qty_per_unit) * used;
-      const sid = await stockIdOf(m.component_code);
-      if (sid) await productsStock.adjust(sid, -consumed);
-      else warnings.push(`Componente ${m.component_code} sem registro de estoque: baixa não lançada.`);
+      if (m.raw_material_id) {
+        // Matéria-prima: baixa no estoque próprio, com histórico.
+        const client = await pool.connect();
+        try {
+          await client.query('BEGIN');
+          await moveStock(client, m.raw_material_id, -consumed, {
+            source: MOVEMENT_SOURCE.PRODUCTION, reference: order.order_number,
+          });
+          await client.query('COMMIT');
+        } catch (e) {
+          await client.query('ROLLBACK');
+          throw e;
+        } finally {
+          client.release();
+        }
+      } else {
+        const sid = await stockIdOf(m.component_code);
+        if (sid) await productsStock.adjust(sid, -consumed);
+        else warnings.push(`Componente ${m.component_code} sem registro de estoque: baixa não lançada.`);
+      }
       await pool.query(
         `UPDATE ${TB_ORDER_MATERIALS} SET qty_consumed = $2 WHERE order_material_id = $1`,
         [m.order_material_id, consumed]

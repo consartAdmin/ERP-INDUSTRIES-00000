@@ -103,16 +103,33 @@ export function debounce(fn, ms = 250) {
  * kind: 'producible' (produto acabado / em processo) ou 'component' (matéria-prima,
  * embalagem...), conforme o Tipo do item do cadastro de produtos.
  */
-export function attachProductSearch(input, datalist, kind = '') {
+export function attachProductSearch(input, datalist, kind = '', enabled = () => true) {
   const search = debounce(async () => {
     const q = input.value.split(' — ')[0].trim();
-    if (q.length < 2) return;
+    if (q.length < 2 || !enabled()) return;
     try {
       const params = new URLSearchParams({ q });
       if (kind) params.set('kind', kind);
       const rows = await pcpApi(`/products?${params}`);
       datalist.innerHTML = (rows || [])
         .map((p) => `<option value="${escapeHtml(`${p.product_code} — ${p.description || ''}`)}"></option>`)
+        .join('');
+    } catch {
+      /* busca silenciosa */
+    }
+  });
+  input.addEventListener('input', search);
+}
+
+/** Igual a attachProductSearch, mas busca no cadastro de Matérias-primas. */
+export function attachRawMaterialSearch(input, datalist, enabled = () => true) {
+  const search = debounce(async () => {
+    const q = input.value.split(' — ')[0].trim();
+    if (q.length < 2 || !enabled()) return;
+    try {
+      const rows = await pcpApi(`/raw-materials/search?${new URLSearchParams({ q })}`);
+      datalist.innerHTML = (rows || [])
+        .map((m) => `<option value="${escapeHtml(`${m.code} — ${m.description || ''}`)}"></option>`)
         .join('');
     } catch {
       /* busca silenciosa */

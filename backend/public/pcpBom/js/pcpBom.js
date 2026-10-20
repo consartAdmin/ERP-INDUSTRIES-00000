@@ -5,7 +5,7 @@
 import {
   pcpApi, escapeHtml, fmtNum, fmtMoney, activeBadge, showMessage, notify,
   paginate, bindPagination, renderPagination,
-  attachProductSearch, productCodeOf, productLabel,
+  attachProductSearch, attachRawMaterialSearch, productCodeOf, productLabel,
 } from '/public/pcp/js/pcp.common.js';
 import { Modal } from '/public/includes/js/modal.js';
 
@@ -58,14 +58,27 @@ async function load() {
 
 function itemRow(it = {}) {
   const tr = document.createElement('tr');
+  const source = it.component_source || 'raw';
   tr.innerHTML = `
-    <td><input type="text" list="productOptions" data-f="component" placeholder="Código ou descrição"
+    <td><select data-f="source">
+      <option value="raw" ${source === 'raw' ? 'selected' : ''}>Matéria-prima</option>
+      <option value="product" ${source === 'product' ? 'selected' : ''}>Produto</option>
+    </select></td>
+    <td><input type="text" list="${source === 'raw' ? 'rawOptions' : 'productOptions'}" data-f="component" placeholder="Código ou descrição"
       value="${escapeHtml(productLabel(it.component_code, it.component_description))}" autocomplete="off" /></td>
     <td><input type="number" step="any" min="0" data-f="quantity" value="${escapeHtml(it.quantity == null ? '' : Number(it.quantity))}" /></td>
     <td><input type="number" step="any" min="0" data-f="loss" value="${escapeHtml(Number(it.loss_percent ?? 0))}" /></td>
     <td><input type="text" data-f="notes" value="${escapeHtml(it.notes || '')}" autocomplete="off" /></td>
     <td><button type="button" class="btn btn-clean btn-sm" data-remove title="Remover">×</button></td>`;
-  attachProductSearch(tr.querySelector('[data-f="component"]'), $('productOptions'), 'component');
+  const select = tr.querySelector('[data-f="source"]');
+  const input = tr.querySelector('[data-f="component"]');
+  select.addEventListener('change', () => {
+    input.value = '';
+    input.setAttribute('list', select.value === 'raw' ? 'rawOptions' : 'productOptions');
+    input.focus();
+  });
+  attachRawMaterialSearch(input, $('rawOptions'), () => select.value === 'raw');
+  attachProductSearch(input, $('productOptions'), 'component', () => select.value === 'product');
   $('itemsBody').appendChild(tr);
 }
 
@@ -88,7 +101,7 @@ function opRow(op = {}) {
 }
 
 function emptyHint() {
-  for (const [id, text, cols] of [['itemsBody', 'Nenhum componente.', 5], ['opsBody', 'Nenhuma operação.', 6]]) {
+  for (const [id, text, cols] of [['itemsBody', 'Nenhum componente.', 6], ['opsBody', 'Nenhuma operação.', 6]]) {
     const body = $(id);
     const hasRows = body.querySelector('tr:not(.pcp-hint)');
     body.querySelector('.pcp-hint')?.remove();
@@ -146,6 +159,7 @@ function collect() {
     items: rows('itemsBody')
       .filter((tr) => v(tr, 'component').trim() || v(tr, 'quantity'))
       .map((tr) => ({
+        source: v(tr, 'source'),
         component_code: productCodeOf(v(tr, 'component')),
         quantity: v(tr, 'quantity'),
         loss_percent: v(tr, 'loss'),

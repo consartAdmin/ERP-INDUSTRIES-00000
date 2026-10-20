@@ -43,6 +43,14 @@ export const createWorkCenter = handle((req) => Pcp.WorkCenters.create(req.body)
 export const updateWorkCenter = handle((req) => Pcp.WorkCenters.update(id(req), req.body));
 export const removeWorkCenter = handle((req) => Pcp.WorkCenters.remove(id(req)));
 
+// Matérias-primas
+export const listRawMaterials = handle((req) => Pcp.RawMaterials.list(req.query));
+export const searchRawMaterials = handle((req) => Pcp.RawMaterials.search(req.query));
+export const getRawMaterial = handle(async (req) => required(await Pcp.RawMaterials.getById(id(req))));
+export const createRawMaterial = handle((req) => Pcp.RawMaterials.create(req.body, req.user), 201);
+export const updateRawMaterial = handle((req) => Pcp.RawMaterials.update(id(req), req.body, req.user));
+export const removeRawMaterial = handle((req) => Pcp.RawMaterials.remove(id(req)));
+
 // Ficha técnica
 export const listBoms = handle((req) => Pcp.Bom.list(req.query));
 export const getBom = handle(async (req) => required(await Pcp.Bom.getById(id(req))));

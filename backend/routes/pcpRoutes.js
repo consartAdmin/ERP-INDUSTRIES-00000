@@ -17,6 +17,14 @@ router.post  ('/work-centers',     c.createWorkCenter);
 router.put   ('/work-centers/:id', c.updateWorkCenter);
 router.delete('/work-centers/:id', c.removeWorkCenter);
 
+// Matérias-primas
+router.get   ('/raw-materials',        c.listRawMaterials);
+router.get   ('/raw-materials/search', c.searchRawMaterials);
+router.get   ('/raw-materials/:id',    c.getRawMaterial);
+router.post  ('/raw-materials',        c.createRawMaterial);
+router.put   ('/raw-materials/:id',    c.updateRawMaterial);
+router.delete('/raw-materials/:id',    c.removeRawMaterial);
+
 // Ficha técnica (estrutura + roteiro)
 router.get   ('/boms',     c.listBoms);
 router.get   ('/boms/:id', c.getBom);
