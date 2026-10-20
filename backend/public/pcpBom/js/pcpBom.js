@@ -202,6 +202,123 @@ async function remove(id) {
   }
 }
 
+// ── Importar matérias-primas ──────────────────────────────────
+
+const rawImport = { rows: [], picked: new Map() }; // raw_material_id → quantidade digitada
+
+function rawImportVisible() {
+  const q = $('rawImportSearch').value.trim().toLowerCase();
+  const only = $('rawImportOnlySelected').checked;
+  return rawImport.rows.filter((r) =>
+    (!only || rawImport.picked.has(r.raw_material_id)) &&
+    (!q || `${r.code} ${r.description}`.toLowerCase().includes(q)));
+}
+
+function renderRawImport() {
+  const rows = rawImportVisible();
+  $('rawImportBody').innerHTML = rows.length ? rows.map((r) => {
+    const picked = rawImport.picked.has(r.raw_material_id);
+    return `
+    <tr data-raw="${r.raw_material_id}" class="${picked ? 'is-selected' : ''}">
+      <td class="center"><input type="checkbox" data-pick ${picked ? 'checked' : ''} /></td>
+      <td><strong>${escapeHtml(r.code)}</strong></td>
+      <td>${escapeHtml(r.description)}</td>
+      <td>${escapeHtml(r.unit)}</td>
+      <td class="num">${fmtNum(r.stock_qty, 4)}</td>
+      <td class="num">${fmtMoney(r.average_cost)}</td>
+      <td><input type="number" step="any" min="0" data-qty value="${escapeHtml(rawImport.picked.get(r.raw_material_id) ?? '')}" /></td>
+    </tr>`;
+  }).join('')
+    : `<tr><td colspan="7" class="pcp-grid-empty">${rawImport.rows.length ? 'Nenhuma matéria-prima encontrada.' : 'Nenhuma matéria-prima ativa cadastrada.'}</td></tr>`;
+  $('rawImportAll').checked = rows.length > 0 && rows.every((r) => rawImport.picked.has(r.raw_material_id));
+  $('rawImportCount').textContent = `${rawImport.picked.size} selecionada${rawImport.picked.size === 1 ? '' : 's'}`;
+}
+
+function setPicked(id, picked, qty) {
+  if (picked) rawImport.picked.set(id, qty ?? rawImport.picked.get(id) ?? '');
+  else rawImport.picked.delete(id);
+}
+
+async function openRawImport() {
+  showMessage($('rawImportMessage'), '');
+  $('rawImportSearch').value = '';
+  $('rawImportOnlySelected').checked = false;
+  rawImport.picked.clear();
+  try {
+    rawImport.rows = await pcpApi('/raw-materials?onlyActive=true') || [];
+  } catch (err) {
+    notify('error', 'Não foi possível carregar as matérias-primas', err.message);
+    return;
+  }
+  renderRawImport();
+  Modal.open('rawImportModal', { focusSelector: '#rawImportSearch' });
+}
+
+function addImportedRaw(e) {
+  e.preventDefault();
+  if (!rawImport.picked.size) {
+    showMessage($('rawImportMessage'), 'Marque ao menos uma matéria-prima.');
+    return;
+  }
+  const v = (tr, f) => tr.querySelector(`[data-f="${f}"]`)?.value ?? '';
+  const rows = [...$('itemsBody').querySelectorAll('tr:not(.pcp-hint)')];
+  // Linhas vazias (sem componente) dão lugar às importadas.
+  rows.filter((tr) => !v(tr, 'component').trim() && !v(tr, 'quantity')).forEach((tr) => tr.remove());
+  const existing = new Map(
+    [...$('itemsBody').querySelectorAll('tr:not(.pcp-hint)')]
+      .filter((tr) => v(tr, 'source') === 'raw')
+      .map((tr) => [productCodeOf(v(tr, 'component')).toUpperCase(), tr])
+  );
+
+  let added = 0;
+  let updated = 0;
+  for (const r of rawImport.rows) {
+    if (!rawImport.picked.has(r.raw_material_id)) continue;
+    const qty = rawImport.picked.get(r.raw_material_id);
+    const tr = existing.get(String(r.code).toUpperCase());
+    if (tr) {
+      if (qty !== '') tr.querySelector('[data-f="quantity"]').value = qty;
+      updated++;
+      continue;
+    }
+    itemRow({ component_source: 'raw', component_code: r.code, component_description: r.description, quantity: qty === '' ? null : qty });
+    added++;
+  }
+  emptyHint();
+  Modal.close('rawImportModal');
+  const parts = [];
+  if (added) parts.push(`${added} adicionada${added === 1 ? '' : 's'}`);
+  if (updated) parts.push(`${updated} já estava${updated === 1 ? '' : 'm'} na ficha`);
+  showMessage($('formMessage'), `Matérias-primas: ${parts.join(', ')}. Confira as quantidades e salve a ficha.`, 'success');
+}
+
+$('btnImportRaw').addEventListener('click', openRawImport);
+$('rawImportForm').addEventListener('submit', addImportedRaw);
+$('rawImportSearch').addEventListener('input', renderRawImport);
+$('rawImportOnlySelected').addEventListener('change', renderRawImport);
+$('rawImportAll').addEventListener('change', (e) => {
+  rawImportVisible().forEach((r) => setPicked(r.raw_material_id, e.target.checked));
+  renderRawImport();
+});
+$('rawImportBody').addEventListener('change', (e) => {
+  const tr = e.target.closest('tr[data-raw]');
+  if (!tr || !e.target.matches('[data-pick]')) return;
+  setPicked(Number(tr.dataset.raw), e.target.checked, tr.querySelector('[data-qty]').value);
+  renderRawImport();
+});
+$('rawImportBody').addEventListener('input', (e) => {
+  const tr = e.target.closest('tr[data-raw]');
+  if (!tr || !e.target.matches('[data-qty]')) return;
+  // Digitar a quantidade já marca a linha.
+  const id = Number(tr.dataset.raw);
+  const qty = e.target.value;
+  if (qty === '' && !rawImport.picked.has(id)) return;
+  rawImport.picked.set(id, qty);
+  tr.classList.add('is-selected');
+  tr.querySelector('[data-pick]').checked = true;
+  $('rawImportCount').textContent = `${rawImport.picked.size} selecionada${rawImport.picked.size === 1 ? '' : 's'}`;
+});
+
 // ── Eventos ───────────────────────────────────────────────────
 
 Modal.setup();
