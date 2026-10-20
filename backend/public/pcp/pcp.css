@@ -261,6 +261,28 @@
   font-weight: 700;
 }
 
+.pcp-section-title .pcp-header-actions {
+  display: inline-flex;
+  gap: 8px;
+}
+
+.pcp-import-list {
+  max-height: 46vh;
+  overflow: auto;
+  margin-top: 10px;
+}
+
+.pcp-import-list thead th {
+  position: sticky;
+  top: 0;
+  background: var(--surface-1, #fff);
+  z-index: 1;
+}
+
+.pcp-import-list tr.is-selected td {
+  background: rgba(15, 94, 115, .08);
+}
+
 .pcp-grid-table {
   width: 100%;
   border-collapse: collapse;

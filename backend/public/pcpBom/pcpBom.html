@@ -130,7 +130,10 @@
 
       <div class="pcp-section-title">
         <span>Componentes</span>
-        <button id="btnAddItem" type="button" class="btn btn-clean btn-sm">+ Componente</button>
+        <div class="pcp-header-actions">
+          <button id="btnImportRaw" type="button" class="btn btn-clean btn-sm" title="Escolher várias matérias-primas de uma vez">Importar matérias-primas</button>
+          <button id="btnAddItem" type="button" class="btn btn-clean btn-sm">+ Componente</button>
+        </div>
       </div>
       <table class="pcp-grid-table">
         <thead>
@@ -177,6 +180,65 @@
       <footer class="modal__footer modal-footer-color-3">
         <button id="btnCancel" type="button" class="btn btn-cancel btn-sm" data-modal-close>Fechar</button>
         <button type="submit" class="btn btn-save btn-sm">Salvar ficha</button>
+      </footer>
+    </form>
+    </div>
+    </div>
+  </div>
+
+  <!-- Importar matérias-primas para os componentes da ficha -->
+  <div id="rawImportModal" class="modal pcp-modal" aria-hidden="true">
+    <div class="modal__backdrop"></div>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="rawImportTitle">
+    <div class="modal__panel modal-width-8">
+    <header class="modal__header modal-header-color-3">
+      <div>
+        <h2 id="rawImportTitle" class="modal__title">Importar matérias-primas</h2>
+        <p class="modal__subtitle">Marque as matérias-primas e informe a quantidade para a quantidade base da ficha.</p>
+      </div>
+      <button type="button" class="modal__close" aria-label="Fechar" title="Fechar" data-modal-close>×</button>
+    </header>
+
+    <form id="rawImportForm" class="pcp-modal__form">
+      <div class="modal__body">
+        <div class="modal-form-grid modal-form-grid--4">
+          <div class="fields fields-h-6 fields-w-full modal-field--span-3">
+            <label for="rawImportSearch">Buscar</label>
+            <input id="rawImportSearch" type="text" placeholder="Código ou descrição" autocomplete="off" />
+          </div>
+          <div class="fields fields-h-6 fields-w-full">
+            <span class="fields-label">Seleção</span>
+            <label class="checkbox" for="rawImportOnlySelected">
+              <input id="rawImportOnlySelected" type="checkbox" />
+              <span>Só as marcadas</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="pcp-import-list">
+          <table class="pcp-grid-table">
+            <thead>
+              <tr>
+                <th style="width:36px"><input id="rawImportAll" type="checkbox" title="Marcar todas as listadas" /></th>
+                <th style="width:110px">Código</th>
+                <th>Descrição</th>
+                <th style="width:60px">Un.</th>
+                <th class="num" style="width:110px">Estoque</th>
+                <th class="num" style="width:120px">Custo médio</th>
+                <th class="num" style="width:120px">Quantidade</th>
+              </tr>
+            </thead>
+            <tbody id="rawImportBody"></tbody>
+          </table>
+        </div>
+
+        <div id="rawImportMessage" class="pcp-form-message" role="alert" hidden></div>
+      </div>
+
+      <footer class="modal__footer modal-footer-color-3">
+        <span id="rawImportCount" class="pcp-muted" style="margin-right:auto">0 selecionadas</span>
+        <button type="button" class="btn btn-cancel btn-sm" data-modal-close>Cancelar</button>
+        <button type="submit" class="btn btn-save btn-sm">Adicionar à ficha</button>
       </footer>
     </form>
     </div>
