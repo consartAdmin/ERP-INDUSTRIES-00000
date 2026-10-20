@@ -4,7 +4,8 @@
 // ║ (espera menu/header existir para inserir no lugar certo)    ║
 // ╚════════════════════════════════════════════════════════════╝
 
-const HEADER_SELECTORS = ['.app-header', '.topbar', '.c-header', 'header'];
+// header de modal (.modal__header) não conta: a barra iria parar dentro do modal
+const HEADER_SELECTORS = ['.app-header', '.topbar', '.c-header', 'header:not(.modal__header)'];
 const MENU_SELECTORS = ['.menu-principal', '.consart-menu', '#menuConsart'];
 
 function $(selectors) {

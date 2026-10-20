@@ -11,7 +11,6 @@
 
   <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
   <link rel="stylesheet" href="/public/includes/css/style.css" />
-  <link rel="stylesheet" href="/public/includes/css/modals.css" />
   <link rel="stylesheet" href="/public/pcp/pcp.css" />
 </head>
 
@@ -90,8 +89,8 @@
   <div id="modal" class="modal pcp-modal pcp-modal--wide" aria-hidden="true">
     <div class="modal__backdrop"></div>
     <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal__panel">
-    <header class="modal__header">
+    <div class="modal__panel modal-width-9">
+    <header class="modal__header modal-header-color-3">
       <div>
         <h2 id="modalTitle" class="modal__title">Nova ficha técnica</h2>
         <p class="modal__subtitle">As quantidades dos componentes e os tempos valem para a quantidade base informada.</p>
@@ -102,29 +101,28 @@
     <form id="form" class="pcp-modal__form">
       <div class="modal__body">
       <input id="bomId" type="hidden" />
-      <div class="pcp-form-grid">
-        <div class="pcp-form-field pcp-span-2">
-          <label for="product" class="pcp-label">Produto acabado *</label>
-          <input id="product" type="text" list="productOptions" class="pcp-input" placeholder="Digite o código ou a descrição" required autocomplete="off" />
+      <div class="modal-form-grid modal-form-grid--4">
+        <div class="fields fields-h-6 fields-w-full modal-field--span-2">
+          <label for="product">Produto acabado *</label>
+          <input id="product" type="text" list="productOptions" placeholder="Digite o código ou a descrição" required autocomplete="off" />
         </div>
-        <div class="pcp-form-field">
-          <label for="version" class="pcp-label">Versão</label>
-          <input id="version" type="text" maxlength="20" value="1" class="pcp-input" />
+        <div class="fields fields-h-6 fields-w-full">
+          <label for="version">Versão</label>
+          <input id="version" type="text" maxlength="20" value="1" />
         </div>
-        <div class="pcp-form-field">
-          <label for="baseQty" class="pcp-label">Quantidade base *</label>
-          <input id="baseQty" type="number" step="any" min="0" value="1" class="pcp-input" required />
+        <div class="fields fields-h-6 fields-w-full">
+          <label for="baseQty">Quantidade base *</label>
+          <input id="baseQty" type="number" step="any" min="0" value="1" required />
         </div>
-        <div class="pcp-form-field pcp-span-2">
-          <label for="notes" class="pcp-label">Observações</label>
-          <input id="notes" type="text" class="pcp-input" autocomplete="off" />
+        <div class="fields fields-h-6 fields-w-full modal-field--span-2">
+          <label for="notes">Observações</label>
+          <input id="notes" type="text" autocomplete="off" />
         </div>
-        <div class="pcp-form-field">
-          <span class="pcp-label">Status</span>
-          <label class="pcp-switch">
+        <div class="fields fields-h-6 fields-w-full">
+          <span class="fields-label">Status</span>
+          <label class="checkbox" for="isActive">
             <input id="isActive" type="checkbox" checked />
-            <span class="pcp-switch-slider"></span>
-            <span class="pcp-switch-label">Ativa</span>
+            <span>Ativa</span>
           </label>
         </div>
       </div>
@@ -174,9 +172,9 @@
 
       </div>
 
-      <footer class="modal__footer">
-        <button id="btnCancel" type="button" class="btn btn-clean btn-sm" data-modal-close>Fechar</button>
-        <button type="submit" class="btn btn-toolbar btn-sm">Salvar ficha</button>
+      <footer class="modal__footer modal-footer-color-3">
+        <button id="btnCancel" type="button" class="btn btn-cancel btn-sm" data-modal-close>Fechar</button>
+        <button type="submit" class="btn btn-save btn-sm">Salvar ficha</button>
       </footer>
     </form>
     </div>
