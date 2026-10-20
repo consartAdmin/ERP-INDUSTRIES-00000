@@ -250,7 +250,7 @@ async function removeOrder() {
 // ── Eventos ───────────────────────────────────────────────────
 
 Modal.setup();
-attachProductSearch($('newProduct'), $('productOptions'));
+attachProductSearch($('newProduct'), $('productOptions'), 'producible');
 $('btnNew').addEventListener('click', openNew);
 $('newForm').addEventListener('submit', createOrder);
 $('reportForm').addEventListener('submit', addReport);

@@ -6,8 +6,10 @@ import pool from '../../config/db.js';
 import { PRODUCTS_TABLE, PRODUCTS_SCHEMA, prepareProductInsert } from './products.catalog.js';
 import { normalizePgError, throwValidation } from './products.utils.js';
 import { normalizeInput } from './products.sanitizers.js';
+import { ensureItemTypeColumn } from './productsItemType.js';
 
 export async function create(payload = {}) {
+    await ensureItemTypeColumn();
     const prepared = prepareProductInsert(normalizeInput(payload));
     if (!prepared.valid) throwValidation(prepared.errors);
 

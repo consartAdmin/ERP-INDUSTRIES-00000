@@ -314,6 +314,7 @@ const FIELDS = {
   description: '#descricao',
   barcode: '#codigoBarras',
   manufacturer_ref: '#refFabricante',
+  item_type: '#tipoItem',
 
   product_group_id: '#product_group_id',
   product_subgroup_id: '#product_subgroup_id',
@@ -527,6 +528,7 @@ function coletarFormularioCreate() {
     description: getVal(FIELDS.description)?.trim(),
     barcode: getVal(FIELDS.barcode)?.trim() || null,
     manufacturer_ref: getVal(FIELDS.manufacturer_ref)?.trim() || null,
+    item_type: getVal(FIELDS.item_type) || null,
 
     product_group_id: n(getVal(FIELDS.product_group_id)),
     product_subgroup_id: n(getVal(FIELDS.product_subgroup_id)),
@@ -1258,6 +1260,7 @@ async function importarProdutoParaNovoCadastro(selectedProduct) {
     // Informações gerais
     setVal(FIELDS.description, product.description ?? '');
     setVal(FIELDS.manufacturer_ref, product.manufacturer_ref ?? '');
+    setVal(FIELDS.item_type, product.item_type ?? '');
     setVal(FIELDS.manufacturer_id, product.manufacturer_id ?? '');
     setVal(FIELDS.supplier_id, product.supplier_id ?? '');
     setVal(FIELDS.product_location_id, product.product_location_id ?? '');

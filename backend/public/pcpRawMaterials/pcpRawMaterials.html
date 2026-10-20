@@ -1,0 +1,200 @@
+<!-- ╔════════════════════════════════════════════════════════════╗
+     ║ pcpRawMaterials.html — PCP / Produção — PRODNEX ERP
+     ╚════════════════════════════════════════════════════════════╝ -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>MATÉRIAS-PRIMAS | PRODNEX ERP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
+  <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/pcp/pcp.css" />
+</head>
+
+<body class="page consart-theme p-page pw-page--full ph-page--xr">
+  <main class="consart-container consart-container--full consart-container--ultraslim">
+
+    <div class="header pcp-page-header">
+      <div>
+        <h2 class="pcp-card-title">Matérias-primas</h2>
+        <p class="pcp-card-caption">Insumos comprados para a produção, com estoque e custo médio. As notas de entrada alimentam este cadastro.</p>
+      </div>
+      <div class="pcp-header-actions">
+        <button id="btnNew" type="button" class="btn btn-toolbar btn-sm">+ Nova matéria-prima</button>
+      </div>
+    </div>
+
+    <section class="table-layout-integrated">
+      <div class="table-layout-integrated__filter pcp-filter-bar">
+        <div class="fields-inline fields-gap3 pcp-filter-row">
+          <div class="fields fields-inline fields-w-20 fields-h-6 pcp-search-field">
+            <input id="search" type="text" class="pcp-search-input" placeholder="Buscar por código ou descrição..." autocomplete="off" />
+            <span class="pcp-search-icon" aria-hidden="true">🔍</span>
+          </div>
+          <div class="fields fields-inline fields-w-10 fields-h-6">
+            <label class="pcp-checkbox-inline">
+              <input id="onlyLow" type="checkbox" />
+              <span>Abaixo do mínimo</span>
+            </label>
+          </div>
+          <div class="fields fields-inline fields-w-10 fields-h-6">
+            <label class="pcp-checkbox-inline">
+              <input id="includeInactive" type="checkbox" />
+              <span>Incluir inativas</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+            <div class="table-scroll table-height-flex table-row-h-20" data-table-settings="pcp.rawmaterials">
+        <table class="table table-zebra table-zebra-hover table-sticky-head pcp-table">
+          <thead>
+            <tr>
+              <th style="width:110px">Código</th>
+              <th>Descrição</th>
+              <th class="center" style="width:70px">Un.</th>
+              <th class="num" style="width:120px">Estoque</th>
+              <th class="num" style="width:110px">Mínimo</th>
+              <th class="num" style="width:130px">Custo médio</th>
+              <th class="num" style="width:130px">Último custo</th>
+              <th class="center" style="width:110px">Status</th>
+              <th class="center" style="width:130px">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+      <footer class="table-footer">
+        <div class="table-footer__info">
+          <div class="summary-pill summary-pill--success summary-width-4 summary-left-space-3">
+            <span id="rmTableInfo">0 registros</span>
+          </div>
+        </div>
+        <div class="table-footer__pagination">
+          <button type="button" id="rmPrevPage" class="btn btn-clean btn-sm">Anterior</button>
+          <span id="rmPageInfo">Página 1 de 1</span>
+          <button type="button" id="rmNextPage" class="btn btn-new btn-sm">Próxima</button>
+        </div>
+        <div class="table-footer__page-size">
+          <label for="rmRowsPerPage">Mostrar</label>
+          <select id="rmRowsPerPage" class="table-footer__page-size-select">
+            <option value="10">10 linhas</option>
+            <option value="20">20 linhas</option>
+            <option value="50" selected>50 linhas</option>
+            <option value="100">100 linhas</option>
+          </select>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <div id="modal" class="modal pcp-modal" aria-hidden="true">
+    <div class="modal__backdrop"></div>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal__panel modal-width-7">
+    <header class="modal__header modal-header-color-3">
+      <div>
+        <h2 id="modalTitle" class="modal__title">Nova matéria-prima</h2>
+        <p class="modal__subtitle">O custo médio é atualizado pelas entradas; mudar o estoque aqui gera um ajuste no histórico.</p>
+      </div>
+      <button id="btnClose" type="button" class="modal__close" aria-label="Fechar" title="Fechar" data-modal-close>×</button>
+    </header>
+
+    <form id="form" class="pcp-modal__form">
+      <div class="modal__body">
+      <input id="rawMaterialId" type="hidden" />
+      <div class="modal-form-grid modal-form-grid--4">
+        <div class="fields fields-h-6 fields-w-full">
+          <label for="code">Código</label>
+          <input id="code" type="text" maxlength="50" placeholder="Vazio = automático (MP00001)" autocomplete="off" />
+        </div>
+        <div class="fields fields-h-6 fields-w-full modal-field--span-3">
+          <label for="description">Descrição *</label>
+          <input id="description" type="text" maxlength="200" required autocomplete="off" />
+        </div>
+        <div class="fields fields-h-6 fields-w-full">
+          <label for="unit">Unidade *</label>
+          <input id="unit" type="text" maxlength="10" value="UN" list="unitOptions" required autocomplete="off" />
+        </div>
+        <div class="fields fields-h-6 fields-w-full">
+          <label for="ncm">NCM</label>
+          <input id="ncm" type="text" maxlength="10" inputmode="numeric" placeholder="00000000" autocomplete="off" />
+        </div>
+        <div class="fields fields-h-6 fields-w-full">
+          <label for="lastCost">Último custo (R$)</label>
+          <input id="lastCost" type="number" step="any" min="0" value="0" />
+        </div>
+        <div class="fields fields-h-6 fields-w-full">
+          <span class="fields-label">Status</span>
+          <label class="checkbox" for="isActive">
+            <input id="isActive" type="checkbox" checked />
+            <span>Ativa</span>
+          </label>
+        </div>
+        <div class="fields fields-h-6 fields-w-full">
+          <label for="stockQty">Estoque atual</label>
+          <input id="stockQty" type="number" step="any" value="0" />
+        </div>
+        <div class="fields fields-h-6 fields-w-full">
+          <label for="minStock">Estoque mínimo</label>
+          <input id="minStock" type="number" step="any" min="0" value="0" />
+        </div>
+        <div class="fields fields-h-6 fields-w-full modal-field--span-2">
+          <label for="adjustmentReason">Motivo do ajuste de estoque</label>
+          <input id="adjustmentReason" type="text" maxlength="200" placeholder="Ex.: inventário" autocomplete="off" />
+        </div>
+        <div class="fields fields-h-6 fields-w-full modal-field--span-4">
+          <label for="notes">Observações</label>
+          <input id="notes" type="text" autocomplete="off" />
+        </div>
+      </div>
+
+      <div id="historyBox" hidden>
+        <div class="pcp-section-title">
+          <span>Histórico de estoque</span>
+          <span class="pcp-muted">Custo médio: <strong id="averageCost">—</strong></span>
+        </div>
+        <table class="pcp-grid-table">
+          <thead>
+            <tr>
+              <th style="width:150px">Data</th>
+              <th style="width:110px">Origem</th>
+              <th>Referência</th>
+              <th class="num">Quantidade</th>
+              <th class="num">Custo unit.</th>
+              <th class="num">Saldo</th>
+            </tr>
+          </thead>
+          <tbody id="movementsBody"></tbody>
+        </table>
+      </div>
+
+      <div id="formMessage" class="pcp-form-message" role="alert" hidden></div>
+
+      </div>
+
+      <footer class="modal__footer modal-footer-color-3">
+        <button id="btnCancel" type="button" class="btn btn-cancel btn-sm" data-modal-close>Cancelar</button>
+        <button type="submit" class="btn btn-save btn-sm">Salvar</button>
+      </footer>
+    </form>
+    </div>
+    </div>
+  </div>
+
+  <datalist id="unitOptions">
+    <option value="UN"></option><option value="KG"></option><option value="G"></option>
+    <option value="L"></option><option value="ML"></option><option value="M"></option>
+    <option value="M2"></option><option value="M3"></option><option value="CX"></option>
+    <option value="PC"></option><option value="RL"></option><option value="FD"></option>
+    <option value="TON"></option>
+  </datalist>
+
+  <script type="module" src="/public/includes/js/core.js"></script>
+  <script type="module" src="/public/pcpRawMaterials/js/pcpRawMaterials.js"></script>
+</body>
+
+</html>

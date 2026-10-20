@@ -5,9 +5,18 @@
 
 import pool from '../../config/db.js';
 import {
-  TB_BOM, TB_BOM_ITEMS, TB_BOM_OPERATIONS, TB_WORK_CENTERS, TB_PRODUCTS,
+  TB_BOM, TB_BOM_ITEMS, TB_BOM_OPERATIONS, TB_WORK_CENTERS, TB_PRODUCTS, TB_RAW_MATERIALS,
 } from './pcp.constants.js';
+import { resolveRawMaterial } from './pcpRawMaterials.repository.js';
 import { notEmpty, toText, toNum, toInt, badRequest, notFound } from './pcp.sanitizers.js';
+import { PRODUCIBLE_ITEM_TYPES, COMPONENT_ITEM_TYPES } from '../products/productsItemType.js';
+
+// kind=producible → o que pode ter ficha técnica / OP; kind=component → o que pode ser componente.
+// Produtos sem tipo do item aparecem sempre, para não esconder cadastros antigos.
+const ITEM_TYPES_BY_KIND = {
+  producible: PRODUCIBLE_ITEM_TYPES,
+  component: COMPONENT_ITEM_TYPES,
+};
 
 export async function list({ q = '', onlyActive = 'false' } = {}) {
   const params = [];
@@ -42,10 +51,15 @@ export async function getById(bomId) {
   if (!bom) return null;
 
   const { rows: items } = await pool.query(
-    `SELECT i.*, p.description AS component_description,
-            COALESCE(p.cost_price, 0) AS component_cost
+    `SELECT i.*,
+            CASE WHEN i.raw_material_id IS NOT NULL THEN 'raw' ELSE 'product' END AS component_source,
+            COALESCE(rm.code, i.component_code) AS component_code,
+            COALESCE(rm.description, p.description) AS component_description,
+            rm.unit AS component_unit,
+            COALESCE(NULLIF(rm.average_cost, 0), rm.last_cost, p.cost_price, 0) AS component_cost
        FROM ${TB_BOM_ITEMS} i
-       LEFT JOIN ${TB_PRODUCTS} p ON p.product_code = i.component_code
+       LEFT JOIN ${TB_RAW_MATERIALS} rm ON rm.raw_material_id = i.raw_material_id
+       LEFT JOIN ${TB_PRODUCTS} p ON p.product_code = i.component_code AND i.raw_material_id IS NULL
       WHERE i.bom_id = $1
       ORDER BY i.sort_order, i.bom_item_id`,
     [bomId]
@@ -99,14 +113,17 @@ function cleanHeader(body = {}) {
   };
 }
 
+// source: 'raw' (matéria-prima, padrão da tela) ou 'product' (produto semiacabado/revenda).
 function cleanItems(items = []) {
   return (Array.isArray(items) ? items : []).map((it, i) => {
     const component_code = toText(it.component_code);
     const quantity = toNum(it.quantity);
-    if (!component_code) throw badRequest(`Componente da linha ${i + 1} sem produto.`);
+    if (!component_code) throw badRequest(`Componente da linha ${i + 1} sem matéria-prima ou produto.`);
     if (!(quantity > 0)) throw badRequest(`Quantidade da linha ${i + 1} deve ser maior que zero.`);
     return {
+      source: it.source === 'raw' ? 'raw' : 'product',
       component_code,
+      raw_material_id: null,
       quantity,
       loss_percent: Math.max(0, toNum(it.loss_percent, 0)),
       notes: toText(it.notes),
@@ -170,7 +187,13 @@ export async function save(bomId, body = {}) {
 
     head.product_code = await resolveProductCode(client, head.product_code, 'Produto');
     for (const [i, it] of items.entries()) {
-      it.component_code = await resolveProductCode(client, it.component_code, `Componente da linha ${i + 1}`);
+      const label = `Componente da linha ${i + 1}`;
+      if (it.source === 'raw') {
+        it.raw_material_id = (await resolveRawMaterial(client, it.component_code, label)).raw_material_id;
+        it.component_code = null;
+        continue;
+      }
+      it.component_code = await resolveProductCode(client, it.component_code, label);
       if (it.component_code === head.product_code) {
         throw badRequest('Um produto não pode ser componente dele mesmo.');
       }
@@ -197,9 +220,10 @@ export async function save(bomId, body = {}) {
 
     for (const it of items) {
       await client.query(
-        `INSERT INTO ${TB_BOM_ITEMS} (bom_id, component_code, quantity, loss_percent, notes, sort_order)
-         VALUES ($1, $2, $3, $4, $5, $6)`,
-        [id, it.component_code, it.quantity, it.loss_percent, it.notes, it.sort_order]
+        `INSERT INTO ${TB_BOM_ITEMS}
+           (bom_id, component_code, raw_material_id, quantity, loss_percent, notes, sort_order)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [id, it.component_code, it.raw_material_id, it.quantity, it.loss_percent, it.notes, it.sort_order]
       );
     }
     for (const op of operations) {
@@ -249,17 +273,19 @@ export async function getActiveByProduct(productCode, client = pool) {
 }
 
 /** Busca rápida de produtos para os campos de seleção do PCP. */
-export async function searchProducts({ q = '', limit = 20 } = {}) {
+export async function searchProducts({ q = '', limit = 20, kind = '' } = {}) {
   const term = String(q || '').trim();
   if (!term) return [];
+  const types = ITEM_TYPES_BY_KIND[kind] || null;
   const { rows } = await pool.query(
-    `SELECT product_code, description, COALESCE(cost_price, 0) AS cost_price
+    `SELECT product_code, description, item_type, COALESCE(cost_price, 0) AS cost_price
        FROM ${TB_PRODUCTS}
       WHERE COALESCE(is_active, TRUE)
         AND (product_code ILIKE $1 OR description ILIKE $1)
+        AND ($4::text[] IS NULL OR item_type IS NULL OR item_type = ANY($4::text[]))
       ORDER BY (product_code ILIKE $2) DESC, description
       LIMIT $3`,
-    [`%${term}%`, `${term}%`, Math.min(Number(limit) || 20, 50)]
+    [`%${term}%`, `${term}%`, Math.min(Number(limit) || 20, 50), types]
   );
   return rows;
 }

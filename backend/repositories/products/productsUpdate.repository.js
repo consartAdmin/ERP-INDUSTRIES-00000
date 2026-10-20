@@ -8,6 +8,7 @@ import { PRODUCTS_TABLE, PRODUCTS_SCHEMA, prepareProductUpdate } from './product
 import { TABLE_LOCATIONS } from './products.constants.js';
 import { ProductsApiError, normalizePgError, throwValidation } from './products.utils.js';
 import { requiredProductCode, positiveInteger, normalizeInput } from './products.sanitizers.js';
+import { ensureItemTypeColumn } from './productsItemType.js';
 
 async function upsertLocation(client, productCode, location = {}) {
     const fields = ['corredor', 'prateleira', 'bandeja', 'box'];
@@ -81,6 +82,7 @@ async function upsertLocation(client, productCode, location = {}) {
 }
 
 export async function updateByCode(currentProductCode, payload = {}) {
+    await ensureItemTypeColumn();
     const currentCode = requiredProductCode(currentProductCode);
     const prepared = prepareProductUpdate(normalizeInput(payload));
     if (!prepared.valid) throwValidation(prepared.errors);
@@ -129,6 +131,7 @@ export async function updateByCode(currentProductCode, payload = {}) {
 }
 
 export async function updateBarcodeByCode(productCode, barcode) {
+    await ensureItemTypeColumn();
     const code = requiredProductCode(productCode);
     const cleanBarcode = barcode === null || barcode === undefined
         ? null

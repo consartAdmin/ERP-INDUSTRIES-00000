@@ -7,6 +7,7 @@
 'use strict';
 
 import pool from '../../../config/db.js';
+import { ensureItemTypeColumn } from '../../../repositories/products/productsItemType.js';
 
 function onlyDigits(value) {
   return String(value ?? '').replace(/\D+/g, '');
@@ -38,6 +39,8 @@ function normalizeProduct(row) {
 }
 
 export async function getProductsSource(enterpriseId = null) {
+  await ensureItemTypeColumn();
+
   const sql = `
     SELECT
       p.product_code::text AS codigo,
@@ -45,7 +48,7 @@ export async function getProductsSource(enterpriseId = null) {
       ''::text AS descricao_complementar,
 
       COALESCE(u.unit, 'UN') AS unidade,
-      '00'::text AS tipo_item,
+      COALESCE(p.item_type, '00') AS tipo_item,
 
       COALESCE(fc.ncm_code, '') AS ncm,
       ''::text AS ex_ipi,

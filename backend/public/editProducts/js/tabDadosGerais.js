@@ -16,6 +16,7 @@ export function initDadosGeraisTab(ctx) {
     description: '#descricao',
     barcode: '#codigoBarras',
     manufacturer_ref: '#refFabricante',
+    item_type: '#tipoItem',
 
     product_group_id: '#product_group_id',
     product_subgroup_id: '#product_subgroup_id',
@@ -635,6 +636,7 @@ export function initDadosGeraisTab(ctx) {
       ctx.normalizeBarcode(p.barcode ?? p.codigo_barras ?? p.ean ?? p.gtin ?? '')
     );
     setVal(FIELDS.manufacturer_ref, p.manufacturer_ref ?? p.ref_fabricante ?? '');
+    setVal(FIELDS.item_type, p.item_type ?? '');
 
     setVal(FIELDS.product_group_id, p.product_group_id ?? p.group_id ?? '');
     setVal(FIELDS.product_subgroup_id, p.product_subgroup_id ?? p.subgroup_id ?? '');
@@ -711,6 +713,7 @@ export function initDadosGeraisTab(ctx) {
       description: getVal(FIELDS.description)?.trim(),
       barcode: ctx.normalizeBarcode(getVal(FIELDS.barcode)),
       manufacturer_ref: getVal(FIELDS.manufacturer_ref)?.trim(),
+      item_type: getVal(FIELDS.item_type) || undefined,
 
       product_group_id: n(getVal(FIELDS.product_group_id)),
       product_subgroup_id: n(getVal(FIELDS.product_subgroup_id)),

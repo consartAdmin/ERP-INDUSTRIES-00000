@@ -7,9 +7,12 @@ import pool from '../../config/db.js';
 import {
   TB_WORK_CENTERS, TB_BOM, TB_BOM_ITEMS, TB_BOM_OPERATIONS,
   TB_ORDERS, TB_ORDER_MATERIALS, TB_REPORTS, TB_MODULES,
+  TB_RAW_MATERIALS, TB_RAW_MOVEMENTS,
 } from './pcp.constants.js';
+import { ensureItemTypeColumn } from '../products/productsItemType.js';
 
 const MENU_ITEMS = [
+  { name: 'Matérias-primas', path: '/public/pcpRawMaterials/pcpRawMaterials.html' },
   { name: 'Ordens de Produção', path: '/public/pcpProductionOrders/pcpProductionOrders.html' },
   { name: 'Ficha Técnica (Estrutura)', path: '/public/pcpBom/pcpBom.html' },
   { name: 'Centros de Trabalho', path: '/public/pcpWorkCenters/pcpWorkCenters.html' },
@@ -25,6 +28,9 @@ export function ensureOnce() {
 }
 
 export async function ensureTables() {
+  // products.item_type: a busca de produtos do PCP filtra por tipo do item.
+  await ensureItemTypeColumn();
+
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
@@ -41,6 +47,44 @@ export async function ensureTables() {
         created_at         TIMESTAMP     NOT NULL DEFAULT NOW(),
         updated_at         TIMESTAMP     NOT NULL DEFAULT NOW()
       );
+    `);
+
+    // Matérias-primas: cadastro próprio, separado de products (decisão do Renato, 2026-10-20).
+    // Estoque e custo médio ficam aqui; as notas de entrada alimentam as movimentações.
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS ${TB_RAW_MATERIALS} (
+        raw_material_id SERIAL PRIMARY KEY,
+        code            VARCHAR(50)   NOT NULL UNIQUE,
+        description     VARCHAR(200)  NOT NULL,
+        unit            VARCHAR(10)   NOT NULL DEFAULT 'UN',
+        ncm             VARCHAR(10),
+        last_cost       NUMERIC(14,6) NOT NULL DEFAULT 0,
+        average_cost    NUMERIC(14,6) NOT NULL DEFAULT 0,
+        stock_qty       NUMERIC(14,4) NOT NULL DEFAULT 0,
+        min_stock       NUMERIC(14,4) NOT NULL DEFAULT 0,
+        notes           TEXT,
+        is_active       BOOLEAN       NOT NULL DEFAULT TRUE,
+        created_at      TIMESTAMP     NOT NULL DEFAULT NOW(),
+        updated_at      TIMESTAMP     NOT NULL DEFAULT NOW()
+      );
+    `);
+
+    // Histórico de estoque da matéria-prima (entrada por NF-e, consumo por OP, ajuste manual).
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS ${TB_RAW_MOVEMENTS} (
+        movement_id     SERIAL PRIMARY KEY,
+        raw_material_id INTEGER       NOT NULL REFERENCES ${TB_RAW_MATERIALS}(raw_material_id) ON DELETE CASCADE,
+        quantity        NUMERIC(14,4) NOT NULL,
+        unit_cost       NUMERIC(14,6),
+        balance_after   NUMERIC(14,4) NOT NULL,
+        source          VARCHAR(20)   NOT NULL,
+        reference       VARCHAR(100),
+        notes           TEXT,
+        created_by      VARCHAR(100),
+        created_at      TIMESTAMP     NOT NULL DEFAULT NOW()
+      );
+      CREATE INDEX IF NOT EXISTS "pcpRawMaterialMovements_material_idx"
+        ON ${TB_RAW_MOVEMENTS} (raw_material_id, created_at DESC);
     `);
 
     // Ficha técnica: uma estrutura ativa por produto (product_code).
@@ -73,6 +117,9 @@ export async function ensureTables() {
         sort_order     INTEGER       NOT NULL DEFAULT 0
       );
     `);
+
+    // Componente da ficha: matéria-prima (raw_material_id) ou produto (component_code).
+    await addRawMaterialComponent(client, TB_BOM_ITEMS, 'pcpBomItems_component_check');
 
     // Roteiro: operações da ficha técnica, em sequência, por centro de trabalho.
     await client.query(`
@@ -122,6 +169,8 @@ export async function ensureTables() {
       );
     `);
 
+    await addRawMaterialComponent(client, TB_ORDER_MATERIALS, 'pcpProductionOrderMaterials_component_check');
+
     // Apontamentos de produção.
     await client.query(`
       CREATE TABLE IF NOT EXISTS ${TB_REPORTS} (
@@ -147,6 +196,22 @@ export async function ensureTables() {
     throw e;
   } finally {
     client.release();
+  }
+}
+
+// Tabelas criadas antes das matérias-primas só tinham component_code (produto).
+async function addRawMaterialComponent(client, table, checkName) {
+  await client.query(`
+    ALTER TABLE ${table}
+      ADD COLUMN IF NOT EXISTS raw_material_id INTEGER REFERENCES ${TB_RAW_MATERIALS}(raw_material_id);
+    ALTER TABLE ${table} ALTER COLUMN component_code DROP NOT NULL;
+  `);
+  const { rowCount } = await client.query(`SELECT 1 FROM pg_constraint WHERE conname = $1`, [checkName]);
+  if (!rowCount) {
+    await client.query(`
+      ALTER TABLE ${table} ADD CONSTRAINT "${checkName}"
+        CHECK (raw_material_id IS NOT NULL OR component_code IS NOT NULL)
+    `);
   }
 }
 

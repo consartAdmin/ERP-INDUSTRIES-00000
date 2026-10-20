@@ -355,6 +355,12 @@
   color: #6d5200;
 }
 
+.pcp-text-danger,
+.pcp-table td.pcp-text-danger {
+  color: #c62828;
+  font-weight: 600;
+}
+
 .pcp-muted {
   opacity: .65;
   font-size: 12px;

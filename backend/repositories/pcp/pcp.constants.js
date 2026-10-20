@@ -9,6 +9,8 @@ export const TB_BOM_OPERATIONS = 'public."pcpBomOperations"';
 export const TB_ORDERS = 'public."pcpProductionOrders"';
 export const TB_ORDER_MATERIALS = 'public."pcpProductionOrderMaterials"';
 export const TB_REPORTS = 'public."pcpProductionReports"';
+export const TB_RAW_MATERIALS = 'public."pcpRawMaterials"';
+export const TB_RAW_MOVEMENTS = 'public."pcpRawMaterialMovements"';
 
 export const TB_PRODUCTS = 'public."products"';
 export const TB_STOCK = 'public."productsStock"';
