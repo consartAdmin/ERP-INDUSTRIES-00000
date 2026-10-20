@@ -262,4 +262,24 @@ async function ensureMenu(client) {
       [item.name, item.path, parent.id, (i + 1) * 10]
     );
   }
+
+  await grantMenuAccess(client, parent.id);
+}
+
+// O menu esconde módulos sem linha em userModules (securityModules.js). Módulo do PCP
+// que ainda não foi configurado para ninguém é liberado para todos os usuários que já
+// têm permissões; depois disso, quem manda é a tela de permissões.
+async function grantMenuAccess(client, parentId) {
+  const { rows: [table] } = await client.query(`SELECT to_regclass('public."userModules"') AS t`);
+  if (!table?.t) return;
+
+  await client.query(
+    `INSERT INTO public."userModules" (usuario_id, modulo_id, pode_acessar)
+     SELECT u.usuario_id, m.id, TRUE
+       FROM (SELECT DISTINCT usuario_id FROM public."userModules") u
+      CROSS JOIN ${TB_MODULES} m
+      WHERE (m.id = $1::bigint OR m.path = ANY($2::varchar[]))
+        AND NOT EXISTS (SELECT 1 FROM public."userModules" x WHERE x.modulo_id = m.id)`,
+    [parentId, MENU_ITEMS.map((item) => item.path)]
+  );
 }
