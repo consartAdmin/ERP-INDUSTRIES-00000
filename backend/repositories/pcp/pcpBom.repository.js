@@ -99,12 +99,11 @@ function cleanHeader(body = {}) {
   };
 }
 
-function cleanItems(items = [], productCode) {
+function cleanItems(items = []) {
   return (Array.isArray(items) ? items : []).map((it, i) => {
     const component_code = toText(it.component_code);
     const quantity = toNum(it.quantity);
     if (!component_code) throw badRequest(`Componente da linha ${i + 1} sem produto.`);
-    if (component_code === productCode) throw badRequest('Um produto não pode ser componente dele mesmo.');
     if (!(quantity > 0)) throw badRequest(`Quantidade da linha ${i + 1} deve ser maior que zero.`);
     return {
       component_code,
@@ -130,27 +129,50 @@ function cleanOperations(ops = []) {
   });
 }
 
-async function productExists(client, code) {
-  const { rowCount } = await client.query(`SELECT 1 FROM ${TB_PRODUCTS} WHERE product_code = $1`, [code]);
-  return rowCount > 0;
+/**
+ * Acha o código do produto a partir do que foi digitado: o código, ou a
+ * descrição exata (sem diferenciar maiúsculas) quando não foi escolhido da lista.
+ * Devolve o product_code ou lança 400 com uma mensagem clara.
+ */
+export async function resolveProductCode(client, value, label = 'Produto') {
+  const typed = toText(value);
+  if (!typed) throw badRequest(`Informe o ${label.toLowerCase()}.`);
+
+  const byCode = await client.query(
+    `SELECT product_code FROM ${TB_PRODUCTS} WHERE product_code = $1 LIMIT 1`,
+    [typed]
+  );
+  if (byCode.rowCount) return byCode.rows[0].product_code;
+
+  const byDescription = await client.query(
+    `SELECT product_code FROM ${TB_PRODUCTS}
+      WHERE LOWER(TRIM(description)) = LOWER($1)
+      ORDER BY COALESCE(is_active, TRUE) DESC
+      LIMIT 2`,
+    [typed]
+  );
+  if (byDescription.rowCount === 1) return byDescription.rows[0].product_code;
+  if (byDescription.rowCount > 1) {
+    throw badRequest(`${label} "${typed}": há mais de um produto com essa descrição. Escolha o produto na lista.`);
+  }
+  throw badRequest(`${label} "${typed}" não está cadastrado em Produtos. Cadastre o produto ou escolha um da lista.`);
 }
 
 /** Cria ou atualiza a ficha inteira (cabeçalho + itens + roteiro) numa transação. */
 export async function save(bomId, body = {}) {
   const head = cleanHeader(body);
-  const items = cleanItems(body.items, head.product_code);
+  const items = cleanItems(body.items);
   const operations = cleanOperations(body.operations);
 
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
 
-    if (!(await productExists(client, head.product_code))) {
-      throw badRequest(`Produto ${head.product_code} não encontrado.`);
-    }
-    for (const it of items) {
-      if (!(await productExists(client, it.component_code))) {
-        throw badRequest(`Componente ${it.component_code} não encontrado.`);
+    head.product_code = await resolveProductCode(client, head.product_code, 'Produto');
+    for (const [i, it] of items.entries()) {
+      it.component_code = await resolveProductCode(client, it.component_code, `Componente da linha ${i + 1}`);
+      if (it.component_code === head.product_code) {
+        throw badRequest('Um produto não pode ser componente dele mesmo.');
       }
     }
 
