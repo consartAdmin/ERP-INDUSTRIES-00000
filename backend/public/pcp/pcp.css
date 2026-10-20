@@ -195,16 +195,11 @@
 /* ── Modal ──────────────────────────────────────────────────── */
 /* Estrutura, cabeçalho, rodapé e arrastar vêm do modal global:
  * /public/includes/css/modals.css + /public/includes/js/modal.js.
- * Aqui ficam só a largura das telas do PCP e o form que envolve corpo + rodapé.
+ * Aqui ficam só a altura máxima e o form que envolve corpo + rodapé.
  */
 
 .pcp-modal .modal__panel {
-  --modal-selected-width: 620px;
   max-height: calc(100vh - (var(--modal-space, 16px) * 2));
-}
-
-.pcp-modal--wide .modal__panel {
-  --modal-selected-width: 1100px;
 }
 
 .pcp-modal .modal__header {

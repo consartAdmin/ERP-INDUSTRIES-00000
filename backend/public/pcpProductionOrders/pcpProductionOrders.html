@@ -11,7 +11,6 @@
 
   <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
   <link rel="stylesheet" href="/public/includes/css/style.css" />
-  <link rel="stylesheet" href="/public/includes/css/modals.css" />
   <link rel="stylesheet" href="/public/pcp/pcp.css" />
 </head>
 
@@ -97,8 +96,8 @@
   <div id="newModal" class="modal pcp-modal" aria-hidden="true">
     <div class="modal__backdrop"></div>
     <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="newTitle">
-    <div class="modal__panel">
-    <header class="modal__header">
+    <div class="modal__panel modal-width-5">
+    <header class="modal__header modal-header-color-3">
       <div>
         <h2 id="newTitle" class="modal__title">Nova ordem de produção</h2>
         <p class="modal__subtitle">Os materiais são copiados da ficha técnica ativa do produto.</p>
@@ -107,33 +106,33 @@
     </header>
     <form id="newForm" class="pcp-modal__form">
       <div class="modal__body">
-      <div class="pcp-form-grid">
-        <div class="pcp-form-field pcp-span-4">
-          <label for="newProduct" class="pcp-label">Produto *</label>
-          <input id="newProduct" type="text" list="productOptions" class="pcp-input" placeholder="Digite o código ou a descrição" required autocomplete="off" />
+      <div class="modal-form-grid modal-form-grid--4">
+        <div class="fields fields-h-6 fields-w-full modal-field--span-4">
+          <label for="newProduct">Produto *</label>
+          <input id="newProduct" type="text" list="productOptions" placeholder="Digite o código ou a descrição" required autocomplete="off" />
         </div>
-        <div class="pcp-form-field">
-          <label for="newQty" class="pcp-label">Quantidade *</label>
-          <input id="newQty" type="number" step="any" min="0" class="pcp-input" required />
+        <div class="fields fields-h-6 fields-w-full">
+          <label for="newQty">Quantidade *</label>
+          <input id="newQty" type="number" step="any" min="0" required />
         </div>
-        <div class="pcp-form-field">
-          <label for="newDue" class="pcp-label">Entrega</label>
-          <input id="newDue" type="date" class="pcp-input" />
+        <div class="fields fields-h-6 fields-w-full">
+          <label for="newDue">Entrega</label>
+          <input id="newDue" type="date" />
         </div>
-        <div class="pcp-form-field pcp-span-2">
-          <label for="newRef" class="pcp-label">Pedido de venda</label>
-          <input id="newRef" type="text" maxlength="50" class="pcp-input" autocomplete="off" />
+        <div class="fields fields-h-6 fields-w-full modal-field--span-2">
+          <label for="newRef">Pedido de venda</label>
+          <input id="newRef" type="text" maxlength="50" autocomplete="off" />
         </div>
-        <div class="pcp-form-field pcp-span-4">
-          <label for="newNotes" class="pcp-label">Observações</label>
-          <input id="newNotes" type="text" class="pcp-input" autocomplete="off" />
+        <div class="fields fields-h-6 fields-w-full modal-field--span-4">
+          <label for="newNotes">Observações</label>
+          <input id="newNotes" type="text" autocomplete="off" />
         </div>
       </div>
       <div id="newMessage" class="pcp-form-message" role="alert" hidden></div>
       </div>
-      <footer class="modal__footer">
-        <button type="button" class="btn btn-clean btn-sm" data-modal-close>Cancelar</button>
-        <button type="submit" class="btn btn-toolbar btn-sm">Criar OP</button>
+      <footer class="modal__footer modal-footer-color-3">
+        <button type="button" class="btn btn-cancel btn-sm" data-modal-close>Cancelar</button>
+        <button type="submit" class="btn btn-save btn-sm">Criar OP</button>
       </footer>
     </form>
     </div>
@@ -144,8 +143,8 @@
   <div id="orderModal" class="modal pcp-modal pcp-modal--wide" aria-hidden="true">
     <div class="modal__backdrop"></div>
     <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="orderTitle">
-    <div class="modal__panel">
-    <header class="modal__header">
+    <div class="modal__panel modal-width-9">
+    <header class="modal__header modal-header-color-3">
       <div>
         <h2 id="orderTitle" class="modal__title">OP</h2>
         <p id="orderCaption" class="modal__subtitle"></p>
@@ -154,7 +153,7 @@
     </header>
     <div class="modal__body">
       <div class="pcp-kpis">
-        <div class="pcp-kpi"><span>Status</span><strong id="kpiStatus">—</strong></div>
+        <div class="pcp-kpi"><span class="fields-label">Status</span><strong id="kpiStatus">—</strong></div>
         <div class="pcp-kpi"><span>Planejado</span><strong id="kpiPlanned">—</strong></div>
         <div class="pcp-kpi"><span>Produzido</span><strong id="kpiProduced">—</strong></div>
         <div class="pcp-kpi"><span>Refugo</span><strong id="kpiScrap">—</strong></div>
@@ -164,22 +163,22 @@
 
       <form id="editForm">
         <div class="pcp-section-title"><span>Dados da OP</span></div>
-        <div class="pcp-form-grid">
-          <div class="pcp-form-field">
-            <label for="editQty" class="pcp-label">Quantidade planejada</label>
-            <input id="editQty" type="number" step="any" min="0" class="pcp-input" />
+        <div class="modal-form-grid modal-form-grid--4">
+          <div class="fields fields-h-6 fields-w-full">
+            <label for="editQty">Quantidade planejada</label>
+            <input id="editQty" type="number" step="any" min="0" />
           </div>
-          <div class="pcp-form-field">
-            <label for="editDue" class="pcp-label">Entrega</label>
-            <input id="editDue" type="date" class="pcp-input" />
+          <div class="fields fields-h-6 fields-w-full">
+            <label for="editDue">Entrega</label>
+            <input id="editDue" type="date" />
           </div>
-          <div class="pcp-form-field">
-            <label for="editRef" class="pcp-label">Pedido de venda</label>
-            <input id="editRef" type="text" maxlength="50" class="pcp-input" autocomplete="off" />
+          <div class="fields fields-h-6 fields-w-full">
+            <label for="editRef">Pedido de venda</label>
+            <input id="editRef" type="text" maxlength="50" autocomplete="off" />
           </div>
-          <div class="pcp-form-field">
-            <label for="editNotes" class="pcp-label">Observações</label>
-            <input id="editNotes" type="text" class="pcp-input" autocomplete="off" />
+          <div class="fields fields-h-6 fields-w-full">
+            <label for="editNotes">Observações</label>
+            <input id="editNotes" type="text" autocomplete="off" />
           </div>
         </div>
       </form>
@@ -215,33 +214,33 @@
 
       <form id="reportForm">
         <div class="pcp-section-title"><span>Apontar produção</span></div>
-        <div class="pcp-form-grid">
-          <div class="pcp-form-field pcp-span-2">
-            <label for="repOp" class="pcp-label">Operação</label>
-            <select id="repOp" class="pcp-input"></select>
+        <div class="modal-form-grid modal-form-grid--4">
+          <div class="fields fields-h-6 fields-w-full modal-field--span-2">
+            <label for="repOp">Operação</label>
+            <select id="repOp"></select>
           </div>
-          <div class="pcp-form-field">
-            <label for="repGood" class="pcp-label">Qtd. boa</label>
-            <input id="repGood" type="number" step="any" min="0" value="0" class="pcp-input" />
+          <div class="fields fields-h-6 fields-w-full">
+            <label for="repGood">Qtd. boa</label>
+            <input id="repGood" type="number" step="any" min="0" value="0" />
           </div>
-          <div class="pcp-form-field">
-            <label for="repScrap" class="pcp-label">Refugo</label>
-            <input id="repScrap" type="number" step="any" min="0" value="0" class="pcp-input" />
+          <div class="fields fields-h-6 fields-w-full">
+            <label for="repScrap">Refugo</label>
+            <input id="repScrap" type="number" step="any" min="0" value="0" />
           </div>
-          <div class="pcp-form-field">
-            <label for="repMinutes" class="pcp-label">Tempo (min)</label>
-            <input id="repMinutes" type="number" step="any" min="0" value="0" class="pcp-input" />
+          <div class="fields fields-h-6 fields-w-full">
+            <label for="repMinutes">Tempo (min)</label>
+            <input id="repMinutes" type="number" step="any" min="0" value="0" />
           </div>
-          <div class="pcp-form-field">
-            <label for="repOperator" class="pcp-label">Operador</label>
-            <input id="repOperator" type="text" maxlength="100" class="pcp-input" autocomplete="off" />
+          <div class="fields fields-h-6 fields-w-full">
+            <label for="repOperator">Operador</label>
+            <input id="repOperator" type="text" maxlength="100" autocomplete="off" />
           </div>
-          <div class="pcp-form-field">
-            <label for="repNotes" class="pcp-label">Observação</label>
-            <input id="repNotes" type="text" class="pcp-input" autocomplete="off" />
+          <div class="fields fields-h-6 fields-w-full">
+            <label for="repNotes">Observação</label>
+            <input id="repNotes" type="text" autocomplete="off" />
           </div>
-          <div class="pcp-form-field" style="display:flex;align-items:flex-end">
-            <button type="submit" class="btn btn-toolbar btn-sm">Apontar</button>
+          <div class="fields fields-h-6 fields-w-full" style="display:flex;align-items:flex-end">
+            <button type="submit" class="btn btn-save btn-sm">Apontar</button>
           </div>
         </div>
         <p class="pcp-muted">Só os apontamentos da última operação do roteiro (ou sem operação) somam na quantidade produzida da OP. O refugo sempre soma.</p>
@@ -266,13 +265,13 @@
 
     </div>
 
-    <footer class="modal__footer">
+    <footer class="modal__footer modal-footer-color-3">
         <div class="pcp-footer-left">
-          <button id="btnDelete" type="button" class="btn btn-clean btn-sm">Excluir OP</button>
-          <button id="btnSaveEdit" type="button" class="btn btn-clean btn-sm">Salvar dados</button>
+          <button id="btnDelete" type="button" class="btn btn-delete btn-sm">Excluir OP</button>
+          <button id="btnSaveEdit" type="button" class="btn btn-save btn-sm">Salvar dados</button>
         </div>
         <span id="statusButtons" class="pcp-action-group"></span>
-        <button type="button" class="btn btn-clean btn-sm" data-modal-close>Fechar</button>
+        <button type="button" class="btn btn-cancel btn-sm" data-modal-close>Fechar</button>
     </footer>
     </div>
     </div>
