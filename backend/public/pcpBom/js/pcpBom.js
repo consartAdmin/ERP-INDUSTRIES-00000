@@ -7,6 +7,7 @@ import {
   paginate, bindPagination, renderPagination,
   attachProductSearch, productCodeOf, productLabel,
 } from '/public/pcp/js/pcp.common.js';
+import { Modal } from '/public/includes/js/modal.js';
 
 const $ = (id) => document.getElementById(id);
 const PAGER = { info: 'bomTableInfo', pageInfo: 'bomPageInfo', prev: 'bomPrevPage', next: 'bomNextPage', size: 'bomRowsPerPage' };
@@ -127,8 +128,7 @@ async function openModal(id = null) {
   try {
     state.workCenters = await pcpApi('/work-centers') || [];
     fill(id ? await pcpApi(`/boms/${id}`) : null);
-    $('modal').showModal();
-    if (!id) $('product').focus();
+    Modal.open('modal', { focusSelector: id ? '#version' : '#product' });
   } catch (e) {
     notify('error', 'Erro ao abrir a ficha', e.message);
   }
@@ -190,10 +190,9 @@ async function remove(id) {
 
 // ── Eventos ───────────────────────────────────────────────────
 
+Modal.setup();
 attachProductSearch($('product'), $('productOptions'));
 $('btnNew').addEventListener('click', () => openModal());
-$('btnClose').addEventListener('click', () => $('modal').close());
-$('btnCancel').addEventListener('click', () => $('modal').close());
 $('btnAddItem').addEventListener('click', () => { itemRow(); emptyHint(); });
 $('btnAddOp').addEventListener('click', () => { opRow(); emptyHint(); });
 $('form').addEventListener('submit', save);

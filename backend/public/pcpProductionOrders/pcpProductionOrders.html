@@ -11,6 +11,7 @@
 
   <link rel="icon" type="image/png" sizes="16x16" href="/public/imagens/brasaoConsartInfinity.png">
   <link rel="stylesheet" href="/public/includes/css/style.css" />
+  <link rel="stylesheet" href="/public/includes/css/modals.css" />
   <link rel="stylesheet" href="/public/pcp/pcp.css" />
 </head>
 
@@ -93,15 +94,19 @@
   <datalist id="productOptions"></datalist>
 
   <!-- Nova OP -->
-  <dialog id="newModal" class="pcp-modal">
-    <div class="pcp-modal__header">
+  <div id="newModal" class="modal pcp-modal" aria-hidden="true">
+    <div class="modal__backdrop"></div>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="newTitle">
+    <div class="modal__panel">
+    <header class="modal__header">
       <div>
-        <h3>Nova ordem de produção</h3>
-        <p>Os materiais são copiados da ficha técnica ativa do produto.</p>
+        <h2 id="newTitle" class="modal__title">Nova ordem de produção</h2>
+        <p class="modal__subtitle">Os materiais são copiados da ficha técnica ativa do produto.</p>
       </div>
-      <button type="button" class="pcp-modal__close" data-close="newModal" aria-label="Fechar">×</button>
-    </div>
-    <form id="newForm" class="pcp-modal__body">
+      <button type="button" class="modal__close" aria-label="Fechar" title="Fechar" data-modal-close>×</button>
+    </header>
+    <form id="newForm" class="pcp-modal__form">
+      <div class="modal__body">
       <div class="pcp-form-grid">
         <div class="pcp-form-field pcp-span-4">
           <label for="newProduct" class="pcp-label">Produto *</label>
@@ -125,23 +130,29 @@
         </div>
       </div>
       <div id="newMessage" class="pcp-form-message" role="alert" hidden></div>
-      <div class="pcp-modal__footer">
-        <button type="button" class="btn btn-clean btn-sm" data-close="newModal">Cancelar</button>
-        <button type="submit" class="btn btn-toolbar btn-sm">Criar OP</button>
       </div>
+      <footer class="modal__footer">
+        <button type="button" class="btn btn-clean btn-sm" data-modal-close>Cancelar</button>
+        <button type="submit" class="btn btn-toolbar btn-sm">Criar OP</button>
+      </footer>
     </form>
-  </dialog>
+    </div>
+    </div>
+  </div>
 
   <!-- Detalhe da OP -->
-  <dialog id="orderModal" class="pcp-modal pcp-modal--wide">
-    <div class="pcp-modal__header">
+  <div id="orderModal" class="modal pcp-modal pcp-modal--wide" aria-hidden="true">
+    <div class="modal__backdrop"></div>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="orderTitle">
+    <div class="modal__panel">
+    <header class="modal__header">
       <div>
-        <h3 id="orderTitle">OP</h3>
-        <p id="orderCaption"></p>
+        <h2 id="orderTitle" class="modal__title">OP</h2>
+        <p id="orderCaption" class="modal__subtitle"></p>
       </div>
-      <button type="button" class="pcp-modal__close" data-close="orderModal" aria-label="Fechar">×</button>
-    </div>
-    <div class="pcp-modal__body">
+      <button type="button" class="modal__close" aria-label="Fechar" title="Fechar" data-modal-close>×</button>
+    </header>
+    <div class="modal__body">
       <div class="pcp-kpis">
         <div class="pcp-kpi"><span>Status</span><strong id="kpiStatus">—</strong></div>
         <div class="pcp-kpi"><span>Planejado</span><strong id="kpiPlanned">—</strong></div>
@@ -253,16 +264,19 @@
         <tbody id="reportsBody"></tbody>
       </table>
 
-      <div class="pcp-modal__footer">
+    </div>
+
+    <footer class="modal__footer">
         <div class="pcp-footer-left">
           <button id="btnDelete" type="button" class="btn btn-clean btn-sm">Excluir OP</button>
           <button id="btnSaveEdit" type="button" class="btn btn-clean btn-sm">Salvar dados</button>
         </div>
         <span id="statusButtons" class="pcp-action-group"></span>
-        <button type="button" class="btn btn-clean btn-sm" data-close="orderModal">Fechar</button>
-      </div>
+        <button type="button" class="btn btn-clean btn-sm" data-modal-close>Fechar</button>
+    </footer>
     </div>
-  </dialog>
+    </div>
+  </div>
 
   <script type="module" src="/public/includes/js/core.js"></script>
   <script type="module" src="/public/pcpProductionOrders/js/pcpProductionOrders.js"></script>
